@@ -31,7 +31,7 @@
 ###
 
 library_version=2.9.1~dev
-library_revision=20180616.1
+library_revision=20180630.1
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -2180,18 +2180,19 @@ write_bin() {
 				write_bin_build_wine
 			fi
 			cat >> "$file" <<- 'EOF'
-			if [ ! -e "$PATH_PREFIX" ]; then
-			  mkdir --parents "$PATH_PREFIX"
-			  cp --force --recursive --symbolic-link --update "$PATH_GAME"/* "$PATH_PREFIX"
-			fi
-			if [ ! -e "$PATH_CONFIG" ]; then
-			  mkdir --parents "$PATH_CONFIG"
-			  init_userdir_files "$PATH_CONFIG" "$CONFIG_FILES"
-			fi
-			if [ ! -e "$PATH_DATA" ]; then
-			  mkdir --parents "$PATH_DATA"
-			  init_userdir_files "$PATH_DATA" "$DATA_FILES"
-			fi
+			for dir in "$PATH_PREFIX" "$PATH_CONFIG" "$PATH_DATA"; do
+			  if [ ! -e "$dir" ]; then
+			    mkdir --parents "$dir"
+			  fi
+			done
+			cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/* "$PATH_PREFIX"
+			find "$PATH_PREFIX" -type l | while read link; do
+			  if [ ! -e "$link" ]; then
+			    rm "$link"
+			  fi
+			done
+			init_userdir_files "$PATH_CONFIG" "$CONFIG_FILES"
+			init_userdir_files "$PATH_DATA" "$DATA_FILES"
 			init_prefix_files "$PATH_CONFIG" "$CONFIG_FILES"
 			init_prefix_files "$PATH_DATA" "$DATA_FILES"
 			init_prefix_dirs "$PATH_CONFIG" "$CONFIG_DIRS"
