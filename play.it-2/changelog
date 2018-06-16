@@ -1,3 +1,8 @@
+2.9.1
+
+  * extract_data_from - Do not print "OK" after innosetup variants extraction
+    (progress already has a visual feedback)
+
 2.9.0
 
   * Update license file to keep track of all authors
