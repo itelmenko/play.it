@@ -3,6 +3,9 @@
   * extract_data_from - Do not print "OK" after innosetup variants extraction
     (progress already has a visual feedback)
 
+  * Better handling of game updates and DLC (un)installation by automatically
+    updating the user prefix on each game launch
+
 2.9.0
 
   * Update license file to keep track of all authors
