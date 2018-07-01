@@ -242,11 +242,19 @@ write_bin() {
 			  fi
 			done
 			cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/* "$PATH_PREFIX"
-			find "$PATH_PREFIX" -type l | while read link; do
-			  if [ ! -e "$link" ]; then
-			    rm "$link"
-			  fi
-			done
+			(
+			  cd "$PATH_PREFIX"
+			  find . -type l | while read link; do
+			    if [ ! -e "$link" ]; then
+			      rm "$link"
+			    fi
+			  done
+			  find . -depth -type d | while read dir; do
+			    if [ ! -e "$PATH_GAME/$dir" ]; then
+			      rmdir --ignore-fail-on-non-empty "$dir"
+			    fi
+			  done
+			)
 			init_userdir_files "$PATH_CONFIG" "$CONFIG_FILES"
 			init_userdir_files "$PATH_DATA" "$DATA_FILES"
 			init_prefix_files "$PATH_CONFIG" "$CONFIG_FILES"
