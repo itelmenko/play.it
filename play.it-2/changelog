@@ -1,10 +1,12 @@
 2.9.1
 
-  * extract_data_from - Do not print "OK" after innosetup variants extraction
+  * extract_data_from: Do not print "OK" after innosetup variants extraction
     (progress already has a visual feedback)
 
   * Better handling of game updates and DLC (un)installation by automatically
     updating the user prefix on each game launch
+
+  * meta-script: if called without argument, show usage instructions
 
 2.9.0
 
