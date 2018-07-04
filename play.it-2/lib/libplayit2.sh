@@ -31,7 +31,7 @@
 ###
 
 library_version=2.9.1~dev
-library_revision=20180701.1
+library_revision=20180704.1
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -2185,6 +2185,14 @@ write_bin() {
 			    mkdir --parents "$dir"
 			  fi
 			done
+			(
+			  cd "$PATH_GAME"
+			  find . -type d | while read dir; do
+			    if [ -h "$PATH_PREFIX/$dir" ]; then
+			      rm "$PATH_PREFIX/$dir"
+			    fi
+			  done
+			)
 			cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/* "$PATH_PREFIX"
 			(
 			  cd "$PATH_PREFIX"

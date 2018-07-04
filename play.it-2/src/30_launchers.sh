@@ -241,6 +241,14 @@ write_bin() {
 			    mkdir --parents "$dir"
 			  fi
 			done
+			(
+			  cd "$PATH_GAME"
+			  find . -type d | while read dir; do
+			    if [ -h "$PATH_PREFIX/$dir" ]; then
+			      rm "$PATH_PREFIX/$dir"
+			    fi
+			  done
+			)
 			cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/* "$PATH_PREFIX"
 			(
 			  cd "$PATH_PREFIX"
