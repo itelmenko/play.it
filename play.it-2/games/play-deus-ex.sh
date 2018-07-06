@@ -34,17 +34,28 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180605.1
+script_version=20180706.1
 
 # Set game-specific variables
 
 GAME_ID='deus-ex'
 GAME_NAME='Deus Ex'
 
+# see https://framagit.org/vv221/play.it/issues/75
+#ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.4)_(21273).exe'
+#ARCHIVE_GOG_MD5='9ec295ecad72e96fb7b9f0109dd90324'
+#ARCHIVE_GOG_VERSION='1.112fm-gog21273'
+#ARCHIVE_GOG_SIZE='750000'
+
 ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.3.1)_(17719).exe'
 ARCHIVE_GOG_MD5='92e9e6a33642f9e6c41cb24055df9b3c'
 ARCHIVE_GOG_VERSION='1.112fm-gog17719'
 ARCHIVE_GOG_SIZE='750000'
+
+ARCHIVE_GOG_OLD3='setup_deus_ex_2.1.0.12.exe'
+ARCHIVE_GOG_OLD3_MD5='cc2c6e43b2e8e67c7586bbab5ef492ee'
+ARCHIVE_GOG_OLD3_VERSION='1.112fm-gog2.1.0.12'
+ARCHIVE_GOG_OLD3_SIZE='750000'
 
 ARCHIVE_GOG_OLD2='setup_deus_ex_goty_1.112fm(revision_1.3.0.1)_(16231).exe'
 ARCHIVE_GOG_OLD2_MD5='eaaf7c7c3052fbf71f5226e2d4495268'
