@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,55 +29,36 @@ set -o errexit
 ###
 
 ###
-# TIS-100
+# Darkest Dungeon: The Color of Madness
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180620.1
+script_version=20180621.1
 
 # Set game-specific variables
 
-GAME_ID='tis-100'
-GAME_NAME='TIS-100'
+# copy GAME_ID from play-darkest-dungeon.sh
+GAME_ID='darkest-dungeon'
+GAME_NAME='Darkest Dungeon: The Color of Madness'
 
-ARCHIVE_GOG='tis_100_en_11_27_2017_16765.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/tis-100'
-ARCHIVE_GOG_MD5='70518ec82ee8148697b704ed2c3c8953'
-ARCHIVE_GOG_VERSION='2017.11.27-gog16765'
-ARCHIVE_GOG_SIZE='83000'
+ARCHIVE_GOG='darkest_dungeon_the_color_of_madness_dlc_en_23885_21662.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/darkest_dungeon_the_color_of_madness'
+ARCHIVE_GOG_MD5='fe07f35c57c3ddd421db5da33b42ee6e'
+ARCHIVE_GOG_SIZE='630000'
+ARCHIVE_GOG_VERSION='23885-gog21662'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='./*'
+ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC_MAIN_FILES='./*'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='./*.pdf'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
+ARCHIVE_GAME_MAIN_FILES='./dlc'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./*.x86 ./*_Data/*/x86'
+PACKAGES_LIST='PKG_MAIN'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./*.x86_64 ./*_Data/*/x86_64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*_Data'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='tis100.x86'
-APP_MAIN_EXE_BIN64='tis100.x86_64'
-APP_MAIN_ICON='tis100_Data/Resources/UnityPlayer.png'
-
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glx xcursor glibc libstdc++ libxrandr"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_MAIN_ID="${GAME_ID}-the-color-of-madness"
+PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
@@ -114,29 +94,9 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Write launchers
-
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
-
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-manual='TIS-100 Reference Manual.pdf'
-cat >> "$postinst" << EOF
-if [ ! -e "$PATH_GAME/$manual" ]; then
-	ln --symbolic "$PATH_DOC/$manual" "$PATH_GAME"
-fi
-EOF
-cat >> "$prerm" << EOF
-if [ -e "$PATH_GAME/$manual" ]; then
-	rm "$PATH_GAME/$manual"
-fi
-EOF
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up

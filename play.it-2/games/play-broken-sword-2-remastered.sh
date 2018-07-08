@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, BetaRays
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,55 +30,44 @@ set -o errexit
 ###
 
 ###
-# TIS-100
+# Broken Sword II: The Smoking Mirror - Remastered
 # build native Linux packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180620.1
+script_version=20180708.1
 
 # Set game-specific variables
 
-GAME_ID='tis-100'
-GAME_NAME='TIS-100'
+GAME_ID='broken-sword-2-remastered'
+GAME_NAME='Broken Sword II: The Smoking Mirror - Remastered'
 
-ARCHIVE_GOG='tis_100_en_11_27_2017_16765.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/tis-100'
-ARCHIVE_GOG_MD5='70518ec82ee8148697b704ed2c3c8953'
-ARCHIVE_GOG_VERSION='2017.11.27-gog16765'
-ARCHIVE_GOG_SIZE='83000'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG='gog_broken_sword_2_remastered_2.0.0.3.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/broken_sword_2__the_smoking_mirror'
+ARCHIVE_GOG_MD5='a67ce1d6a47b74281b6f230365fb296a'
+ARCHIVE_GOG_SIZE='1400000'
+ARCHIVE_GOG_VERSION='1.0.800-gog2.0.0.3'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
+ARCHIVE_DOC_DATA_FILES='./*'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='./*.pdf'
-
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./*.x86 ./*_Data/*/x86'
-
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./*.x86_64 ./*_Data/*/x86_64'
+ARCHIVE_GAME_BIN_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN_FILES='./BS2Remastered_i386 ./libopenal.so.1 ./libSDL-1.2.so.0'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*_Data'
+ARCHIVE_GAME_DATA_FILES='./bs2.ico ./*.clu ./*.BUK ./*.DAT ./*.DIC ./Fonts ./icon.bmp ./*.dat ./PC ./Text'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='tis100.x86'
-APP_MAIN_EXE_BIN64='tis100.x86_64'
-APP_MAIN_ICON='tis100_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE='BS2Remastered_i386'
+APP_MAIN_ICON='icon.bmp'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glx xcursor glibc libstdc++ libxrandr"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc sdl1.2 openal"
 
 # Load common functions
 
@@ -103,7 +92,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
-		exit 1
+		return 1
 	fi
 fi
 . "$PLAYIT_LIB2"
@@ -112,31 +101,22 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+
+# Extract icons
+
+PKG='PKG_DATA'
+icons_get_from_package 'APP_MAIN'
+
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-manual='TIS-100 Reference Manual.pdf'
-cat >> "$postinst" << EOF
-if [ ! -e "$PATH_GAME/$manual" ]; then
-	ln --symbolic "$PATH_DOC/$manual" "$PATH_GAME"
-fi
-EOF
-cat >> "$prerm" << EOF
-if [ -e "$PATH_GAME/$manual" ]; then
-	rm "$PATH_GAME/$manual"
-fi
-EOF
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
