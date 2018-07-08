@@ -5,13 +5,17 @@ bindir = $(prefix)/games
 datadir = $(prefix)/share/games
 mandir = $(prefix)/share/man
 
-all: libplayit2.sh
+all: libplayit2.sh play.it.6
 
 libplayit2.sh: play.it-2/src/*
 	cat play.it-2/src/* > play.it-2/lib/libplayit2.sh
 
+%.6: %.6.md
+	pandoc --standalone $< --to man --output $@
+
 clean:
 	rm -f play.it-2/lib/libplayit2.sh
+	rm -f *.6
 
 install:
 	mkdir -p $(DESTDIR)$(bindir)
