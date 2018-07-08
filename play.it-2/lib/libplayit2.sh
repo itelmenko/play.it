@@ -31,7 +31,7 @@
 ###
 
 library_version=2.9.1~dev
-library_revision=20180704.1
+library_revision=20180708.1
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -1676,6 +1676,7 @@ icon_get_resolution_from_file() {
 		[ -n "${file##* *}" ]
 	then
 		field=2
+		unset resolution
 		while [ -z "$resolution" ] || [ -n "$(printf '%s' "$resolution" | sed 's/[0-9]*x[0-9]*//')" ]; do
 			resolution="$(identify $file | sed "s;^$file ;;" | cut --delimiter=' ' --fields=$field)"
 			field=$((field + 1))

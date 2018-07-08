@@ -8,6 +8,9 @@
 
   * meta-script: if called without argument, show usage instructions
 
+  * icon_get_resolution_from_file: Fix a bug with pre 2.8 scripts where the
+    resolution value of the first analyzed file would be kept for all files
+
 2.9.0
 
   * Update license file to keep track of all authors
