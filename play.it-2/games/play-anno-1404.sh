@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180712.1
 
 # Set game-specific variables
 
@@ -80,9 +80,13 @@ ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_PATH_GOG_OLD='game'
 ARCHIVE_GAME_DATA_FILES='./addon ./data ./maindata ./resources'
 
+ARCHIVE_GAME2_DATA_PATH='app/__support/add'
+ARCHIVE_GAME2_DATA_PATH_GOG_OLD='game'
+ARCHIVE_GAME2_DATA_FILES='./engine.ini'
+
 CONFIG_FILES='./*.ini'
 
-APP_WINETRICKS='d3dx9_36'
+APP_WINETRICKS='d3dx9'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='anno4.exe'
@@ -154,9 +158,18 @@ case "$ARCHIVE" in
 	;;
 esac
 
+# Fix immediate crash
+file="$PLAYIT_WORKDIR/gamedata/$ARCHIVE_GAME2_DATA_PATH/engine.ini"
+if [ -e "$file" ]; then
+	sed --in-place '2i<DirectXVersion>9</DirectXVersion>' "$file"
+else
+	echo '<InitFile><DirectXVersion>9</DirectXVersion></InitFile>' > "$file"
+fi
+
 for PKG in $PACKAGES_LIST; do
 	organize_data "DOC_${PKG#PKG_}"   "$PATH_DOC"
 	organize_data "GAME_${PKG#PKG_}"  "$PATH_GAME"
+	organize_data "GAME2_${PKG#PKG_}"  "$PATH_GAME"
 done
 
 PKG='PKG_BIN'
