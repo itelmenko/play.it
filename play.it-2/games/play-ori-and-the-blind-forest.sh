@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180714.1
+script_version=20180714.2
 
 # Set game-specific variables
 
@@ -67,6 +67,7 @@ ARCHIVE_GAME_BIN_FILES='./oride.exe ./oride_data/managed ./oride_data/mono ./ori
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='oride.exe'
+APP_MAIN_OPTIONS='-force-d3d9'
 APP_MAIN_ICON='oride.exe'
 
 PACKAGES_LIST='PKG_ASSETS PKG_DATA PKG_BIN'
