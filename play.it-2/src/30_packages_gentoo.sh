@@ -72,7 +72,7 @@ pkg_write_gentoo() {
 		mkdir -p "\$S"
 	}
 	src_install() {
-		cp -Rl \$FILESDIR/install/* \$D/
+		cp -Rl \$FILESDIR/install/* \$ED/
 	}
 	EOF
 
