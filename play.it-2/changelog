@@ -1,3 +1,8 @@
+2.10.0
+
+  * get_tmp_dir: New function allowing to set a temporary working directory by
+    setting $TMPDIR
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work

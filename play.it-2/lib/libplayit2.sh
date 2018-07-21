@@ -30,8 +30,8 @@
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-library_version=2.9.2
-library_revision=20180807.1
+library_version=2.10.0~dev
+library_revision=20180807.2
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -1040,14 +1040,22 @@ get_package_version() {
 	export PKG_VERSION
 }
 
+# get default temporary dir
+# USAGE: get_tmp_dir
+get_tmp_dir() {
+	printf '%s' "${TMPDIR:-/tmp}"
+	return 0
+}
+
 # set temporary directories
 # USAGE: set_temp_directories $pkg[…]
 # NEEDED VARS: (ARCHIVE_SIZE) GAME_ID (LANG) (PWD) (XDG_CACHE_HOME) (XDG_RUNTIME_DIR)
-# CALLS: set_temp_directories_error_no_size set_temp_directories_error_not_enough_space set_temp_directories_pkg testvar
+# CALLS: set_temp_directories_error_no_size set_temp_directories_error_not_enough_space set_temp_directories_pkg testvar get_tmp_dir
 set_temp_directories() {
 	local base_directory
 	local free_space
 	local needed_space
+	local tmpdir
 
 	# If $PLAYIT_WORKDIR is already set, delete it before setting a new one
 	[ "$PLAYIT_WORKDIR" ] && rm --force --recursive "$PLAYIT_WORKDIR"
@@ -1063,17 +1071,18 @@ set_temp_directories() {
 	fi
 	[ "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="/run/user/$(id -u)"
 	[ "$XDG_CACHE_HOME" ]  || XDG_CACHE_HOME="$HOME/.cache"
+	tmpdir="$(get_tmp_dir)"
 	unset base_directory
 	for directory in \
 		"$XDG_RUNTIME_DIR" \
-		'/tmp' \
+		"$tmpdir" \
 		"$XDG_CACHE_HOME" \
 		"$PWD"
 	do
 		free_space=$(df --output=avail "$directory" 2>/dev/null | tail --lines=1)
 		if [ -w "$directory" ] && [ $free_space -ge $needed_space ]; then
 			base_directory="$directory/play.it"
-			if [ "$directory" = '/tmp' ]; then
+			if [ "$directory" = "$tmpdir" ]; then
 				if [ ! -e "$base_directory" ]; then
 					mkdir --parents "$base_directory"
 					chmod 777 "$base_directory"
@@ -1171,7 +1180,7 @@ set_temp_directories_error_not_enough_space() {
 		;;
 	esac
 	printf "$string"
-	for path in "$XDG_RUNTIME_DIR" '/tmp' "$XDG_CACHE_HOME" "$PWD"; do
+	for path in "$XDG_RUNTIME_DIR" "$(get_tmp_dir)" "$XDG_CACHE_HOME" "$PWD"; do
 		printf '%s\n' "$path"
 	done
 	return 1
