@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180720.1
+script_version=20180724.1
 
 # Set game-specific variables
 
@@ -54,6 +54,7 @@ ARCHIVE_GOG_OLD='surviving_mars_mysteries_resupply_pack_en_curiosity_2_21442.sh'
 ARCHIVE_GOG_OLD_MD5='9ca47c2cdb5a41cf8b221dca99783916'
 ARCHIVE_GOG_OLD_SIZE='2900'
 ARCHIVE_GOG_OLD_VERSION='2-gog21442'
+ARCHIVE_GOG_OLD_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='./*'

@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180720.1
+script_version=20180724.1
 
 # Set game-specific variables
 
@@ -54,6 +54,7 @@ ARCHIVE_GOG_OLD='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180423_op
 ARCHIVE_GOG_OLD_MD5='a574de12f4b7f3aa1f285167109bb6a3'
 ARCHIVE_GOG_OLD_SIZE="66000"
 ARCHIVE_GOG_OLD_VERSION="1-gog20289"
+ARCHIVE_GOG_OLD_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='./*'
