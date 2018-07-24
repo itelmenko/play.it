@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180701.1
+script_version=20180724.1
 
 # Set game-specific variables
 
@@ -76,10 +76,12 @@ PKG_DATA_DESCRIPTION='data'
 PKG_BIN32_ARCH='32'
 PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ openal sdl2 sdl2_image vorbis"
 PKG_BIN32_DEPS_DEB="libtheora0"
+PKG_BIN32_DEPS_ARCH='libtheora'
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS_ARCH='lib32-libtheora'
 
 # Load common functions
 
