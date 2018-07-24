@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Phil Morrell
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,27 +35,38 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180605.1
+script_version=20180724.2
 
 # Set game-specific variables
 
 GAME_ID='deus-ex'
 GAME_NAME='Deus Ex'
 
+# see https://framagit.org/vv221/play.it/issues/75
+#ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.4)_(21273).exe'
+#ARCHIVE_GOG_MD5='9ec295ecad72e96fb7b9f0109dd90324'
+#ARCHIVE_GOG_VERSION='1.112fm-gog21273'
+#ARCHIVE_GOG_SIZE='750000'
+
 ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.3.1)_(17719).exe'
 ARCHIVE_GOG_MD5='92e9e6a33642f9e6c41cb24055df9b3c'
 ARCHIVE_GOG_VERSION='1.112fm-gog17719'
 ARCHIVE_GOG_SIZE='750000'
 
-ARCHIVE_GOG_OLD='setup_deus_ex_goty_1.112fm(revision_1.3.0.1)_(16231).exe'
-ARCHIVE_GOG_OLD_MD5='eaaf7c7c3052fbf71f5226e2d4495268'
-ARCHIVE_GOG_OLD_VERSION='1.112fm-gog16231'
-ARCHIVE_GOG_OLD_SIZE='750000'
+ARCHIVE_GOG_OLD3='setup_deus_ex_goty_1.112fm(revision_1.3.0.1)_(16231).exe'
+ARCHIVE_GOG_OLD3_MD5='eaaf7c7c3052fbf71f5226e2d4495268'
+ARCHIVE_GOG_OLD3_VERSION='1.112fm-gog16231'
+ARCHIVE_GOG_OLD3_SIZE='750000'
 
-ARCHIVE_GOG_OLDER='setup_deus_ex_goty_1.112fm(revision_1.2.2)_(15442).exe'
-ARCHIVE_GOG_OLDER_MD5='573582142424ba1b5aba1f6727276450'
-ARCHIVE_GOG_OLDER_VERSION='1.112fm-gog15442'
-ARCHIVE_GOG_OLDER_SIZE='750000'
+ARCHIVE_GOG_OLD2='setup_deus_ex_goty_1.112fm(revision_1.2.2)_(15442).exe'
+ARCHIVE_GOG_OLD2_MD5='573582142424ba1b5aba1f6727276450'
+ARCHIVE_GOG_OLD2_VERSION='1.112fm-gog15442'
+ARCHIVE_GOG_OLD2_SIZE='750000'
+
+ARCHIVE_GOG_OLD1='setup_deus_ex_2.1.0.12.exe'
+ARCHIVE_GOG_OLD1_MD5='cc2c6e43b2e8e67c7586bbab5ef492ee'
+ARCHIVE_GOG_OLD1_VERSION='1.112fm-gog2.1.0.12'
+ARCHIVE_GOG_OLD1_SIZE='750000'
 
 ARCHIVE_DOC_DATA_PATH='app'
 ARCHIVE_DOC_DATA_FILES='./manual.pdf ./system/*.txt'
@@ -83,7 +95,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIND_DEPS="$PKG_DATA_ID wine xgamma"
+PKG_BIN_DEPS="$PKG_DATA_ID wine xgamma"
 
 # Load common functions
 
