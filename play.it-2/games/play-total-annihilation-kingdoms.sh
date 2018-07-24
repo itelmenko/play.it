@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180724.1
+script_version=20180724.2
 
 # Set game-specific variables
 
@@ -44,7 +44,7 @@ GAME_NAME='Total Annihilation Kingdoms'
 
 ARCHIVE_GOG='setup_total_annihilation_kingdoms_2.0.0.22.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/total_annihilation_kingdoms'
-ARCHIVE_GOG_MD5='e0eb1f17ca2285fc3de10e16b394bfb0'
+ARCHIVE_GOG_MD5='206f4b8e9159414ee38ec609831907bb'
 ARCHIVE_GOG_VERSION='1.0-gog2.0.0.22'
 ARCHIVE_GOG_SIZE='1100000'
 
