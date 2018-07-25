@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180606.1
+script_version=20180725.1
 
 # Set game-specific variables
 
@@ -77,21 +77,30 @@ PKG_BIN32_DEPS="$PKG_DATA_ID glibc glu xcursor"
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS_DEB"
 
-
 # Load common functions
 
-target_version='2.8'
+target_version='2.9'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
+	for path in\
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
+	do
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
-		return 1
+		exit 1
 	fi
 fi
 . "$PLAYIT_LIB2"
