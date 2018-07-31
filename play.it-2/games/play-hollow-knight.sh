@@ -82,7 +82,7 @@ PKG_ASSETS_DESCRIPTION='assets'
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='32'
+PKG_BIN_ARCH='64'
 PKG_BIN_DEPS_DEB="$PKG_ASSETS_ID, $PKG_DATA_ID, libc6, libxcursor1, libglu1-mesa | libglu1, libxrandr2"
 PKG_BIN_DEPS_ARCH="$PKG_ASSETS_ID $PKG_DATA_ID glibc libxcursor glu gcc-libs libxrandr"
 
