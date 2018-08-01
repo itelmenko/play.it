@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180801.2
+script_version=20180801.3
 
 # Set game-specific variables
 
@@ -56,9 +56,6 @@ ARCHIVE_DOC_DATA_FILES='./*'
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN_FILES='./BaldursGateII ./engine.lua'
 
-ARCHIVE_GAME_AREAS_PATH='data/noarch/game'
-ARCHIVE_GAME_AREAS_FILES='./data/AREA*.bif ./data/Areas.bif ./data/25Areas.bif ./data/ARMisc.bif ./data/25ArMisc.bif'
-
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./chitin.key ./lang ./Manuals ./movies ./music ./scripts ./data'
 
@@ -67,16 +64,15 @@ APP_MAIN_LIBS='libs'
 APP_MAIN_EXE='BaldursGateII'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_BIN PKG_AREAS PKG_DATA'
-
-PKG_AREAS_ID="${GAME_ID}-areas"
-PKG_AREAS_DESCRIPTION='areas'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# this is needed for smooth upgrades from packages generated with script version < 20180801.3
+PKG_DATA_PROVIDE="${GAME_ID}-areas"
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_AREAS_ID $PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal json"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal json"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
@@ -174,7 +170,7 @@ EOF
 # Build packages
 
 write_metadata 'PKG_BIN'
-write_metadata 'PKG_AREAS' 'PKG_DATA'
+write_metadata 'PKG_DATA'
 build_pkg
 
 # Clean up
