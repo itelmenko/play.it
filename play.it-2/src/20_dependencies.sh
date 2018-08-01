@@ -21,7 +21,7 @@ check_deps() {
 			('msi')
 				SCRIPT_DEPS="$SCRIPT_DEPS msiextract"
 			;;
-			('mojosetup')
+			('mojosetup'|'iso')
 				SCRIPT_DEPS="$SCRIPT_DEPS bsdtar"
 			;;
 			('rar'|'nullsoft-installer')

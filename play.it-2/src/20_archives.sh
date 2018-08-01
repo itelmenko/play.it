@@ -173,6 +173,9 @@ archive_guess_type() {
 		('gog_'*'.sh')
 			type='mojosetup'
 		;;
+		(*'.iso')
+			type='iso'
+		;;
 		(*'.msi')
 			type='msi'
 		;;

@@ -36,7 +36,7 @@ extract_data_from() {
 				msiextract --directory "$destination" "$file" 1>/dev/null 2>&1
 				tolower "$destination"
 			;;
-			('mojosetup')
+			('mojosetup'|'iso')
 				bsdtar --directory "$destination" --extract --file "$file"
 				set_standard_permissions "$destination"
 			;;

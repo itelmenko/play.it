@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180807.2
+library_revision=20180807.3
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -429,6 +429,9 @@ archive_guess_type() {
 		('gog_'*'.sh')
 			type='mojosetup'
 		;;
+		(*'.iso')
+			type='iso'
+		;;
 		(*'.msi')
 			type='msi'
 		;;
@@ -606,7 +609,7 @@ check_deps() {
 			('msi')
 				SCRIPT_DEPS="$SCRIPT_DEPS msiextract"
 			;;
-			('mojosetup')
+			('mojosetup'|'iso')
 				SCRIPT_DEPS="$SCRIPT_DEPS bsdtar"
 			;;
 			('rar'|'nullsoft-installer')
@@ -1224,7 +1227,7 @@ extract_data_from() {
 				msiextract --directory "$destination" "$file" 1>/dev/null 2>&1
 				tolower "$destination"
 			;;
-			('mojosetup')
+			('mojosetup'|'iso')
 				bsdtar --directory "$destination" --extract --file "$file"
 				set_standard_permissions "$destination"
 			;;
