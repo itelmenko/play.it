@@ -34,14 +34,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180801.1
 
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-2-enhanced-edition'
 GAME_NAME='Baldur’s Gate 2 - Enhanced Edition'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='gog_baldur_s_gate_2_enhanced_edition_2.6.0.11.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_2_enhanced_edition'
@@ -62,14 +60,13 @@ ARCHIVE_GAME_AREAS_PATH='data/noarch/game'
 ARCHIVE_GAME_AREAS_FILES='./data/AREA*.bif ./data/Areas.bif ./data/25Areas.bif ./data/ARMisc.bif ./data/25ArMisc.bif'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./chitin.key ./lang ./Manuals ./movies ./music ./scripts ./data/*Anim.bif ./data/*Items.bif ./data/*Sound.bif ./data/*Cre* ./data/25AmbSnd.bif ./data/25Deflt.bif ./data/25Dialog.bif ./data/25Effect.bif ./data/25Gui* ./data/25MiscAn.bif ./data/25NpcSo.bif ./data/25Portrt.bif ./data/25Projct.bif ./data/25Scripts.bif ./data/25SndFX.bif ./data/25SpelAn.bif ./data/25Spells.bif ./data/25Store.bif ./data/bgee* ./data/BlackPits.bif ./data/characters.bif ./data/CREAnim1.bif ./data/Default.bif ./data/DIALOG.BIF ./data/Dorn.bif ./data/ee* ./data/Effects.bif ./data/fonts.bif ./data/GUI* ./data/Hd0* ./data/Hexxat.bif ./data/Neera.bif ./data/NPC* ./data/orphan.bif ./data/PaperDol.bif ./data/patch13.bif ./data/Patch2.bif ./data/Portrait.bif ./data/Project.bif ./data/Rasaad.bif ./data/Scripts.bif ./data/Shaders.bif ./data/Spells.bif ./data/STORES.BIF'
+ARCHIVE_GAME_DATA_FILES='./chitin.key ./lang ./Manuals ./movies ./music ./scripts ./data'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='BaldursGateII'
 APP_MAIN_ICON='data/noarch/support/icon.png'
-APP_MAIN_ICON_RES='256'
 
-PACKAGES_LIST='PKG_AREAS PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_AREAS PKG_DATA'
 
 PKG_AREAS_ID="${GAME_ID}-areas"
 PKG_AREAS_DESCRIPTION='areas'
@@ -83,15 +80,25 @@ PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
 
-target_version='2.5'
+target_version='2.9'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
+	for path in\
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
+	do
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
 		exit 1
@@ -110,15 +117,12 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+prepare_package_layout
 
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC_${PKG#PKG_}"  "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
+# Get game icon
 
 PKG='PKG_DATA'
-get_icon_from_temp_dir 'APP_MAIN'
-
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Include libSSL into the game directory
@@ -128,10 +132,9 @@ if [ "$ARCHIVE_LIBSSL" ]; then
 		ARCHIVE='ARCHIVE_LIBSSL'
 		extract_data_from "$ARCHIVE_LIBSSL"
 	)
-	dir='libs'
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$dir"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$dir"
-	APP_MAIN_LIBS="$dir"
+	APP_MAIN_LIBS='libs'
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
