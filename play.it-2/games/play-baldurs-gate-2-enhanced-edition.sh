@@ -34,18 +34,24 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180801.3
+script_version=20180801.4
 
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-2-enhanced-edition'
 GAME_NAME='Baldur’s Gate 2 - Enhanced Edition'
 
-ARCHIVE_GOG='gog_baldur_s_gate_2_enhanced_edition_2.6.0.11.sh'
+ARCHIVE_GOG='baldur_s_gate_2_enhanced_edition_en_2_5_21851.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_2_enhanced_edition'
-ARCHIVE_GOG_MD5='b9ee856a29238d4aec65367377d88ac4'
-ARCHIVE_GOG_SIZE='2700000'
-ARCHIVE_GOG_VERSION='2.3.67.3-gog2.6.0.11'
+ARCHIVE_GOG_MD5='4508edf93d6b138a7e91aa0f2f82605a'
+ARCHIVE_GOG_SIZE='3700000'
+ARCHIVE_GOG_VERSION='2.5.16.6-gog21851'
+ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='gog_baldur_s_gate_2_enhanced_edition_2.6.0.11.sh'
+ARCHIVE_GOG_OLD0_MD5='b9ee856a29238d4aec65367377d88ac4'
+ARCHIVE_GOG_OLD0_SIZE='2700000'
+ARCHIVE_GOG_OLD0_VERSION='2.3.67.3-gog2.6.0.11'
 
 ARCHIVE_LIBSSL_32='libssl_1.0.0_32-bit.tar.gz'
 ARCHIVE_LIBSSL_32_MD5='9443cad4a640b2512920495eaf7582c4'
@@ -72,7 +78,7 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE="${GAME_ID}-areas"
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal json"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
@@ -139,33 +145,37 @@ fi
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
-# Ensure that libjson.so.0 can be found and loaded
+# Ensure that libjson.so.0 can be found and loaded for game versions needing it
 
-target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+if [ 'ARCHIVE' = 'ARCHIVE_GOG_OLD0' ]; then
+	PKG_BIN_DEPS="$PKG_BIN_DEPS json"
 
-cat > "$postinst" << EOF
-if [ ! -e "$target" ]; then
-	for source in \
-		/lib/i386-linux-gnu/libjson-c.so \
-		/lib/i386-linux-gnu/libjson-c.so.2 \
-		/lib/i386-linux-gnu/libjson-c.so.3 \
-		/usr/lib32/libjson-c.so
-	do
-		if [ -e "\$source" ] ; then
-			mkdir --parents "${target%/*}"
-			ln --symbolic "\$source" "$target"
-			break
-		fi
-	done
+	target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+
+	cat > "$postinst" <<- EOF
+	if [ ! -e "$target" ]; then
+	    for source in \
+	        /lib/i386-linux-gnu/libjson-c.so \
+	        /lib/i386-linux-gnu/libjson-c.so.2 \
+	        /lib/i386-linux-gnu/libjson-c.so.3 \
+	        /usr/lib32/libjson-c.so
+	    do
+	        if [ -e "\$source" ] ; then
+	            mkdir --parents "${target%/*}"
+	            ln --symbolic "\$source" "$target"
+	            break
+	        fi
+	    done
+	fi
+	EOF
+
+	cat > "$prerm" <<- EOF
+	if [ -e "$target" ]; then
+	    rm "$target"
+	    rmdir --ignore-fail-on-non-empty --parents "${target%/*}"
+	fi
+	EOF
 fi
-EOF
-
-cat > "$prerm" << EOF
-if [ -e "$target" ]; then
-	rm "$target"
-	rmdir --ignore-fail-on-non-empty --parents "${target%/*}"
-fi
-EOF
 
 # Build packages
 
