@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180801.1
+script_version=20180801.2
 
 # Set game-specific variables
 
@@ -63,6 +63,7 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./chitin.key ./lang ./Manuals ./movies ./music ./scripts ./data'
 
 APP_MAIN_TYPE='native'
+APP_MAIN_LIBS='libs'
 APP_MAIN_EXE='BaldursGateII'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
@@ -132,7 +133,6 @@ if [ "$ARCHIVE_LIBSSL" ]; then
 		ARCHIVE='ARCHIVE_LIBSSL'
 		extract_data_from "$ARCHIVE_LIBSSL"
 	)
-	APP_MAIN_LIBS='libs'
 	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
@@ -143,21 +143,35 @@ fi
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
-# Build package
+# Ensure that libjson.so.0 can be found and loaded
+
+target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
 
 cat > "$postinst" << EOF
-if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
-	if [ -e /lib/i386-linux-gnu/libjson-c.so ] ; then
-		ln --symbolic libjson-c.so /lib/i386-linux-gnu/libjson.so.0
-	elif [ -e /lib/i386-linux-gnu/libjson-c.so.2 ] ; then
-		ln --symbolic libjson-c.so.2 /lib/i386-linux-gnu/libjson.so.0
-	elif [ -e /lib/i386-linux-gnu/libjson-c.so.3 ] ; then
-		ln --symbolic libjson-c.so.3 /lib/i386-linux-gnu/libjson.so.0
-	fi
-elif [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
-	ln --symbolic libjson-c.so /usr/lib32/libjson.so.0
+if [ ! -e "$target" ]; then
+	for source in \
+		/lib/i386-linux-gnu/libjson-c.so \
+		/lib/i386-linux-gnu/libjson-c.so.2 \
+		/lib/i386-linux-gnu/libjson-c.so.3 \
+		/usr/lib32/libjson-c.so
+	do
+		if [ -e "\$source" ] ; then
+			mkdir --parents "${target%/*}"
+			ln --symbolic "\$source" "$target"
+			break
+		fi
+	done
 fi
 EOF
+
+cat > "$prerm" << EOF
+if [ -e "$target" ]; then
+	rm "$target"
+	rmdir --ignore-fail-on-non-empty --parents "${target%/*}"
+fi
+EOF
+
+# Build packages
 
 write_metadata 'PKG_BIN'
 write_metadata 'PKG_AREAS' 'PKG_DATA'
