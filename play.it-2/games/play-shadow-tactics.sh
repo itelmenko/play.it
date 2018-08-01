@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180801.1
+script_version=20180801.2
 
 # Set game-specific variables
 
 GAME_ID='shadow-tactics'
 GAME_NAME='Shadow Tactics: Blades of the Shogun'
 
-ARCHIVE_GOG='shadow_tactics_blades_of_the_shogun_en_1_4_4_f_14723.sh'
+ARCHIVE_GOG='shadow_tactics_blades_of_the_shogun_en_2_2_10_f_21297.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/shadow_tactics_blades_of_the_shogun'
-ARCHIVE_GOG_MD5='93faa090d5bcaa22f0faabd1e32c5909'
-ARCHIVE_GOG_SIZE='9600000'
-ARCHIVE_GOG_VERSION='1.4.4f-gog14723'
+ARCHIVE_GOG_MD5='e7772e7a5f4fee760e9311a9a899dbb3'
+ARCHIVE_GOG_SIZE='7800000'
+ARCHIVE_GOG_VERSION='2.2.10.f-gog21297'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_OLD0='shadow_tactics_blades_of_the_shogun_en_1_4_4_f_14723.sh'
+ARCHIVE_GOG_OLD0_MD5='93faa090d5bcaa22f0faabd1e32c5909'
+ARCHIVE_GOG_OLD0_SIZE='9600000'
+ARCHIVE_GOG_OLD0_VERSION='1.4.4.f-gog14723'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_PATH='data/noarch/docs'
 ARCHIVE_DOC_FILES='./*'
