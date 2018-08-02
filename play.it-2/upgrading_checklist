@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+readonly SCRIPT="$1"
+
+check_2_9() {
+	check_2_8
+}
+
+check_2_8() {
+	grep --quiet 'for path in' "$SCRIPT" \
+		|| echo update PLAYIT_LIB2 search path
+}
+
+version=$(grep target_version "$SCRIPT" | cut --delimiter "'" --fields 2 | tr . _)
+check_"$version"
