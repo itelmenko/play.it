@@ -34,14 +34,12 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20180802.2
 
 # Set game-specific variables
 
 GAME_ID='gathering-sky'
 GAME_NAME='Gathering Sky'
-
-ARCHIVES_LIST='ARCHIVE_HUMBLE'
 
 ARCHIVE_HUMBLE='GatheringSky_Linux_64bit.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/gathering-sky'

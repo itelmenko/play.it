@@ -34,14 +34,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20180802.2
 
 # Set game-specific variables
 
 GAME_ID='dragon-age-origins'
 GAME_NAME='Dragon Age Origins'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='setup_dragon_age_origins_ultimate_2.1.0.4.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/dragon_age_origins'

@@ -34,14 +34,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20180802.2
 
 # Set game-specific variables
 
 GAME_ID='kingdom-new-lands'
 GAME_NAME='Kingdom New Lands'
-
-ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_OLD'
 
 ARCHIVE_GOG='kingdom_new_lands_en_1_2_8_19096.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/kingdom_new_lands'

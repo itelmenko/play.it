@@ -34,14 +34,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20180802.2
 
 # Set game-specific variables
 
 GAME_ID='worms-1'
 GAME_NAME='Worms United'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='setup_worms_united_2.0.0.20.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/worms_united'

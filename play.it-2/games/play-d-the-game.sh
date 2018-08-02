@@ -35,14 +35,12 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180725.1
+script_version=20180802.1
 
 # Set game-specific variables
 
 GAME_ID='d-the-game'
 GAME_NAME='D: The Game'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='gog_d_the_game_2.0.0.2.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/d_the_game'
