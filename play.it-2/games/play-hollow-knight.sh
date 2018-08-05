@@ -36,7 +36,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180731.2
+script_version=20180805.1
 
 # Set game-specific variables
 
@@ -62,7 +62,7 @@ ARCHIVE_DOC1_DATA_PATH='data/noarch/support'
 ARCHIVE_DOC1_DATA_FILES='./*.txt'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./hollow_knight.x86_64 ./*_Data/*/x86'
+ARCHIVE_GAME_BIN_FILES='./hollow_knight.x86_64 ./*_Data/Mono ./*_Data/Plugins'
 
 ARCHIVE_GAME_ASSETS_PATH='data/noarch/game'
 ARCHIVE_GAME_ASSETS_FILES='./*_Data/*.assets ./*_Data/*.assets.resS'
