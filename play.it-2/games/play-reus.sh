@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180805.1
+script_version=20180805.2
 
 # Set game-specific variables
 
@@ -53,12 +53,17 @@ ARCHIVE_GOG_OLD0_MD5='25fe7ec93305e804558e4ef8a31fbbf8'
 ARCHIVE_GOG_OLD0_SIZE='480000'
 ARCHIVE_GOG_OLD0_VERSION='1.5.1-gog2.0.0.2'
 
-ARCHIVE_HUMBLE='reus_linux_1389636757-bin'
+ARCHIVE_HUMBLE='reus-linux-1.6.5.tar.gz'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/reus'
-ARCHIVE_HUMBLE_MD5='9914e7fcb5f3b761941169ae13ec205c'
-ARCHIVE_HUMBLE_SIZE='380000'
-ARCHIVE_HUMBLE_TYPE='mojosetup'
-ARCHIVE_HUMBLE_VERSION='0.beta-humble140113'
+ARCHIVE_HUMBLE_MD5='2b61251f7aa41542db03a1fe637b57dc'
+ARCHIVE_HUMBLE_SIZE='480000'
+ARCHIVE_HUMBLE_VERSION='1.6.5-humble180612'
+
+ARCHIVE_HUMBLE_OLD0='reus_linux_1389636757-bin'
+ARCHIVE_HUMBLE_OLD0_MD5='9914e7fcb5f3b761941169ae13ec205c'
+ARCHIVE_HUMBLE_OLD0_SIZE='380000'
+ARCHIVE_HUMBLE_OLD0_TYPE='mojosetup'
+ARCHIVE_HUMBLE_OLD0_VERSION='0.beta-humble140113'
 
 ARCHIVE_DOC0_PATH_GOG='data/noarch/game'
 ARCHIVE_DOC0_PATH_HUMBLE='data'
@@ -68,16 +73,22 @@ ARCHIVE_DOC1_PATH_GOG='data/noarch/docs'
 ARCHIVE_DOC1_FILES='./*'
 
 ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
+ARCHIVE_GAME_BIN32_PATH_HUMBLE='.'
 ARCHIVE_GAME_BIN32_FILES='./Reus.bin.x86 ./lib'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN32_PATH_HUMBLE_OLD0='data'
 
 ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
+ARCHIVE_GAME_BIN64_PATH_HUMBLE='.'
 ARCHIVE_GAME_BIN64_FILES='./Reus.bin.x86_64 ./lib64'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN64_PATH_HUMBLE_OLD0='data'
 
 ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='.'
 ARCHIVE_GAME_DATA_FILES='./*.dll ./*.dll.config ./Audio ./Cursors ./Effects ./Fonts ./MainMenu ./mono ./monoconfig ./monomachineconfig ./Particles ./Reus.bmp ./Reus.exe ./Settings ./Skeletons ./Textures ./UI'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_HUMBLE_OLD0='data'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Reus.bin.x86'
