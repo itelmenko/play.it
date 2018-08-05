@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180725.2
+script_version=20180805.1
 
 # Set game-specific variables
 
@@ -79,7 +79,7 @@ PKG_BIN32_ARCH='32'
 PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx xcursor libxrandr pulseaudio"
 
 PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
