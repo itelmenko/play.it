@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180519.1
+script_version=20180805.1
 
 # Set game-specific variables
 
@@ -48,10 +48,10 @@ ARCHIVE_GOG_SIZE='480000'
 ARCHIVE_GOG_VERSION='1.6.5-gog20844'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD='gog_reus_2.0.0.2.sh'
-ARCHIVE_GOG_OLD_MD5='25fe7ec93305e804558e4ef8a31fbbf8'
-ARCHIVE_GOG_OLD_SIZE='480000'
-ARCHIVE_GOG_OLD_VERSION='1.5.1-gog2.0.0.2'
+ARCHIVE_GOG_OLD0='gog_reus_2.0.0.2.sh'
+ARCHIVE_GOG_OLD0_MD5='25fe7ec93305e804558e4ef8a31fbbf8'
+ARCHIVE_GOG_OLD0_SIZE='480000'
+ARCHIVE_GOG_OLD0_VERSION='1.5.1-gog2.0.0.2'
 
 ARCHIVE_HUMBLE='reus_linux_1389636757-bin'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/reus'
@@ -101,7 +101,7 @@ PKG_BIN64_DEPS_ARCH='libtheora'
 
 # Load common functions
 
-target_version='2.8'
+target_version='2.9'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
