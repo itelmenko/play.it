@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180725.2
+script_version=20180805.2
 
 # Set game-specific variables
 
@@ -67,7 +67,6 @@ APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_EXE_BIN32='Dropsy.x86'
 APP_MAIN_EXE_BIN64='Dropsy.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='Dropsy_Data/Resources/UnityPlayer.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
@@ -79,7 +78,7 @@ PKG_BIN32_ARCH='32'
 PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx xcursor libxrandr pulseaudio"
 
 PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
