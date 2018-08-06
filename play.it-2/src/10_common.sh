@@ -188,3 +188,12 @@ skipping_pkg_warning() {
 	printf "$string" "$1" "$2"
 }
 
+# get the value of a variable and print it
+# USAGE: get_value $variable_name
+get_value() {
+	local name
+	local value
+	name="$1"
+	value="$(eval printf -- '%b' \"\$$name\")"
+	printf '%s' "$value"
+}

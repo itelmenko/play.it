@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180807.3
+library_revision=20180807.4
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -223,6 +223,15 @@ skipping_pkg_warning() {
 	printf "$string" "$1" "$2"
 }
 
+# get the value of a variable and print it
+# USAGE: get_value $variable_name
+get_value() {
+	local name
+	local value
+	name="$1"
+	value="$(eval printf -- '%b' \"\$$name\")"
+	printf '%s' "$value"
+}
 # set distribution-specific package architecture for Arch Linux target
 # USAGE: set_architecture_arch $architecture
 # CALLED BY: set_architecture
