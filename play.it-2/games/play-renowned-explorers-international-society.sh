@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180806.1
+script_version=20180806.2
 
 # Set game-specific variables
 
@@ -77,6 +77,7 @@ DATA_DIRS='./savedata ./userdata'
 DATA_FILES='./*.txt'
 
 APP_MAIN_TYPE='native'
+APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_EXE_BIN32='x86/abbeycore'
 APP_MAIN_EXE_BIN64='x86_64/abbeycore'
 APP_MAIN_ICON='data/noarch/support/icon.png'
@@ -87,7 +88,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu pulseaudio"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
