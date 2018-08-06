@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180612.1
+script_version=20180806.1
 
 # Set game-specific variables
 
@@ -73,14 +73,13 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./build.bni ./data ./project.bni ./settings.ini ./soundbanks'
 
 CONFIG_FILES='./*.ini'
-DATA_DIRS='./savedata'
+DATA_DIRS='./savedata ./userdata'
 DATA_FILES='./*.txt'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='x86/abbeycore'
 APP_MAIN_EXE_BIN64='x86_64/abbeycore'
 APP_MAIN_ICON='data/noarch/support/icon.png'
-APP_MAIN_ICON_RES='256'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
 
