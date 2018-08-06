@@ -83,7 +83,7 @@ set_temp_directories_pkg() {
 	# Get package ID
 	use_archive_specific_value "${PKG}_ID"
 	local pkg_id
-	pkg_id="$(eval printf -- '%b' \"\$${PKG}_ID\")"
+	pkg_id="$(get_value "${PKG}_ID")"
 	if [ -z "$pkg_id" ]; then
 		eval ${PKG}_ID=\"$GAME_ID\"
 		export ${PKG}_ID
@@ -95,7 +95,7 @@ set_temp_directories_pkg() {
 	set_architecture "$PKG"
 
 	# Set $PKG_PATH
-	if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(eval printf -- '%b' \"\$${PKG}_ARCH\")" = '32' ]; then
+	if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(get_value "${PKG}_ARCH")" = '32' ]; then
 		pkg_id="lib32-$pkg_id"
 	fi
 	get_package_version

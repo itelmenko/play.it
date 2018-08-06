@@ -4,12 +4,12 @@
 # CALLED BY: write_metadata
 pkg_write_arch() {
 	local pkg_deps
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
-		pkg_set_deps_arch $(eval printf -- '%b' \"\$${pkg}_DEPS\")
+	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		pkg_set_deps_arch $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_ARCH"
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS_ARCH\")" ]; then
-		pkg_deps="$pkg_deps $(eval printf -- '%b' \"\$${pkg}_DEPS_ARCH\")"
+	if [ "$(get_value "${pkg}_DEPS_ARCH")" ]; then
+		pkg_deps="$pkg_deps $(get_value "${pkg}_DEPS_ARCH")"
 	fi
 	local pkg_size
 	pkg_size=$(du --total --block-size=1 --summarize "$pkg_path" | tail --lines=1 | cut --fields=1)
@@ -87,7 +87,7 @@ pkg_write_arch() {
 pkg_set_deps_arch() {
 	use_archive_specific_value "${pkg}_ARCH"
 	local architecture
-	architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+	architecture="$(get_value "${pkg}_ARCH")"
 	case $architecture in
 		('32')
 			pkg_set_deps_arch32 "$@"

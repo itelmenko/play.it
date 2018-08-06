@@ -42,7 +42,7 @@ help() {
 		printf '%s\n' "$string_archives"
 	fi
 	for archive in $ARCHIVES_LIST; do
-		printf '%s\n' "$(eval printf -- '%b' \"\$$archive\")"
+		printf '%s\n' "$(get_value "$archive")"
 	done
 	printf '\n'
 }

@@ -4,15 +4,15 @@
 # CALLED BY: write_metadata
 pkg_write_deb() {
 	local pkg_deps
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
-		pkg_set_deps_deb $(eval printf -- '%b' \"\$${pkg}_DEPS\")
+	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		pkg_set_deps_deb $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_DEB"
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")" ]; then
+	if [ "$(get_value "${pkg}_DEPS_DEB")" ]; then
 		if [ -n "$pkg_deps" ]; then
-			pkg_deps="$pkg_deps, $(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")"
+			pkg_deps="$pkg_deps, $(get_value "${pkg}_DEPS_DEB")"
 		else
-			pkg_deps="$(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")"
+			pkg_deps="$(get_value "${pkg}_DEPS_DEB")"
 		fi
 	fi
 	local pkg_size
@@ -167,7 +167,7 @@ pkg_set_deps_deb() {
 			;;
 			('wine')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_deb 'wine32' ;;
 					('64') pkg_set_deps_deb 'wine64' ;;
@@ -181,7 +181,7 @@ pkg_set_deps_deb() {
 			;;
 			('wine-staging')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_deb 'wine32-staging' ;;
 					('64') pkg_set_deps_deb 'wine64-staging' ;;

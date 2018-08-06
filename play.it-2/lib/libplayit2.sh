@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180807.4
+library_revision=20180807.5
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -41,7 +41,7 @@ library_revision=20180807.4
 set_architecture() {
 	use_archive_specific_value "${1}_ARCH"
 	local architecture
-	architecture="$(eval printf -- '%b' \"\$${1}_ARCH\")"
+	architecture="$(get_value "${1}_ARCH")"
 	case $OPTION_PACKAGE in
 		('arch')
 			set_architecture_arch "$architecture"
@@ -131,7 +131,7 @@ liberror() {
 	local var
 	var="$1"
 	local value
-	value="$(eval printf -- '%b' \"\$$var\")"
+	value="$(get_value "$var")"
 	local func
 	func="$2"
 	print_error
@@ -158,7 +158,7 @@ use_archive_specific_value() {
 	name="${name_real}_${ARCHIVE#ARCHIVE_}"
 	local value
 	while [ "$name" != "$name_real" ]; do
-		value="$(eval printf -- '%b' \"\$$name\")"
+		value="$(get_value "$name")"
 		if [ -n "$value" ]; then
 			eval $name_real=\"$value\"
 			export $name_real
@@ -179,7 +179,7 @@ use_package_specific_value() {
 	name="${name_real}_${PKG#PKG_}"
 	local value
 	while [ "$name" != "$name_real" ]; do
-		value="$(eval printf -- '%b' \"\$$name\")"
+		value="$(get_value "$name")"
 		if [ -n "$value" ]; then
 			eval $name_real=\"$value\"
 			export $name_real
@@ -300,8 +300,8 @@ archive_set_error_not_found() {
 	print_error
 	printf '%s\n' "$string"
 	for archive in "$@"; do
-		archive_name="$(eval printf -- '%b' \"\$$archive\")"
-		archive_url="$(eval printf -- '%b' \"\$${archive}_URL\")"
+		archive_name="$(get_value "$archive")"
+		archive_url="$(get_value "${archive}_URL")"
 		printf '%s' "$archive_name"
 		[ -n "$archive_url" ] && printf ' — %s' "$archive_url"
 		printf '\n'
@@ -321,10 +321,10 @@ archive_set() {
 	local name
 	name=$1
 	shift 1
-	current_value="$(eval printf -- '%b' \"\$$name\")"
+	current_value="$(get_value "$name")"
 	if [ -n "$current_value" ]; then
 		for archive in "$@"; do
-			file="$(eval printf -- '%b' \"\$$archive\")"
+			file="$(get_value "$archive")"
 			if [ "$(basename "$current_value")" = "$file" ]; then
 				archive_get_infos "$archive" "$name" "$current_value"
 				archive_check_for_extra_parts "$archive" "$name"
@@ -335,7 +335,7 @@ archive_set() {
 		done
 	else
 		for archive in "$@"; do
-			file="$(eval printf -- '%b' \"\$$archive\")"
+			file="$(get_value "$archive")"
 			if [ ! -f "$file" ] && [ -n "$SOURCE_ARCHIVE" ] && [ -f "${SOURCE_ARCHIVE%/*}/$file" ]; then
 				file="${SOURCE_ARCHIVE%/*}/$file"
 			fi
@@ -370,10 +370,10 @@ archive_check_for_extra_parts() {
 	for i in $(seq 1 9); do
 		part_archive="${archive}_PART${i}"
 		part_name="${name}_PART${i}"
-		file="$(eval printf -- '%b' \"\$$part_archive\")"
+		file="$(get_value "$part_archive")"
 		[ -n "$file" ] || return 0
 		set_archive "$part_name" "$part_archive"
-		if [ -z "$(eval printf -- '%b' \"\$$part_name\")" ]; then
+		if [ -z "$(get_value "$part_name")" ]; then
 			set_archive_error_not_found "$part_archive"
 		fi
 	done
@@ -394,13 +394,13 @@ archive_get_infos() {
 	file="$3"
 	archive_print_file_in_use "$file"
 	eval $name=\"$file\"
-	md5="$(eval printf -- '%b' \"\$${ARCHIVE}_MD5\")"
-	type="$(eval printf -- '%b' \"\$${ARCHIVE}_TYPE\")"
-	size="$(eval printf -- '%b' \"\$${ARCHIVE}_SIZE\")"
+	md5="$(get_value "${ARCHIVE}_MD5")"
+	type="$(get_value "${ARCHIVE}_TYPE")"
+	size="$(get_value "${ARCHIVE}_SIZE")"
 	[ -n "$md5" ] && archive_integrity_check "$ARCHIVE" "$file"
 	if [ -z "$type" ]; then
 		archive_guess_type "$ARCHIVE" "$file"
-		type="$(eval printf -- '%b' \"\$${ARCHIVE}_TYPE\")"
+		type="$(get_value "${ARCHIVE}_TYPE")"
 	fi
 	eval ${name}_TYPE=\"$type\"
 	export ${name}_TYPE
@@ -532,7 +532,7 @@ archive_integrity_check_md5() {
 	archive="$1"
 	file="$2"
 	archive_integrity_check_print "$file"
-	archive_sum="$(eval printf -- '%b' \"\$${ARCHIVE}_MD5\")"
+	archive_sum="$(get_value "${ARCHIVE}_MD5")"
 	file_sum="$(md5sum "$file" | awk '{print $1}')"
 	[ "$file_sum" = "$archive_sum" ] || archive_integrity_check_error "$file"
 }
@@ -602,7 +602,7 @@ archives_get_list() {
 check_deps() {
 	icons_list_dependencies
 	if [ "$ARCHIVE" ]; then
-		case "$(eval printf -- '%b' \"\$${ARCHIVE}_TYPE\")" in
+		case "$(get_value "${ARCHIVE}_TYPE")" in
 			('cabinet')
 				SCRIPT_DEPS="$SCRIPT_DEPS cabextract"
 			;;
@@ -732,7 +732,7 @@ help() {
 		printf '%s\n' "$string_archives"
 	fi
 	for archive in $ARCHIVES_LIST; do
-		printf '%s\n' "$(eval printf -- '%b' \"\$$archive\")"
+		printf '%s\n' "$(get_value "$archive")"
 	done
 	printf '\n'
 }
@@ -947,7 +947,7 @@ select_package_architecture() {
 	local packages_list_64
 	local packages_list_all
 	for package in $PACKAGES_LIST; do
-		package_arch="$(eval printf -- '%b' \"\$${package}_ARCH\")"
+		package_arch="$(get_value "${package}_ARCH")"
 		case "$package_arch" in
 			('32')
 				packages_list_32="$packages_list_32 $package"
@@ -1044,7 +1044,7 @@ select_package_architecture_warning_unsupported() {
 # NEEDED_VARS: PKG
 get_package_version() {
 	use_package_specific_value "${ARCHIVE}_VERSION"
-	PKG_VERSION="$(eval printf -- '%b' \"\$${ARCHIVE}_VERSION\")"
+	PKG_VERSION="$(get_value "${ARCHIVE}_VERSION")"
 	if [ -z "$PKG_VERSION" ]; then
 		PKG_VERSION='1.0-1'
 	fi
@@ -1137,7 +1137,7 @@ set_temp_directories_pkg() {
 	# Get package ID
 	use_archive_specific_value "${PKG}_ID"
 	local pkg_id
-	pkg_id="$(eval printf -- '%b' \"\$${PKG}_ID\")"
+	pkg_id="$(get_value "${PKG}_ID")"
 	if [ -z "$pkg_id" ]; then
 		eval ${PKG}_ID=\"$GAME_ID\"
 		export ${PKG}_ID
@@ -1149,7 +1149,7 @@ set_temp_directories_pkg() {
 	set_architecture "$PKG"
 
 	# Set $PKG_PATH
-	if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(eval printf -- '%b' \"\$${PKG}_ARCH\")" = '32' ]; then
+	if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(get_value "${PKG}_ARCH")" = '32' ]; then
 		pkg_id="lib32-$pkg_id"
 	fi
 	get_package_version
@@ -1217,7 +1217,7 @@ extract_data_from() {
 			return 0
 		fi
 		local archive_type
-		archive_type="$(eval printf -- '%b' \"\$${ARCHIVE}_TYPE\")"
+		archive_type="$(get_value "${ARCHIVE}_TYPE")"
 		case "$archive_type" in
 			('7z')
 				extract_7z "$file" "$destination"
@@ -1250,8 +1250,8 @@ extract_data_from() {
 			;;
 			('rar'|'nullsoft-installer')
 				# compute archive password from GOG id
-				if [ -z "$ARCHIVE_PASSWD" ] && [ -n "$(eval printf -- '%b' \"\$${ARCHIVE}_GOGID\")" ]; then
-					ARCHIVE_PASSWD="$(printf '%s' "$(eval printf -- '%b' \"\$${ARCHIVE}_GOGID\")" | md5sum | cut -d' ' -f1)"
+				if [ -z "$ARCHIVE_PASSWD" ] && [ -n "$(get_value "${ARCHIVE}_GOGID")" ]; then
+					ARCHIVE_PASSWD="$(printf '%s' "$(get_value "${ARCHIVE}_GOGID")" | md5sum | cut -d' ' -f1)"
 				fi
 				if [ -n "$ARCHIVE_PASSWD" ]; then
 					UNAR_OPTIONS="-password $ARCHIVE_PASSWD"
@@ -1391,19 +1391,19 @@ organize_data() {
 	fi
 	local pkg_path
 	if [ "$DRY_RUN" = '1' ]; then
-		pkg_path="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+		pkg_path="$(get_value "${PKG}_PATH")"
 		[ -n "$pkg_path" ] || missing_pkg_error 'organize_data' "$PKG"
 		return 0
 	fi
 	use_archive_specific_value "ARCHIVE_${1}_PATH"
 	use_archive_specific_value "ARCHIVE_${1}_FILES"
 	local archive_path
-	archive_path="$(eval printf -- '%b' \"\$ARCHIVE_${1}_PATH\")"
+	archive_path="$(get_value "ARCHIVE_${1}_PATH")"
 	local archive_files
-	archive_files="$(eval printf -- '%b' \"\$ARCHIVE_${1}_FILES\")"
+	archive_files="$(get_value "ARCHIVE_${1}_FILES")"
 
 	if [ "$archive_path" ] && [ "$archive_files" ] && [ -d "$PLAYIT_WORKDIR/gamedata/$archive_path" ]; then
-		pkg_path="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+		pkg_path="$(get_value "${PKG}_PATH")"
 		[ -n "$pkg_path" ] || missing_pkg_error 'organize_data' "$PKG"
 		pkg_path="${pkg_path}$2"
 		mkdir --parents "$pkg_path"
@@ -1474,7 +1474,7 @@ icons_list_dependencies() {
 icons_get_from_package() {
 	local path
 	local path_pkg
-	path_pkg="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	path_pkg="$(get_value "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_get_from_package' "$PKG"
 	path="${path_pkg}${PATH_GAME}"
 	icons_get_from_path "$path" "$@"
@@ -1510,16 +1510,16 @@ icons_get_from_path() {
 	directory="$1"
 	shift 1
 	destination="$PLAYIT_WORKDIR/icons"
-	path_pkg="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	path_pkg="$(get_value "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_get_from_package' "$PKG"
 	for app in "$@"; do
 		testvar "$app" 'APP' || liberror 'app' 'icons_get_from_package'
-		list="$(eval printf -- '%b' \"\$${app}_ICONS_LIST\")"
+		list="$(get_value "${app}_ICONS_LIST")"
 		[ -n "$list" ] || list="${app}_ICON"
 		for icon in $list; do
 			use_archive_specific_value "$icon"
-			file="$(eval printf -- '%b' \"\$$icon\")"
-			wrestool_id="$(eval printf -- '%b' \"\$${icon}_ID\")"
+			file="$(get_value "$icon")"
+			wrestool_id="$(get_value "${icon}_ID")"
 			icon_extract_png_from_file "$directory/$file" "$destination"
 		done
 		icons_include_png_from_directory "$app" "$destination"
@@ -1656,9 +1656,9 @@ icons_include_png_from_directory() {
 	local resolution
 	app="$1"
 	directory="$2"
-	name="$(eval printf -- '%b' \"\$${app}_ID\")"
+	name="$(get_value "${app}_ID")"
 	[ -n "$name" ] || name="$GAME_ID"
-	path_pkg="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	path_pkg="$(get_value "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_include_png_from_directory' "$PKG"
 	for file in "$directory"/*.png; do
 		icon_get_resolution_from_file "$file"
@@ -1721,16 +1721,16 @@ icons_linking_postinst() {
 	local version_minor_target
 	version_major_target="${target_version%%.*}"
 	version_minor_target=$(printf '%s' "$target_version" | cut --delimiter='.' --fields=2)
-	path_pkg="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	path_pkg="$(get_valie "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_linking_postinst' "$PKG"
 	path="${path_pkg}${PATH_GAME}"
 	for app in "$@"; do
-		list="$(eval printf -- '%b' \"\$${app}_ICONS_LIST\")"
+		list="$(get_value "${app}_ICONS_LIST")"
 		[ "$list" ] || list="${app}_ICON"
-		name="$(eval printf -- '%b' \"\$${app}_ID\")"
+		name="$(get_value "${app}_ID")"
 		[ "$name" ] || name="$GAME_ID"
 		for icon in $list; do
-			file="$(eval printf -- '%b' \"\$$icon\")"
+			file="$(get_value "$icon")"
 			if
 				{ [ $version_major_target -lt 2 ] || [ $version_minor_target -lt 8 ] ; } &&
 				( ls "$path/$file" >/dev/null 2>&1 || ls "$path"/$file >/dev/null 2>&1 )
@@ -1777,10 +1777,10 @@ icons_move_to() {
 	local destination
 	local source
 	destination="$1"
-	destination_path="$(eval printf -- '%b' \"\$${destination}_PATH\")"
+	destination_path="$(get_value "${destination}_PATH")"
 	[ -n "$destination_path" ] || missing_pkg_error 'icons_move_to' "$destination"
 	source="$PKG"
-	source_path="$(eval printf -- '%b' \"\$${source}_PATH\")"
+	source_path="$(get_value "${source}_PATH")"
 	[ -n "$source_path" ] || missing_pkg_error 'icons_move_to' "$source"
 	[ "$DRY_RUN" = '1' ] && return 0
 	(
@@ -1808,7 +1808,7 @@ print_instructions() {
 	local packages_list_all
 	local string
 	for package in "$@"; do
-		package_arch="$(eval printf -- '%b' \"\$${package}_ARCH\")"
+		package_arch="$(get_value "${package}_ARCH")"
 		case "$package_arch" in
 			('32')
 				packages_list_32="$packages_list_32 $package"
@@ -1888,7 +1888,7 @@ print_instructions_arch() {
 			skipping_pkg_warning 'print_instructions_arch' "$pkg"
 			return 0
 		fi
-		pkg_path="$(eval printf -- '%b' \"\$${pkg}_PKG\")"
+		pkg_path="$(get_value "${pkg}_PKG")"
 		if [ -z "${pkg_path##* *}" ]; then
 			str_format=' "%s"'
 		else
@@ -1949,7 +1949,7 @@ print_instructions_deb_common() {
 			skipping_pkg_warning 'print_instructions_deb_common' "$pkg"
 			return 0
 		fi
-		pkg_path="$(eval printf -- '%b' \"\$${pkg}_PKG\")"
+		pkg_path="$(get_value "${pkg}_PKG")"
 		if [ -z "${pkg_path##* *}" ]; then
 			str_format=' "%s"'
 		else
@@ -1984,7 +1984,7 @@ write_bin() {
 		skipping_pkg_warning 'write_bin' "$PKG"
 		return 0
 	fi
-	pkg_path="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	pkg_path="$(get_value "${PKG}_PATH")"
 	[ -n "$pkg_path" ] || missing_pkg_error 'write_bin' "$PKG"
 	local app
 	local app_id
@@ -2000,24 +2000,24 @@ write_bin() {
 		[ "$DRY_RUN" = '1' ] && continue
 
 		# Get app-specific variables
-		if [ -n "$(eval printf -- '%b' \"\$${app}_ID\")" ]; then
-			app_id="$(eval printf -- '%b' \"\$${app}_ID\")"
+		if [ -n "$(get_value "${app}_ID")" ]; then
+			app_id="$(get_value "${app}_ID")"
 		else
 			app_id="$GAME_ID"
 		fi
 
-		app_type="$(eval printf -- '%b' \"\$${app}_TYPE\")"
+		app_type="$(get_value "${app}_TYPE")"
 		if [ "$app_type" != 'scummvm' ]; then
 			use_package_specific_value "${app}_EXE"
 			use_package_specific_value "${app}_LIBS"
 			use_package_specific_value "${app}_OPTIONS"
 			use_package_specific_value "${app}_POSTRUN"
 			use_package_specific_value "${app}_PRERUN"
-			app_exe="$(eval printf -- '%b' \"\$${app}_EXE\")"
-			app_libs="$(eval printf -- '%b' \"\$${app}_LIBS\")"
-			app_options="$(eval printf -- '%b' \"\$${app}_OPTIONS\")"
-			app_postrun="$(eval printf -- '%b' \"\$${app}_POSTRUN\")"
-			app_prerun="$(eval printf -- '%b' \"\$${app}_PRERUN\")"
+			app_exe="$(get_value "${app}_EXE")"
+			app_libs="$(get_value "${app}_LIBS")"
+			app_options="$(get_value "${app}_OPTIONS")"
+			app_postrun="$(get_value "${app}_POSTRUN")"
+			app_prerun="$(get_value "${app}_PRERUN")"
 			if [ "$app_type" = 'native' ] ||\
 			   [ "$app_type" = 'native_no-prefix' ]; then
 				chmod +x "${pkg_path}${PATH_GAME}/$app_exe"
@@ -2284,7 +2284,7 @@ write_desktop() {
 		testvar "$app" 'APP' || liberror 'app' 'write_desktop'
 		[ "$DRY_RUN" = '1' ] && continue
 
-		app_type="$(eval printf -- '%b' \"\$${app}_TYPE\")"
+		app_type="$(get_value "${app}_TYPE")"
 		if [ "$winecfg_desktop" != 'done' ] && \
 		   { [ "$app_type" = 'wine' ] || \
 		     [ "$app_type" = 'wine32' ] || \
@@ -2297,25 +2297,25 @@ write_desktop() {
 			write_desktop_winecfg
 		fi
 
-		if [ -n "$(eval printf -- '%b' \"\$${app}_ID\")" ]; then
-			app_id="$(eval printf -- '%b' \"\$${app}_ID\")"
+		if [ -n "$(get_value "${app}_ID")" ]; then
+			app_id="$(get_value "${app}_ID")"
 		else
 			app_id="$GAME_ID"
 		fi
 
-		if [ -n "$(eval printf -- '%b' \"\$${app}_NAME\")" ]; then
-			app_name="$(eval printf -- '%b' \"\$${app}_NAME\")"
+		if [ -n "$(get_value "${app}_NAME")" ]; then
+			app_name="$(get_value "${app}_NAME")"
 		else
 			app_name="$GAME_NAME"
 		fi
 
-		if [ -n "$(eval printf -- '%b' \"\$${app}_CAT\")" ]; then
-			app_cat="$(eval printf -- '%b' \"\$${app}_CAT\")"
+		if [ -n "$(get_value "${app}_CAT")" ]; then
+			app_cat="$(get_value "${app}_CAT")"
 		else
 			app_cat='Game'
 		fi
 
-		pkg_path="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+		pkg_path="$(get_value "${PKG}_PATH")"
 		[ -n "$pkg_path" ] || missing_pkg_error 'write_desktop' "$PKG"
 		target="${pkg_path}${PATH_DESK}/${app_id}.desktop"
 		mkdir --parents "${target%/*}"
@@ -2462,7 +2462,7 @@ write_bin_set_scummvm() {
 
 	GAME_ID='$GAME_ID'
 	PATH_GAME='$PATH_GAME'
-	SCUMMVM_ID='$(eval printf -- '%b' \"\$${app}_SCUMMID\")'
+	SCUMMVM_ID='$(get_value "${app}_SCUMMID")'
 
 	EOF
 }
@@ -2516,7 +2516,7 @@ write_bin_set_wine() {
 		('wine'|'wine-staging')
 			use_archive_specific_value "${PKG}_ARCH"
 			local architecture
-			architecture="$(eval printf -- '%b' \"\$${PKG}_ARCH\")"
+			architecture="$(get_value "${PKG}_ARCH")"
 			case "$architecture" in
 				('32') winearch='win32' ;;
 				('64') winearch='win64' ;;
@@ -2619,7 +2619,7 @@ write_bin_run_wine() {
 # CALLED BY: write_desktop
 write_desktop_winecfg() {
 	local pkg_path
-	pkg_path="$(eval printf -- '%b' \"\$${PKG}_PATH\")"
+	pkg_path="$(get_value "${PKG}_PATH")"
 	[ -n "$pkg_path" ] || missing_pkg_error 'write_desktop_winecfg' "$PKG"
 	APP_WINECFG_ID="${GAME_ID}_winecfg"
 	APP_WINECFG_NAME="$GAME_NAME - WINE configuration"
@@ -2652,15 +2652,15 @@ write_metadata() {
 
 		# Set package-specific variables
 		set_architecture "$pkg"
-		pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\")"
+		pkg_id="$(get_value "${pkg}_ID")"
 		pkg_maint="$(whoami)@$(hostname)"
-		pkg_path="$(eval printf -- '%b' \"\$${pkg}_PATH\")"
+		pkg_path="$(get_value "${pkg}_PATH")"
 		[ -n "$pkg_path" ] || missing_pkg_error 'write_metadata' "$pkg"
 		[ "$DRY_RUN" = '1' ] && continue
-		pkg_provide="$(eval printf -- '%b' \"\$${pkg}_PROVIDE\")"
+		pkg_provide="$(get_value "${pkg}_PROVIDE")"
 
 		use_archive_specific_value "${pkg}_DESCRIPTION"
-		pkg_description="$(eval printf -- '%b' \"\$${pkg}_DESCRIPTION\")"
+		pkg_description="$(get_value "${pkg}_DESCRIPTION")"
 
 		case $OPTION_PACKAGE in
 			('arch')
@@ -2693,7 +2693,7 @@ build_pkg() {
 			skipping_pkg_warning 'build_pkg' "$pkg"
 			return 0
 		fi
-		pkg_path="$(eval printf -- '%b' \"\$${pkg}_PATH\")"
+		pkg_path="$(get_value "${pkg}_PATH")"
 		[ -n "$pkg_path" ] || missing_pkg_error 'build_pkg' "$PKG"
 		case $OPTION_PACKAGE in
 			('arch')
@@ -2792,12 +2792,12 @@ packages_guess_format() {
 # CALLED BY: write_metadata
 pkg_write_arch() {
 	local pkg_deps
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
-		pkg_set_deps_arch $(eval printf -- '%b' \"\$${pkg}_DEPS\")
+	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		pkg_set_deps_arch $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_ARCH"
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS_ARCH\")" ]; then
-		pkg_deps="$pkg_deps $(eval printf -- '%b' \"\$${pkg}_DEPS_ARCH\")"
+	if [ "$(get_value "${pkg}_DEPS_ARCH")" ]; then
+		pkg_deps="$pkg_deps $(get_value "${pkg}_DEPS_ARCH")"
 	fi
 	local pkg_size
 	pkg_size=$(du --total --block-size=1 --summarize "$pkg_path" | tail --lines=1 | cut --fields=1)
@@ -2875,7 +2875,7 @@ pkg_write_arch() {
 pkg_set_deps_arch() {
 	use_archive_specific_value "${pkg}_ARCH"
 	local architecture
-	architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+	architecture="$(get_value "${pkg}_ARCH")"
 	case $architecture in
 		('32')
 			pkg_set_deps_arch32 "$@"
@@ -3155,15 +3155,15 @@ pkg_build_arch() {
 # CALLED BY: write_metadata
 pkg_write_deb() {
 	local pkg_deps
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
-		pkg_set_deps_deb $(eval printf -- '%b' \"\$${pkg}_DEPS\")
+	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		pkg_set_deps_deb $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_DEB"
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")" ]; then
+	if [ "$(get_value "${pkg}_DEPS_DEB")" ]; then
 		if [ -n "$pkg_deps" ]; then
-			pkg_deps="$pkg_deps, $(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")"
+			pkg_deps="$pkg_deps, $(get_value "${pkg}_DEPS_DEB")"
 		else
-			pkg_deps="$(eval printf -- '%b' \"\$${pkg}_DEPS_DEB\")"
+			pkg_deps="$(get_value "${pkg}_DEPS_DEB")"
 		fi
 	fi
 	local pkg_size
@@ -3318,7 +3318,7 @@ pkg_set_deps_deb() {
 			;;
 			('wine')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_deb 'wine32' ;;
 					('64') pkg_set_deps_deb 'wine64' ;;
@@ -3332,7 +3332,7 @@ pkg_set_deps_deb() {
 			;;
 			('wine-staging')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_deb 'wine32-staging' ;;
 					('64') pkg_set_deps_deb 'wine64-staging' ;;
@@ -3527,9 +3527,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# Set options not already set by script arguments to default values
 
 	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
-		if [ -z "$(eval printf -- '%b' \"\$OPTION_$option\")" ]\
-		&& [ -n "$(eval printf -- \"\$DEFAULT_OPTION_$option\")" ]; then
-			eval OPTION_$option=\"$(eval printf -- '%b' \"\$DEFAULT_OPTION_$option\")\"
+		if [ -z "$(get_value "OPTION_$option")" ]\
+		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
+			eval OPTION_$option=\"$(get_value "DEFAULT_OPTION_$option")\"
 			export OPTION_$option
 		fi
 	done
@@ -3540,9 +3540,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		local name
 		name="$1"
 		local value
-		value="$(eval printf -- '%b' \"\$OPTION_$option\")"
+		value="$(get_value "OPTION_$option")"
 		local allowed_values
-		allowed_values="$(eval printf -- '%b' \"\$ALLOWED_VALUES_$option\")"
+		allowed_values="$(get_value "ALLOWED_VALUES_$option")"
 		for allowed_value in $allowed_values; do
 			if [ "$value" = "$allowed_value" ]; then
 				return 0

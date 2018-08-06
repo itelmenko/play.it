@@ -5,7 +5,7 @@
 check_deps() {
 	icons_list_dependencies
 	if [ "$ARCHIVE" ]; then
-		case "$(eval printf -- '%b' \"\$${ARCHIVE}_TYPE\")" in
+		case "$(get_value "${ARCHIVE}_TYPE")" in
 			('cabinet')
 				SCRIPT_DEPS="$SCRIPT_DEPS cabextract"
 			;;
