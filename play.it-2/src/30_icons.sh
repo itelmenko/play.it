@@ -81,6 +81,7 @@ icons_get_from_path() {
 		for icon in $list; do
 			use_archive_specific_value "$icon"
 			file="$(get_value "$icon")"
+			[ -f "$directory/$file" ] || icon_file_not_found_error "$directory/$file"
 			wrestool_id="$(get_value "${icon}_ID")"
 			icon_extract_png_from_file "$directory/$file" "$destination"
 		done
@@ -354,4 +355,28 @@ icons_move_to() {
 }
 # compatibility alias
 move_icons_to() { icons_move_to "$@"; }
+
+# print an error message if an icon can not be found
+# USAGE: icon_file_not_found_error $file
+# CALLED BY: icons_get_from_path
+icon_file_not_found_error() {
+	local file
+	local string1
+	local string2
+	file="$1"
+	case "${LANG%_*}" in
+		('fr')
+			string1='Le fichier d’icône suivant est introuvable : %s'
+			string2='Merci de signaler cette erreur sur notre outil de gestion de bugs : %s'
+		;;
+		('en'|*)
+			string1='The following icon file could not be found: %s'
+			string2='Please report this issue in our bug tracker: %s'
+		;;
+	esac
+	print_error
+	printf "$string1\\n" "$1"
+	printf "$string2\\n" "$PLAYIT_GAMES_BUG_TRACKER_URL"
+	return 1
+}
 

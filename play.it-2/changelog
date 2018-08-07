@@ -14,6 +14,9 @@
   * New archive type 'innosetup1.7', allowing to ensure that InnoExtract >= 1.7
     is available
 
+  * icon_file_not_found_error: New function displaying an error if some
+    function should work on an icon file that could not be found
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work
