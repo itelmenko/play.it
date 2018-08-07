@@ -24,6 +24,6 @@ backups are standardized with XDG Base Directory support.
 
 # ENVIRONMENT
 
-*PLAYIT_LIB2* If set, overrides the provided version of **libplayit.sh** (and
+*PLAYIT_LIB2* If set, overrides the provided version of **libplayit2.sh** (and
 its supported games) to a local copy for development
 (default: /usr/share/games/play.it/libplayit2.sh)
