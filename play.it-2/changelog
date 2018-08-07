@@ -11,6 +11,9 @@
   * New meta-dependencies 'libudev1' and 'theora' respectively providing
     libudev.so.1 and libtheora.so.0
 
+  * New archive type 'innosetup1.7', allowing to ensure that InnoExtract >= 1.7
+    is available
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work

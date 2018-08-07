@@ -109,7 +109,7 @@ archive_extraction_innosetup() {
 	archive="$2"
 	destination="$3"
 	options='--progress=1 --silent'
-	if [ "$archive_type" != 'innosetup_nolowercase' ]; then
+	if [ -n "${archive_type%%*_nolowercase}" ]; then
 		options="$options --lowercase"
 	fi
 	if ( innoextract --list --silent "$archive" 2>&1 1>/dev/null |\
