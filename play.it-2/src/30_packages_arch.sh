@@ -146,6 +146,9 @@ pkg_set_deps_arch32() {
 			('libstdc++')
 				pkg_dep='lib32-gcc-libs'
 			;;
+			('libudev1')
+				pkg_dep='lib32-systemd'
+			;;
 			('libxrandr')
 				pkg_dep='lib32-libxrandr'
 			;;
@@ -169,6 +172,9 @@ pkg_set_deps_arch32() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='lib32-sdl2_mixer'
+			;;
+			('theora')
+				pkg_dep='lib32-libtheora'
 			;;
 			('vorbis')
 				pkg_dep='lib32-libvorbis'
@@ -250,6 +256,9 @@ pkg_set_deps_arch64() {
 			('libstdc++')
 				pkg_dep='gcc-libs'
 			;;
+			('libudev1')
+				pkg_dep='libsystemd'
+			;;
 			('libxrandr')
 				pkg_dep='libxrandr'
 			;;
@@ -273,6 +282,9 @@ pkg_set_deps_arch64() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='sdl2_mixer'
+			;;
+			('theora')
+				pkg_dep='libtheora'
 			;;
 			('vorbis')
 				pkg_dep='libvorbis'

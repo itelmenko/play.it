@@ -8,6 +8,9 @@
   * get_value: New helper function allowing to get the value of a variable
     using a dynamically generated name
 
+  * New meta-dependencies 'libudev1' and 'theora' respectively providing
+    libudev.so.1 and libtheora.so.0
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work

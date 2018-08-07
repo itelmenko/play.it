@@ -138,6 +138,9 @@ pkg_set_deps_deb() {
 			('libstdc++')
 				pkg_dep='libstdc++6'
 			;;
+			('libudev1')
+				pkg_dep='libudev1'
+			;;
 			('libxrandr')
 				pkg_dep='libxrandr2'
 			;;
@@ -161,6 +164,9 @@ pkg_set_deps_deb() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='libsdl2-mixer-2.0-0'
+			;;
+			('theora')
+				pkg_dep='libtheora0'
 			;;
 			('vorbis')
 				pkg_dep='libvorbisfile3'

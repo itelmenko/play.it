@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180807.5
+library_revision=20180807.6
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -2934,6 +2934,9 @@ pkg_set_deps_arch32() {
 			('libstdc++')
 				pkg_dep='lib32-gcc-libs'
 			;;
+			('libudev1')
+				pkg_dep='lib32-systemd'
+			;;
 			('libxrandr')
 				pkg_dep='lib32-libxrandr'
 			;;
@@ -2957,6 +2960,9 @@ pkg_set_deps_arch32() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='lib32-sdl2_mixer'
+			;;
+			('theora')
+				pkg_dep='lib32-libtheora'
 			;;
 			('vorbis')
 				pkg_dep='lib32-libvorbis'
@@ -3038,6 +3044,9 @@ pkg_set_deps_arch64() {
 			('libstdc++')
 				pkg_dep='gcc-libs'
 			;;
+			('libudev1')
+				pkg_dep='libsystemd'
+			;;
 			('libxrandr')
 				pkg_dep='libxrandr'
 			;;
@@ -3061,6 +3070,9 @@ pkg_set_deps_arch64() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='sdl2_mixer'
+			;;
+			('theora')
+				pkg_dep='libtheora'
 			;;
 			('vorbis')
 				pkg_dep='libvorbis'
@@ -3289,6 +3301,9 @@ pkg_set_deps_deb() {
 			('libstdc++')
 				pkg_dep='libstdc++6'
 			;;
+			('libudev1')
+				pkg_dep='libudev1'
+			;;
 			('libxrandr')
 				pkg_dep='libxrandr2'
 			;;
@@ -3312,6 +3327,9 @@ pkg_set_deps_deb() {
 			;;
 			('sdl2_mixer')
 				pkg_dep='libsdl2-mixer-2.0-0'
+			;;
+			('theora')
+				pkg_dep='libtheora0'
 			;;
 			('vorbis')
 				pkg_dep='libvorbisfile3'
