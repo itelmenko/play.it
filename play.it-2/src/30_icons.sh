@@ -284,7 +284,7 @@ icons_linking_postinst() {
 	local version_minor_target
 	version_major_target="${target_version%%.*}"
 	version_minor_target=$(printf '%s' "$target_version" | cut --delimiter='.' --fields=2)
-	path_pkg="$(get_valie "${PKG}_PATH")"
+	path_pkg="$(get_value "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_linking_postinst' "$PKG"
 	path="${path_pkg}${PATH_GAME}"
 	for app in "$@"; do
