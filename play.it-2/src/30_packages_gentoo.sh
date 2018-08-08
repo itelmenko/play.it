@@ -109,12 +109,15 @@ pkg_set_deps_gentoo() {
 	local architecture
 	architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
 	local architecture_suffix
+	local architecture_suffix_use
 	case $architecture in
 		('32')
 			architecture_suffix='[abi_x86_32]'
+			architecture_suffix_use=',abi_x86_32'
 		;;
 		('64')
 			architecture_suffix=''
+			architecture_suffix_use=''
 		;;
 	esac
 	for dep in "$@"; do
@@ -183,7 +186,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="media-libs/sdl2-image$architecture_suffix"
 			;;
 			('sdl2_mixer')
-				pkg_dep="media-libs/sdl2-mixer$architecture_suffix"
+				pkg_dep="media-libs/sdl2-mixer[flac,mp3,vorbis,wav$architecture_suffix_use]"
 			;;
 			('vorbis')
 				pkg_dep="media-libs/libvorbis$architecture_suffix"
