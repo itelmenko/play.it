@@ -19,6 +19,8 @@
 
   * write_bin_run_dosbox: Improve handling of CD-ROM images for DOSBox games
 
+  * Add support for bzip2 compression
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work

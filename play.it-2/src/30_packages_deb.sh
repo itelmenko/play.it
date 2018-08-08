@@ -240,7 +240,7 @@ pkg_build_deb() {
 
 	local dpkg_options
 	case $OPTION_COMPRESSION in
-		('gzip'|'none'|'xz')
+		('gzip'|'none'|'xz'|'bzip2')
 			dpkg_options="-Z$OPTION_COMPRESSION"
 		;;
 		(*)

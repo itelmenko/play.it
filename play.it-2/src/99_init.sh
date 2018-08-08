@@ -33,7 +33,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	ALLOWED_VALUES_ARCHITECTURE='all 32 64 auto'
 	ALLOWED_VALUES_CHECKSUM='none md5'
-	ALLOWED_VALUES_COMPRESSION='none gzip xz'
+	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	ALLOWED_VALUES_PACKAGE='arch deb'
 
 	# Set default values for common options

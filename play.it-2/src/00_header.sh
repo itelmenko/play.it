@@ -31,5 +31,5 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180808.1
+library_revision=20180808.2
 

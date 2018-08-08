@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180808.1
+library_revision=20180808.2
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -858,20 +858,23 @@ help_compression() {
 			string_none='pas de compression (méthode par défaut)'
 			string_gzip='compression gzip (rapide)'
 			string_xz='compression xz (plus lent mais plus efficace que gzip)'
+			string_bzip2='compression bzip2'
 		;;
 		('en'|*)
 			string='Generated packages compression method choice'
 			string_none='no compression (default method)'
 			string_gzip='gzip compression (fast)'
 			string_xz='xz compression (slower but more efficient than gzip)'
+			string_bzip2='bzip2 compression'
 		;;
 	esac
-	printf -- '--compression=none|gzip|xz\n'
-	printf -- '--compression none|gzip|xz\n\n'
+	printf -- '--compression=none|gzip|xz|bzip2\n'
+	printf -- '--compression none|gzip|xz|bzip2\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\tnone\t%s\n' "$string_none"
 	printf '\tgzip\t%s\n' "$string_gzip"
 	printf '\txz\t%s\n' "$string_xz"
+	printf '\tbzip2\t%s\n' "$string_bzip2"
 }
 
 # display --prefix option usage
@@ -3217,6 +3220,10 @@ pkg_build_arch() {
 			tar_options="$tar_options --xz"
 			pkg_filename="${pkg_filename}.xz"
 		;;
+		('bzip2')
+			tar_options="$tar_options --bzip2"
+			pkg_filename="${pkg_filename}.bz2"
+		;;
 		('none') ;;
 		(*)
 			liberror 'OPTION_COMPRESSION' 'pkg_build_arch'
@@ -3489,7 +3496,7 @@ pkg_build_deb() {
 
 	local dpkg_options
 	case $OPTION_COMPRESSION in
-		('gzip'|'none'|'xz')
+		('gzip'|'none'|'xz'|'bzip2')
 			dpkg_options="-Z$OPTION_COMPRESSION"
 		;;
 		(*)
@@ -3546,7 +3553,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	ALLOWED_VALUES_ARCHITECTURE='all 32 64 auto'
 	ALLOWED_VALUES_CHECKSUM='none md5'
-	ALLOWED_VALUES_COMPRESSION='none gzip xz'
+	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	ALLOWED_VALUES_PACKAGE='arch deb'
 
 	# Set default values for common options
