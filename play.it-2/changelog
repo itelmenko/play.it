@@ -17,6 +17,8 @@
   * icon_file_not_found_error: New function displaying an error if some
     function should work on an icon file that could not be found
 
+  * write_bin_run_dosbox: Improve handling of CD-ROM images for DOSBox games
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work

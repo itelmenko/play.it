@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180807.8
+library_revision=20180808.1
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -2404,6 +2404,10 @@ write_desktop() {
 # USAGE: write_bin_run_dosbox
 # CALLED BY: write_bin_run
 write_bin_run_dosbox() {
+	local image
+	local pkg
+	local pkg_path
+
 	cat >> "$file" <<- 'EOF'
 	# Run the game
 
@@ -2415,9 +2419,22 @@ write_bin_run_dosbox() {
 	if [ "$GAME_IMAGE" ]; then
 		case "$GAME_IMAGE_TYPE" in
 			('cdrom')
-				cat >> "$file" <<- EOF
-				mount d $GAME_IMAGE -t cdrom
-				EOF
+				for pkg in $PACKAGES_LIST; do
+					pkg_path="$(get_value "${pkg}_PATH")"
+					if [ -e "${pkg_path}$PATH_GAME/$GAME_IMAGE" ]; then
+						image="${pkg_path}$PATH_GAME/$GAME_IMAGE"
+						break;
+					fi
+				done
+				if [ -d "$image" ]; then
+					cat >> "$file" <<- EOF
+					mount d $GAME_IMAGE -t cdrom
+					EOF
+				else
+					cat >> "$file" <<- EOF
+					imgmount d $GAME_IMAGE -t cdrom
+					EOF
+				fi
 			;;
 			('iso'|*)
 				cat >> "$file" <<- EOF
