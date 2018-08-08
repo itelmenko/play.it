@@ -166,6 +166,25 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		check_option_validity "$option"
 	done
 
+	# Do not allow bzip2 compression when building Debian packages
+
+	if
+		[ "$OPTION_PACKAGE" = 'deb' ] && \
+		[ "$OPTION_COMPRESSION" = 'bzip2' ]
+	then
+		print_error
+		case "${LANG%_*}" in
+			('fr')
+				string='Le mode de compression bzip2 n’est pas compatible avec la génération de paquets deb.'
+			;;
+			('en'|*)
+				string='bzip2 compression mode is not compatible with deb packages generation.'
+			;;
+		esac
+		printf '%s\n' "$string"
+		exit 1
+	fi
+
 	# Restrict packages list to target architecture
 
 	select_package_architecture

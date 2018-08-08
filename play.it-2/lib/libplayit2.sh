@@ -31,7 +31,7 @@
 ###
 
 library_version=2.10.0~dev
-library_revision=20180808.3
+library_revision=20180808.4
 
 # set package distribution-specific architecture
 # USAGE: set_architecture $pkg
@@ -3496,7 +3496,7 @@ pkg_build_deb() {
 
 	local dpkg_options
 	case $OPTION_COMPRESSION in
-		('gzip'|'none'|'xz'|'bzip2')
+		('gzip'|'none'|'xz')
 			dpkg_options="-Z$OPTION_COMPRESSION"
 		;;
 		(*)
@@ -3685,6 +3685,25 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	for option in 'CHECKSUM' 'COMPRESSION' 'PACKAGE'; do
 		check_option_validity "$option"
 	done
+
+	# Do not allow bzip2 compression when building Debian packages
+
+	if
+		[ "$OPTION_PACKAGE" = 'deb' ] && \
+		[ "$OPTION_COMPRESSION" = 'bzip2' ]
+	then
+		print_error
+		case "${LANG%_*}" in
+			('fr')
+				string='Le mode de compression bzip2 n’est pas compatible avec la génération de paquets deb.'
+			;;
+			('en'|*)
+				string='bzip2 compression mode is not compatible with deb packages generation.'
+			;;
+		esac
+		printf '%s\n' "$string"
+		exit 1
+	fi
 
 	# Restrict packages list to target architecture
 
