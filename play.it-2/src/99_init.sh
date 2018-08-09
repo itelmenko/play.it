@@ -206,6 +206,25 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		exit 1
 	fi
 
+	# Do not allow none compression when building Gentoo packages
+
+	if
+		[ "$OPTION_PACKAGE" = 'gentoo' ] && \
+		[ "$OPTION_COMPRESSION" = 'none' ]
+	then
+		print_error
+		case "${LANG%_*}" in
+			('fr')
+				string='Le mode de compression none n’est pas compatible avec la génération de paquets gentoo.'
+			;;
+			('en'|*)
+				string='none compression mode is not compatible with gentoo packages generation.'
+			;;
+		esac
+		printf '%s\n' "$string"
+		exit 1
+	fi
+
 	# Restrict packages list to target architecture
 
 	select_package_architecture
