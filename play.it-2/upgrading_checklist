@@ -2,6 +2,13 @@
 set -e
 
 readonly SCRIPT="$1"
+readonly VERSION="${2:-}"
+
+main() {
+	target_version=$(grep target_version "$SCRIPT" | cut --delimiter "'" --fields 2)
+	version=${VERSION:-$target_version}
+	check_"$(echo "$version" | tr . _)"
+}
 
 check_2_10() {
 	# complete, no false positives
@@ -29,5 +36,4 @@ check_2_7() {
 		&& echo ARCHIVES_LIST is usually automatically detected
 }
 
-version=$(grep target_version "$SCRIPT" | cut --delimiter "'" --fields 2 | tr . _)
-check_"$version"
+main "$@"
