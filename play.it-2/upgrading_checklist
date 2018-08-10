@@ -3,6 +3,17 @@ set -e
 
 readonly SCRIPT="$1"
 
+check_2_10() {
+	# complete, no false positives
+	grep --quiet "$SCRIPT" \
+		--regexp '_DEB.*libudev1' \
+		--regexp 'lib.*systemd' \
+		&& echo use \'libudev1\' generic dependency
+	grep --quiet '_DEPS.*libtheora' "$SCRIPT" \
+		&& echo use \'theora\' generic dependency
+	check_2_9
+}
+
 check_2_9() {
 	check_2_8
 }
