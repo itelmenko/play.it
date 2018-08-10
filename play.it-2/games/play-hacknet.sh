@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180628.1
+script_version=20180810.1
 
 # Set game-specific variables
 
@@ -72,16 +72,15 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ openal sdl2 sdl2_image vorbis"
-PKG_BIN32_DEPS_DEB='libjpeg62-turbo | libjpeg62, libtheora0'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ openal sdl2 sdl2_image vorbis theora"
+PKG_BIN32_DEPS_DEB='libjpeg62-turbo | libjpeg62'
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
-PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
         [ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
