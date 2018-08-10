@@ -158,6 +158,9 @@ pkg_set_deps_gentoo() {
 			('json')
 				pkg_dep="dev-libs/json-c$architecture_suffix"
 			;;
+			('libcurl')
+				pkg_dep="net-misc/curl$architecture_suffix"
+			;;
 			('libcurl-gnutls')
 				pkg_dep="net-libs/libcurl-debian$architecture_suffix" #available in the steam overlay
 			;;
@@ -188,6 +191,9 @@ pkg_set_deps_gentoo() {
 			('sdl2_mixer')
 				pkg_dep="media-libs/sdl2-mixer[flac,mp3,vorbis,wav$architecture_suffix_use]"
 			;;
+			('theora')
+				pkg_dep="media-libs/libtheora$architecture_suffix"
+			;;
 			('vorbis')
 				pkg_dep="media-libs/libvorbis$architecture_suffix"
 			;;
@@ -204,6 +210,20 @@ pkg_set_deps_gentoo() {
 			;;
 			('wine64')
 				pkg_dep='virtual/wine[abi_x86_64]'
+			;;
+			('wine-staging')
+				use_archive_specific_value "${pkg}_ARCH"
+				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				case "$architecture" in
+					('32') pkg_set_deps_gentoo 'wine32-staging' ;;
+					('64') pkg_set_deps_gentoo 'wine64-staging' ;;
+				esac
+			;;
+			('wine32-staging')
+				pkg_dep='app-emulation/wine-staging[abi_x86_32]'
+			;;
+			('wine64-staging')
+				pkg_dep='app-emulation/wine-staging[abi_x86_64]'
 			;;
 			('winetricks')
 				pkg_dep="app-emulation/winetricks$architecture_suffix"
