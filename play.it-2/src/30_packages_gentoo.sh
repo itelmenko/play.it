@@ -167,6 +167,9 @@ pkg_set_deps_gentoo() {
 			('libstdc++')
 				pkg_dep='' #maybe this should be virtual/libstdc++, otherwise, it is included in gcc, which should be in @system
 			;;
+			('libudev1')
+				pkg_dep="virtual/libudev$architecture_suffix"
+			;;
 			('libxrandr')
 				pkg_dep="x11-libs/libXrandr$architecture_suffix"
 			;;
