@@ -34,31 +34,37 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180806.2
+script_version=20180812.1
 
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
 GAME_NAME='Renowned Explorers: International Society'
 
-ARCHIVE_GOG='renowned_explorers_international_society_en_489_20916.sh'
+ARCHIVE_GOG='renowned_explorers_international_society_en_489_21590.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='42d0ecb54d8302545e78f41ed43acef6'
+ARCHIVE_GOG_MD5='9fb2cbe095d437d788eb8ec6402db20b'
 ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='489-gog20916'
+ARCHIVE_GOG_VERSION='489-gog21590'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD='renowned_explorers_international_society_en_466_15616.sh'
-ARCHIVE_GOG_OLD_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
-ARCHIVE_GOG_OLD_SIZE='1100000'
-ARCHIVE_GOG_OLD_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD_TYPE='mojosetup'
+ARCHIVE_GOG_OLD2='renowned_explorers_international_society_en_489_20916.sh'
+ARCHIVE_GOG_OLD2_MD5='42d0ecb54d8302545e78f41ed43acef6'
+ARCHIVE_GOG_OLD2_SIZE='1100000'
+ARCHIVE_GOG_OLD2_VERSION='489-gog20916'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLDER='renowned_explorers_international_society_en_459_14894.sh'
-ARCHIVE_GOG_OLDER_MD5='ff6b368b3919002d2db750213d33fcef'
-ARCHIVE_GOG_OLDER_SIZE='1100000'
-ARCHIVE_GOG_OLDER_VERSION='459-gog14894'
-ARCHIVE_GOG_OLDER_TYPE='mojosetup'
+ARCHIVE_GOG_OLD1='renowned_explorers_international_society_en_466_15616.sh'
+ARCHIVE_GOG_OLD1_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
+ARCHIVE_GOG_OLD1_SIZE='1100000'
+ARCHIVE_GOG_OLD1_VERSION='466-gog15616'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='renowned_explorers_international_society_en_459_14894.sh'
+ARCHIVE_GOG_OLD0_MD5='ff6b368b3919002d2db750213d33fcef'
+ARCHIVE_GOG_OLD0_SIZE='1100000'
+ARCHIVE_GOG_OLD0_VERSION='459-gog14894'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='./*'
@@ -95,7 +101,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
