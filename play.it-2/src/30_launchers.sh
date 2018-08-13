@@ -44,22 +44,21 @@ write_bin() {
 			app_id="$GAME_ID"
 		fi
 
+		use_package_specific_value "${app}_EXE"
+		use_package_specific_value "${app}_LIBS"
+		use_package_specific_value "${app}_OPTIONS"
+		use_package_specific_value "${app}_POSTRUN"
+		use_package_specific_value "${app}_PRERUN"
+		app_exe="$(get_value "${app}_EXE")"
+		app_libs="$(get_value "${app}_LIBS")"
+		app_options="$(get_value "${app}_OPTIONS")"
+		app_postrun="$(get_value "${app}_POSTRUN")"
+		app_prerun="$(get_value "${app}_PRERUN")"
 		app_type="$(get_value "${app}_TYPE")"
-		if [ "$app_type" != 'scummvm' ]; then
-			use_package_specific_value "${app}_EXE"
-			use_package_specific_value "${app}_LIBS"
-			use_package_specific_value "${app}_OPTIONS"
-			use_package_specific_value "${app}_POSTRUN"
-			use_package_specific_value "${app}_PRERUN"
-			app_exe="$(get_value "${app}_EXE")"
-			app_libs="$(get_value "${app}_LIBS")"
-			app_options="$(get_value "${app}_OPTIONS")"
-			app_postrun="$(get_value "${app}_POSTRUN")"
-			app_prerun="$(get_value "${app}_PRERUN")"
-			if [ "$app_type" = 'native' ] ||\
-			   [ "$app_type" = 'native_no-prefix' ]; then
-				chmod +x "${pkg_path}${PATH_GAME}/$app_exe"
-			fi
+
+		if [ "$app_type" = 'native' ] ||\
+		   [ "$app_type" = 'native_no-prefix' ]; then
+			chmod +x "${pkg_path}${PATH_GAME}/$app_exe"
 		fi
 
 		# Write winecfg launcher for WINE games

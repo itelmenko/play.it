@@ -21,6 +21,8 @@
 
   * Add support for bzip2 compression
 
+  * Set all application-specific variables even for ScummVM games
+
 2.9.2
 
   * set_temp_directories: Improve the generation of the temporary work
