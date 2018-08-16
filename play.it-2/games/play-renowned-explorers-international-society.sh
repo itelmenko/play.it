@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180812.1
+script_version=20180816.1
 
 # Set game-specific variables
 
@@ -83,7 +83,8 @@ DATA_DIRS='./savedata ./userdata'
 DATA_FILES='./*.txt'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
+APP_MAIN_PRERUN='pulseaudio --start
+export LANG=C'
 APP_MAIN_EXE_BIN32='x86/abbeycore'
 APP_MAIN_EXE_BIN64='x86_64/abbeycore'
 APP_MAIN_ICON='data/noarch/support/icon.png'
