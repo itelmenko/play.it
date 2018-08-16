@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180616.1
+script_version=20180816.1
 
 # Set game-specific variables
 
@@ -86,7 +86,7 @@ PKG_BIN_DEPS_DEB='libpulsedsp'
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 [ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
 
@@ -161,6 +161,12 @@ write_launcher 'APP_MAIN'
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
 pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
 sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
+
+# Work around a crash of the host of multiplayer games on map transitions
+
+pattern='s/\(^bWorldLog\)=.*/\1=False/'
+file="${PKG_DATA_PATH}${PATH_GAME}/System/UnrealTournament.ini"
+sed --in-place "$pattern" "$file"
 
 # Build package
 
