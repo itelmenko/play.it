@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Phil Morrell
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Xenonauts
+# Unreal Tournament
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
