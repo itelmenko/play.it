@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180816.1
+script_version=20180819.1
 
 # Set game-specific variables
 
@@ -65,12 +65,14 @@ ARCHIVE_GAME0_DATA_FILES='./Maps ./Music ./Sounds ./Textures ./Web ./System/*.in
 ARCHIVE_GAME1_DATA_PATH='.'
 ARCHIVE_GAME1_DATA_FILES='./Web ./System/*.ini ./System/*.u ./System/*.int'
 
-CONFIG_FILES='./System/*.ini'
-
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN_ARCH='pulseaudio --start
+APP_MAIN_PRERUN_ARCH='export UT_PREFS="$HOME/.loki/ut"
+mkdir --parents "$UT_PREFS/System"
+pulseaudio --start
 export LD_PRELOAD="/usr/lib32/pulseaudio/libpulsedsp.so"'
-APP_MAIN_PRERUN_DEB='pulseaudio --start
+APP_MAIN_PRERUN_DEB='export UT_PREFS="$HOME/.loki/ut"
+mkdir --parents "$UT_PREFS/System"
+pulseaudio --start
 export LD_PRELOAD="/usr/lib/i386-linux-gnu/pulseaudio/libpulsedsp.so"'
 APP_MAIN_EXE='System/ut-bin'
 APP_MAIN_ICON='app/System/UnrealTournament.exe'
