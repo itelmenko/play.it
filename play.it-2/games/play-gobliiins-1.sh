@@ -29,75 +29,64 @@ set -o errexit
 ###
 
 ###
-# Renowned Explorers: International Society
+# Gobliiins
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180812.1
+script_version=20180808.1
 
 # Set game-specific variables
 
-GAME_ID='renowned-explorers-international-society'
-GAME_NAME='Renowned Explorers: International Society'
+GAME_ID='gobliiins-1'
+GAME_NAME='Gobliiins'
 
-ARCHIVE_GOG='renowned_explorers_international_society_en_489_21590.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='9fb2cbe095d437d788eb8ec6402db20b'
-ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='489-gog21590'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG='setup_gobliiins_1.02_(20270).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/gobliiins_pack'
+ARCHIVE_GOG_MD5='dd4fa52b7ed43b964d82f2056c18b681'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_SIZE='99000'
+ARCHIVE_GOG_VERSION='1.02-gog20270'
 
-ARCHIVE_GOG_OLD2='renowned_explorers_international_society_en_489_20916.sh'
-ARCHIVE_GOG_OLD2_MD5='42d0ecb54d8302545e78f41ed43acef6'
-ARCHIVE_GOG_OLD2_SIZE='1100000'
-ARCHIVE_GOG_OLD2_VERSION='489-gog20916'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+ARCHIVE_GOG_OLD0='setup_gobliiins_2.1.0.64.exe'
+ARCHIVE_GOG_OLD0_MD5='e587f246c7dedb84b30ee09e6f1c5462'
+ARCHIVE_GOG_OLD0_SIZE='94000'
+ARCHIVE_GOG_OLD0_VERSION='1.02-gog2.1.0.64'
 
-ARCHIVE_GOG_OLD1='renowned_explorers_international_society_en_466_15616.sh'
-ARCHIVE_GOG_OLD1_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
-ARCHIVE_GOG_OLD1_SIZE='1100000'
-ARCHIVE_GOG_OLD1_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GAME_DATA_DISK_PATH='.'
+ARCHIVE_GAME_DATA_DISK_FILES='./*.lic ./*.stk ./*.mp3'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_DISK_PATH_GOG_OLD0='app'
 
-ARCHIVE_GOG_OLD0='renowned_explorers_international_society_en_459_14894.sh'
-ARCHIVE_GOG_OLD0_MD5='ff6b368b3919002d2db750213d33fcef'
-ARCHIVE_GOG_OLD0_SIZE='1100000'
-ARCHIVE_GOG_OLD0_VERSION='459-gog14894'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GAME_DATA_FLOPPY_PATH='fdd'
+ARCHIVE_GAME_DATA_FLOPPY_FILES='./*'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_FLOPPY_PATH_GOG_OLD0='app/fdd'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_MAIN_PATH='.'
+ARCHIVE_DOC_MAIN_FILES='./*.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_MAIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./x86'
+APP_MAIN_TYPE='scummvm'
+APP_MAIN_SCUMMID='gob'
+APP_MAIN_ICON='goggame-1207662273.ico'
+# Keep compatibility with old archives
+APP_MAIN_ICON_GOG_OLD0='app/goggame-1207662273.ico'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./x86_64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./build.bni ./data ./project.bni ./settings.ini ./soundbanks'
-
-CONFIG_FILES='./*.ini'
-DATA_DIRS='./savedata ./userdata'
-DATA_FILES='./*.txt'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
-APP_MAIN_EXE_BIN32='x86/abbeycore'
-APP_MAIN_EXE_BIN64='x86_64/abbeycore'
-APP_MAIN_ICON='data/noarch/support/icon.png'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_MAIN PKG_DATA_DISK PKG_DATA_FLOPPY'
 
 PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu pulseaudio"
+PKG_DATA_DISK_ID="${PKG_DATA_ID}-disk"
+PKG_DATA_DISK_PROVIDE="$PKG_DATA_ID"
+PKG_DATA_DISK_DESCRIPTION='data - CD-ROM version'
 
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_DATA_FLOPPY_ID="${PKG_DATA_ID}-floppy"
+PKG_DATA_FLOPPY_PROVIDE="$PKG_DATA_ID"
+PKG_DATA_FLOPPY_DESCRIPTION='data - floppy version'
+
+PKG_MAIN_DEPS="$PKG_DATA_ID scummvm"
 
 # Load common functions
 
@@ -127,22 +116,21 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
-# Extract game data
+# Extract data from game
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-# Get icon
+# Extract game icons
 
-PKG='PKG_DATA'
+PKG='PKG_MAIN'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_MAIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
@@ -155,6 +143,22 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+case "${LANG%_*}" in
+	('fr')
+		version_string='version %s :'
+		version_disk='CD-ROM'
+		version_floppy='disquette'
+	;;
+	('en'|*)
+		version_string='%s version:'
+		version_disk='CD-ROM'
+		version_floppy='Floppy'
+	;;
+esac
+printf '\n'
+printf "$version_string" "$version_disk"
+print_instructions 'PKG_DATA_DISK' 'PKG_MAIN'
+printf "$version_string" "$version_floppy"
+print_instructions 'PKG_DATA_FLOPPY' 'PKG_MAIN'
 
 exit 0

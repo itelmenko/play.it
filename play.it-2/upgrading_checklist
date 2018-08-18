@@ -2,6 +2,24 @@
 set -e
 
 readonly SCRIPT="$1"
+readonly VERSION="${2:-}"
+
+main() {
+	target_version=$(grep target_version "$SCRIPT" | cut --delimiter "'" --fields 2)
+	version=${VERSION:-$target_version}
+	check_"$(echo "$version" | tr . _)"
+}
+
+check_2_10() {
+	# complete, no false positives
+	grep --quiet "$SCRIPT" \
+		--regexp '_DEB.*libudev1' \
+		--regexp 'lib.*systemd' \
+		&& echo use \'libudev1\' generic dependency
+	grep --quiet '_DEPS.*libtheora' "$SCRIPT" \
+		&& echo use \'theora\' generic dependency
+	check_2_9
+}
 
 check_2_9() {
 	check_2_8
@@ -18,5 +36,4 @@ check_2_7() {
 		&& echo ARCHIVES_LIST is usually automatically detected
 }
 
-version=$(grep target_version "$SCRIPT" | cut --delimiter "'" --fields 2 | tr . _)
-check_"$version"
+main "$@"

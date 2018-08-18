@@ -29,75 +29,83 @@ set -o errexit
 ###
 
 ###
-# Renowned Explorers: International Society
+# Heroes of Might and Magic 2
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180812.1
+script_version=20180815.1
 
 # Set game-specific variables
 
-GAME_ID='renowned-explorers-international-society'
-GAME_NAME='Renowned Explorers: International Society'
+GAME_ID='heroes-of-might-and-magic-2'
+GAME_NAME='Heroes of Might and Magic II: The Price of Loyalty'
 
-ARCHIVE_GOG='renowned_explorers_international_society_en_489_21590.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='9fb2cbe095d437d788eb8ec6402db20b'
-ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='489-gog21590'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
 
-ARCHIVE_GOG_OLD2='renowned_explorers_international_society_en_489_20916.sh'
-ARCHIVE_GOG_OLD2_MD5='42d0ecb54d8302545e78f41ed43acef6'
-ARCHIVE_GOG_OLD2_SIZE='1100000'
-ARCHIVE_GOG_OLD2_VERSION='489-gog20916'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+ARCHIVE_GOG_EN='setup_homm2_gold_2.1.0.29.exe'
+ARCHIVE_GOG_EN_URL='https://www.gog.com/game/heroes_of_might_and_magic_2_gold_edition'
+ARCHIVE_GOG_EN_MD5='b6785579d75e47936517a79374b17ebc'
+ARCHIVE_GOG_EN_SIZE='480000'
+ARCHIVE_GOG_EN_VERSION='2.1-gog2.1.0.29'
 
-ARCHIVE_GOG_OLD1='renowned_explorers_international_society_en_466_15616.sh'
-ARCHIVE_GOG_OLD1_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
-ARCHIVE_GOG_OLD1_SIZE='1100000'
-ARCHIVE_GOG_OLD1_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GOG_FR='setup_homm2_gold_french_2.1.0.29.exe'
+ARCHIVE_GOG_FR_URL='https://www.gog.com/game/heroes_of_might_and_magic_2_gold_edition'
+ARCHIVE_GOG_FR_MD5='c49d8f5d0f6d56e54cf6f9c7a526750f'
+ARCHIVE_GOG_FR_SIZE='410000'
+ARCHIVE_GOG_FR_VERSION='2.1-gog2.1.0.29'
 
-ARCHIVE_GOG_OLD0='renowned_explorers_international_society_en_459_14894.sh'
-ARCHIVE_GOG_OLD0_MD5='ff6b368b3919002d2db750213d33fcef'
-ARCHIVE_GOG_OLD0_SIZE='1100000'
-ARCHIVE_GOG_OLD0_VERSION='459-gog14894'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_DOC_DATA_PATH='app'
+ARCHIVE_DOC_DATA_FILES='./eula ./help ./*.pdf ./*.txt'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_GAME0_BIN_PATH='app'
+ARCHIVE_GAME0_BIN_FILES='./*.exe ./*.cfg'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./x86'
+ARCHIVE_GAME1_BIN_PATH='sys'
+ARCHIVE_GAME1_BIN_FILES='./wing32.dll'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./x86_64'
+ARCHIVE_GAME_MUSIC_PATH='app'
+ARCHIVE_GAME_MUSIC_FILES='./music'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./build.bni ./data ./project.bni ./settings.ini ./soundbanks'
+ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_FILES='./homm2.gog ./homm2.inst ./data ./games ./journals ./maps ./sound'
 
-CONFIG_FILES='./*.ini'
-DATA_DIRS='./savedata ./userdata'
-DATA_FILES='./*.txt'
+GAME_IMAGE='./homm2.inst'
+GAME_IMAGE_TYPE='cdrom'
 
-APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
-APP_MAIN_EXE_BIN32='x86/abbeycore'
-APP_MAIN_EXE_BIN64='x86_64/abbeycore'
-APP_MAIN_ICON='data/noarch/support/icon.png'
+CONFIG_FILES='./*.cfg ./data/standard.hs'
+DATA_DIRS='./games ./maps'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+APP_MAIN_TYPE='dosbox'
+APP_MAIN_EXE='heroes2.exe'
+APP_MAIN_ICON='app/goggame-1207658785.ico'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
+APP_EDITOR_ID="${GAME_ID}-editor"
+APP_EDITOR_NAME="$GAME_NAME - editor"
+APP_EDITOR_TYPE='dosbox'
+APP_EDITOR_EXE='editor2.exe'
+APP_EDITOR_ICON='app/goggame-1207658785.ico'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu pulseaudio"
+PACKAGES_LIST='PKG_BIN PKG_MUSIC PKG_DATA'
 
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_MUSIC_ID="$GAME_ID-music"
+PKG_MUSIC_DESCRIPTION='music'
+
+PKG_DATA_ID="$GAME_ID-data"
+PKG_DATA_ID_GOG_EN="${PKG_DATA_ID}-en"
+PKG_DATA_ID_GOG_FR="${PKG_DATA_ID}-fr"
+PKG_DATA_PROVIDE="$PKG_DATA_ID"
+PKG_DATA_DESCRIPTION_GOG_EN='data - English version'
+PKG_DATA_DESCRIPTION_GOG_FR='data - French version'
+
+PKG_BIN_ID="$GAME_ID"
+PKG_BIN_ID_GOG_EN="${PKG_BIN_ID}-en"
+PKG_BIN_ID_GOG_FR="${PKG_BIN_ID}-fr"
+PKG_BIN_PROVIDE="$PKG_BIN_ID"
+PKG_BIN_DEPS_GOG_EN="$PKG_MUSIC_ID $PKG_DATA_ID_GOG_EN dosbox"
+PKG_BIN_DEPS_GOG_FR="$PKG_MUSIC_ID $PKG_DATA_ID_GOG_FR dosbox"
+PKG_BIN_DESCRIPTION_GOG_FR='French version'
+PKG_BIN_DESCRIPTION_GOG_EN='English version'
 
 # Load common functions
 
@@ -132,20 +140,20 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-# Get icon
+# Extract icons
 
 PKG='PKG_DATA'
-icons_get_from_workdir 'APP_MAIN'
+icons_get_from_workdir 'APP_MAIN' 'APP_EDITOR'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN' 'APP_EDITOR'
 
-# Build package
+# Build packages
 
+use_archive_specific_value 'PKG_BIN_DEPS'
 write_metadata
 build_pkg
 

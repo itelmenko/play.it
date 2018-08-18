@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,75 +30,47 @@ set -o errexit
 ###
 
 ###
-# Renowned Explorers: International Society
+# Morphopolis
 # build native Linux packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180812.1
+script_version=20180815.1
 
 # Set game-specific variables
 
-GAME_ID='renowned-explorers-international-society'
-GAME_NAME='Renowned Explorers: International Society'
+SCRIPT_DEPS='icotool'
 
-ARCHIVE_GOG='renowned_explorers_international_society_en_489_21590.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='9fb2cbe095d437d788eb8ec6402db20b'
-ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='489-gog21590'
-ARCHIVE_GOG_TYPE='mojosetup'
+GAME_ID='morphopolis'
+GAME_NAME='Morphopolis'
 
-ARCHIVE_GOG_OLD2='renowned_explorers_international_society_en_489_20916.sh'
-ARCHIVE_GOG_OLD2_MD5='42d0ecb54d8302545e78f41ed43acef6'
-ARCHIVE_GOG_OLD2_SIZE='1100000'
-ARCHIVE_GOG_OLD2_VERSION='489-gog20916'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+ARCHIVE_GOG='setup_morphopolis_1.0_(22453).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/morphopolis'
+ARCHIVE_GOG_MD5='325f1bbbcc1c7a657530d70db9f1bb1a'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_SIZE='1200000'
+ARCHIVE_GOG_VERSION='1.0-gog22453'
 
-ARCHIVE_GOG_OLD1='renowned_explorers_international_society_en_466_15616.sh'
-ARCHIVE_GOG_OLD1_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
-ARCHIVE_GOG_OLD1_SIZE='1100000'
-ARCHIVE_GOG_OLD1_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='./irrklang.dll ./project.exe ./app.config.txt ./app.icf'
 
-ARCHIVE_GOG_OLD0='renowned_explorers_international_society_en_459_14894.sh'
-ARCHIVE_GOG_OLD0_MD5='ff6b368b3919002d2db750213d33fcef'
-ARCHIVE_GOG_OLD0_SIZE='1100000'
-ARCHIVE_GOG_OLD0_VERSION='459-gog14894'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='./anims ./*.xml ./font ./sounds ./textures'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+CONFIG_FILES='./app.config.txt'
+DATA_DIRS='./saves'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./x86'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='project.exe'
+APP_MAIN_ICON='app/goggame-1559432711.ico'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./x86_64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./build.bni ./data ./project.bni ./settings.ini ./soundbanks'
-
-CONFIG_FILES='./*.ini'
-DATA_DIRS='./savedata ./userdata'
-DATA_FILES='./*.txt'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
-APP_MAIN_EXE_BIN32='x86/abbeycore'
-APP_MAIN_EXE_BIN64='x86_64/abbeycore'
-APP_MAIN_ICON='data/noarch/support/icon.png'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu pulseaudio"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
@@ -132,7 +105,13 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-# Get icon
+# Work around "insufficient image data" issue with convert from imagemagick
+icon_extract_png_from_ico() {
+	[ "$DRY_RUN" = '1' ] && return 0
+	icotool --extract --output="$2" "$1" 2>/dev/null
+}
+
+# Extract icons
 
 PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
@@ -140,9 +119,18 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
+
+# Store saved games outside of WINE prefix
+
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/Morphopolis'
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/saves\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 

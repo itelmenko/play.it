@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,72 +30,64 @@ set -o errexit
 ###
 
 ###
-# Renowned Explorers: International Society
+# unEpic
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180812.1
+script_version=20180815.1
 
 # Set game-specific variables
 
-GAME_ID='renowned-explorers-international-society'
-GAME_NAME='Renowned Explorers: International Society'
+GAME_ID='unepic'
+GAME_NAME='unEpic'
 
-ARCHIVE_GOG='renowned_explorers_international_society_en_489_21590.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='9fb2cbe095d437d788eb8ec6402db20b'
-ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='489-gog21590'
+ARCHIVE_HUMBLE='unepic-15005.run'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/unepic'
+ARCHIVE_HUMBLE_MD5='940824c4de6e48522845f63423e87783'
+ARCHIVE_HUMBLE_VERSION='1.50.05-humble141208'
+ARCHIVE_HUMBLE_SIZE='360000'
+ARCHIVE_HUMBLE_TYPE='mojosetup'
+
+ARCHIVE_GOG='unepic_en_1_51_01_20608.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/unepic'
+ARCHIVE_GOG_MD5='88d98eb09d235fe3ca00f35ec0a014a3'
+ARCHIVE_GOG_VERSION='1.51.01-gog20608'
+ARCHIVE_GOG_SIZE='380000'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD2='renowned_explorers_international_society_en_489_20916.sh'
-ARCHIVE_GOG_OLD2_MD5='42d0ecb54d8302545e78f41ed43acef6'
-ARCHIVE_GOG_OLD2_SIZE='1100000'
-ARCHIVE_GOG_OLD2_VERSION='489-gog20916'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-
-ARCHIVE_GOG_OLD1='renowned_explorers_international_society_en_466_15616.sh'
-ARCHIVE_GOG_OLD1_MD5='fbad4b4d361a0e7d29b9781e3c5a5e85'
-ARCHIVE_GOG_OLD1_SIZE='1100000'
-ARCHIVE_GOG_OLD1_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-
-ARCHIVE_GOG_OLD0='renowned_explorers_international_society_en_459_14894.sh'
-ARCHIVE_GOG_OLD0_MD5='ff6b368b3919002d2db750213d33fcef'
-ARCHIVE_GOG_OLD0_SIZE='1100000'
-ARCHIVE_GOG_OLD0_VERSION='459-gog14894'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GOG_OLD0='gog_unepic_2.1.0.4.sh'
+ARCHIVE_GOG_OLD0_MD5='341556e144d5d17ae23d2b0805c646a1'
+ARCHIVE_GOG_OLD0_SIZE='380000'
+ARCHIVE_GOG_OLD0_VERSION='1.50.05-gog2.1.0.4'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_PATH='./*.txt'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./x86'
+ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
+ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='./unepic32 ./lib32/libSDL2_mixer-2.0.so.0'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./x86_64'
+ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
+ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='./unepic64 ./lib64/libSDL2_mixer-2.0.so.0'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./build.bni ./data ./project.bni ./settings.ini ./soundbanks'
-
-CONFIG_FILES='./*.ini'
-DATA_DIRS='./savedata ./userdata'
-DATA_FILES='./*.txt'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
+ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='./data ./image ./sound ./voices ./unepic.png ./omaps ./dictios_pc'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
-APP_MAIN_EXE_BIN32='x86/abbeycore'
-APP_MAIN_EXE_BIN64='x86_64/abbeycore'
-APP_MAIN_ICON='data/noarch/support/icon.png'
+APP_MAIN_EXE_BIN32='unepic32'
+APP_MAIN_EXE_BIN64='unepic64'
+APP_MAIN_ICON='unepic.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu pulseaudio"
+PKG_BIN32_DEPS="$PKG_DATA_ID sdl2 sdl2_mixer glx libstdc++"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -131,11 +124,6 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-
-# Get icon
-
-PKG='PKG_DATA'
-icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -146,7 +134,10 @@ done
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN32' 'PKG_BIN64'
 build_pkg
 
 # Clean up
