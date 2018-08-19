@@ -34,26 +34,42 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20180819.2
 
 # Set game-specific variables
 
 GAME_ID='arcanum'
 GAME_NAME='Arcanum: Of Steamworks and Magick Obscura'
 
-ARCHIVE_GOG='setup_arcanum_2.0.0.15.exe'
-ARCHIVE_GOG_MD5='c09523c61edd18abb97da97463e07a88'
+ARCHIVE_GOG='setup_arcanum_-_of_steamworks_and_magick_obscura_1.0.7.4_(19476).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/arcanum_of_steamworks_and_magick_obscura'
+ARCHIVE_GOG_MD5='298a3315baebf40f3cc6cee4acae9947'
+ARCHIVE_GOG_TYPE='innosetup1.7'
 ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='1.0.7.4-gog2.0.0.15'
+ARCHIVE_GOG_VERSION='1.0.7.4-gog19476'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='./*.doc ./*.htm ./*.pdf ./*.txt ./documents'
+ARCHIVE_GOG_OLD0='setup_arcanum_2.0.0.15.exe'
+ARCHIVE_GOG_OLD0_MD5='c09523c61edd18abb97da97463e07a88'
+ARCHIVE_GOG_OLD0_SIZE='1200000'
+ARCHIVE_GOG_OLD0_VERSION='1.0.7.4-gog2.0.0.15'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_DOC0_DATA_PATH='.'
+ARCHIVE_DOC0_DATA_FILES='./*.doc ./*.htm ./*.pdf ./*.txt ./documents'
+# Keep compatibility with old archives
+ARCHIVE_DOC0_DATA_PATH_GOG_OLD0='app'
+
+ARCHIVE_DOC1_DATA_PATH='__support/app'
+ARCHIVE_DOC1_DATA_FILES='./eula.*'
+
+ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='./*.asi ./*.cfg ./*.exe ./*.inf ./binkw32.dll ./ddraw.dll ./mm_won.dll ./mss32.dll ./sierrapt.dll'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='./*.dat ./data ./modules'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./data ./modules/arcanum/maps ./modules/arcanum/saves'
