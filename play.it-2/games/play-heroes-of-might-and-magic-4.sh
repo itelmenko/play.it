@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.2
+script_version=20180819.3
 
 # Set game-specific variables
 
@@ -91,7 +91,7 @@ ARCHIVE_GAME_DATA_FILES='./data ./maps'
 ARCHIVE_GAME_DATA_PATH_GOG_EN_OLD0='app'
 ARCHIVE_GAME_DATA_PATH_GOG_FR_OLD0='app'
 
-DATA_DIRS='./games ./maps'
+DATA_DIRS='./games'
 DATA_FILES='./data/high_scores.dat ./*.log'
 
 APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
