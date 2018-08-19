@@ -6,6 +6,8 @@
 
   * Arch Linux: Add missing package to generic dependency 'gcc32'
 
+  * archive_extraction_innosetup: Hide innoextract warnings during extraction
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
