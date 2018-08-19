@@ -23,6 +23,7 @@ pkg_write_gentoo() {
 	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 
 	local pkg_deps
+	use_archive_specific_value "${pkg}_DEPS"
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
 		# shellcheck disable=SC2046
 		pkg_set_deps_gentoo $(get_value "${pkg}_DEPS")

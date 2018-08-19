@@ -11,6 +11,9 @@
 
   * Improve support for Java games
 
+  * pkg_write_*: Reliably use archive-specific dependencies list when
+    available
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or

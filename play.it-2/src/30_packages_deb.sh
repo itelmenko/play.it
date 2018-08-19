@@ -4,6 +4,7 @@
 # CALLED BY: write_metadata
 pkg_write_deb() {
 	local pkg_deps
+	use_archive_specific_value "${pkg}_DEPS"
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
 		# shellcheck disable=SC2046
 		pkg_set_deps_deb $(get_value "${pkg}_DEPS")
