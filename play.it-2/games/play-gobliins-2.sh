@@ -34,30 +34,45 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20180819.2
 
 # Set game-specific variables
 
 GAME_ID='gobliins-2'
 GAME_NAME='Gobliins 2: The Prince Buffoon'
 
-ARCHIVE_GOG='setup_gobliiins2_2.1.0.63.exe'
-ARCHIVE_GOG_MD5='0baf2ce55d00fce9af4c98848e88d7dc'
-ARCHIVE_GOG_SIZE='100000'
-ARCHIVE_GOG_VERSION='2.01-gog2.1.0.63'
+ARCHIVE_GOG='setup_gobliins_2_-_the_prince_buffoon_1.02_(20270).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/gobliiins_pack'
+ARCHIVE_GOG_MD5='3607f4ab042fea51e3b6544775955701'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_SIZE='110000'
+ARCHIVE_GOG_VERSION='1.02-gog20270'
 
-ARCHIVE_GAME_DATA_DISK_PATH='app'
+ARCHIVE_GOG_OLD0='setup_gobliiins2_2.1.0.63.exe'
+ARCHIVE_GOG_OLD0_MD5='0baf2ce55d00fce9af4c98848e88d7dc'
+ARCHIVE_GOG_OLD0_SIZE='100000'
+ARCHIVE_GOG_OLD0_VERSION='1.02-gog2.1.0.63'
+
+ARCHIVE_GAME_DATA_DISK_PATH='.'
 ARCHIVE_GAME_DATA_DISK_FILES='./gobnew.lic ./intro.stk ./track1.mp3'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_DISK_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_DATA_FLOPPY_PATH='app/fdd'
+ARCHIVE_GAME_DATA_FLOPPY_PATH='fdd'
 ARCHIVE_GAME_DATA_FLOPPY_FILES='./*'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_FLOPPY_PATH_GOG_OLD0='app/fdd'
 
-ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_PATH='.'
 ARCHIVE_DOC_MAIN_FILES='./*.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_MAIN_PATH_GOG_OLD0='app'
 
 APP_MAIN_TYPE='scummvm'
 APP_MAIN_SCUMMID='gob'
-APP_MAIN_ICON='app/goggame-1207662293.ico'
+APP_MAIN_ICON='goggame-1207662293.ico'
+# Keep compatibility with old archives
+APP_MAIN_ICON_GOG_OLD0='app/goggame-1207662293.ico'
 
 PACKAGES_LIST='PKG_MAIN PKG_DATA_DISK PKG_DATA_FLOPPY'
 
@@ -109,6 +124,7 @@ prepare_package_layout
 # Get game icon
 
 PKG='PKG_MAIN'
+use_package_specific_value 'APP_MAIN_ICON'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
