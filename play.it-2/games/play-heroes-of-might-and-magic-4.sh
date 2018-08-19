@@ -34,35 +34,62 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20180819.2
 
 # Set game-specific variables
 
 GAME_ID='heroes-of-might-and-magic-4'
 GAME_NAME='Heroes of Might and Magic IV'
 
-ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR_OLD0'
 
-ARCHIVE_GOG_EN='setup_homm4_complete_2.0.0.12.exe'
+ARCHIVE_GOG_EN='setup_heroes_of_might_and_magic_4_complete_3.0_(22812).exe'
 ARCHIVE_GOG_EN_URL='https://www.gog.com/game/heroes_of_might_and_magic_4_complete'
-ARCHIVE_GOG_EN_MD5='74de66eb408bb2916dd0227781ba96dc'
-ARCHIVE_GOG_EN_VERSION='3.0-gog2.0.0.12'
+ARCHIVE_GOG_EN_MD5='d5e0a55e2bba4f0ac643ec1fb2ba17cc'
+ARCHIVE_GOG_EN_TYPE='innosetup1.7'
+ARCHIVE_GOG_EN_VERSION='3.0-gog22812'
 ARCHIVE_GOG_EN_SIZE='1100000'
+ARCHIVE_GOG_EN_PART1='setup_heroes_of_might_and_magic_4_complete_3.0_(22812)-1.bin'
+ARCHIVE_GOG_EN_PART1_MD5='3457ead5c208a3d40498d6e1f08bf588'
+ARCHIVE_GOG_EN_PART1_TYPE='innosetup1.7'
 
-ARCHIVE_GOG_FR='setup_homm4_complete_french_2.1.0.14.exe'
+ARCHIVE_GOG_FR='setup_heroes_of_might_and_magic_4_complete_3.0_(french)_(22812).exe'
 ARCHIVE_GOG_FR_URL='https://www.gog.com/game/heroes_of_might_and_magic_4_complete'
-ARCHIVE_GOG_FR_MD5='2af96eb28226e563bbbcd62771f3a319'
-ARCHIVE_GOG_FR_VERSION='3.0-gog2.1.0.14'
+ARCHIVE_GOG_FR_MD5='e15ec7a308ea442bfeeb3410314b39d7'
+ARCHIVE_GOG_FR_TYPE='innosetup1.7'
+ARCHIVE_GOG_FR_VERSION='3.0-gog22812'
 ARCHIVE_GOG_FR_SIZE='1100000'
+ARCHIVE_GOG_FR_PART1='setup_heroes_of_might_and_magic_4_complete_3.0_(french)_(22812)-1.bin'
+ARCHIVE_GOG_FR_PART1_MD5='7abff7182f6bed3199d2b71cdd60d926'
+ARCHIVE_GOG_FR_PART1_TYPE='innosetup1.7'
 
-ARCHIVE_DOC_DATA_PATH='app'
+ARCHIVE_GOG_EN_OLD0='setup_homm4_complete_2.0.0.12.exe'
+ARCHIVE_GOG_EN_OLD0_MD5='74de66eb408bb2916dd0227781ba96dc'
+ARCHIVE_GOG_EN_OLD0_VERSION='3.0-gog2.0.0.12'
+ARCHIVE_GOG_EN_OLD0_SIZE='1100000'
+
+ARCHIVE_GOG_FR_OLD0='setup_homm4_complete_french_2.1.0.14.exe'
+ARCHIVE_GOG_FR_OLD0_MD5='2af96eb28226e563bbbcd62771f3a319'
+ARCHIVE_GOG_FR_OLD0_VERSION='3.0-gog2.1.0.14'
+ARCHIVE_GOG_FR_OLD0_SIZE='1100000'
+
+ARCHIVE_DOC_DATA_PATH='.'
 ARCHIVE_DOC_DATA_FILES='./*.chm ./*.pdf ./*.txt'
+# Keep compatibility with old archives
+ARCHIVE_DOC_DATA_PATH_GOG_EN_OLD0='app'
+ARCHIVE_DOC_DATA_PATH_GOG_FR_OLD0='app'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='./*.exe ./binkw32.dll ./drvmgt.dll ./mss32.dll ./mp3dec.asi data/*.dll'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_EN_OLD0='app'
+ARCHIVE_GAME_BIN_PATH_GOG_FR_OLD0='app'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='./data ./maps'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_EN_OLD0='app'
+ARCHIVE_GAME_DATA_PATH_GOG_FR_OLD0='app'
 
 DATA_DIRS='./games ./maps'
 DATA_FILES='./data/high_scores.dat ./*.log'
