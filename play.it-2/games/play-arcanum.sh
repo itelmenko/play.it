@@ -34,9 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.2
+script_version=20180819.3
 
 # Set game-specific variables
+
+SCRIPT_DEPS='upx'
 
 GAME_ID='arcanum'
 GAME_NAME='Arcanum: Of Steamworks and Magick Obscura'
@@ -127,6 +129,13 @@ PKG='PKG_BIN'
 icons_get_from_package 'APP_MAIN'
 icons_move_to 'PKG_DATA'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Decompress UPX-packed executable
+
+file="${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_EXE"
+if upx -t "$file" >/dev/null 2>&1; then
+	upx -d "$file" >/dev/null
+fi
 
 # Write launchers
 
