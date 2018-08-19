@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180819.1
 
 # Set game-specific variables
 
@@ -55,11 +55,8 @@ ARCHIVE_GOG_FR_MD5='2af96eb28226e563bbbcd62771f3a319'
 ARCHIVE_GOG_FR_VERSION='3.0-gog2.1.0.14'
 ARCHIVE_GOG_FR_SIZE='1100000'
 
-ARCHIVE_DOC1_PATH='tmp'
-ARCHIVE_DOC1_FILES='./*eula.txt'
-
-ARCHIVE_DOC2_PATH='app'
-ARCHIVE_DOC2_FILES='./*.chm ./*.pdf ./*.txt'
+ARCHIVE_DOC_DATA_PATH='app'
+ARCHIVE_DOC_DATA_FILES='./*.chm ./*.pdf ./*.txt'
 
 ARCHIVE_GAME_BIN_PATH='app'
 ARCHIVE_GAME_BIN_FILES='./*.exe ./binkw32.dll ./drvmgt.dll ./mss32.dll ./mp3dec.asi data/*.dll'
@@ -70,21 +67,19 @@ ARCHIVE_GAME_DATA_FILES='./data ./maps'
 DATA_DIRS='./games ./maps'
 DATA_FILES='./data/high_scores.dat ./*.log'
 
-APP_WINETRICKS='vd=1280x1024'
+APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
-APP_MAIN_EXE='./heroes4.exe'
-APP_MAIN_ICON='./heroes4.exe'
-APP_MAIN_ICON_RES='16 32'
+APP_MAIN_EXE='heroes4.exe'
+APP_MAIN_ICON='heroes4.exe'
 
 APP_EDITOR_TYPE='wine'
 APP_EDITOR_ID="${GAME_ID}_edit"
-APP_EDITOR_EXE='./campaign_editor.exe'
-APP_EDITOR_ICON='./campaign_editor.exe'
-APP_EDITOR_ICON_RES='48 64'
+APP_EDITOR_EXE='campaign_editor.exe'
+APP_EDITOR_ICON='campaign_editor.exe'
 APP_EDITOR_NAME="$GAME_NAME - campaign editor"
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_ID_GOG_EN="${PKG_DATA_ID}-en"
@@ -97,20 +92,31 @@ PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ID_GOG_EN="${PKG_BIN_ID}-en"
 PKG_BIN_ID_GOG_FR="${PKG_BIN_ID}-fr"
 PKG_BIN_PROVIDE="$PKG_BIN_ID"
-PKG_BIN_DEPS_DEB="$PKG_DATA_ID, winetricks, wine32-development | wine32 | wine-bin | wine-i386 | wine-staging-i386, wine:amd64 | wine"
-PKG_BIN_DEPS_ARCH="$PKG_DATA_ID winetricks wine"
+PKG_BIN_DEPS='winetricks wine xrandr'
+PKG_BIN_DEPS_GOG_EN="$PKG_DATA_ID_GOG_EN $PKG_BIN_DEPS"
+PKG_BIN_DEPS_GOG_FR="$PKG_DATA_ID_GOG_FR $PKG_BIN_DEPS"
 
 # Load common functions
 
-target_version='2.0'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
+	for path in\
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
+	do
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
 		exit 1
@@ -121,20 +127,14 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
-PKG='PKG_BIN'
-organize_data 'GAME_BIN' "$PATH_GAME"
-
-PKG='PKG_DATA'
-organize_data 'DOC1'      "$PATH_DOC"
-organize_data 'DOC2'      "$PATH_DOC"
-organize_data 'GAME_DATA' "$PATH_GAME"
-
-PKG='PKG_BIN'
-extract_and_sort_icons_from 'APP_MAIN' 'APP_EDITOR'
-move_icons_to 'PKG_DATA'
-
+prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Extract game icons
+
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN' 'APP_EDITOR'
+icons_move_to 'PKG_DATA'
 
 # Write launchers
 
