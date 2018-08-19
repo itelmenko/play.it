@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.3
+script_version=20180819.4
 
 # Set game-specific variables
 
@@ -76,6 +76,8 @@ ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./data ./modules/arcanum/maps ./modules/arcanum/saves'
 
+APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='arcanum.exe'
 APP_MAIN_OPTIONS='-no3d'
@@ -88,7 +90,7 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine"
+PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks xrandr"
 
 # Load common functions
 
