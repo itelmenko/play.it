@@ -76,13 +76,6 @@ pkg_write_gentoo() {
 	}
 	EOF
 
-	#if [ -n "$pkg_provide" ]; then
-	#	cat >> "$target" <<- EOF
-	#	conflict = $pkg_provide
-	#	provides = $pkg_provide
-	#	EOF
-	#fi
-
 	if [ -e "$postinst" ]; then
 		cat >> "$target" <<- EOF
 		pkg_postinst() {
