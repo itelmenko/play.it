@@ -6,12 +6,12 @@ pkg_write_gentoo() {
 	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 
 	local pkg_deps
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS\")" ]; then
-		pkg_set_deps_gentoo $(eval printf -- '%b' \"\$${pkg}_DEPS\")
+	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		pkg_set_deps_gentoo $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_GENTOO"
-	if [ "$(eval printf -- '%b' \"\$${pkg}_DEPS_GENTOO\")" ]; then
-		pkg_deps="$pkg_deps $(eval printf -- '%b' \"\$${pkg}_DEPS_GENTOO\")"
+	if [ "$(get_value "${pkg}_DEPS_GENTOO")" ]; then
+		pkg_deps="$pkg_deps $(get_value "${pkg}_DEPS_GENTOO")"
 	fi
 
 	if [ -n "$pkg_provide" ]; then
@@ -19,11 +19,11 @@ pkg_write_gentoo() {
 			if [ "$package" != "$pkg" ]; then
 				use_archive_specific_value "${package}_PROVIDE"
 				local provide
-				provide="$(eval printf -- '%b' \"\$${package}_PROVIDE\")"
+				provide="$(get_value "${package}_PROVIDE")"
 				if [ "$provide" = "$pkg_provide" ]; then
 					use_archive_specific_value "${pkg}_ID"
 					local package_id
-					package_id="$(eval printf -- '%b' \"\$${package}_ID\" | sed 's/-/_/g')"
+					package_id="$(get_value "${package}_ID" | sed 's/-/_/g')"
 					pkg_deps="$pkg_deps !!games-playit/$package_id"
 				fi
 			fi
@@ -102,7 +102,7 @@ pkg_write_gentoo() {
 pkg_set_deps_gentoo() {
 	use_archive_specific_value "${pkg}_ARCH"
 	local architecture
-	architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+	architecture="$(get_value "${pkg}_ARCH")"
 	local architecture_suffix
 	local architecture_suffix_use
 	case $architecture in
@@ -197,7 +197,7 @@ pkg_set_deps_gentoo() {
 			;;
 			('wine')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_gentoo 'wine32' ;;
 					('64') pkg_set_deps_gentoo 'wine64' ;;
@@ -211,7 +211,7 @@ pkg_set_deps_gentoo() {
 			;;
 			('wine-staging')
 				use_archive_specific_value "${pkg}_ARCH"
-				architecture="$(eval printf -- '%b' \"\$${pkg}_ARCH\")"
+				architecture="$(get_value "${pkg}_ARCH")"
 				case "$architecture" in
 					('32') pkg_set_deps_gentoo 'wine32-staging' ;;
 					('64') pkg_set_deps_gentoo 'wine64-staging' ;;
@@ -244,12 +244,12 @@ pkg_set_deps_gentoo() {
 				for pkg in $PACKAGES_LIST; do
 					use_archive_specific_value "${pkg}_PROVIDE"
 					local provide
-					provide="$(eval printf -- '%b' \"\$${pkg}_PROVIDE\")"
+					provide="$(get_value "${pkg}_PROVIDE")"
 					if [ "$provide" = "$dep" ]; then
 						has_provides=true
 						use_archive_specific_value "${pkg}_ID"
 						local pkg_id
-						pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
+						pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')"
 						pkg_dep="$pkg_dep games-playit/$pkg_id"
 					fi
 				done
@@ -289,7 +289,7 @@ pkg_build_gentoo() {
 	fi
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
-	pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
+	pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 	local pkg_version="$(printf '%s' "$PKG_VERSION" | grep -Eo '^([0-9]{1,18})(\.[0-9]{1,18})*[a-z]?' || echo 1)" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$pkg_version.ebuild"
 	ebuild "$ebuild_path" manifest

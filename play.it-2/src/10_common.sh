@@ -36,7 +36,7 @@ set_supported_architectures() {
 		('gentoo')
 			use_archive_specific_value "${1}_ARCH"
 			local architecture
-			architecture="$(eval printf -- '%b' \"\$${1}_ARCH\")"
+			architecture="$(get_value "${1}_ARCH")"
 			set_supported_architectures_gentoo "$architecture"
 		;;
 		(*)
