@@ -30,6 +30,7 @@ For everyone else:
 ```
 git clone https://framagit.org/vv221/play.it
 cd play.it
+make
 sudo make install
 ```
 

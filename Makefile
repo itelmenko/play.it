@@ -10,6 +10,7 @@ PANDOC := $(shell command -v pandoc 2> /dev/null)
 all: libplayit2.sh play.it.6
 
 libplayit2.sh: play.it-2/src/*
+	mkdir --parents play.it-2/lib
 	cat play.it-2/src/* > play.it-2/lib/libplayit2.sh
 
 %.6: %.6.md

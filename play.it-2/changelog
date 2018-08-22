@@ -1,3 +1,7 @@
+2.10.1
+
+  * Drop pre-built library from repository
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
