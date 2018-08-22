@@ -18,10 +18,12 @@ pkg_write_gentoo() {
 		for package in $PACKAGES_LIST; do
 			if [ "$package" != "$pkg" ]; then
 				use_archive_specific_value "${package}_PROVIDE"
-				local provide="$(eval printf -- '%b' \"\$${package}_PROVIDE\")"
+				local provide
+				provide="$(eval printf -- '%b' \"\$${package}_PROVIDE\")"
 				if [ "$provide" = "$pkg_provide" ]; then
 					use_archive_specific_value "${pkg}_ID"
-					local package_id="$(eval printf -- '%b' \"\$${package}_ID\" | sed 's/-/_/g')"
+					local package_id
+					package_id="$(eval printf -- '%b' \"\$${package}_ID\" | sed 's/-/_/g')"
 					pkg_deps="$pkg_deps !!games-playit/$package_id"
 				fi
 			fi
@@ -241,11 +243,13 @@ pkg_set_deps_gentoo() {
 				local has_provides=false
 				for pkg in $PACKAGES_LIST; do
 					use_archive_specific_value "${pkg}_PROVIDE"
-					local provide="$(eval printf -- '%b' \"\$${pkg}_PROVIDE\")"
+					local provide
+					provide="$(eval printf -- '%b' \"\$${pkg}_PROVIDE\")"
 					if [ "$provide" = "$dep" ]; then
 						has_provides=true
 						use_archive_specific_value "${pkg}_ID"
-						local pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
+						local pkg_id
+						pkg_id="$(eval printf -- '%b' \"\$${pkg}_ID\" | sed 's/-/_/g')"
 						pkg_dep="$pkg_dep games-playit/$pkg_id"
 					fi
 				done
