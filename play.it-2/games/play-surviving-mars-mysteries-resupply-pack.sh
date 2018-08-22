@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180807.1
+script_version=20180822.1
 
 # Set game-specific variables
 
@@ -51,17 +51,17 @@ ARCHIVE_GOG_VERSION='22763'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_mysteries_resupply_pack'
 
-ARCHIVE_GOG_OLD='surviving_mars_mysteries_resupply_pack_en_180619_curiosity_hotfix_3_21661.sh'
-ARCHIVE_GOG_OLD_MD5='fd7ef79614de264ac4eb2a1e431d64bf'
-ARCHIVE_GOG_OLD_SIZE='2900'
-ARCHIVE_GOG_OLD_VERSION='3-gog21661'
-ARCHIVE_GOG_OLD_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD1='surviving_mars_mysteries_resupply_pack_en_180619_curiosity_hotfix_3_21661.sh'
+ARCHIVE_GOG_OLD1_MD5='fd7ef79614de264ac4eb2a1e431d64bf'
+ARCHIVE_GOG_OLD1_SIZE='2900'
+ARCHIVE_GOG_OLD1_VERSION='3-gog21661'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLDER='surviving_mars_mysteries_resupply_pack_en_curiosity_2_21442.sh'
-ARCHIVE_GOG_OLDER_MD5='9ca47c2cdb5a41cf8b221dca99783916'
-ARCHIVE_GOG_OLDER_SIZE='2900'
-ARCHIVE_GOG_OLDER_VERSION='2-gog21442'
-ARCHIVE_GOG_OLDER_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD0='surviving_mars_mysteries_resupply_pack_en_curiosity_2_21442.sh'
+ARCHIVE_GOG_OLD0_MD5='9ca47c2cdb5a41cf8b221dca99783916'
+ARCHIVE_GOG_OLD0_SIZE='2900'
+ARCHIVE_GOG_OLD0_VERSION='2-gog21442'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='./*'
@@ -76,7 +76,7 @@ PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
