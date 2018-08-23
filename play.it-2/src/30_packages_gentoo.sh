@@ -290,7 +290,8 @@ pkg_build_gentoo() {
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
 	pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
-	local pkg_version="$(printf '%s' "$PKG_VERSION" | grep -Eo '^([0-9]{1,18})(\.[0-9]{1,18})*[a-z]?' || echo 1)" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
+	local pkg_version
+	pkg_version="$(printf '%s' "$PKG_VERSION" | grep -Eo '^([0-9]{1,18})(\.[0-9]{1,18})*[a-z]?' || echo 1)" # Portage doesn't like some of our version names (See https://devmanual.gentoo.org/ebuild-writing/file-format/index.html)
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$pkg_version.ebuild"
 	ebuild "$ebuild_path" manifest
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" BINPKG_COMPRESS="$OPTION_COMPRESSION" fakeroot-ng -- ebuild "$ebuild_path" package
