@@ -2,6 +2,8 @@
 
   * Drop pre-built library from repository
 
+  * make install: Use different default paths if not run as root
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
