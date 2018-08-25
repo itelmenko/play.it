@@ -35,24 +35,30 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180818.4
+script_version=20180825.1
 
 # Set game-specific variables
 
 GAME_ID='human-resource-machine'
-GAME_NAME='Human resource machine'
+GAME_NAME='Human Resource Machine'
 
-ARCHIVE_GOG='gog_human_resource_machine_2.0.0.2.sh'
+ARCHIVE_GOG='gog_human_resource_machine_2.0.0.3.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/human_resource_machine'
-ARCHIVE_GOG_MD5='35bc19839c73ddf4b503c58a0a887f98'
-ARCHIVE_GOG_VERSION='1.0-gog2.0.0.2'
+ARCHIVE_GOG_MD5='4670105392afc503b880c78d56a2f1ad'
+ARCHIVE_GOG_VERSION='2016.03.23-gog2.0.0.3'
 ARCHIVE_GOG_SIZE='74000'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='gog_human_resource_machine_2.0.0.2.sh'
+ARCHIVE_GOG_OLD0_MD5='35bc19839c73ddf4b503c58a0a887f98'
+ARCHIVE_GOG_OLD0_VERSION='2016.03.23-gog2.0.0.2'
+ARCHIVE_GOG_OLD0_SIZE='74000'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC0_DATA_PATH='./*.txt'
 ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_PATH='LICENSE.txt README.linux'
+ARCHIVE_DOC1_DATA_PATH='./LICENSE.txt ./README.linux'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN32_FILES='./HumanResourceMachine.bin.x86'
@@ -110,9 +116,7 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
 prepare_package_layout
-
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
