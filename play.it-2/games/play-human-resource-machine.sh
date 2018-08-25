@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180825.1
+script_version=20180825.2
 
 # Set game-specific variables
 
@@ -56,9 +56,9 @@ ARCHIVE_GOG_OLD0_SIZE='74000'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_PATH='./*.txt'
+ARCHIVE_DOC0_DATA_FILES='./*.txt'
 ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_PATH='./LICENSE.txt ./README.linux'
+ARCHIVE_DOC1_DATA_FILES='./LICENSE.txt ./README.linux'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN32_FILES='./HumanResourceMachine.bin.x86'
