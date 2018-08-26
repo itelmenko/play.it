@@ -11,6 +11,8 @@
   * write_bin_build_wine: Always sleep 1 second after using winetricks, as
     some tweaks won’t apply directly if the game is called to quickly
 
+  * Set input field separator to default value (space, tab, newline)
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
