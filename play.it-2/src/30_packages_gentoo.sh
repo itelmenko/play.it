@@ -75,6 +75,7 @@ pkg_write_gentoo() {
 	}
 	src_install() {
 		cp -Rl \$FILESDIR/install/* \$ED/
+		fowners --recursive root:root /
 	}
 	EOF
 
