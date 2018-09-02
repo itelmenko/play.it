@@ -34,12 +34,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180901.4
+script_version=20180902.1
 
 # Set game-specific variables
 
 GAME_ID='neverwinter-nights'
-GAME_NAME='Neverwtiner Nights'
+GAME_NAME='Neverwinter Nights'
 
 ARCHIVES_LIST='ARCHIVE_GOG_DE ARCHIVE_GOG_EN ARCHIVE_GOG_ES ARCHIVE_GOG_FR ARCHIVE_GOG_PL'
 
