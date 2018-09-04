@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180902.1
+script_version=20180904.1
 
 # Set game-specific variables
 
@@ -211,16 +211,19 @@ archive_set 'ARCHIVE_LINUX_CLIENT_PATCH' "$ARCHIVE_PATCH"
 ARCHIVE="$ARCHIVE_MAIN"
 
 # Check presence of NWMovies archive
+# NWMovies won’t be included in Arch Linux packages until this bug is fixed: https://framagit.org/vv221/play.it-games/issues/45
 
-ARCHIVE_MAIN="$ARCHIVE"
-archive_set 'ARCHIVE_MOVIES' 'ARCHIVE_NWMOVIES'
-ARCHIVE="$ARCHIVE_MAIN"
-if [ "$ARCHIVE_MOVIES" ]; then
-	APP_MAIN_PRERUN="$APP_MAIN_PRERUN_NWMOVIES"
-	PKG_BIN_DEPS="$PKG_BIN_DEPS $PKG_BIN_DEPS_NWMOVIES"
-	PKG_BIN_DEPS_ARCH="$PKG_BIN_DEPS_NWMOVIES_ARCH"
-	PKG_BIN_DEPS_DEB="$PKG_BIN_DEPS_NWMOVIES_DEB"
-	PKG_BIN_DEPS_GENTOO="$PKG_BIN_DEPS_NWMOVIES_GENTOO"
+if [ "$OPTION_PACKAGE" != 'arch' ]; then
+	ARCHIVE_MAIN="$ARCHIVE"
+	archive_set 'ARCHIVE_MOVIES' 'ARCHIVE_NWMOVIES'
+	ARCHIVE="$ARCHIVE_MAIN"
+	if [ "$ARCHIVE_MOVIES" ]; then
+		APP_MAIN_PRERUN="$APP_MAIN_PRERUN_NWMOVIES"
+		PKG_BIN_DEPS="$PKG_BIN_DEPS $PKG_BIN_DEPS_NWMOVIES"
+		PKG_BIN_DEPS_ARCH="$PKG_BIN_DEPS_NWMOVIES_ARCH"
+		PKG_BIN_DEPS_DEB="$PKG_BIN_DEPS_NWMOVIES_DEB"
+		PKG_BIN_DEPS_GENTOO="$PKG_BIN_DEPS_NWMOVIES_GENTOO"
+	fi
 fi
 
 # Extract game data
