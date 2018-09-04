@@ -1,5 +1,7 @@
 .PHONY: all
 
+UID := $(shell id --user)
+
 ifeq ($(UID),0)
     prefix = /usr/local
     bindir = $(prefix)/games
