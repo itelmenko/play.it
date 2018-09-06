@@ -17,6 +17,6 @@ print_instructions_gentoo() {
 		fi
 		printf "$str_format" "$pkg_path"
 	done
-	printf ' # %s\n' 'https://ptpb.pw/W1m8'
+	printf ' # %s\n' 'https://www.dotslashplay.it/ressources/gentoo/'
 }
 
