@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180906.2
+script_version=20180906.3
 
 # Set game-specific variables
 
@@ -77,7 +77,7 @@ APP_MAIN_EXE_BIN64='./Ziggurat.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='Ziggurat_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
