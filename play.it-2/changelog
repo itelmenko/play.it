@@ -13,6 +13,8 @@
 
   * Set input field separator to default value (space, tab, newline)
 
+  * write_bin_run_native: Remove unneeded duplicated code
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
