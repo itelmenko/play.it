@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, BetaRays
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,52 +30,41 @@ set -o errexit
 ###
 
 ###
-# Ziggurat
+# Nightmares From the Deep: The Siren’s Call
 # build native Linux packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180906.3
+script_version=20180908.1
 
 # Set game-specific variables
 
-GAME_ID='ziggurat'
-GAME_NAME='Ziggurat'
+GAME_ID='nightmares-from-the-deep-2'
+GAME_NAME='Nightmares From the Deep 2: The Siren’s Call'
 
-ARCHIVE_HUMBLE='ZigguratLinux.tar.gz'
-ARCHIVE_HUMBLE_MD5='f990c99e4351b1ae465d551f0c5030be'
-ARCHIVE_HUMBLE_SIZE='1200000'
-ARCHIVE_HUMBLE_VERSION='1.0-humble1'
-
-ARCHIVE_GOG='gog_ziggurat_2.3.0.5.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/ziggurat'
-ARCHIVE_GOG_MD5='3b5ac4a4fd7470d04f72680d8cce8b09'
+ARCHIVE_GOG='nightmares_from_the_deep_2_the_siren_s_call_en_gog_1_22645.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/nightmares_from_the_deep_2_the_sirens_call'
+ARCHIVE_GOG_MD5='668260739c20276cfaac8dc3c6efdbb6'
 ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='1.0-gog2.3.0.5'
+ARCHIVE_GOG_VERSION='1.0-gog22645'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*.txt'
+ARCHIVE_DOC_PATH='data/noarch/docs'
+ARCHIVE_DOC_FILES='./*'
 
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='.'
-ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./*.x86 ./*_Data/*/x86'
+ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='./NightmaresFromTheDeep_TheSirensCall_i386'
 
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='.'
-ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./*.x86_64 ./*_Data/*/x86_64'
+ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='./NightmaresFromTheDeep_TheSirensCall_amd64'
 
-ARCHIVE_GAME_DATA_PATH_HUMBLE='.'
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*_Data'
-
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='./Game.cub ./Game_en.cub ./game.json ./Game ./out'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Ziggurat.x86'
-APP_MAIN_EXE_BIN64='./Ziggurat.x86_64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Ziggurat_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE_BIN32='NightmaresFromTheDeep_TheSirensCall_i386'
+APP_MAIN_EXE_BIN64='NightmaresFromTheDeep_TheSirensCall_amd64'
+APP_MAIN_ICON='data/noarch/support/icon.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
@@ -83,7 +72,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc glu xcursor libxrandr"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -119,9 +108,12 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
 prepare_package_layout
 
+# Get icon
+
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -132,15 +124,12 @@ done
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
 
-rm --recursive "${PLAYIT_WORKDIR}"
+rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 

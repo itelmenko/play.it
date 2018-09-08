@@ -1,3 +1,20 @@
+2.10.1
+
+  * Drop pre-built library from repository
+
+  * make install: Use different default paths if not run as root
+
+  * Arch Linux: Add missing package to generic dependency 'gcc32'
+
+  * archive_extraction_innosetup: Hide innoextract warnings during extraction
+
+  * write_bin_build_wine: Always sleep 1 second after using winetricks, as
+    some tweaks won’t apply directly if the game is called to quickly
+
+  * Set input field separator to default value (space, tab, newline)
+
+  * write_bin_run_native: Remove unneeded duplicated code
+
 2.10.0
 
   * get_tmp_dir: New function allowing to set a temporary working directory by
