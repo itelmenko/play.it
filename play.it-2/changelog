@@ -1,3 +1,8 @@
+2.10.2
+
+  * write_bin_run_native: Restore pre-2.10.1 version, as the 2.10.1 fix has
+    unexpected side effects
+
 2.10.1
 
   * Drop pre-built library from repository
