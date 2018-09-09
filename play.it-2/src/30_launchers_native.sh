@@ -20,7 +20,6 @@ write_bin_set_native_noprefix() {
 
 # write launcher script - run the native game
 # USAGE: write_bin_run_native
-# CALLS: write_bin_run_native_noprefix
 # CALLED BY: write_bin
 write_bin_run_native() {
 	cat >> "$file" <<- 'EOF'
@@ -37,13 +36,25 @@ write_bin_run_native() {
 	  cp --parents --dereference --remove-destination "$APP_EXE" "$PATH_PREFIX"
 	)
 
+	# Run the game
+
+	cd "$PATH_PREFIX"
 	EOF
-	write_bin_run_native_noprefix
+
+	if [ "$app_prerun" ]; then
+		cat >> "$file" <<- EOF
+		$app_prerun
+		EOF
+	fi
+
+	cat >> "$file" <<- 'EOF'
+	"./$APP_EXE" $APP_OPTIONS $@
+	EOF
 }
 
 # write launcher script - run the native game (no prefix)
 # USAGE: write_bin_run_native_noprefix
-# CALLED BY: write_bin write_bin_run_native
+# CALLED BY: write_bin
 write_bin_run_native_noprefix() {
 	cat >> "$file" <<- 'EOF'
 	# Run the game
