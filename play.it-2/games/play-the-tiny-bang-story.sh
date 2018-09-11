@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180829.1
+script_version=20180911.1
 
 # Set game-specific variables
 
 GAME_ID='the-tiny-bang-story'
 GAME_NAME='The Tiny Bang Story'
 
-ARCHIVE_GOG='setup_the_tiny_bang_story_gog-1_(22449).exe'
+ARCHIVE_GOG='setup_the_tiny_bang_story_gog-1(a)_(23028).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/the_tiny_bang_story'
-ARCHIVE_GOG_MD5='7b4e54787f46f81242e39f16f75fd8f0'
-ARCHIVE_GOG_SIZE='190000'
-ARCHIVE_GOG_VERSION='1.0-gog22449'
+ARCHIVE_GOG_MD5='a416471e10da3b374f4f43664cc4f179'
+ARCHIVE_GOG_SIZE='200000'
+ARCHIVE_GOG_VERSION='1.0-gog23028'
 ARCHIVE_GOG_TYPE='innosetup1.7'
+
+ARCHIVE_GOG_OLD0='setup_the_tiny_bang_story_gog-1_(22449).exe'
+ARCHIVE_GOG_OLD0_MD5='7b4e54787f46f81242e39f16f75fd8f0'
+ARCHIVE_GOG_OLD0_SIZE='190000'
+ARCHIVE_GOG_OLD0_VERSION='1.0-gog22449'
+ARCHIVE_GOG_OLD0_TYPE='innosetup1.7'
 
 ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='game.exe'
@@ -74,26 +80,25 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
