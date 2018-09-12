@@ -30,60 +30,52 @@ set -o errexit
 ###
 
 ###
-# Epistory - Typing Chronicles
+# MechaNika
 # build native Linux packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180912.2
+script_version=20180912.1
 
 # Set game-specific variables
 
-GAME_ID='epistory-typing-chronicles'
-GAME_NAME='Epistory - Typing Chronicles'
+GAME_ID='mechanika'
+GAME_NAME='MechaNika'
 
-ARCHIVE_GOG='epistory_typing_chronicles_en_1_4_0_21518.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/epistory_typing_chronicles'
-ARCHIVE_GOG_MD5='bf54d1235b4b02be0a90eeccce64e9a5'
-ARCHIVE_GOG_SIZE='1300000'
-ARCHIVE_GOG_VERSION='1.4.0-gog21518'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVES_LIST='ARCHIVE_HUMBLE_32 ARCHIVE_HUMBLE_64'
 
-ARCHIVE_GOG_OLD0='gog_epistory_typing_chronicles_2.2.0.3.sh'
-ARCHIVE_GOG_OLD0_MD5='8db1f835a9189099e57c174ba2353f53'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.3.5-gog2.2.0.3'
+ARCHIVE_HUMBLE_32='MechaNika_linux32_1.1.10.zip'
+ARCHIVE_HUMBLE_32_URL='https://www.humblebundle.com/store/mechanika'
+ARCHIVE_HUMBLE_32_MD5='177e488fd1fde7efd89b7bb5a86fe49e'
+ARCHIVE_HUMBLE_32_SIZE='220000'
+ARCHIVE_HUMBLE_32_VERSION='1.1.10-humble160417'
 
-ARCHIVE_DOC_PATH='data/noarch/docs'
-ARCHIVE_DOC_FILES='*'
+ARCHIVE_HUMBLE_64='MechaNika_linux64_1.1.10.zip'
+ARCHIVE_HUMBLE_64_URL='https://www.humblebundle.com/store/mechanika'
+ARCHIVE_HUMBLE_64_MD5='20fecb0fb6e7324c7c8d4b40040ed434'
+ARCHIVE_HUMBLE_64_SIZE='220000'
+ARCHIVE_HUMBLE_64_VERSION='1.1.10-humble160417'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='*.x86 *_Data/*/x86'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='MechaNika jre/lib/jexec jre/lib/i386 jre/lib/amd64 jre/lib/*.jar jre/lib/*/*.jar'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='*.x86_64 *_Data/*/x86_64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*_Data'
-
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='config.json jre MechaNika.jar'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Epistory.x86'
-APP_MAIN_EXE_BIN64='./Epistory.x86_64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Epistory_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE='MechaNika'
+APP_MAIN_ICONS_LIST='APP_MAIN_ICON_32 APP_MAIN_ICON_128'
+APP_MAIN_ICON_32='graphics/icons/mechanika_icon_32.png'
+APP_MAIN_ICON_128='graphics/icons/mechanika_icon_128.png'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx xcursor libxrandr"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH_HUMBLE_32='32'
+PKG_BIN_ARCH_HUMBLE_64='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++"
 
 # Load common functions
 
@@ -118,23 +110,32 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
+# Get icons
+
+(
+	ARCHIVE='ARCHIVE_JAVA'
+	ARCHIVE_JAVA="${PKG_DATA_PATH}${PATH_GAME}/MechaNika.jar"
+	ARCHIVE_JAVA_TYPE='zip'
+	extract_data_from "$ARCHIVE_JAVA"
+)
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
 PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
 
-rm --recursive "${PLAYIT_WORKDIR}"
+rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 

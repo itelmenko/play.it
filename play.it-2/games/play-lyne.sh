@@ -30,49 +30,54 @@ set -o errexit
 ###
 
 ###
-# Epistory - Typing Chronicles
+# Lyne
 # build native Linux packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180912.2
+script_version=20180912.1
 
 # Set game-specific variables
 
-GAME_ID='epistory-typing-chronicles'
-GAME_NAME='Epistory - Typing Chronicles'
+GAME_ID='lyne'
+GAME_NAME='Lyne'
 
-ARCHIVE_GOG='epistory_typing_chronicles_en_1_4_0_21518.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/epistory_typing_chronicles'
-ARCHIVE_GOG_MD5='bf54d1235b4b02be0a90eeccce64e9a5'
-ARCHIVE_GOG_SIZE='1300000'
-ARCHIVE_GOG_VERSION='1.4.0-gog21518'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_HUMBLE='LYNE_120_lin.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/lyne'
+ARCHIVE_HUMBLE_MD5='f05951586a5b8cf42e20e0e6f04e65da'
+ARCHIVE_HUMBLE_SIZE='110000'
+ARCHIVE_HUMBLE_VERSION='1.2.0.30-humble171211'
+ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_GOG_OLD0='gog_epistory_typing_chronicles_2.2.0.3.sh'
-ARCHIVE_GOG_OLD0_MD5='8db1f835a9189099e57c174ba2353f53'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.3.5-gog2.2.0.3'
+ARCHIVE_DOC_PATH='LYNE_120_lin'
+ARCHIVE_DOC_FILES='readme.txt'
 
-ARCHIVE_DOC_PATH='data/noarch/docs'
-ARCHIVE_DOC_FILES='*'
+ARCHIVE_GAME_BIN32_PATH='LYNE_120_lin'
+ARCHIVE_GAME_BIN32_FILES='LYNE.x86 LYNE_Data/*/x86'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='*.x86 *_Data/*/x86'
+ARCHIVE_GAME_BIN64_PATH='LYNE_120_lin'
+ARCHIVE_GAME_BIN64_FILES='LYNE.x86_64 LYNE_Data/*/x86_64'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='*.x86_64 *_Data/*/x86_64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*_Data'
+ARCHIVE_GAME_DATA_PATH='LYNE_120_lin'
+ARCHIVE_GAME_DATA_FILES='LYNE_Data'
 
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Epistory.x86'
-APP_MAIN_EXE_BIN64='./Epistory.x86_64'
+APP_MAIN_PRERUN='file="$HOME/.config/unity3d/Thomas Bowker/LYNE/prefs"
+if [ ! -e "$file" ]; then
+	mkdir --parents "${file%/*}"
+	cat > "$file" <<- EOF
+		<unity_prefs version_major="1" version_minor="1">
+		<pref name="Screenmanager Is Fullscreen mode" type="int">0</pref>
+		</unity_prefs>
+	EOF
+fi
+export LANG=C'
+APP_MAIN_EXE_BIN32='LYNE.x86'
+APP_MAIN_EXE_BIN64='LYNE.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Epistory_Data/Resources/UnityPlayer.png'
+APP_MAIN_ICON='LYNE_Data/Resources/UnityPlayer.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
@@ -80,7 +85,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx xcursor libxrandr"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ gtk2"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -134,7 +139,7 @@ build_pkg
 
 # Clean up
 
-rm --recursive "${PLAYIT_WORKDIR}"
+rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 

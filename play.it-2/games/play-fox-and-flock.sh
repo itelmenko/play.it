@@ -30,60 +30,57 @@ set -o errexit
 ###
 
 ###
-# Epistory - Typing Chronicles
+# Fox & Flock
 # build native Linux packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180912.2
+script_version=20180912.1
 
 # Set game-specific variables
 
-GAME_ID='epistory-typing-chronicles'
-GAME_NAME='Epistory - Typing Chronicles'
+SCRIPT_DEPS='convert'
 
-ARCHIVE_GOG='epistory_typing_chronicles_en_1_4_0_21518.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/epistory_typing_chronicles'
-ARCHIVE_GOG_MD5='bf54d1235b4b02be0a90eeccce64e9a5'
-ARCHIVE_GOG_SIZE='1300000'
-ARCHIVE_GOG_VERSION='1.4.0-gog21518'
-ARCHIVE_GOG_TYPE='mojosetup'
+GAME_ID='fox-and-flock'
+GAME_NAME='Fox & Flock'
 
-ARCHIVE_GOG_OLD0='gog_epistory_typing_chronicles_2.2.0.3.sh'
-ARCHIVE_GOG_OLD0_MD5='8db1f835a9189099e57c174ba2353f53'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.3.5-gog2.2.0.3'
+ARCHIVES_LIST='ARCHIVE_HUMBLE_32 ARCHIVE_HUMBLE_64'
 
-ARCHIVE_DOC_PATH='data/noarch/docs'
-ARCHIVE_DOC_FILES='*'
+ARCHIVE_HUMBLE_32='ff-linux-32.zip'
+ARCHIVE_HUMBLE_32_URL='https://www.humblebundle.com/store/fox-flock'
+ARCHIVE_HUMBLE_32_MD5='6e0dee8044a05ee5bfef8a9885f3f456'
+ARCHIVE_HUMBLE_32_SIZE='320000'
+ARCHIVE_HUMBLE_32_VERSION='1.0.0-humble1'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='*.x86 *_Data/*/x86'
+ARCHIVE_HUMBLE_64='ff-linux-64.zip'
+ARCHIVE_HUMBLE_64_URL='https://www.humblebundle.com/store/fox-flock'
+ARCHIVE_HUMBLE_64_MD5='d0c5d87d2415f4eb49c591612e877f42'
+ARCHIVE_HUMBLE_64_SIZE='310000'
+ARCHIVE_HUMBLE_64_VERSION='1.0.0-humble1'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='*.x86_64 *_Data/*/x86_64'
+ARCHIVE_GAME_BIN_PATH='Fox and Flock'
+ARCHIVE_GAME_BIN_FILES='foxandflock libffmpegsumo.so nw.pak'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*_Data'
-
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='Fox and Flock'
+ARCHIVE_GAME_DATA_FILES='dist icudtl.dat locales package.json'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Epistory.x86'
-APP_MAIN_EXE_BIN64='./Epistory.x86_64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Epistory_Data/Resources/UnityPlayer.png'
+APP_MAIN_LIBS='.'
+APP_MAIN_EXE='foxandflock'
+APP_MAIN_ICON='dist/img/icon.png'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_DATA PKG_BIN'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx xcursor libxrandr"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH_HUMBLE_32='32'
+PKG_BIN_ARCH_HUMBLE_64='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ libxrandr xcursor nss gconf gtk2"
+PKG_BIN_DEPS_ARCH_HUMBLE_32='lib32-libnotify'
+PKG_BIN_DEPS_ARCH_HUMBLE_64='libnotify'
+PKG_BIN_DEPS_DEB='libnotify4'
+PKG_BIN_DEPS_GENTOO='' #TODO
 
 # Load common functions
 
@@ -115,26 +112,32 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
+# Convert icon to standard resolutions
+
+source="${PKG_DATA_PATH}${PATH_GAME}/$APP_MAIN_ICON"
+for resolution in '128x128' '256x256'; do
+	destination="${PKG_DATA_PATH}${PATH_ICON_BASE}/$resolution/apps/$GAME_ID.png"
+	mkdir --parents "${destination%/*}"
+	convert "$source" -resize "$resolution" "$destination"
+done
+
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
 
-rm --recursive "${PLAYIT_WORKDIR}"
+rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
