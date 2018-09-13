@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180913.1
+script_version=20180913.2
 
 # Set game-specific variables
 
@@ -66,7 +66,7 @@ ARCHIVE_GAME_DATA_FILES='*.bin *.dat *.nw *.pak locales'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='nw'
-APP_MAIN_LIB='lib'
+APP_MAIN_LIBS='lib'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN'
 
