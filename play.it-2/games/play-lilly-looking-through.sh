@@ -30,52 +30,44 @@ set -o errexit
 ###
 
 ###
-# Dreaming Sarah
+# Lilly Looking Through
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180913.2
+script_version=20180913.1
 
 # Set game-specific variables
 
-GAME_ID='dreaming-sarah'
-GAME_NAME='Dreaming Sarah'
+SCRIPT_DEPS='icotool'
 
-ARCHIVES_LIST='ARCHIVE_HUMBLE_32 ARCHIVE_HUMBLE_64'
+GAME_ID='lilly-looking-through'
+GAME_NAME='Lilly Looking Through'
 
-ARCHIVE_HUMBLE_32='DreamingSarah-linux32_1.3.zip'
-ARCHIVE_HUMBLE_32_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_32_MD5='73682a545e979ad9a2b6123222ddb517'
-ARCHIVE_HUMBLE_32_SIZE='200000'
-ARCHIVE_HUMBLE_32_VERSION='1.3-humble1'
+ARCHIVE_GOG='setup_lilly_looking_through_1.1.50_(21178).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/lilly_looking_through'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_MD5='a3318d6a5a5abfe946293c9e745f1fd9'
+ARCHIVE_GOG_SIZE='400000'
+ARCHIVE_GOG_VERSION='1.1.50-gog21178'
 
-ARCHIVE_HUMBLE_64='DreamingSarah-linux64_1.3.zip'
-ARCHIVE_HUMBLE_64_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_64_MD5='a68f3956eb09ea7b34caa20f6e89b60c'
-ARCHIVE_HUMBLE_64_SIZE='200000'
-ARCHIVE_HUMBLE_64_VERSION='1.3-humble1'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='adobe?air app/adobe?air lillylookingthrough.exe lilly.swf'
 
-ARCHIVE_GAME_BIN_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_BIN_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_BIN_FILES='lib nacl_helper* nw'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='meta-inf mimetype pkmedia'
 
-ARCHIVE_GAME_DATA_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_DATA_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_DATA_FILES='*.bin *.dat *.nw *.pak locales'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='lillylookingthrough.exe'
+APP_MAIN_ICON='app/goggame-1207659903.ico'
 
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE='nw'
-APP_MAIN_LIBS='lib'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH_HUMBLE_32='32'
-PKG_BIN_ARCH_HUMBLE_64='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ libxrandr xcursor nss gconf gtk2"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
@@ -108,6 +100,17 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+
+# Work around "insufficient image data" issue with convert from imagemagick
+icon_extract_png_from_ico() {
+	[ "$DRY_RUN" = '1' ] && return 0
+	icotool --extract --output="$2" "$1" 2>/dev/null
+}
+
+# Extract icons
+
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers

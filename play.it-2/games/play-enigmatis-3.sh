@@ -30,52 +30,52 @@ set -o errexit
 ###
 
 ###
-# Dreaming Sarah
+# Enigmatis 3: The Shadow of Karkhala
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180913.2
+script_version=20180913.1
 
 # Set game-specific variables
 
-GAME_ID='dreaming-sarah'
-GAME_NAME='Dreaming Sarah'
+GAME_ID='enigmatis-3'
+GAME_NAME='Enigmatis 3: The Shadow of Karkhala'
 
-ARCHIVES_LIST='ARCHIVE_HUMBLE_32 ARCHIVE_HUMBLE_64'
+ARCHIVE_GOG='enigmatis_3_the_shadow_of_karkhala_en_gog_1_22690.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/enigmatis_3_the_shadow_of_karkhala'
+ARCHIVE_GOG_MD5='2a140d0ad6e3de74484d105c02959940'
+ARCHIVE_GOG_SIZE='3000000'
+ARCHIVE_GOG_VERSION='1.0-gog22690'
+ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_HUMBLE_32='DreamingSarah-linux32_1.3.zip'
-ARCHIVE_HUMBLE_32_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_32_MD5='73682a545e979ad9a2b6123222ddb517'
-ARCHIVE_HUMBLE_32_SIZE='200000'
-ARCHIVE_HUMBLE_32_VERSION='1.3-humble1'
+ARCHIVE_DOC_PATH='data/noarch/docs'
+ARCHIVE_DOC_FILES='*'
 
-ARCHIVE_HUMBLE_64='DreamingSarah-linux64_1.3.zip'
-ARCHIVE_HUMBLE_64_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_64_MD5='a68f3956eb09ea7b34caa20f6e89b60c'
-ARCHIVE_HUMBLE_64_SIZE='200000'
-ARCHIVE_HUMBLE_64_VERSION='1.3-humble1'
+ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='Enigmatis3_i386'
 
-ARCHIVE_GAME_BIN_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_BIN_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_BIN_FILES='lib nacl_helper* nw'
+ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='Enigmatis3_amd64'
 
-ARCHIVE_GAME_DATA_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_DATA_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_DATA_FILES='*.bin *.dat *.nw *.pak locales'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='Game* game.json out'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='nw'
-APP_MAIN_LIBS='lib'
+APP_MAIN_EXE_BIN32='Enigmatis3_i386'
+APP_MAIN_EXE_BIN64='Enigmatis3_amd64'
+APP_MAIN_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH_HUMBLE_32='32'
-PKG_BIN_ARCH_HUMBLE_64='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ libxrandr xcursor nss gconf gtk2"
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
@@ -108,12 +108,18 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+
+# Get game icon
+
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	write_launcher 'APP_MAIN'
+done
 
 # Build package
 

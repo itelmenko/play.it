@@ -30,52 +30,47 @@ set -o errexit
 ###
 
 ###
-# Dreaming Sarah
+# Cornerstone: The Song of Tyrim
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180913.2
+script_version=20180913.1
 
 # Set game-specific variables
 
-GAME_ID='dreaming-sarah'
-GAME_NAME='Dreaming Sarah'
+GAME_ID='cornerstone-the-song-of-tyrim'
+GAME_NAME='Cornerstone: The Song of Tyrim'
 
-ARCHIVES_LIST='ARCHIVE_HUMBLE_32 ARCHIVE_HUMBLE_64'
+ARCHIVE_HUMBLE='Cornerstone_1.00_Linux.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/cornerstone-the-song-of-tyrim'
+ARCHIVE_HUMBLE_MD5='ba8e257c18d3606d4b7e4295be893b9c'
+ARCHIVE_HUMBLE_SIZE='2400000'
+ARCHIVE_HUMBLE_VERSION='1.00-humble160425'
+ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_HUMBLE_32='DreamingSarah-linux32_1.3.zip'
-ARCHIVE_HUMBLE_32_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_32_MD5='73682a545e979ad9a2b6123222ddb517'
-ARCHIVE_HUMBLE_32_SIZE='200000'
-ARCHIVE_HUMBLE_32_VERSION='1.3-humble1'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='Cornerstone.x86 Cornerstone_Data/*/x86'
 
-ARCHIVE_HUMBLE_64='DreamingSarah-linux64_1.3.zip'
-ARCHIVE_HUMBLE_64_URL='https://www.humblebundle.com/store/dreaming-sarah'
-ARCHIVE_HUMBLE_64_MD5='a68f3956eb09ea7b34caa20f6e89b60c'
-ARCHIVE_HUMBLE_64_SIZE='200000'
-ARCHIVE_HUMBLE_64_VERSION='1.3-humble1'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='Cornerstone_Data'
 
-ARCHIVE_GAME_BIN_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_BIN_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_BIN_FILES='lib nacl_helper* nw'
-
-ARCHIVE_GAME_DATA_PATH_HUMBLE_32='DreamingSarah-linux32'
-ARCHIVE_GAME_DATA_PATH_HUMBLE_64='DreamingSarah-linux64'
-ARCHIVE_GAME_DATA_FILES='*.bin *.dat *.nw *.pak locales'
+DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='nw'
-APP_MAIN_LIBS='lib'
+APP_MAIN_PRERUN='pulseaudio --start
+export LANG=C'
+APP_MAIN_EXE='Cornerstone.x86'
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='Cornerstone_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH_HUMBLE_32='32'
-PKG_BIN_ARCH_HUMBLE_64='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ libxrandr xcursor nss gconf gtk2"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor pulseaudio alsa"
 
 # Load common functions
 
@@ -117,7 +112,10 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up
