@@ -2,8 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2018, VA
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,52 +30,50 @@ set -o errexit
 ###
 
 ###
-# Hacknet
-# build native Linux packages from the original installers
-# send your bug reports to dev+playit@indigo.re
+# Moon Hunters
+# build native packages from the original installers
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180915.2
+script_version=20180914.1
 
 # Set game-specific variables
 
-GAME_ID='hacknet'
-GAME_NAME='Hacknet'
+GAME_ID='moon-hunters'
+GAME_NAME='Moon Hunters'
 
-ARCHIVE_GOG='hacknet_en_5_069_15083.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/hacknet'
-ARCHIVE_GOG_MD5='305d230cad47d696e4141320189cd4bc'
-ARCHIVE_GOG_SIZE='350000'
-ARCHIVE_GOG_VERSION='5.069-gog15083'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_HUMBLE='MoonHunters.DRMFree.Linux.2.0.3483.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/moon-hunters'
+ARCHIVE_HUMBLE_MD5='ce446f42f52e8ecc3bc0d7f174d514e6'
+ARCHIVE_HUMBLE_SIZE='1900000'
+ARCHIVE_HUMBLE_VERSION='2.0.3483-humble171230'
+ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_GAME_BIN32_PATH='.'
+ARCHIVE_GAME_BIN32_FILES='MoonHunters.x86 MoonHunters_Data/*/x86'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./*.bin.x86 ./lib/libcef.so ./lib/libCSteamworks.so ./lib/libjpeg.so.62 ./lib/libmojoshader.so ./lib/libmono-2.0.so.1 ./lib/libogg.so.0 ./lib/libopenal.so.1 ./lib/libpng15.so.15 ./lib/libSDL2-2.0.so.0 ./lib/libSDL2_image-2.0.so.0 ./lib/libsteam_api.so ./lib/libtheoradec.so.1 ./lib/libtheoraplay.so ./lib/libvorbisfile.so.3 ./lib/libvorbis.so.0 ./lib/libXNAWebRenderer.so'
+ARCHIVE_GAME_BIN64_PATH='.'
+ARCHIVE_GAME_BIN64_FILES='MoonHunters.x86_64 MoonHunters_Data/*/x86_64'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./*.bin.x86_64 ./lib64/libcef.so ./lib64/libCSteamworks.so ./lib64/libjpeg.so.62 ./lib64/libmojoshader.so ./lib64/libmono-2.0.so.1 ./lib64/libogg.so.0 ./lib64/libopenal.so.1 ./lib64/libpng15.so.15 ./lib64/libSDL2-2.0.so.0 ./lib64/libSDL2_image-2.0.so.0 ./lib64/libsteam_api.so ./lib64/libtheoradec.so.1 ./lib64/libtheoraplay.so ./lib64/libvorbisfile.so.3 ./lib64/libvorbis.so.0 ./lib64/libXNAWebRenderer.so'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./Hacknet.exe ./*.dll ./Content ./*.pak ./Hacknet.bmp ./locales ./Extensions ./icudtl.dat ./natives_blob.bin ./snapshot_blob.bin ./FNA.dll.config ./mono'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='MoonHunters_Data'
 
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Hacknet.bin.x86'
-APP_MAIN_EXE_BIN64='./Hacknet.bin.x86_64'
-APP_MAIN_ICON='data/noarch/support/icon.png'
+APP_MAIN_PRERUN='export LANG=C'
+APP_MAIN_EXE_BIN32='MoonHunters.x86'
+APP_MAIN_EXE_BIN64='MoonHunters.x86_64'
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='MoonHunters_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ openal sdl2 sdl2_image vorbis theora"
-PKG_BIN32_DEPS_DEB='libjpeg62-turbo | libjpeg62'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -111,11 +109,6 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-
-# Extract icon
-
-PKG='PKG_DATA'
-icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -124,20 +117,17 @@ for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
 	write_launcher 'APP_MAIN'
 done
 
-# Fix a crash when starting from some terminals
-
-pattern='s#^"\./$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
-sed --in-place "$pattern" "${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
-sed --in-place "$pattern" "${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
-
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN32' 'PKG_BIN64'
 build_pkg
 
 # Clean up
 
-rm --recursive "${PLAYIT_WORKDIR}"
+rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
