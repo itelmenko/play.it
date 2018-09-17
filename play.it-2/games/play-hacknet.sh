@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180915.2
+script_version=20180917.1
 
 # Set game-specific variables
 
@@ -64,6 +64,8 @@ ARCHIVE_GAME_DATA_FILES='./Hacknet.exe ./*.dll ./Content ./*.pak ./Hacknet.bmp .
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
+APP_MAIN_LIBS_BIN32='lib'
+APP_MAIN_LIBS_BIN64='lib64'
 APP_MAIN_EXE_BIN32='./Hacknet.bin.x86'
 APP_MAIN_EXE_BIN64='./Hacknet.bin.x86_64'
 APP_MAIN_ICON='data/noarch/support/icon.png'
@@ -117,6 +119,11 @@ prepare_package_layout
 PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Ensure that Chromium Embedded Framework is functional
+
+chmod +x "${PKG_BIN32_PATH}${PATH_GAME}/cefprocess.bin.x86"
+chmod +x "${PKG_BIN64_PATH}${PATH_GAME}/cefprocess.bin.x86_64"
 
 # Write launchers
 
