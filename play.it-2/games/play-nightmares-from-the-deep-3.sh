@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Moon Hunters
+# Nightmares From the Deep 3: Davy Jones
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
@@ -39,34 +39,32 @@ script_version=20180917.1
 
 # Set game-specific variables
 
-GAME_ID='moon-hunters'
-GAME_NAME='Moon Hunters'
+GAME_ID='nightmares-from-the-deep-3'
+GAME_NAME='Nightmares From the Deep 3: Davy Jones'
 
-ARCHIVE_HUMBLE='MoonHunters.DRMFree.Linux.2.0.3483.zip'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/moon-hunters'
-ARCHIVE_HUMBLE_MD5='ce446f42f52e8ecc3bc0d7f174d514e6'
-ARCHIVE_HUMBLE_SIZE='1900000'
-ARCHIVE_HUMBLE_VERSION='2.0.3483-humble171230'
-ARCHIVE_HUMBLE_TYPE='zip'
+ARCHIVE_GOG='nightmares_from_the_deep_3_davy_jones_en_gog_1_22689.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/nightmares_from_the_deep_3_davy_jones'
+ARCHIVE_GOG_MD5='e5d0d8122840ba20e5d23d4c0524b6b0'
+ARCHIVE_GOG_SIZE='1500000'
+ARCHIVE_GOG_VERSION='1.0-gog22689'
+ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GAME_BIN32_PATH='.'
-ARCHIVE_GAME_BIN32_FILES='MoonHunters.x86 MoonHunters_Data/*/x86'
+ARCHIVE_DOC_PATH='data/noarch/docs'
+ARCHIVE_DOC_FILES='*'
 
-ARCHIVE_GAME_BIN64_PATH='.'
-ARCHIVE_GAME_BIN64_FILES='MoonHunters.x86_64 MoonHunters_Data/*/x86_64'
+ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='NightmaresFromTheDeep_DavyJones_i386'
 
-ARCHIVE_GAME_DATA_PATH='.'
-ARCHIVE_GAME_DATA_FILES='MoonHunters_Data'
+ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='NightmaresFromTheDeep_DavyJones_amd64'
 
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='Game Game.cub Game_en.cub game.json out'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
-APP_MAIN_EXE_BIN32='MoonHunters.x86'
-APP_MAIN_EXE_BIN64='MoonHunters.x86_64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='MoonHunters_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE_BIN32='NightmaresFromTheDeep_DavyJones_i386'
+APP_MAIN_EXE_BIN64='NightmaresFromTheDeep_DavyJones_amd64'
+APP_MAIN_ICON='data/noarch/support/icon.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
@@ -74,7 +72,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr pulseaudio"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -110,6 +108,11 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+
+# Get game icon
+
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -120,10 +123,7 @@ done
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up

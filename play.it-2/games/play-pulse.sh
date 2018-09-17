@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Moon Hunters
+# Pulse
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
@@ -39,45 +39,37 @@ script_version=20180917.1
 
 # Set game-specific variables
 
-GAME_ID='moon-hunters'
-GAME_NAME='Moon Hunters'
+GAME_ID='pulse'
+GAME_NAME='Pulse'
 
-ARCHIVE_HUMBLE='MoonHunters.DRMFree.Linux.2.0.3483.zip'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/moon-hunters'
-ARCHIVE_HUMBLE_MD5='ce446f42f52e8ecc3bc0d7f174d514e6'
+ARCHIVE_HUMBLE='Pulse_Linux.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/pulse'
+ARCHIVE_HUMBLE_MD5='1ab2d48c55e88b1bc56cbcdfb72f09e9'
 ARCHIVE_HUMBLE_SIZE='1900000'
-ARCHIVE_HUMBLE_VERSION='2.0.3483-humble171230'
+ARCHIVE_HUMBLE_VERSION='1.0-humble1'
 ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_GAME_BIN32_PATH='.'
-ARCHIVE_GAME_BIN32_FILES='MoonHunters.x86 MoonHunters_Data/*/x86'
+ARCHIVE_GAME_BIN_PATH='Pulse - Linux'
+ARCHIVE_GAME_BIN_FILES='Pulse.x86 Pulse_Data/*/x86'
 
-ARCHIVE_GAME_BIN64_PATH='.'
-ARCHIVE_GAME_BIN64_FILES='MoonHunters.x86_64 MoonHunters_Data/*/x86_64'
-
-ARCHIVE_GAME_DATA_PATH='.'
-ARCHIVE_GAME_DATA_FILES='MoonHunters_Data'
+ARCHIVE_GAME_DATA_PATH='Pulse - Linux'
+ARCHIVE_GAME_DATA_FILES='Pulse_Data'
 
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
-APP_MAIN_EXE_BIN32='MoonHunters.x86'
-APP_MAIN_EXE_BIN64='MoonHunters.x86_64'
+APP_MAIN_PRERUN='export LANG=C'
+APP_MAIN_EXE='Pulse.x86'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='MoonHunters_Data/Resources/UnityPlayer.png'
+APP_MAIN_ICON='Pulse_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr pulseaudio"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor"
 
 # Load common functions
 
@@ -114,16 +106,15 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up
