@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180719.2
+script_version=20180719.3
 
 # Set game-specific variables
 
@@ -67,7 +67,7 @@ ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN64_FILES='Pyre.bin.x86_64 lib64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*'
+ARCHIVE_GAME_DATA_FILES='*.bmp *.config *.cur *.dll *.exe *.pdb *.xml gamecontrollerdb.txt monoconfig monomachineconfig Content'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='export LC_ALL=C'
