@@ -5,6 +5,8 @@
 
   * archive_guess_type: Automatically set ARCHIVE_TYPE for 7-zip archives
 
+  * Nixstaller archives: Guess header length instead of using hardcoded value
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or
