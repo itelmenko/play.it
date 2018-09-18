@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180719.1
+script_version=20180719.2
 
 # Set game-specific variables
 
 GAME_ID='pyre'
 GAME_NAME='Pyre'
 
-ARCHIVE_GOG='pyre_en_1_0_18732.sh'
+ARCHIVE_GOG='pyre_1_50427_11957_23366.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/pyre'
-ARCHIVE_GOG_MD5='83ea264e95e2519aba72078d35290d49'
-ARCHIVE_GOG_SIZE='8100000'
-ARCHIVE_GOG_VERSION='1.0-gog18732'
+ARCHIVE_GOG_MD5='ae34d8b4c069ffd7a98f295af4596e1f'
+ARCHIVE_GOG_SIZE='8200000'
+ARCHIVE_GOG_VERSION='1.50427.11957-gog23366'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_OLD0='pyre_en_1_0_18732.sh'
+ARCHIVE_GOG_OLD0_MD5='83ea264e95e2519aba72078d35290d49'
+ARCHIVE_GOG_OLD0_SIZE='8100000'
+ARCHIVE_GOG_OLD0_VERSION='1.0-gog18732'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC0_DATA_FILES='*'
