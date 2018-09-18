@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,62 +30,46 @@ set -o errexit
 ###
 
 ###
-# Pyre
+# The Cat Machine
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180719.3
+script_version=20180918.1
 
 # Set game-specific variables
 
-GAME_ID='pyre'
-GAME_NAME='Pyre'
+GAME_ID='the-cat-machine'
+GAME_NAME='The Cat Machine'
 
-ARCHIVE_GOG='pyre_1_50427_11957_23366.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/pyre'
-ARCHIVE_GOG_MD5='ae34d8b4c069ffd7a98f295af4596e1f'
-ARCHIVE_GOG_SIZE='8200000'
-ARCHIVE_GOG_VERSION='1.50427.11957-gog23366'
-ARCHIVE_GOG_TYPE='mojosetup_unzip'
+ARCHIVE_HUMBLE='TheCatMachineLinux.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/the-cat-machine'
+ARCHIVE_HUMBLE_MD5='5f9faf2a56be1fa244d7d795831cbdae'
+ARCHIVE_HUMBLE_SIZE='380000'
+ARCHIVE_HUMBLE_VERSION='1.0-humble1'
+ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_GOG_OLD0='pyre_en_1_0_18732.sh'
-ARCHIVE_GOG_OLD0_MD5='83ea264e95e2519aba72078d35290d49'
-ARCHIVE_GOG_OLD0_SIZE='8100000'
-ARCHIVE_GOG_OLD0_VERSION='1.0-gog18732'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='TheCatMachine.x86 TheCatMachine_Data/*/x86'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='TheCatMachine_Data'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='Linux.README ReadMe.txt'
-
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='Pyre.bin.x86 lib'
-
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='Pyre.bin.x86_64 lib64'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*.bmp *.config *.cur *.dll *.exe *.pdb *.xml gamecontrollerdb.txt monoconfig monomachineconfig Content'
+DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='export LC_ALL=C'
-APP_MAIN_EXE_BIN32='Pyre.bin.x86'
-APP_MAIN_EXE_BIN64='Pyre.bin.x86_64'
-APP_MAIN_ICON='PyreIcon.bmp'
+APP_MAIN_PRERUN='export LANG=C'
+APP_MAIN_EXE='TheCatMachine.x86'
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='TheCatMachine_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 alsa"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr"
 
 # Load common functions
 
@@ -119,20 +104,17 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icon
-
-PKG='PKG_DATA'
-icons_get_from_package 'APP_MAIN'
-
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+PKG='PKG_BIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up

@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Hacknet
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180917.1
+script_version=20180918.1
 
 # Set game-specific variables
 
@@ -61,7 +61,7 @@ ARCHIVE_GAME_BIN64_FILES='./*.bin.x86_64 ./lib64/libcef.so ./lib64/libCSteamwork
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./Hacknet.exe ./*.dll ./Content ./*.pak ./Hacknet.bmp ./locales ./Extensions ./icudtl.dat ./natives_blob.bin ./snapshot_blob.bin ./FNA.dll.config ./mono'
 
-DATA_DIRS='./logs'
+DATA_DIRS='./logs ./Content/People'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_LIBS_BIN32='lib'

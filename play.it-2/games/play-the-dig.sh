@@ -2,7 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2018, Antoine Le Gonidec,
+# Copyright (c) 2018 Sébastien “Elzen” Dufromentel
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,62 +30,51 @@ set -o errexit
 ###
 
 ###
-# Pyre
+# The Dig
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180719.3
+script_version=20180918.1
 
 # Set game-specific variables
 
-GAME_ID='pyre'
-GAME_NAME='Pyre'
+GAME_ID='the-dig'
+GAME_NAME='The Dig'
 
-ARCHIVE_GOG='pyre_1_50427_11957_23366.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/pyre'
-ARCHIVE_GOG_MD5='ae34d8b4c069ffd7a98f295af4596e1f'
-ARCHIVE_GOG_SIZE='8200000'
-ARCHIVE_GOG_VERSION='1.50427.11957-gog23366'
-ARCHIVE_GOG_TYPE='mojosetup_unzip'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
 
-ARCHIVE_GOG_OLD0='pyre_en_1_0_18732.sh'
-ARCHIVE_GOG_OLD0_MD5='83ea264e95e2519aba72078d35290d49'
-ARCHIVE_GOG_OLD0_SIZE='8100000'
-ARCHIVE_GOG_OLD0_VERSION='1.0-gog18732'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_EN='the_dig_en_gog_2_20100.sh'
+ARCHIVE_GOG_EN_URL='https://www.gog.com/game/the_dig'
+ARCHIVE_GOG_EN_MD5='0fd830de17757f78dc9865dd7c06c785'
+ARCHIVE_GOG_EN_SIZE='760000'
+ARCHIVE_GOG_EN_VERSION='1.0-gog20100'
+ARCHIVE_GOG_EN_TYPE='mojosetup'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*'
+ARCHIVE_GOG_FR='the_dig_fr_gog_2_20100.sh'
+ARCHIVE_GOG_FR_URL='https://www.gog.com/game/the_dig'
+ARCHIVE_GOG_FR_MD5='b4c2b87f0305a82bb0fa805b01b014f1'
+ARCHIVE_GOG_FR_SIZE='760000'
+ARCHIVE_GOG_FR_VERSION='1.0-gog20100'
+ARCHIVE_GOG_FR_TYPE='mojosetup'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='Linux.README ReadMe.txt'
+ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC_MAIN_FILES='*'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='Pyre.bin.x86 lib'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/data'
+ARCHIVE_GAME_MAIN_FILES='dig.la0 dig.la1 digmusic.bun digvoice.bun language.bnd video'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='Pyre.bin.x86_64 lib64'
+APP_MAIN_TYPE='scummvm'
+APP_MAIN_SCUMMID='dig'
+APP_MAIN_ICON='data/noarch/support/icon.png'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*.bmp *.config *.cur *.dll *.exe *.pdb *.xml gamecontrollerdb.txt monoconfig monomachineconfig Content'
+PACKAGES_LIST='PKG_MAIN'
 
-APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='export LC_ALL=C'
-APP_MAIN_EXE_BIN32='Pyre.bin.x86'
-APP_MAIN_EXE_BIN64='Pyre.bin.x86_64'
-APP_MAIN_ICON='PyreIcon.bmp'
-
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 alsa"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_MAIN_ID="$GAME_ID"
+PKG_MAIN_ID_GOG_EN="${GAME_ID}-en"
+PKG_MAIN_ID_GOG_FR="${GAME_ID}-fr"
+PKG_MAIN_PROVIDE="$PKG_MAIN_ID"
+PKG_MAIN_DEPS='scummvm'
 
 # Load common functions
 
@@ -113,22 +103,20 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
-# Extract game data
+# Extract data from game
 
 extract_data_from "$SOURCE_ARCHIVE"
+tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
+
+# Get icon
+
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
-
-# Extract icon
-
-PKG='PKG_DATA'
-icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
-done
+write_launcher 'APP_MAIN'
 
 # Build package
 
