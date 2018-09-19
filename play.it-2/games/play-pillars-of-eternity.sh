@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.1
+script_version=20180919.2
 
 # Set game-specific variables
 
@@ -65,16 +65,6 @@ ARCHIVE_GOG_OLD0_MD5='2000052541abb1ef8a644049734e8526'
 ARCHIVE_GOG_OLD0_SIZE='15000000'
 ARCHIVE_GOG_OLD0_VERSION='3.05.1186-gog2.15.0.19'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
-
-ARCHIVES_DEADFIRE_LIST='ARCHIVE_DEADFIRE_GOG ARCHIVE_DEADFIRE_GOG_OLD0'
-
-ARCHIVE_DEADFIRE_GOG='pillars_of_eternity_deadfire_pack_dlc_en_3_07_0_1318_17462.sh'
-ARCHIVE_DEADFIRE_GOG_MD5='021362da5912dc8a3e47473e97726f7f'
-ARCHIVE_DEADFIRE_GOG_TYPE='mojosetup'
-
-ARCHIVE_DEADFIRE_GOG_OLD0='pillars_of_eternity_deadfire_pack_dlc_en_3_07_16380.sh'
-ARCHIVE_DEADFIRE_GOG_OLD0_MD5='2fc0dc21648953be1c571e28b1e3d002'
-ARCHIVE_DEADFIRE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_GOG_DLC1='gog_pillars_of_eternity_kickstarter_item_dlc_2.0.0.2.sh'
 ARCHIVE_GOG_DLC1_MD5='b4c29ae17c87956471f2d76d8931a4e5'
@@ -148,9 +138,6 @@ fi
 # Load extra archives (DLC)
 
 ARCHIVE_MAIN="$ARCHIVE"
-for archive in $ARCHIVES_DEADFIRE_LIST; do
-	[ "$ARCHIVE_DEADFIRE" ] || set_archive 'ARCHIVE_DEADFIRE' "$archive"
-done
 for dlc in 'DLC1' 'DLC2' 'DLC3'; do
 	set_archive "ARCHIVE_$dlc" "ARCHIVE_GOG_$dlc"
 done
@@ -173,11 +160,6 @@ extract_data_from "$SOURCE_ARCHIVE"
 		extract_data_from "$ARCHIVE_DLC3"
 	fi
 )
-
-if [ "$ARCHIVE_DEADFIRE" ]; then
-	touch "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_GAME_DATA_PATH/PillarsOfEternity_Data/assetbundles/px4.unity3d"
-fi
-
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
