@@ -219,10 +219,10 @@ pkg_set_deps_gentoo() {
 				esac
 			;;
 			('wine32-staging')
-				pkg_dep='app-emulation/wine-staging[abi_x86_32]'
+				pkg_dep='virtual/wine[staging,abi_x86_32]'
 			;;
 			('wine64-staging')
-				pkg_dep='app-emulation/wine-staging[abi_x86_64]'
+				pkg_dep='virtual/wine[staging,abi_x86_64]'
 			;;
 			('winetricks')
 				pkg_dep="app-emulation/winetricks$architecture_suffix"
