@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.1
+script_version=20180919.2
 
 # Set game-specific variables
 
@@ -52,11 +52,8 @@ ARCHIVE_GOG_TYPE='innosetup'
 ARCHIVE_DOC_MAIN_PATH='app'
 ARCHIVE_DOC_MAIN_FILES='*.pdf'
 
-ARCHIVE_GAME0_MAIN_PATH='app'
-ARCHIVE_GAME0_MAIN_FILES='comi.la0 comi.la1 comi.la2 resource saves'
-
-ARCHIVE_GAME1_MAIN_PATH='app/__support/app/'
-ARCHIVE_GAME1_MAIN_FILES='monkey3.ini'
+ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_FILES='comi.la? resource'
 
 APP_MAIN_TYPE='scummvm'
 APP_MAIN_SCUMMID='comi'
