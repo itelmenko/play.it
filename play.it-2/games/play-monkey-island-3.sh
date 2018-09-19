@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.4
+script_version=20180919.5
 
 # Set game-specific variables
 
@@ -72,10 +72,20 @@ ARCHIVE_GOG_OLD0_SIZE='1200000'
 ARCHIVE_GOG_OLD0_VERSION='1.0-gog18253'
 ARCHIVE_GOG_OLD0_TYPE='innosetup'
 
+ARCHIVE_DOC_L10N_PATH='.'
+ARCHIVE_DOC_L10N_FILES='manual.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_L10N_PATH_OLD0='app'
+
 ARCHIVE_DOC_MAIN_PATH='.'
-ARCHIVE_DOC_MAIN_FILES='*.pdf'
+ARCHIVE_DOC_MAIN_FILES='guide.pdf'
 # Keep compatibility with old archives
 ARCHIVE_DOC_MAIN_PATH_OLD0='app'
+
+ARCHIVE_GAME_L10N_PATH='.'
+ARCHIVE_GAME_L10N_FILES='resource/bbsan.san resource/curserng.san resource/finale.san resource/language.tab resource/lavaride.san resource/liftcrse.san resource/moreslaw.san resource/newboots.san resource/opening.san resource/sinkshp.san resource/voxdisk1.bun resource/voxdisk2.bun resource/wrecksan.san'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_PATH_OLD0='app'
 
 ARCHIVE_GAME_MAIN_PATH='.'
 ARCHIVE_GAME_MAIN_FILES='comi.la? resource'
@@ -86,13 +96,17 @@ APP_MAIN_TYPE='scummvm'
 APP_MAIN_SCUMMID='comi'
 APP_MAIN_ICON='app/goggame-1528148981.ico'
 
-PACKAGES_LIST='PKG_MAIN'
+PACKAGES_LIST='PKG_L10N PKG_MAIN'
+
+PKG_L10N_ID="${GAME_ID}-l10n"
+PKG_L10N_ID_GOG_EN="${PKG_L10N_ID}-en"
+PKG_L10N_ID_GOG_FR="${PKG_L10N_ID}-fr"
+PKG_L10N_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_DESCRIPTION_GOG_EN='English localization'
+PKG_L10N_DESCRIPTION_GOG_FR='French localization'
 
 PKG_MAIN_ID="$GAME_ID"
-PKG_MAIN_ID_GOG_EN="${GAME_ID}-en"
-PKG_MAIN_ID_GOG_FR="${GAME_ID}-fr"
-PKG_MAIN_PROVIDE="$PKG_MAIN_ID"
-PKG_MAIN_DEPS='scummvm'
+PKG_MAIN_DEPS="$PKG_L10N_ID scummvm"
 
 # Load common functions
 
