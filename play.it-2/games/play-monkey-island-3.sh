@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.3
+script_version=20180919.4
 
 # Set game-specific variables
 
@@ -44,15 +44,27 @@ SCRIPT_DEPS='icotool'
 GAME_ID='monkey-island-3'
 GAME_NAME='Monkey Island 3: The Curse of Monkey Island'
 
-ARCHIVE_GOG='setup_the_curse_of_monkey_islandtm_1.0l_(20628).exe'
-ARCHIVE_GOG_URL='https://www.gog.com/game/the_curse_of_monkey_island'
-ARCHIVE_GOG_MD5='fcd4a7cd9c0304c15a0a059f6eb299e8'
-ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='1.0l-gog20628'
-ARCHIVE_GOG_TYPE='innosetup1.7'
-ARCHIVE_GOG_PART1='setup_the_curse_of_monkey_islandtm_1.0l_(20628)-1.bin'
-ARCHIVE_GOG_PART1_MD5='931e6e35fdc7e0a14f2559984620f8f3'
-ARCHIVE_GOG_PART1_TYPE='innosetup1.7'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR ARCHIVE_GOG_OLD0'
+
+ARCHIVE_GOG_EN='setup_the_curse_of_monkey_islandtm_1.0l_(20628).exe'
+ARCHIVE_GOG_EN_URL='https://www.gog.com/game/the_curse_of_monkey_island'
+ARCHIVE_GOG_EN_MD5='fcd4a7cd9c0304c15a0a059f6eb299e8'
+ARCHIVE_GOG_EN_SIZE='1200000'
+ARCHIVE_GOG_EN_VERSION='1.0l-gog20628'
+ARCHIVE_GOG_EN_TYPE='innosetup1.7'
+ARCHIVE_GOG_EN_PART1='setup_the_curse_of_monkey_islandtm_1.0l_(20628)-1.bin'
+ARCHIVE_GOG_EN_PART1_MD5='931e6e35fdc7e0a14f2559984620f8f3'
+ARCHIVE_GOG_EN_PART1_TYPE='innosetup1.7'
+
+ARCHIVE_GOG_FR='setup_the_curse_of_monkey_islandtm_1.0l_(french)_(20628).exe'
+ARCHIVE_GOG_FR_URL='https://www.gog.com/game/the_curse_of_monkey_island'
+ARCHIVE_GOG_FR_MD5='a0ebaa26154de4a76d20b0ef882445cf'
+ARCHIVE_GOG_FR_SIZE='1200000'
+ARCHIVE_GOG_FR_VERSION='1.0l-gog20628'
+ARCHIVE_GOG_FR_TYPE='innosetup1.7'
+ARCHIVE_GOG_FR_PART1='setup_the_curse_of_monkey_islandtm_1.0l_(french)_(20628)-1.bin'
+ARCHIVE_GOG_FR_PART1_MD5='10356610b119b917dbba13df9ed207a5'
+ARCHIVE_GOG_FR_PART1_TYPE='innosetup1.7'
 
 ARCHIVE_GOG_OLD0='setup_the_curse_of_monkey_island_1.0_(18253).exe'
 ARCHIVE_GOG_OLD0_MD5='20c74e5f60bd724182ec2bdbae6d9a49'
@@ -76,6 +88,10 @@ APP_MAIN_ICON='app/goggame-1528148981.ico'
 
 PACKAGES_LIST='PKG_MAIN'
 
+PKG_MAIN_ID="$GAME_ID"
+PKG_MAIN_ID_GOG_EN="${GAME_ID}-en"
+PKG_MAIN_ID_GOG_FR="${GAME_ID}-fr"
+PKG_MAIN_PROVIDE="$PKG_MAIN_ID"
 PKG_MAIN_DEPS='scummvm'
 
 # Load common functions
