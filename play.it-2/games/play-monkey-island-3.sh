@@ -35,25 +35,40 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.2
+script_version=20180919.3
 
 # Set game-specific variables
+
+SCRIPT_DEPS='icotool'
 
 GAME_ID='monkey-island-3'
 GAME_NAME='Monkey Island 3: The Curse of Monkey Island'
 
-ARCHIVE_GOG='setup_the_curse_of_monkey_island_1.0_(18253).exe'
+ARCHIVE_GOG='setup_the_curse_of_monkey_islandtm_1.0l_(20628).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/the_curse_of_monkey_island'
-ARCHIVE_GOG_MD5='20c74e5f60bd724182ec2bdbae6d9a49'
+ARCHIVE_GOG_MD5='fcd4a7cd9c0304c15a0a059f6eb299e8'
 ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='1.0-gog18253'
-ARCHIVE_GOG_TYPE='innosetup'
+ARCHIVE_GOG_VERSION='1.0l-gog20628'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_PART1='setup_the_curse_of_monkey_islandtm_1.0l_(20628)-1.bin'
+ARCHIVE_GOG_PART1_MD5='931e6e35fdc7e0a14f2559984620f8f3'
+ARCHIVE_GOG_PART1_TYPE='innosetup1.7'
 
-ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_GOG_OLD0='setup_the_curse_of_monkey_island_1.0_(18253).exe'
+ARCHIVE_GOG_OLD0_MD5='20c74e5f60bd724182ec2bdbae6d9a49'
+ARCHIVE_GOG_OLD0_SIZE='1200000'
+ARCHIVE_GOG_OLD0_VERSION='1.0-gog18253'
+ARCHIVE_GOG_OLD0_TYPE='innosetup'
+
+ARCHIVE_DOC_MAIN_PATH='.'
 ARCHIVE_DOC_MAIN_FILES='*.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_MAIN_PATH_OLD0='app'
 
-ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_PATH='.'
 ARCHIVE_GAME_MAIN_FILES='comi.la? resource'
+# Keep compatibility with old archives
+ARCHIVE_GAME_MAIN_PATH_OLD0='app'
 
 APP_MAIN_TYPE='scummvm'
 APP_MAIN_SCUMMID='comi'
@@ -95,7 +110,13 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-# Extract icon
+# Work around "insufficient image data" issue with convert from imagemagick
+icon_extract_png_from_ico() {
+	[ "$DRY_RUN" = '1' ] && return 0
+	icotool --extract --output="$2" "$1" 2>/dev/null
+}
+
+# Extract icons
 
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
