@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.4
+script_version=20180919.5
 
 # Set game-specific variables
 
@@ -77,7 +77,7 @@ ARCHIVE_DOC_DATA_FILES='*.pdf'
 ARCHIVE_DOC_DATA_PATH_GOG_OLD0='game'
 
 ARCHIVE_GAME_BIN_PATH='gamedata'
-ARCHIVE_GAME_BIN_FILES='*.exe binkw32.dll eax.dll unicows.dll'
+ARCHIVE_GAME_BIN_FILES='*.dll *.exe'
 # Keep compatibility with old archives
 ARCHIVE_GAME_BIN_PATH_GOG_OLD0='game/gamedata'
 
