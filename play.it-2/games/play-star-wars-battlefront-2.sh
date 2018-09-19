@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.7
+script_version=20180919.8
 
 # Set game-specific variables
 
@@ -94,6 +94,7 @@ ARCHIVE_GAME_DATA_PATH_GOG_OLD0='game/gamedata'
 ARCHIVE_ICONS_PATH='.'
 ARCHIVE_ICONS_FILES='16x16 32x32'
 
+CONFIG_FILES='./data/_lvl_pc/*.ini'
 DATA_DIRS='./savegames'
 
 APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
