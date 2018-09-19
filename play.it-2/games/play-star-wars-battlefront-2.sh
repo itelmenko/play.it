@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.3
+script_version=20180919.4
 
 # Set game-specific variables
 
@@ -67,6 +67,10 @@ ARCHIVE_GOG_OLD0_PART2='setup_sw_battlefront2_2.0.0.5-2.bin'
 ARCHIVE_GOG_OLD0_PART2_MD5='5d4000fd480a80b6e7c7b73c5a745368'
 ARCHIVE_GOG_OLD0_PART2_TYPE='rar'
 
+ARCHIVE_OPTIONAL_ICONS='star-wars-battlefront-2_icons.tar.gz'
+ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/star-wars-battlefront-2/'
+ARCHIVE_OPTIONAL_ICONS_MD5='322275011d37ac219f1c06c196477fa4'
+
 ARCHIVE_DOC_DATA_PATH='.'
 ARCHIVE_DOC_DATA_FILES='*.pdf'
 # Keep compatibility with old archives
@@ -86,6 +90,9 @@ ARCHIVE_GAME_DATA_PATH='gamedata'
 ARCHIVE_GAME_DATA_FILES='data'
 # Keep compatibility with old archives
 ARCHIVE_GAME_DATA_PATH_GOG_OLD0='game/gamedata'
+
+ARCHIVE_ICONS_PATH='.'
+ARCHIVE_ICONS_FILES='16x16 32x32'
 
 DATA_DIRS='./savegames'
 
@@ -132,6 +139,17 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Load optional icons pack
+
+case "$ARCHIVE" in
+	('ARCHIVE_GOG_OLD0');;
+	(*)
+		ARCHIVE_MAIN="$ARCHIVE"
+		set_archive 'ARCHIVE_ICONS' 'ARCHIVE_OPTIONAL_ICONS'
+		ARCHIVE="$ARCHIVE_MAIN"
+	;;
+esac
+
 # Extract game data
 
 case "$ARCHIVE" in
@@ -150,12 +168,25 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Estract icons
 
-use_archive_specific_value 'APP_MAIN_ICON'
-if [ "$APP_MAIN_ICON" ]; then
-	PKG='PKG_BIN'
-	icons_get_from_package 'APP_MAIN'
-	icons_move_to 'PKG_DATA'
-fi
+case "$ARCHIVE" in
+	('ARCHIVE_GOG_OLD0')
+		PKG='PKG_BIN'
+		use_archive_specific_value 'APP_MAIN_ICON'
+		icons_get_from_package 'APP_MAIN'
+		icons_move_to 'PKG_DATA'
+	;;
+	(*)
+		if [ "$ARCHIVE_ICONS" ]; then
+			(
+				ARCHIVE='ARCHIVE_ICONS'
+				extract_data_from "$ARCHIVE_ICONS"
+			)
+			PKG='PKG_DATA'
+			organize_data 'ICONS' "$PATH_ICON_BASE"
+			rm --recursive "$PLAYIT_WORKDIR/gamedata"
+		fi
+	;;
+esac
 
 # Write launchers
 
