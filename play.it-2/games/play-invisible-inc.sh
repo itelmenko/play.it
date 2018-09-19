@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.1
+script_version=20180919.2
 
 # Set game-specific variables
 
 GAME_ID='invisible-inc'
 GAME_NAME='Invisible Inc.'
 
-ARCHIVE_GOG='invisible_inc_en_8_07_2017_15873.sh'
+ARCHIVE_GOG='invisible_inc_en_281021_22858.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/invisible_inc'
-ARCHIVE_GOG_MD5='b3acb8f72cf01f71b0ddcb4355543a16'
+ARCHIVE_GOG_MD5='bfb1493931172a9f71c95a6861af97ee'
 ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='2017.07.08-gog15873'
+ARCHIVE_GOG_VERSION='281021-gog22858'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_OLD1='invisible_inc_en_8_07_2017_15873.sh'
+ARCHIVE_GOG_OLD1_MD5='b3acb8f72cf01f71b0ddcb4355543a16'
+ARCHIVE_GOG_OLD1_SIZE='1200000'
+ARCHIVE_GOG_OLD1_VERSION='2017.07.08-gog15873'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
 
 ARCHIVE_GOG_OLD0='gog_invisible_inc_2.6.0.11.sh'
 ARCHIVE_GOG_OLD0_MD5='97e6efdc9237ec17deb02b5cf5185cf5'
