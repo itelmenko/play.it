@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.6
+script_version=20180919.7
 
 # Set game-specific variables
 
@@ -96,6 +96,8 @@ ARCHIVE_ICONS_FILES='16x16 32x32'
 
 DATA_DIRS='./savegames'
 
+APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='battlefrontii.exe'
 # Keep compatibility with old archives
@@ -110,7 +112,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_MOVIES_ID $PKG_DATA_ID wine glx"
+PKG_BIN_DEPS="$PKG_MOVIES_ID $PKG_DATA_ID wine glx winetricks"
 
 # Load common functions
 
