@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.1
+script_version=20180919.2
 
 # Set game-specific variables
 
 GAME_ID='pillars-of-eternity'
 GAME_NAME='Pillars of Eternity: Deadfire Pack'
 
-ARCHIVE_GOG='pillars_of_eternity_deadfire_pack_dlc_en_3_07_0_1318_17462.sh'
+ARCHIVE_GOG='pillars_of_eternity_deadfire_pack_dlc_en_3_07_0_1318_20099.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/pillars_of_eternity_deadfire_pack'
-ARCHIVE_GOG_MD5='021362da5912dc8a3e47473e97726f7f'
+ARCHIVE_GOG_MD5='da315aba26784e55aa51139cebb7f9d2'
 ARCHIVE_GOG_TYPE='mojosetup'
 ARCHIVE_GOG_SIZE='1300'
-ARCHIVE_GOG_VERSION='3.07.0.1318-gog17462'
+ARCHIVE_GOG_VERSION='3.07.0.1318-gog20099'
+
+ARCHIVE_GOG_OLD1='pillars_of_eternity_deadfire_pack_dlc_en_3_07_0_1318_17462.sh'
+ARCHIVE_GOG_OLD1_MD5='021362da5912dc8a3e47473e97726f7f'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GOG_OLD1_SIZE='1300'
+ARCHIVE_GOG_OLD1_VERSION='3.07.0.1318-gog17462'
 
 ARCHIVE_GOG_OLD0='pillars_of_eternity_deadfire_pack_dlc_en_3_07_16380.sh'
 ARCHIVE_GOG_OLD0_MD5='2fc0dc21648953be1c571e28b1e3d002'
