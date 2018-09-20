@@ -3,6 +3,8 @@
   * Rewrite of launchers-related functions. Compatibility wrappers still
     exist for old functions
 
+  * archive_guess_type: Automatically set ARCHIVE_TYPE for 7-zip archives
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or
