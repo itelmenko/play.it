@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180923.2
+script_version=20180923.3
 
 # Set game-specific variables
 
@@ -46,13 +46,13 @@ ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
 ARCHIVE_GOG_EN='setup_sw_galactic_battlegrounds_saga_2.0.0.4.exe'
 ARCHIVE_GOG_EN_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
 ARCHIVE_GOG_EN_MD5='6af25835c5f240914cb04f7b4f741813'
-ARCHIVE_GOG_EN_VERSION='1.0-gog2.0.0.4'
+ARCHIVE_GOG_EN_VERSION='1.1-gog2.0.0.4'
 ARCHIVE_GOG_EN_SIZE='830000'
 
 ARCHIVE_GOG_FR='setup_sw_galactic_battlegrounds_saga_french_2.0.0.4.exe'
 ARCHIVE_GOG_FR_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
 ARCHIVE_GOG_FR_MD5='b30458033e825ad252e2d5b3dc8a7845'
-ARCHIVE_GOG_FR_VERSION='1.0-gog2.0.0.4'
+ARCHIVE_GOG_FR_VERSION='1.1-gog2.0.0.4'
 ARCHIVE_GOG_FR_SIZE='820000'
 
 ARCHIVE_DOC_DATA_PATH='app'
