@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180923.1
+script_version=20180923.2
 
 # Set game-specific variables
 
@@ -70,6 +70,7 @@ ARCHIVE_GAME_DATA_FILES='ai campaign data extras music random savegame scenario 
 DATA_DIRS='./ai ./campaign ./random ./savegame ./scenario'
 DATA_FILES='./data/*.dat ./player.nf*'
 
+APP_REGEDIT='swgb.reg'
 APP_WINETRICKS="vd=\$(xrandr|awk '/\*/ {print \$1}')"
 
 APP_MAIN_TYPE='wine'
@@ -140,6 +141,15 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN' 'APP_ADDON'
+
+# Work around CD check
+
+cat > "${PKG_BIN_PATH}${PATH_GAME}/swgb.reg" << 'EOF'
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\Software\LucasArts Entertainment Company LLC\Star Wars Galactic Battlegrounds\1.0]
+"CDPath"="C:"
+EOF
 
 # Build package
 
