@@ -1,3 +1,8 @@
+2.10.3
+
+  * write_bin - init_prefix_files: Do not ignore symbolic links in
+    $CONFIG_PATH / $DATA_PATH when generating or updating prefix
+
 2.10.2
 
   * write_bin_run_native: Restore pre-2.10.1 version, as the 2.10.1 fix has
