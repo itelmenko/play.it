@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,74 +30,46 @@ set -o errexit
 ###
 
 ###
-# Star Wars: Galactic Battlegrounds
+# Kero Blaster
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180923.3
+script_version=20180923.1
 
 # Set game-specific variables
 
-GAME_ID='star-wars-galactic-battlegrounds'
-GAME_NAME='Star Wars: Galactic Battlegrounds'
+GAME_ID='kero-blaster'
+GAME_NAME='Kero Blaster'
 
-ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
+ARCHIVE_PLAYISM='KeroBlaster_EN_v1501a.zip'
+ARCHIVE_PLAYISM_URL='http://playism-games.com/game/141/kero-blaster'
+ARCHIVE_PLAYISM_MD5='c6ba58d37b5344d08c7d9a94506266b0'
+ARCHIVE_PLAYISM_VERSION='1.501-playism1501a'
+ARCHIVE_PLAYISM_SIZE='20000'
+ARCHIVE_PLAYISM_TYPE='zip'
 
-ARCHIVE_GOG_EN='setup_sw_galactic_battlegrounds_saga_2.0.0.4.exe'
-ARCHIVE_GOG_EN_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
-ARCHIVE_GOG_EN_MD5='6af25835c5f240914cb04f7b4f741813'
-ARCHIVE_GOG_EN_VERSION='1.1-gog2.0.0.4'
-ARCHIVE_GOG_EN_SIZE='830000'
+ARCHIVE_DOC_DATA_PATH='KeroBlasterEn'
+ARCHIVE_DOC_DATA_FILES='ReadmeEn.txt'
 
-ARCHIVE_GOG_FR='setup_sw_galactic_battlegrounds_saga_french_2.0.0.4.exe'
-ARCHIVE_GOG_FR_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
-ARCHIVE_GOG_FR_MD5='b30458033e825ad252e2d5b3dc8a7845'
-ARCHIVE_GOG_FR_VERSION='1.1-gog2.0.0.4'
-ARCHIVE_GOG_FR_SIZE='820000'
+ARCHIVE_GAME_BIN_PATH='KeroBlasterEn'
+ARCHIVE_GAME_BIN_FILES='KeroBlaster.exe'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='*.pdf'
-
-ARCHIVE_GAME_BIN_PATH='app/game'
-ARCHIVE_GAME_BIN_FILES='*.exe libogg-0.dll libvorbis-0.dll libvorbisfile-3.dll win32.dll'
-
-ARCHIVE_GAME_L10N_PATH='app/game'
-ARCHIVE_GAME_L10N_FILES='language*.dll campaign/media/1c2s6_end.mm data/gamedata_x1.drs data/genie*.dat data/list*.crx data/sounds.*drs history sound/campaign sound/scenario scenario/default0.scx taunt'
-
-ARCHIVE_GAME_DATA_PATH='app/game'
-ARCHIVE_GAME_DATA_FILES='ai campaign data extras music random savegame scenario sound *.avi'
-
-DATA_DIRS='./ai ./campaign ./random ./savegame ./scenario'
-DATA_FILES='./data/*.dat ./player.nf*'
-
-APP_REGEDIT='swgb.reg'
-APP_WINETRICKS="vd=\$(xrandr|awk '/\*/ {print \$1}')"
+ARCHIVE_GAME_DATA_PATH='KeroBlasterEn'
+ARCHIVE_GAME_DATA_FILES='rsc_k'
 
 APP_MAIN_TYPE='wine'
-APP_MAIN_EXE='battlegrounds.exe'
-APP_MAIN_ICON='battlegrounds.exe'
+APP_MAIN_EXE='KeroBlaster.exe'
+APP_MAIN_ICON='KeroBlaster.exe'
 
-APP_ADDON_ID="${GAME_ID}_clone-wars"
-APP_ADDON_NAME="$GAME_NAME - Clone Wars"
-APP_ADDON_TYPE='wine'
-APP_ADDON_EXE='battlegrounds_x1.exe'
-APP_ADDON_ICON='battlegrounds_x1.exe'
-
-PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
-
-PKG_L10N_ID="${GAME_ID}-l10n"
-PKG_L10N_ID_GOG_EN="${PKG_L10N_ID}-en"
-PKG_L10N_ID_GOG_FR="${PKG_L10N_ID}-fr"
-PKG_L10N_PROVIDE="$PKG_L10N_ID"
-PKG_L10N_DESCRIPTION_GOG_EN='English localization'
-PKG_L10N_DESCRIPTION_GOG_FR='French localization'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine winetricks xrandr"
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
+PKG_BIN_DEPS_ARCH='lib32-mpg123 lib32-alsa-lib'
 
 # Load common functions
 
@@ -131,25 +104,16 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icons
+# Extract game icons
 
 PKG='PKG_BIN'
-icons_get_from_package 'APP_MAIN' 'APP_ADDON'
+icons_get_from_package 'APP_MAIN'
 icons_move_to 'PKG_DATA'
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN' 'APP_ADDON'
-
-# Work around CD check
-
-cat > "${PKG_BIN_PATH}${PATH_GAME}/swgb.reg" << 'EOF'
-Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\Software\LucasArts Entertainment Company LLC\Star Wars Galactic Battlegrounds\1.0]
-"CDPath"="C:"
-EOF
+write_launcher 'APP_MAIN'
 
 # Build package
 
