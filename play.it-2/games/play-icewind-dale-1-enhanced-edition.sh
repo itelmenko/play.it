@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.4
+script_version=20180926.5
 
 # Set game-specific variables
 
 GAME_ID='icewind-dale-1-enhanced-edition'
 GAME_NAME='Icewind Dale - Enhanced Edition'
 
-ARCHIVE_GOG='icewind_dale_enhanced_edition_en_2_5_16_3_20626.sh'
+ARCHIVE_GOG='icewind_dale_enhanced_edition_en_2_5_17_23121.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/icewind_dale_enhanced_edition'
-ARCHIVE_GOG_MD5='f237e9506f046862e8d1c2d21c8fd588'
+ARCHIVE_GOG_MD5='bdfcd244568916123c243fb95de1d08b'
 ARCHIVE_GOG_SIZE='2900000'
-ARCHIVE_GOG_VERSION='2.5.16.3-gog20626'
+ARCHIVE_GOG_VERSION='2.5.17.0-gog23121'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='icewind_dale_enhanced_edition_en_2_5_16_3_20626.sh'
+ARCHIVE_GOG_OLD1_MD5='f237e9506f046862e8d1c2d21c8fd588'
+ARCHIVE_GOG_OLD1_SIZE='2900000'
+ARCHIVE_GOG_OLD1_VERSION='2.5.16.3-gog20626'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_icewind_dale_enhanced_edition_2.1.0.5.sh'
 ARCHIVE_GOG_OLD0_MD5='fc7244f4793eec365b8ac41d91a4edbb'
@@ -208,7 +214,8 @@ fi
 PKG='PKG_BIN32'
 write_launcher 'APP_MAIN'
 case "$ARCHIVE" in
-	('ARCHIVE_GOG')
+	('ARCHIVE_GOG_OLD0');;
+	(*)
 		PKG='PKG_BIN64'
 		write_launcher 'APP_MAIN'
 	;;
@@ -247,7 +254,8 @@ case "$ARCHIVE" in
 esac
 write_metadata 'PKG_BIN32'
 case "$ARCHIVE" in
-	('ARCHIVE_GOG')
+	('ARCHIVE_GOG_OLD0');;
+	(*)
 		write_metadata 'PKG_BIN64'
 	;;
 esac
