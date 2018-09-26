@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Baldur’s Gate - Enhanced Edition
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180605.1
+script_version=20180926.1
 
 # Set game-specific variables
 
@@ -48,22 +48,25 @@ ARCHIVE_GOG_SIZE='3200000'
 ARCHIVE_GOG_VERSION='2.3.67.3-gog20146'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD='gog_baldur_s_gate_enhanced_edition_2.5.0.9.sh'
-ARCHIVE_GOG_OLD_MD5='224be273fd2ec1eb0246f407dda16bc4'
-ARCHIVE_GOG_OLD_SIZE='3200000'
-ARCHIVE_GOG_OLD_VERSION='2.3.67.3-gog2.5.0.9'
+ARCHIVE_GOG_OLD1='gog_baldur_s_gate_enhanced_edition_2.5.0.9.sh'
+ARCHIVE_GOG_OLD1_MD5='224be273fd2ec1eb0246f407dda16bc4'
+ARCHIVE_GOG_OLD1_SIZE='3200000'
+ARCHIVE_GOG_OLD1_VERSION='2.3.67.3-gog2.5.0.9'
 
-ARCHIVE_GOG_OLDER='gog_baldur_s_gate_enhanced_edition_2.5.0.7.sh'
-ARCHIVE_GOG_OLDER_MD5='37ece59534ca63a06f4c047d64b82df9'
-ARCHIVE_GOG_OLDER_SIZE='3200000'
-ARCHIVE_GOG_OLDER_VERSION='2.3.67.3-gog2.5.0.7'
+ARCHIVE_GOG_OLD0='gog_baldur_s_gate_enhanced_edition_2.5.0.7.sh'
+ARCHIVE_GOG_OLD0_MD5='37ece59534ca63a06f4c047d64b82df9'
+ARCHIVE_GOG_OLD0_SIZE='3200000'
+ARCHIVE_GOG_OLD0_VERSION='2.3.67.3-gog2.5.0.7'
 
-ARCHIVE_LIBSSL_32='libssl_1.0.0_32-bit.tar.gz'
-ARCHIVE_LIBSSL_32_MD5='9443cad4a640b2512920495eaf7582c4'
+ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBSSL32_URL='https://www.dotslashplay.it/ressources/libssl/'
+ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
 
-ARCHIVE_ICONS_PACK='baldurs-gate-enhanced-edition_icons.tar.gz'
-ARCHIVE_ICONS_PACK_MD5='364512a51e235ac3a6f4d237283ea10f'
+ARCHIVE_OPTIONAL_ICONS='baldurs-gate-enhanced-edition_icons.tar.gz'
+ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/baldurs-gate-enhanced-edition/'
+ARCHIVE_OPTIONAL_ICONS_MD5='364512a51e235ac3a6f4d237283ea10f'
 
+# Siege of Dragonspear DLC (should be moved to a dedicated script)
 ARCHIVE_GOG_SOD='baldur_s_gate_siege_of_dragonspear_en_2_3_0_4_20148.sh'
 ARCHIVE_GOG_SOD_URL='https://www.gog.com/game/baldurs_gate_siege_of_dragonspear'
 ARCHIVE_GOG_SOD_MD5='152225ec02c87e70bfb59970ac33b755'
@@ -71,21 +74,22 @@ ARCHIVE_GOG_SOD_VERSION='2.3.0.4-gog20148'
 ARCHIVE_GOG_SOD_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./BaldursGate ./engine.lua'
+ARCHIVE_GAME_BIN_FILES='BaldursGate engine.lua'
 
 ARCHIVE_GAME_L10N_PATH='data/noarch/game'
-ARCHIVE_GAME_L10N_FILES='./lang'
+ARCHIVE_GAME_L10N_FILES='lang'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./movies ./music ./chitin.key ./Manuals ./scripts ./data'
+ARCHIVE_GAME_DATA_FILES='movies music chitin.key Manuals scripts data'
 
 ARCHIVE_ICONS_PATH='.'
-ARCHIVE_ICONS_FILES='./16x16 ./24x42 ./32x32 ./48x48 ./64x64 ./256x256'
+ARCHIVE_ICONS_FILES='16x16 24x42 32x32 48x48 64x64 256x256'
 
 APP_MAIN_TYPE='native'
+APP_MAIN_LIBS='libs'
 APP_MAIN_EXE='BaldursGate'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
@@ -103,45 +107,46 @@ PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
 
-target_version='2.8'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
-# Use libSSL 1.0.0 32-bit archive unless building for Arch Linux
+# Use libSSL 1.0.0 32-bit archive (Debian packages only)
 
-if [ "$OPTION_PACKAGE" != 'arch' ]; then
+if [ "$OPTION_PACKAGE" = 'deb' ]; then
 	ARCHIVE_MAIN="$ARCHIVE"
-	set_archive 'ARCHIVE_LIBSSL' 'ARCHIVE_LIBSSL_32'
+	set_archive 'ARCHIVE_LIBSSL32' 'ARCHIVE_OPTIONAL_LIBSSL32'
 	ARCHIVE="$ARCHIVE_MAIN"
 fi
 
 # Try to load icons archive
 
 ARCHIVE_MAIN="$ARCHIVE"
-archive_set 'ARCHIVE_ICONS' 'ARCHIVE_ICONS_PACK'
+archive_set 'ARCHIVE_ICONS' 'ARCHIVE_OPTIONAL_ICONS'
 ARCHIVE="$ARCHIVE_MAIN"
+
+# Try to load Siege of Dragonspear DLC archive (should be moved to a dedicated script)
 
 ARCHIVE_MAIN="$ARCHIVE"
 archive_set 'ARCHIVE_SOD' 'ARCHIVE_GOG_SOD'
@@ -166,7 +171,7 @@ else
 fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Attempt to include SOD into the game directory
+# Include Siege of Dragonspear DLC (should be moved to a dedicated script)
 
 if [ "$ARCHIVE_SOD" ]; then
 	(
@@ -177,17 +182,15 @@ if [ "$ARCHIVE_SOD" ]; then
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
-# Include libSSL into the game directory
+# Include libSSL 1.0.0 32-bit (Debian packages only)
 
-if [ "$ARCHIVE_LIBSSL" ]; then
+if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
-		ARCHIVE='ARCHIVE_LIBSSL'
-		extract_data_from "$ARCHIVE_LIBSSL"
+		ARCHIVE='ARCHIVE_LIBSSL32'
+		extract_data_from "$ARCHIVE_LIBSSL32"
 	)
-	dir='libs'
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$dir"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$dir"
-	APP_MAIN_LIBS="$dir"
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
@@ -198,21 +201,38 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-cat > "$postinst" << EOF
-if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
-	if [ -e /lib/i386-linux-gnu/libjson-c.so ] ; then
-		ln --symbolic libjson-c.so /lib/i386-linux-gnu/libjson.so.0
-	elif [ -e /lib/i386-linux-gnu/libjson-c.so.2 ] ; then
-		ln --symbolic libjson-c.so.2 /lib/i386-linux-gnu/libjson.so.0
-	elif [ -e /lib/i386-linux-gnu/libjson-c.so.3 ] ; then
-		ln --symbolic libjson-c.so.3 /lib/i386-linux-gnu/libjson.so.0
-	fi
-fi
-if [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
-	ln --symbolic libjson-c.so /usr/lib32/libjson.so.0
+case "$OPTION_PACKAGE" in
+	('arch')
+		cat > "$postinst" <<- EOF
+		if [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
+		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
+		    ln --symbolic /usr/lib32/libjson-c.so "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+		fi
+		EOF
+	;;
+	('deb')
+	cat > "$postinst" <<- EOF
+		if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
+		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
+		    for file in\
+		        libjson-c.so\
+		        libjson-c.so.2\
+		        libjson-c.so.3
+		    do
+		        if [ -e "/lib/i386-linux-gnu/\$file" ] ; then
+		            ln --symbolic "/lib/i386-linux-gnu/\$file" "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+		            break
+		        fi
+		    done
+		fi
+		EOF
+	;;
+esac
+cat > "$prerm" <<- EOF
+if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0" ]; then
+    rm "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
 fi
 EOF
-
 write_metadata 'PKG_BIN'
 write_metadata 'PKG_L10N' 'PKG_DATA'
 build_pkg
