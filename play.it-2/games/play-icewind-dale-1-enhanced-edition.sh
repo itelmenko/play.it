@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.3
+script_version=20180926.4
 
 # Set game-specific variables
 
@@ -78,7 +78,7 @@ ARCHIVE_GAME_L10N_PATH='data/noarch/game'
 ARCHIVE_GAME_L10N_FILES='lang'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='data movies music scripts chitin.key'
+ARCHIVE_GAME_DATA_FILES='chitin.key engine.lua data movies music scripts'
 
 ARCHIVE_ICONS_PATH='.'
 ARCHIVE_ICONS_FILES='16x16 32x32 48x48 64x64 128x128 256x256'
