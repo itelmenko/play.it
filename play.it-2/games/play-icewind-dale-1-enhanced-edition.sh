@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.2
+script_version=20180926.3
 
 # Set game-specific variables
 
@@ -54,7 +54,12 @@ ARCHIVE_GOG_OLD0_SIZE='2900000'
 ARCHIVE_GOG_OLD0_VERSION='1.4.0-gog2.1.0.5'
 
 ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBSSL32_URL='https://www.dotslashplay.it/ressources/libssl/'
 ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
+
+ARCHIVE_OPTIONAL_LIBSSL64='libssl_1.0.0_64-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBSSL64_URL='https://www.dotslashplay.it/ressources/libssl/'
+ARCHIVE_OPTIONAL_LIBSSL64_MD5='89917bef5dd34a2865cb63c2287e0bd4'
 
 ARCHIVE_OPTIONAL_ICONS='icewind-dale-1-enhanced-edition_icons.tar.gz'
 ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/icewind-dale-1-enhanced-edition/'
@@ -63,8 +68,11 @@ ARCHIVE_OPTIONAL_ICONS_MD5='2e7db406aca79f9182c4efa93df80bf4'
 ARCHIVE_DOC_PATH='data/noarch/docs'
 ARCHIVE_DOC_FILES='*'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='IcewindDale'
+ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='IcewindDale'
+
+ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='IcewindDale64'
 
 ARCHIVE_GAME_L10N_PATH='data/noarch/game'
 ARCHIVE_GAME_L10N_FILES='lang'
@@ -77,10 +85,13 @@ ARCHIVE_ICONS_FILES='16x16 32x32 48x48 64x64 128x128 256x256'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_LIBS='libs'
-APP_MAIN_EXE='IcewindDale'
+APP_MAIN_EXE_BIN32='IcewindDale'
+APP_MAIN_EXE_BIN64='IcewindDale64'
 APP_MAIN_ICON_GOG='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_L10N PKG_DATA'
+# Keep compatibility with old archives
+PACKAGES_LIST_GOG_OLD0='PKG_BIN32 PKG_L10N PKG_DATA'
 
 PKG_L10N_ID="${GAME_ID}-l10n"
 PKG_L10N_DESCRIPTION='localizations'
@@ -92,11 +103,19 @@ PKG_DATA_DESCRIPTION='data'
 # Easier upgrade from packages generated with pre-20180926.2 scripts
 PKG_DATA_PROVIDE='icewind-dale-enhanced-edition-data'
 
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal json"
-PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal"
+PKG_BIN32_DEPS_ARCH='lib32-openssl-1.0'
 # Easier upgrade from packages generated with pre-20180926.2 scripts
-PKG_BIN_PROVIDE='icewind-dale-enhanced-edition'
+PKG_BIN32_PROVIDE='icewind-dale-enhanced-edition'
+# Keep compatibility with old archives
+PKG_BIN32_DEPS_GOG_OLD0="$PKG_BIN32_DEPS json"
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS_ARCH="$PKG_BIN32_DEPS_ARCH"
+# Easier upgrade from packages generated with pre-20180926.2 scripts
+PKG_BIN64_PROVIDE='icewind-dale-enhanced-edition'
 
 # Load common functions
 
@@ -125,17 +144,22 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Set pakcages list dependending on source archive
+use_archive_specific_value 'PACKAGES_LIST'
+set_temp_directories $PACKAGES_LIST
+
 # Try to load icons archive
 
 ARCHIVE_MAIN="$ARCHIVE"
 archive_set 'ARCHIVE_ICONS' 'ARCHIVE_OPTIONAL_ICONS'
 ARCHIVE="$ARCHIVE_MAIN"
 
-# Use libSSL 1.0.0 32-bit archive (Debian packages only)
+# Use libSSL 1.0.0 archives (Debian packages only)
 
 if [ "$OPTION_PACKAGE" = 'deb' ]; then
 	ARCHIVE_MAIN="$ARCHIVE"
 	archive_set 'ARCHIVE_LIBSSL32' 'ARCHIVE_OPTIONAL_LIBSSL32'
+	archive_set 'ARCHIVE_LIBSSL64' 'ARCHIVE_OPTIONAL_LIBSSL64'
 	ARCHIVE="$ARCHIVE_MAIN"
 fi
 
@@ -158,22 +182,37 @@ else
 fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Include libSSL 1.0.0 32-bit (Debian packages only)
+# Include libSSL 1.0.0 (Debian packages only)
 
 if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
 		ARCHIVE='ARCHIVE_LIBSSL32'
 		extract_data_from "$ARCHIVE_LIBSSL32"
 	)
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mkdir --parents "${PKG_BIN32_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN32_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	rm --recursive "$PLAYIT_WORKDIR/gamedata"
+fi
+if [ "$ARCHIVE_LIBSSL64" ]; then
+	(
+		ARCHIVE='ARCHIVE_LIBSSL64'
+		extract_data_from "$ARCHIVE_LIBSSL64"
+	)
+	mkdir --parents "${PKG_BIN64_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN64_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
 # Write launchers
 
-PKG='PKG_BIN'
+PKG='PKG_BIN32'
 write_launcher 'APP_MAIN'
+case "$ARCHIVE" in
+	('ARCHIVE_GOG')
+		PKG='PKG_BIN64'
+		write_launcher 'APP_MAIN'
+	;;
+esac
 
 # Build package
 
@@ -206,7 +245,12 @@ case "$ARCHIVE" in
 		esac
 	;;
 esac
-write_metadata 'PKG_BIN'
+write_metadata 'PKG_BIN32'
+case "$ARCHIVE" in
+	('ARCHIVE_GOG')
+		write_metadata 'PKG_BIN64'
+	;;
+esac
 write_metadata 'PKG_L10N' 'PKG_DATA'
 build_pkg
 
