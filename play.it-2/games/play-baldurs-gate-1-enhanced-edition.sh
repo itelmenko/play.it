@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.2
+script_version=20180926.3
 
 # Set game-specific variables
 
-GAME_ID='baldurs-gate-enhanced-edition'
+GAME_ID='baldurs-gate-1-enhanced-edition'
 GAME_NAME='Baldur’s Gate - Enhanced Edition'
 
 ARCHIVE_GOG='baldur_s_gate_enhanced_edition_en_2_3_67_3_20146.sh'
@@ -62,9 +62,9 @@ ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
 ARCHIVE_OPTIONAL_LIBSSL32_URL='https://www.dotslashplay.it/ressources/libssl/'
 ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
 
-ARCHIVE_OPTIONAL_ICONS='baldurs-gate-enhanced-edition_icons.tar.gz'
-ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/baldurs-gate-enhanced-edition/'
-ARCHIVE_OPTIONAL_ICONS_MD5='364512a51e235ac3a6f4d237283ea10f'
+ARCHIVE_OPTIONAL_ICONS='baldurs-gate-1-enhanced-edition_icons.tar.gz'
+ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/baldurs-gate-1-enhanced-edition/'
+ARCHIVE_OPTIONAL_ICONS_MD5='58401cf80bc9f1a9e9a0896f5d74b02a'
 
 # Siege of Dragonspear DLC (should be moved to a dedicated script)
 ARCHIVE_GOG_SOD='baldur_s_gate_siege_of_dragonspear_en_2_3_0_4_20148.sh'
@@ -97,13 +97,19 @@ PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
 
 PKG_L10N_ID="${GAME_ID}-l10n"
 PKG_L10N_DESCRIPTION='localizations'
+# Easier upgrade from packages generated with pre-20180926.3 scripts
+PKG_L10N_PROVIDE='baldurs-gate-enhanced-edition-l10n'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20180926.3 scripts
+PKG_DATA_PROVIDE='baldurs-gate-enhanced-edition-data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal json libxrandr alsa"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
+# Easier upgrade from packages generated with pre-20180926.3 scripts
+PKG_BIN_PROVIDE='baldurs-gate-enhanced-edition'
 
 # Load common functions
 
