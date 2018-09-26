@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.1
+script_version=20180926.2
 
 # Set game-specific variables
 
-GAME_ID='icewind-dale-enhanced-edition'
+GAME_ID='icewind-dale-1-enhanced-edition'
 GAME_NAME='Icewind Dale - Enhanced Edition'
 
 ARCHIVE_GOG='icewind_dale_enhanced_edition_en_2_5_16_3_20626.sh'
@@ -56,8 +56,9 @@ ARCHIVE_GOG_OLD0_VERSION='1.4.0-gog2.1.0.5'
 ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
 ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
 
-ARCHIVE_OPTIONAL_ICONS='icewind-dale-enhanced-edition_icons.tar.gz'
-ARCHIVE_OPTIONAL_ICONS_MD5='afe7a2a8013a859f7b56a3104eacd783'
+ARCHIVE_OPTIONAL_ICONS='icewind-dale-1-enhanced-edition_icons.tar.gz'
+ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/icewind-dale-1-enhanced-edition/'
+ARCHIVE_OPTIONAL_ICONS_MD5='2e7db406aca79f9182c4efa93df80bf4'
 
 ARCHIVE_DOC_PATH='data/noarch/docs'
 ARCHIVE_DOC_FILES='*'
@@ -83,13 +84,19 @@ PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
 
 PKG_L10N_ID="${GAME_ID}-l10n"
 PKG_L10N_DESCRIPTION='localizations'
+# Easier upgrade from packages generated with pre-20180926.2 scripts
+PKG_L10N_PROVIDE='icewind-dale-enhanced-edition-l10n'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20180926.2 scripts
+PKG_DATA_PROVIDE='icewind-dale-enhanced-edition-data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal json"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
+# Easier upgrade from packages generated with pre-20180926.2 scripts
+PKG_BIN_PROVIDE='icewind-dale-enhanced-edition'
 
 # Load common functions
 
