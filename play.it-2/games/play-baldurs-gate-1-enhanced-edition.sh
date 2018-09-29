@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.3
+script_version=20180929.1
 
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-1-enhanced-edition'
 GAME_NAME='Baldur’s Gate - Enhanced Edition'
 
-ARCHIVE_GOG='baldur_s_gate_enhanced_edition_en_2_3_67_3_20146.sh'
+ARCHIVE_GOG='baldur_s_gate_enhanced_edition_en_2_5_23121.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_enhanced_edition'
-ARCHIVE_GOG_MD5='4d08fe21fcdeab51624fa2e0de2f5813'
-ARCHIVE_GOG_SIZE='3200000'
-ARCHIVE_GOG_VERSION='2.3.67.3-gog20146'
+ARCHIVE_GOG_MD5='853f6e66db6cc5a4df0f72d23d65fcf7'
+ARCHIVE_GOG_SIZE='3300000'
+ARCHIVE_GOG_VERSION='2.5.17.0-gog23121'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='baldur_s_gate_enhanced_edition_en_2_3_67_3_20146.sh'
+ARCHIVE_GOG_OLD2_MD5='4d08fe21fcdeab51624fa2e0de2f5813'
+ARCHIVE_GOG_OLD2_SIZE='3200000'
+ARCHIVE_GOG_OLD2_VERSION='2.3.67.3-gog20146'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='gog_baldur_s_gate_enhanced_edition_2.5.0.9.sh'
 ARCHIVE_GOG_OLD1_MD5='224be273fd2ec1eb0246f407dda16bc4'
@@ -106,10 +112,14 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE='baldurs-gate-enhanced-edition-data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal json libxrandr alsa"
+PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 # Easier upgrade from packages generated with pre-20180926.3 scripts
 PKG_BIN_PROVIDE='baldurs-gate-enhanced-edition'
+# Keep compatibility with old archives
+PKG_BIN_DEPS_GOG_OLD0="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa json"
+PKG_BIN_DEPS_GOG_OLD1="$PKG_BIN_DEPS_GOG_OLD0"
+PKG_BIN_DEPS_GOG_OLD2="$PKG_BIN_DEPS_GOG_OLD0"
 
 # Load common functions
 
@@ -207,38 +217,43 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-case "$OPTION_PACKAGE" in
-	('arch')
-		cat > "$postinst" <<- EOF
-		if [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
-		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
-		    ln --symbolic /usr/lib32/libjson-c.so "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
-		fi
-		EOF
-	;;
-	('deb')
-	cat > "$postinst" <<- EOF
-		if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
-		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
-		    for file in\
-		        libjson-c.so\
-		        libjson-c.so.2\
-		        libjson-c.so.3
-		    do
-		        if [ -e "/lib/i386-linux-gnu/\$file" ] ; then
-		            ln --symbolic "/lib/i386-linux-gnu/\$file" "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
-		            break
-		        fi
-		    done
+use_archive_specific_value 'PKG_BIN_DEPS'
+case "$ARCHIVE" in
+	('ARCHIVE_GOG_OLD0'|'ARCHIVE_GOG_OLD1'|'ARCHIVE_GOG_OLD2')
+		case "$OPTION_PACKAGE" in
+			('arch')
+				cat > "$postinst" <<- EOF
+				if [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
+				    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
+				    ln --symbolic /usr/lib32/libjson-c.so "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+				fi
+				EOF
+			;;
+			('deb')
+				cat > "$postinst" <<- EOF
+				if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
+				    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
+				    for file in\
+				        libjson-c.so\
+				        libjson-c.so.2\
+				        libjson-c.so.3
+				    do
+				        if [ -e "/lib/i386-linux-gnu/\$file" ] ; then
+				            ln --symbolic "/lib/i386-linux-gnu/\$file" "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+				            break
+				        fi
+				    done
+				fi
+				EOF
+			;;
+		esac
+		cat > "$prerm" <<- EOF
+		if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0" ]; then
+		    rm "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
 		fi
 		EOF
 	;;
 esac
-cat > "$prerm" <<- EOF
-if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0" ]; then
-    rm "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
-fi
-EOF
 write_metadata 'PKG_BIN'
 write_metadata 'PKG_L10N' 'PKG_DATA'
 build_pkg
