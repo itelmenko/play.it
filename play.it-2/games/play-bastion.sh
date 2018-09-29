@@ -35,18 +35,24 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.3
+script_version=20180929.4
 
 # Set game-specific variables
 
 GAME_ID='bastion'
 GAME_NAME='Bastion'
 
-ARCHIVE_GOG='gog_bastion_2.0.0.1.sh'
+ARCHIVE_GOG='bastion_en_1_50436_23291.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/bastion'
-ARCHIVE_GOG_MD5='e5e6eefb4885b67abcfa201b1b3a9c48'
-ARCHIVE_GOG_SIZE='1300000'
-ARCHIVE_GOG_VERSION='1.2.20161020-gog2.0.0.1'
+ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG_MD5='59c2bbcf43cd9ba243d5fa1baa4a4b48'
+ARCHIVE_GOG_SIZE='1400000'
+ARCHIVE_GOG_VERSION='1.50436-gog23291'
+
+ARCHIVE_GOG_OLD0='gog_bastion_2.0.0.1.sh'
+ARCHIVE_GOG_OLD0_MD5='e5e6eefb4885b67abcfa201b1b3a9c48'
+ARCHIVE_GOG_OLD0_SIZE='1300000'
+ARCHIVE_GOG_OLD0_VERSION='1.2.20161020-gog2.0.0.1'
 
 ARCHIVE_HUMBLE='bastion-10162016-bin'
 ARCHIVE_HUMBLE_MD5='19fea173ff2da0f990f60bd5e7c3b237'
