@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.2
+script_version=20180929.3
 
 # Set game-specific variables
 
@@ -54,11 +54,12 @@ ARCHIVE_HUMBLE_SIZE='1300000'
 ARCHIVE_HUMBLE_VERSION='1.2.20161020-humble161019'
 ARCHIVE_HUMBLE_TYPE='mojosetup'
 
-ARCHIVE_DOC_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES_GOG='*'
+ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
+ARCHIVE_DOC0_DATA_PATH_HUMBLE='data'
+ARCHIVE_DOC0_DATA_FILES='Linux.README'
 
-ARCHIVE_DOC_DATA_PATH_HUMBLE='data'
-ARCHIVE_DOC_DATA_FILES_HUMBLE='Linux.README'
+ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
+ARCHIVE_DOC1_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
