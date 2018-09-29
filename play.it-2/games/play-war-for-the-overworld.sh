@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.2
+script_version=20180929.1
 
 # Set game-specific variables
 
@@ -109,7 +109,13 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor gconf"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor gtk2"
+# Keep compatibility with old archives
+PKG_BIN_DEPS_HUMBLE="$PKG_DATA_ID glibc libstdc++ glx xcursor gtk2 gconf"
+PKG_BIN_DEPS_GOG_OLD0="$PKG_BIN_DEPS_HUMBLE"
+PKG_BIN_DEPS_GOG_OLD1="$PKG_BIN_DEPS_HUMBLE"
+PKG_BIN_DEPS_GOG_OLD2="$PKG_BIN_DEPS_HUMBLE"
+PKG_BIN_DEPS_GOG_OLD3="$PKG_BIN_DEPS_HUMBLE"
 
 # Load common functions
 
@@ -172,6 +178,7 @@ write_launcher 'APP_MAIN'
 
 # Build packages
 
+use_archive_specific_value 'PKG_BIN_DEPS'
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
