@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180926.5
+script_version=20180929.1
 
 # Set game-specific variables
 
@@ -223,12 +223,14 @@ esac
 
 # Build package
 
+use_archive_specific_value 'PKG_BIN32_DEPS'
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0')
 		case "$OPTION_PACKAGE" in
 			('arch')
 				cat > "$postinst" <<- EOF
 				if [ ! -e /usr/lib32/libjson.so.0 ] && [ -e /usr/lib32/libjson-c.so ] ; then
+				    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
 				    ln --symbolic /usr/lib32/libjson-c.so "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
 				fi
 				EOF
@@ -236,20 +238,26 @@ case "$ARCHIVE" in
 			('deb')
 				cat > "$postinst" <<- EOF
 				if [ ! -e /lib/i386-linux-gnu/libjson.so.0 ]; then
-				    mdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
+				    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
 				    for file in\
 				        libjson-c.so\
 				        libjson-c.so.2\
-				        libjson-c.so.3\
+				        libjson-c.so.3
 				    do
-				    if [ -e "/lib/i386-linux-gnu/$file" ] ; then
-				        ln --symbolic "/lib/i386-linux-gnu/$file" "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
-				        break
-				    fi
+				        if [ -e "/lib/i386-linux-gnu/\$file" ] ; then
+				            ln --symbolic "/lib/i386-linux-gnu/\$file" "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+				            break
+				        fi
+				    done
 				fi
 				EOF
 			;;
 		esac
+		cat > "$prerm" <<- EOF
+		if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0" ]; then
+		    rm "$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+		fi
+		EOF
 	;;
 esac
 write_metadata 'PKG_BIN32'
