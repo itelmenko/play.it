@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.1
+script_version=20180929.2
 
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-1-enhanced-edition'
 GAME_NAME='Baldur’s Gate - Enhanced Edition - Siege of Dragonspear'
 
-ARCHIVE_GOG='baldur_s_gate_siege_of_dragonspear_en_2_3_0_4_20148.sh'
+ARCHIVE_GOG='baldur_s_gate_siege_of_dragonspear_en_2_5_23121.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_siege_of_dragonspear'
-ARCHIVE_GOG_MD5='152225ec02c87e70bfb59970ac33b755'
-ARCHIVE_GOG_VERSION='2.3.0.4-gog20148'
+ARCHIVE_GOG_MD5='f0581c46e9d31a7ef53be88cf85eccc8'
+ARCHIVE_GOG_VERSION='2.5.17.0-gog23121'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 ARCHIVE_GOG_SIZE='1900000'
+
+ARCHIVE_GOG_OLD0='baldur_s_gate_siege_of_dragonspear_en_2_3_0_4_20148.sh'
+ARCHIVE_GOG_OLD0_MD5='152225ec02c87e70bfb59970ac33b755'
+ARCHIVE_GOG_OLD0_VERSION='2.3.0.4-gog20148'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD0_SIZE='1900000'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
