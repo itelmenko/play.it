@@ -35,14 +35,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180929.1
 
 # Set game-specific variables
 
 GAME_ID='bastion'
 GAME_NAME='Bastion'
-
-ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_HUMBLE'
 
 ARCHIVE_GOG='gog_bastion_2.0.0.1.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/bastion'
@@ -56,89 +54,87 @@ ARCHIVE_HUMBLE_SIZE='1300000'
 ARCHIVE_HUMBLE_VERSION='1.2.20161020-humble161019'
 ARCHIVE_HUMBLE_TYPE='mojosetup'
 
-ARCHIVE_DOC_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC_PATH_HUMBLE='data'
-ARCHIVE_DOC_FILES_GOG='./*'
-ARCHIVE_DOC_FILES_HUMBLE='./Linux.README'
+ARCHIVE_DOC_DATA_PATH_GOG='data/noarch/docs'
+ARCHIVE_DOC_DATA_FILES_GOG='*'
+
+ARCHIVE_DOC_DATA_PATH_HUMBLE='data'
+ARCHIVE_DOC_DATA_FILES_HUMBLE='Linux.README'
 
 ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN32_FILES='./Bastion.bin.x86 ./lib'
+ARCHIVE_GAME_BIN32_FILES='Bastion.bin.x86 lib'
 
 ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN64_FILES='./Bastion.bin.x86_64 ./lib64'
+ARCHIVE_GAME_BIN64_FILES='Bastion.bin.x86_64 lib64'
 
 ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
-ARCHIVE_GAME_DATA_FILES='./*.config ./*.dll ./*.txt ./Bastion.exe ./Bastion.bmp ./Content ./mono'
+ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Bastion.bin.x86'
 APP_MAIN_EXE_BIN64='Bastion.bin.x86_64'
 APP_MAIN_ICON='Bastion.bmp'
-APP_MAIN_ICON_RES='512'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS_DEB="$PKG_DATA_ID, libc6, libstdc++6, libgcc1, libsdl1.2debian"
-PKG_BIN32_DEPS_ARCH="$PKG_DATA_ID lib32-glu lib32-gcc-libs"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++"
+PKG_BIN32_DEPS_DEB='libsdl1.2debian'
+PKG_BIN32_DEPS_ARCH='lib32-glu'
 
 PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
-PKG_BIN64_DEPS_ARCH="$PKG_DATA_ID glu gcc-libs"
+PKG_BIN64_DEPS_ARCH='glu'
 
 # Load common functions
 
-target_version='2.0'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-PKG='PKG_BIN32'
-organize_data 'GAME_BIN32' "$PATH_GAME"
-
-PKG='PKG_BIN64'
-organize_data 'GAME_BIN64' "$PATH_GAME"
+# Extract icon
 
 PKG='PKG_DATA'
-organize_data 'DOC'       "$PATH_DOC"
-organize_data 'GAME_DATA' "$PATH_GAME"
-
-res="$APP_MAIN_ICON_RES"
-PATH_ICON="$PATH_ICON_BASE/${res}x${res}/apps"
-extract_icon_from "${PKG_DATA_PATH}${PATH_GAME}/$APP_MAIN_ICON"
-mkdir --parents "${PKG_DATA_PATH}${PATH_ICON}"
-mv "$PLAYIT_WORKDIR/icons/${APP_MAIN_ICON%.bmp}.png" "${PKG_DATA_PATH}${PATH_ICON}/$GAME_ID.png"
-
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-PKG='PKG_BIN32'
-write_launcher 'APP_MAIN'
-
-PKG='PKG_BIN64'
-write_launcher 'APP_MAIN'
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	write_launcher 'APP_MAIN'
+done
 
 # Build package
 
@@ -151,10 +147,6 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-printf '\n'
-printf '32-bit:'
-print_instructions 'PKG_DATA' 'PKG_BIN32'
-printf '64-bit:'
-print_instructions 'PKG_DATA' 'PKG_BIN64'
+print_instructions
 
 exit 0
