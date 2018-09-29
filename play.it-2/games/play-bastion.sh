@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.6
+script_version=20180929.7
 
 # Set game-specific variables
 
@@ -83,7 +83,7 @@ ARCHIVE_GAME_BIN64_FILES='Bastion.bin.x86_64 lib64'
 
 ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
-ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono'
+ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono*'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Bastion.bin.x86'
