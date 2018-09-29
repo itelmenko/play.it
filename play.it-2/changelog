@@ -3,6 +3,9 @@
   * write_bin - init_prefix_files: Do not ignore symbolic links in
     $CONFIG_PATH / $DATA_PATH when generating or updating prefix
 
+  * pkg_write_deb: Always set "Multi-Arch: foreign" in packages meta-data,
+    fixes issues when trying to install DLC for 32-bit games on 64-bit systems
+
 2.10.2
 
   * write_bin_run_native: Restore pre-2.10.1 version, as the 2.10.1 fix has
