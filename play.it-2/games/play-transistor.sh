@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.1
+script_version=20180930.2
 
 # Set game-specific variables
 
 GAME_ID='transistor'
 GAME_NAME='Transistor'
 
-ARCHIVE_GOG='transistor_en_v1_50423_21516.sh'
+ARCHIVE_GOG='transistor_1_50440_8123_23365.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/transistor'
-ARCHIVE_GOG_MD5='52d0df1d959b333b17ede106f8e53062'
+ARCHIVE_GOG_MD5='dc89c175267dc1a1f3434a9d4f903cce'
 ARCHIVE_GOG_SIZE='3600000'
-ARCHIVE_GOG_VERSION='1.50423-gog21516'
+ARCHIVE_GOG_VERSION='1.50440.8123-gog23365'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='transistor_en_v1_50423_21516.sh'
+ARCHIVE_GOG_OLD1_MD5='52d0df1d959b333b17ede106f8e53062'
+ARCHIVE_GOG_OLD1_SIZE='3600000'
+ARCHIVE_GOG_OLD1_VERSION='1.50423-gog21516'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_transistor_2.0.0.3.sh'
 ARCHIVE_GOG_OLD0_MD5='53dbaf643471f3b8494548261584dd13'
