@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Baldur’s Gate
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20180930.1
 
 # Set game-specific variables
 
@@ -58,22 +58,22 @@ ARCHIVE_GOG_FR_VERSION='1.3.5521-gog2.1.0.10'
 ARCHIVE_GOG_FR_SIZE='3100000'
 
 ARCHIVE_DOC_L10N_PATH='data/noarch/docs'
-ARCHIVE_DOC_L10N_FILES='./end?user?license?agreement.txt ./installer_readme.txt ./manual*.pdf ./readme_totsc.txt ./readme.txt'
+ARCHIVE_DOC_L10N_FILES='end?user?license?agreement.txt installer_readme.txt manual*.pdf readme_totsc.txt readme.txt'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./map.pdf ./readme_patch.txt'
+ARCHIVE_DOC_DATA_FILES='map.pdf readme_patch.txt'
 
 ARCHIVE_GAME_BIN_PATH_GOG_EN="data/noarch/prefix/drive_c/gog games/baldur's gate"
 ARCHIVE_GAME_BIN_PATH_GOG_FR="data/noarch/prefix/drive_c/gog games/baldur's gate (french)"
-ARCHIVE_GAME_BIN_FILES='./*.cfg ./bgmain.exe ./bgmain2.exe ./mconvert.exe ./keymap.ini ./override/*.dll'
+ARCHIVE_GAME_BIN_FILES='*.cfg bgmain.exe bgmain2.exe mconvert.exe keymap.ini override/*.dll'
 
 ARCHIVE_GAME_L10N_PATH_GOG_EN="data/noarch/prefix/drive_c/gog games/baldur's gate"
 ARCHIVE_GAME_L10N_PATH_GOG_FR="data/noarch/prefix/drive_c/gog games/baldur's gate (french)"
-ARCHIVE_GAME_L10N_FILES='./*.tlk ./baldur.exe ./config.exe ./baldur.ini ./*save/*/*.wmp ./data/area000c.bif ./data/chasound.bif ./data/cresound.bif ./data/mpsounds.bif ./data/npcsound.bif ./movies/moviecd1.bif ./movies/moviecd2.bif ./movies/moviecd3.bif ./movies/moviecd4.bif ./override/*.wav ./sounds/*.wav'
+ARCHIVE_GAME_L10N_FILES='*.tlk baldur.exe config.exe baldur.ini *save/*/*.wmp data/area000c.bif data/chasound.bif data/cresound.bif data/mpsounds.bif data/npcsound.bif movies/moviecd1.bif movies/moviecd2.bif movies/moviecd3.bif movies/moviecd4.bif override/*.wav sounds/*.wav'
 
 ARCHIVE_GAME_DATA_PATH_GOG_EN="data/noarch/prefix/drive_c/gog games/baldur's gate"
 ARCHIVE_GAME_DATA_PATH_GOG_FR="data/noarch/prefix/drive_c/gog games/baldur's gate (french)"
-ARCHIVE_GAME_DATA_FILES='./*.key ./characters ./music ./scripts ./*save/*/*.bmp ./*save/*/*.gam ./*save/*/*.sav ./data/area000a.bif ./data/area000b.bif ./data/area000d.bif ./data/area000e.bif ./data/area000f.bif ./data/area000g.bif ./data/area000h.bif ./data/area01* ./data/area02* ./data/area03* ./data/area04* ./data/area05* ./data/area06* ./data/area07* ./data/area08* ./data/area09* ./data/area1* ./data/area2* ./data/area3* ./data/area4* ./data/area5* ./data/areas.bif ./data/armisc.bif ./data/chaanim.bif ./data/creanim.bif ./data/creature.bif ./data/default.bif ./data/dialog.bif ./data/effects.bif ./data/exarmaps.bif ./data/expareas.bif ./data/gui.bif ./data/items.bif ./data/mpcreanm.bif ./data/mpgui.bif ./data/objanim.bif ./data/rndencnt.bif ./data/scripts.bif ./data/sfxsound.bif ./data/spells.bif ./movies/moviecd5.bif ./movies/moviecd6.bif ./movies/movies.bif ./override/*.2da ./override/*.are ./override/*.bam ./override/*.bcs ./override/*.bmp ./override/*.cre ./override/*.dlg ./override/*.itm ./override/*.mos ./override/*.spl ./override/*.sto ./override/*.wed ./override/*.wmp ./sounds/*.txt'
+ARCHIVE_GAME_DATA_FILES='*.key characters music scripts *save/*/*.bmp *save/*/*.gam *save/*/*.sav data/area000a.bif data/area000b.bif data/area000d.bif data/area000e.bif data/area000f.bif data/area000g.bif data/area000h.bif data/area01* data/area02* data/area03* data/area04* data/area05* data/area06* data/area07* data/area08* data/area09* data/area1* data/area2* data/area3* data/area4* data/area5* data/areas.bif data/armisc.bif data/chaanim.bif data/creanim.bif data/creature.bif data/default.bif data/dialog.bif data/effects.bif data/exarmaps.bif data/expareas.bif data/gui.bif data/items.bif data/mpcreanm.bif data/mpgui.bif data/objanim.bif data/rndencnt.bif data/scripts.bif data/sfxsound.bif data/spells.bif movies/moviecd5.bif movies/moviecd6.bif movies/movies.bif override/*.2da override/*.are override/*.bam override/*.bcs override/*.bmp override/*.cre override/*.dlg override/*.itm override/*.mos override/*.spl override/*.sto override/*.wed override/*.wmp sounds/*.txt'
 
 CONFIG_FILES='./*.ini'
 DATA_DIRS='./characters ./mpsave ./override ./portraits ./save ./scripts'
@@ -84,17 +84,15 @@ APP_WINETRICKS='vd=800x600'
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='bgmain2.exe'
 APP_MAIN_ICON='baldur.exe'
-APP_MAIN_ICON_RES='16 32'
 
 APP_CONFIG_ID="${GAME_ID}_config"
 APP_CONFIG_TYPE='wine'
 APP_CONFIG_EXE='config.exe'
 APP_CONFIG_ICON='config.exe'
-APP_CONFIG_ICON_RES='16 32'
 APP_CONFIG_NAME="$GAME_NAME - configuration"
 APP_CONFIG_CAT='Settings'
 
-PACKAGES_LIST='PKG_L10N PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
 
 PKG_L10N_ID="${GAME_ID}-l10n"
 PKG_L10N_ID_GOG_EN="${PKG_L10N_ID}-en"
@@ -107,24 +105,32 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS_DEB="$PKG_L10N_ID, $PKG_DATA_ID, wine32-development | wine32 | wine-bin | wine-i386 | wine-staging-i386, wine:amd64 | wine, winetricks"
-PKG_BIN_DEPS_ARCH="$PKG_L10N_ID $PKG_DATA_ID wine winetricks"
+PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine winetricks"
 
 # Load common functions
 
-target_version='2.1'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
@@ -134,29 +140,29 @@ extract_data_from "$SOURCE_ARCHIVE"
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 tolower "$PLAYIT_WORKDIR/gamedata/data/noarch/docs"
 tolower "$PLAYIT_WORKDIR/gamedata/data/noarch/prefix/drive_c"
+prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC_${PKG#PKG_}"  "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
+# Extract icons
 
 PKG='PKG_L10N'
 extract_and_sort_icons_from 'APP_MAIN' 'APP_CONFIG'
 move_icons_to 'PKG_DATA'
 
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
-
 # Tweak paths in baldur.ini
 
-for drive in 'HD0' 'CD1' 'CD2' 'CD3' 'CD4' 'CD5' 'CD6'; do
-	sed --in-place "s/$drive:=.\+/$drive:=C:\\\\$GAME_ID\\\\/" "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
-done
+file="${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
+pattern='s/^\(.D.:\)=.*/\1=C:\\'"$GAME_ID"'\\/'
+sed --in-place "$pattern" "$file"
+unix2dos "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini" > /dev/null 2>&1
 
 # Use more sensible default settings for modern hardware
 
-sed --in-place 's/\(Path Search Nodes\)=.\+/\1=400000/' "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
-sed --in-place 's/\(CacheSize\)=.\+/\1=1024/'           "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
-unix2dos "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini" > /dev/null
+file="${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
+pattern='s/^\(Path Search Nodes\)=.*/\1=400000/'
+pattern="$pattern"';s/^\(CacheSize\)=.*/\1=1024/'
+sed --in-place "$pattern" "$file"
+unix2dos "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini" > /dev/null 2>&1
 
 # Write launchers
 
