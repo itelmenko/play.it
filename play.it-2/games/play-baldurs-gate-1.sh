@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.2
+script_version=20180930.3
 
 # Set game-specific variables
 
@@ -43,19 +43,31 @@ SCRIPT_DEPS='unix2dos'
 GAME_ID='baldurs-gate-1'
 GAME_NAME='Baldur’s Gate'
 
-ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR ARCHIVE_GOG_FR_OLD0'
 
-ARCHIVE_GOG_EN='gog_baldur_s_gate_the_original_saga_2.1.0.10.sh'
+ARCHIVE_GOG_EN='baldur_s_gate_the_original_saga_gog_3_23532.sh'
 ARCHIVE_GOG_EN_URL='https://www.gog.com/game/baldurs_gate_enhanced_edition'
-ARCHIVE_GOG_EN_MD5='6810388ef67960dded254db5750f9aa5'
-ARCHIVE_GOG_EN_VERSION='1.3.5521-gog2.1.0.10'
-ARCHIVE_GOG_EN_SIZE='3100000'
+ARCHIVE_GOG_EN_MD5='f1750a05b52a5c8bb4810f0dbdb92091'
+ARCHIVE_GOG_EN_VERSION='1.3.5521-gog23532'
+ARCHIVE_GOG_EN_SIZE='3400000'
+ARCHIVE_GOG_EN_TYPE='mojosetup'
 
-ARCHIVE_GOG_FR='gog_baldur_s_gate_the_original_saga_french_2.1.0.10.sh'
+ARCHIVE_GOG_EN_OLD0='gog_baldur_s_gate_the_original_saga_2.1.0.10.sh'
+ARCHIVE_GOG_EN_OLD0_MD5='6810388ef67960dded254db5750f9aa5'
+ARCHIVE_GOG_EN_OLD0_VERSION='1.3.5521-gog2.1.0.10'
+ARCHIVE_GOG_EN_OLD0_SIZE='3100000'
+
+ARCHIVE_GOG_FR='baldur_s_gate_the_original_saga_french_gog_3_23532.sh'
 ARCHIVE_GOG_FR_URL='https://www.gog.com/game/baldurs_gate_enhanced_edition'
-ARCHIVE_GOG_FR_MD5='87ed67decb79e497b8c0ce9e0b16ac4c'
-ARCHIVE_GOG_FR_VERSION='1.3.5521-gog2.1.0.10'
-ARCHIVE_GOG_FR_SIZE='3100000'
+ARCHIVE_GOG_FR_MD5='09073e75602383c2c90d7c82436a8d91'
+ARCHIVE_GOG_FR_VERSION='1.3.5521-gog23532'
+ARCHIVE_GOG_FR_SIZE='3400000'
+ARCHIVE_GOG_FR_TYPE='mojosetup'
+
+ARCHIVE_GOG_FR_OLD0='gog_baldur_s_gate_the_original_saga_french_2.1.0.10.sh'
+ARCHIVE_GOG_FR_OLD0_MD5='87ed67decb79e497b8c0ce9e0b16ac4c'
+ARCHIVE_GOG_FR_OLD0_VERSION='1.3.5521-gog2.1.0.10'
+ARCHIVE_GOG_FR_OLD0_SIZE='3100000'
 
 ARCHIVE_DOC_L10N_PATH='data/noarch/docs'
 ARCHIVE_DOC_L10N_FILES='end?user?license?agreement.txt installer_readme.txt manual*.pdf readme_totsc.txt readme.txt'
