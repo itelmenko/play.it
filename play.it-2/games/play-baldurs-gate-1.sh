@@ -34,13 +34,13 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.1
+script_version=20180930.2
 
 # Set game-specific variables
 
 SCRIPT_DEPS='unix2dos'
 
-GAME_ID='baldurs-gate'
+GAME_ID='baldurs-gate-1'
 GAME_NAME='Baldur’s Gate'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
@@ -103,9 +103,13 @@ PKG_L10N_DESCRIPTION_GOG_FR='French localization'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20180930.2 scripts
+PKG_DATA_PROVIDE='baldurs-gate-data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine winetricks"
+# Easier upgrade from packages generated with pre-20180930.2 scripts
+PKG_BIN_PROVIDE='baldurs-gate'
 
 # Load common functions
 
