@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Transistor
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180624.1
+script_version=20180930.1
 
 # Set game-specific variables
 
@@ -49,22 +49,22 @@ ARCHIVE_GOG_SIZE='3600000'
 ARCHIVE_GOG_VERSION='1.50423-gog21516'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD='gog_transistor_2.0.0.3.sh'
-ARCHIVE_GOG_OLD_MD5='53dbaf643471f3b8494548261584dd13'
-ARCHIVE_GOG_OLD_SIZE='3200000'
-ARCHIVE_GOG_OLD_VERSION='1.20140310-gog2.0.0.3'
+ARCHIVE_GOG_OLD0='gog_transistor_2.0.0.3.sh'
+ARCHIVE_GOG_OLD0_MD5='53dbaf643471f3b8494548261584dd13'
+ARCHIVE_GOG_OLD0_SIZE='3200000'
+ARCHIVE_GOG_OLD0_VERSION='1.20140310-gog2.0.0.3'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./lib ./Transistor.bin.x86'
+ARCHIVE_GAME_BIN32_FILES='lib Transistor.bin.x86'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./lib64 ./Transistor.bin.x86_64'
+ARCHIVE_GAME_BIN64_FILES='lib64 Transistor.bin.x86_64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*'
+ARCHIVE_GAME_DATA_FILES='*'
 
 DATA_DIRS='./logs'
 
@@ -73,7 +73,7 @@ APP_MAIN_EXE_BIN32='Transistor.bin.x86'
 APP_MAIN_EXE_BIN64='Transistor.bin.x86_64'
 APP_MAIN_ICON='Transistor.bmp'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA '
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
@@ -86,29 +86,28 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
