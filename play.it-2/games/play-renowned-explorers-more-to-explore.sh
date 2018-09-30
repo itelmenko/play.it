@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.2
+script_version=20180930.3
 
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
 GAME_NAME='Renowned Explorers: More To Explore'
 
-ARCHIVE_GOG='renowned_explorers_international_society_more_to_explore_dlc_503_23529.sh'
+ARCHIVE_GOG='renowned_explorers_international_society_more_to_explore_dlc_508_23701.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers_more_to_explore'
-ARCHIVE_GOG_MD5='058fa329bbeeb0f8b3a3e7e60dc472bf'
+ARCHIVE_GOG_MD5='5f43443fc81111bc27461e39145c6db6'
 ARCHIVE_GOG_SIZE='69000'
-ARCHIVE_GOG_VERSION='503-gog23529'
+ARCHIVE_GOG_VERSION='508-gog23701'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='renowned_explorers_international_society_more_to_explore_dlc_503_23529.sh'
+ARCHIVE_GOG_OLD2_MD5='058fa329bbeeb0f8b3a3e7e60dc472bf'
+ARCHIVE_GOG_OLD2_SIZE='69000'
+ARCHIVE_GOG_OLD2_VERSION='503-gog23529'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='renowned_explorers_more_to_explore_dlc_en_489_20916.sh'
 ARCHIVE_GOG_OLD1_MD5='cc51077bdcb04086349f81da8b1d19ff'

@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.2
+script_version=20180930.3
 
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
 GAME_NAME='Renowned Explorers: The Emperor’s Challenge'
 
-ARCHIVE_GOG='renowned_explorers_international_society_the_emperors_challenge_dlc_503_23529.sh'
+ARCHIVE_GOG='renowned_explorers_international_society_the_emperors_challenge_dlc_508_23701.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers_the_emperors_challenge'
-ARCHIVE_GOG_MD5='fb2c6bc1201a3346c47e01f0e7aa136c'
+ARCHIVE_GOG_MD5='7f0b5df5318af767bfb306bd4e3f1e13'
 ARCHIVE_GOG_SIZE='22000'
-ARCHIVE_GOG_VERSION='503-gog23529'
+ARCHIVE_GOG_VERSION='508-gog23701'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='renowned_explorers_international_society_the_emperors_challenge_dlc_503_23529.sh'
+ARCHIVE_GOG_OLD2_MD5='fb2c6bc1201a3346c47e01f0e7aa136c'
+ARCHIVE_GOG_OLD2_SIZE='22000'
+ARCHIVE_GOG_OLD2_VERSION='503-gog23529'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='renowned_explorers_the_emperor_s_challenge_dlc_en_489_20916.sh'
 ARCHIVE_GOG_OLD1_MD5='553e0fa1ffed73c9c99022c20cfff707'
