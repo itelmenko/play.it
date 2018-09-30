@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180930.2
+script_version=20180930.3
 
 # Set game-specific variables
 
@@ -49,13 +49,13 @@ ARCHIVE_GOG_SIZE='1200000'
 ARCHIVE_GOG_VERSION='01.01-gog15299'
 ARCHIVE_GOG_TYPE='innosetup'
 
-DATA_DIRS='./logs'
-
 ARCHIVE_GAME_BIN_PATH='app'
 ARCHIVE_GAME_BIN_FILES='yono?and?the?celestial?elephants.exe *_data/mono *_data/plugins *_data/managed'
 
 ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='*_data/resources *_data/level* *_data/resources.assets.ress *_data/globalgamemanagers *_data/*.assets *_data/sharedassets* *_data/gi *_data/screenselector.bmp *_data/streamingassets player_win_x86.pdb player_win_x86_s.pdb'
+
+DATA_DIRS='./logs ./userdata'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='yono and the celestial elephants.exe'
@@ -113,6 +113,16 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
+
+# Store saved games outside of WINE prefix
+
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/AppData/LocalLow/Neckbolt/Yono and the Celestial Elephants/Resources/savefiles'
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 
