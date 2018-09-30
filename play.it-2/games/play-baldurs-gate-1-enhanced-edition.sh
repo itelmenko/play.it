@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.2
+script_version=20180930.1
 
 # Set game-specific variables
 
@@ -105,12 +105,12 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE='baldurs-gate-enhanced-edition-data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa"
+PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa xcursor"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 # Easier upgrade from packages generated with pre-20180926.3 scripts
 PKG_BIN_PROVIDE='baldurs-gate-enhanced-edition'
 # Keep compatibility with old archives
-PKG_BIN_DEPS_GOG_OLD0="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa json"
+PKG_BIN_DEPS_GOG_OLD0="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa xcursor json"
 PKG_BIN_DEPS_GOG_OLD1="$PKG_BIN_DEPS_GOG_OLD0"
 PKG_BIN_DEPS_GOG_OLD2="$PKG_BIN_DEPS_GOG_OLD0"
 
