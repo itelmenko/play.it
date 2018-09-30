@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180930.3
+script_version=20180930.4
 
 # Set game-specific variables
 
@@ -82,10 +82,10 @@ ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='x86'
+ARCHIVE_GAME_BIN32_FILES='x86/abbeycore x86/libc++.so.1 x86/libc++abi.so.1'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='x86_64'
+ARCHIVE_GAME_BIN64_FILES='x86_64/abbeycore x86_64/libc++.so.1 x86_64/libc++abi.so.1'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='build.bni data project.bni settings.ini soundbanks'
