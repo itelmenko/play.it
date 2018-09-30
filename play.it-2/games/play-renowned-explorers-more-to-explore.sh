@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Renowned Explorers: More To Explore
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180612.1
+script_version=20180930.1
 
 # Set game-specific variables
 
@@ -48,48 +48,49 @@ ARCHIVE_GOG_SIZE='69000'
 ARCHIVE_GOG_VERSION='489-gog20916'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD='renowned_explorers_more_to_explore_dlc_en_466_15616.sh'
-ARCHIVE_GOG_OLD_MD5='c99ca440cb312b90052939db49aeef03'
-ARCHIVE_GOG_OLD_SIZE='69000'
-ARCHIVE_GOG_OLD_VERSION='466-gog15616'
-ARCHIVE_GOG_OLD_TYPE='mojosetup'
+ARCHIVE_GOG_OLD0='renowned_explorers_more_to_explore_dlc_en_466_15616.sh'
+ARCHIVE_GOG_OLD0_MD5='c99ca440cb312b90052939db49aeef03'
+ARCHIVE_GOG_OLD0_SIZE='69000'
+ARCHIVE_GOG_OLD0_VERSION='466-gog15616'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
-ARCHIVE_DOC_MAIN_FILES='./*'
+ARCHIVE_DOC_MAIN_FILES='*'
 
 ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='./data'
+ARCHIVE_GAME_MAIN_FILES='data'
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_ID='renowned-explorers-more-to-explore'
+PKG_MAIN_ID="${GAME_ID}-more-to-explore"
 PKG_MAIN_DEPS="$GAME_ID"
+# Easier upgrade from packages generated with pre-20180930.1 scripts
+PKG_MAIN_PROVIDE='renowned-explorers-more-to-explore'
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
