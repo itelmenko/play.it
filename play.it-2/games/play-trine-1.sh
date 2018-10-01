@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.3
+script_version=20181001.4
 
 # Set game-specific variables
 
@@ -65,7 +65,6 @@ ARCHIVE_GAME_DATA_FILES='*.fbq trine1.png data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_LIBS='lib/lib32'
 APP_MAIN_EXE='bin/trine1_linux_launcher_32bit'
 APP_MAIN_ICON='trine1.png'
@@ -78,7 +77,7 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE='trine-data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu gtk2 alsa openal vorbis pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu gtk2 alsa openal vorbis"
 # Easier upgrade from packages generated with pre-20181001.2 scripts
 PKG_BIN_PROVIDE='trine'
 
