@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.2
+script_version=20181001.3
 
 # Set game-specific variables
 
@@ -68,9 +68,7 @@ APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_LIBS='lib/lib32'
 APP_MAIN_EXE='bin/trine1_linux_launcher_32bit'
-APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='trine1.png'
-APP_MAIN_ICON_RES='64'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
