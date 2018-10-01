@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.1
+script_version=20181001.2
 
 # Set game-specific variables
 
@@ -72,7 +72,6 @@ DATA_DIRS='./logs ./userdata'
 
 APP_MAIN_TYPE_HUMBLE_LINUX='native'
 APP_MAIN_TYPE_HUMBLE_WINDOWS='wine'
-APP_MAIN_PRERUN_HUMBLE_LINUX='pulseaudio --start'
 APP_MAIN_EXE_BIN32_HUMBLE_LINUX='OutThereOmega.x86'
 APP_MAIN_EXE_BIN64_HUMBLE_LINUX='OutThereOmega.x86_64'
 APP_MAIN_EXE_WINDOWS='outthereomega.exe'
@@ -91,7 +90,7 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_LINUX_BIN32_ID="${GAME_ID}-linux"
 PKG_LINUX_BIN32_ARCH='32'
-PKG_LINUX_BIN32_DEPS="$PKG_DATA_ID glx xcursor libxrandr pulseaudio"
+PKG_LINUX_BIN32_DEPS="$PKG_DATA_ID glx xcursor libxrandr"
 
 PKG_LINUX_BIN64_ID="$PKG_LINUX_BIN32_ID"
 PKG_LINUX_BIN64_ARCH='64'
@@ -131,7 +130,6 @@ fi
 # Set archive-specific variables
 
 use_archive_specific_value 'APP_MAIN_ICON'
-use_archive_specific_value 'APP_MAIN_PRERUN'
 use_archive_specific_value 'APP_MAIN_TYPE'
 use_archive_specific_value 'PACKAGES_LIST'
 use_archive_specific_value 'PKG_DATA_ID'
