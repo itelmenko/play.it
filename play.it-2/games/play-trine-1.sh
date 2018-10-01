@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.1
+script_version=20181001.2
 
 # Set game-specific variables
 
-GAME_ID='trine'
+GAME_ID='trine-1'
 GAME_NAME='Trine'
 
 ARCHIVE_GOG='gog_trine_enchanted_edition_2.0.0.2.sh'
@@ -76,9 +76,13 @@ PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20181001.2 scripts
+PKG_DATA_PROVIDE='trine-data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu gtk2 alsa openal vorbis pulseaudio"
+# Easier upgrade from packages generated with pre-20181001.2 scripts
+PKG_BIN_PROVIDE='trine'
 
 # Load common functions
 
