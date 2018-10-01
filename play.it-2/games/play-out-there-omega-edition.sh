@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.4
+script_version=20181001.5
 
 # Set game-specific variables
 
@@ -90,7 +90,7 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_LINUX_BIN32_ID="${GAME_ID}-linux"
 PKG_LINUX_BIN32_ARCH='32'
-PKG_LINUX_BIN32_DEPS="$PKG_DATA_ID glx xcursor libxrandr"
+PKG_LINUX_BIN32_DEPS="$PKG_DATA_ID glx xcursor libxrandr libudev1"
 PKG_LINUX_BIN32_PROVIDE="$GAME_ID"
 
 PKG_LINUX_BIN64_ID="$PKG_LINUX_BIN32_ID"
