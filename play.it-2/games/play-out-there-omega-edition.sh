@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.3
+script_version=20181001.4
 
 # Set game-specific variables
 
@@ -72,9 +72,9 @@ DATA_DIRS='./logs ./userdata'
 
 APP_MAIN_TYPE_HUMBLE_LINUX='native'
 APP_MAIN_TYPE_HUMBLE_WINDOWS='wine'
-APP_MAIN_EXE_BIN32_HUMBLE_LINUX='OutThereOmega.x86'
-APP_MAIN_EXE_BIN64_HUMBLE_LINUX='OutThereOmega.x86_64'
-APP_MAIN_EXE_WINDOWS='outthereomega.exe'
+APP_MAIN_EXE_LINUX_BIN32='OutThereOmega.x86'
+APP_MAIN_EXE_LINUX_BIN64='OutThereOmega.x86_64'
+APP_MAIN_EXE_WINDOWS_BIN='outthereomega.exe'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON_HUMBLE_LINUX='OutThereOmega_Data/Resources/UnityPlayer.png'
 APP_MAIN_ICON_HUMBLE_WINDOWS='outthereomega.exe'
