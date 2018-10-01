@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.4
+script_version=20181001.5
 
 # Set game-specific variables
 
@@ -77,7 +77,7 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE='trine-data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu gtk2 alsa openal vorbis"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu gtk2 alsa openal vorbis libudev1"
 # Easier upgrade from packages generated with pre-20181001.2 scripts
 PKG_BIN_PROVIDE='trine'
 
