@@ -131,9 +131,23 @@ launcher_write_script_native_run_common() {
 	    LD_LIBRARY_PATH="${library_path}$LD_LIBRARY_PATH"
 	    export LD_LIBRARY_PATH
 	fi
-	"./$APP_EXE" $APP_OPTIONS $@
-
 	EOF
+	if [ "$(get_value "${application}_PULSEAUDIO")" = 'true' ]; then
+		cat >> "$file" <<- 'EOF'
+		if command -v pulseaudio; then
+		    pulse='pulseaudio --start &&'
+		else
+		    pulse='apulse'
+		fi
+		$pulse "./$APP_EXE" $APP_OPTIONS $@
+
+		EOF
+	else
+		cat >> "$file" <<- 'EOF'
+		"./$APP_EXE" $APP_OPTIONS $@
+
+		EOF
+	fi
 
 	launcher_write_script_postrun "$application" "$file"
 
