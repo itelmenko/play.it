@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181002.1
+script_version=20181002.2
 
 # Set game-specific variables
 
@@ -58,8 +58,7 @@ ARCHIVE_GAME_DATA_PATH='data/noarch'
 ARCHIVE_GAME_DATA_FILES='Engine UDKGame ToGIcon.bmp TowerOfGunsIcon.png'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
+APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE='Binaries/Linux/UDKGame-Linux'
 APP_MAIN_ICON='TowerOfGunsIcon.png'
 
@@ -69,7 +68,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glx sdl2 sdl2_mixer vorbis pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glx sdl2 sdl2_mixer vorbis"
 
 # Load common functions
 
