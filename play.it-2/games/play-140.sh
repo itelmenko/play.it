@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181002.2
+script_version=20181002.3
 
 # Set game-specific variables
 
@@ -102,7 +102,6 @@ DATA_DIRS='./logs'
 DATA_FILES='./140.sav'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_EXE_BIN32='140Linux.x86'
 APP_MAIN_EXE_BIN64='140Linux.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -121,7 +120,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glu alsa xcursor libxrandr libudev1 pulseaudio"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glu alsa xcursor libxrandr libudev1"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
