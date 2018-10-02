@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181002.3
+script_version=20181002.4
 
 # Set game-specific variables
 
@@ -52,7 +52,7 @@ ARCHIVE_DOC_PATH='data/noarch'
 ARCHIVE_DOC_FILES='*.txt README.linux'
 
 ARCHIVE_GAME_BIN_PATH='data/x86'
-ARCHIVE_GAME_BIN_FILES='Binaries'
+ARCHIVE_GAME_BIN_FILES='Binaries/Linux/lib/libPhysXCore.so Binaries/Linux/lib/libPhysXCooking.so Binaries/Linux/lib/libSDL2_mixer-2.0.so.0 Binaries/Linux/lib/libtcmalloc.so.0 Binaries/Linux/UDKGame-Linux'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch'
 ARCHIVE_GAME_DATA_FILES='Engine UDKGame ToGIcon.bmp TowerOfGunsIcon.png'
