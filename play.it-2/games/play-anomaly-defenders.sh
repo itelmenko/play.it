@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181003.1
+script_version=20181003.2
 
 # Set game-specific variables
 
@@ -58,7 +58,6 @@ ARCHIVE_GAME_DATA_FILES='*.dat *.idx icon.png'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='gcc -m32 -o preload.so preload.c -ldl -shared -fPIC -Wall -Wextra
-pulseaudio --start
 export LD_PRELOAD=./preload.so'
 APP_MAIN_EXE='AnomalyDefenders'
 APP_MAIN_ICON='icon.png'
@@ -69,7 +68,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTIOn='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx gcc32 pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx gcc32"
 
 # Load common functions
 
