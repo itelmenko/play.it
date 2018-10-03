@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Janeene Beeforth
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,54 +29,40 @@ set -o errexit
 ###
 
 ###
-# Digital Deluxe Upgrade for Surviving Mars.
+# Baldur’s Gate - Enhanced Edition - Siege of Dragonspear
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.1
+script_version=20180929.2
 
 # Set game-specific variables
 
-# copy GAME_ID from play-surviving-mars.sh
-GAME_ID='surviving-mars'
-GAME_NAME='Surviving Mars: Digital Deluxe Upgrade'
+GAME_ID='baldurs-gate-1-enhanced-edition'
+GAME_NAME='Baldur’s Gate - Enhanced Edition - Siege of Dragonspear'
 
-ARCHIVE_GOG='surviving_mars_digital_deluxe_edition_upgrade_pack_sagan_rc1_update_23676.sh'
-ARCHIVE_GOG_MD5='7ba5d3ab5626f1a18015b9516adf29af'
-ARCHIVE_GOG_SIZE='66000'
-ARCHIVE_GOG_VERSION='23676'
+ARCHIVE_GOG='baldur_s_gate_siege_of_dragonspear_en_2_5_23121.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_siege_of_dragonspear'
+ARCHIVE_GOG_MD5='f0581c46e9d31a7ef53be88cf85eccc8'
+ARCHIVE_GOG_VERSION='2.5.17.0-gog23121'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
-ARCHIVE_GOG_URL='https://www.gog.com/game/surviving_mars_digital_deluxe_edition_upgrade_pack'
+ARCHIVE_GOG_SIZE='1900000'
 
-ARCHIVE_GOG_OLD2='surviving_mars_digital_deluxe_edition_upgrade_pack_en_davinci_rc1_22763.sh'
-ARCHIVE_GOG_OLD2_MD5='195f0d1a28047112ced2d9cc31df5e52'
-ARCHIVE_GOG_OLD2_SIZE='67000'
-# Switching to the build number directly in future
-ARCHIVE_GOG_OLD2_VERSION='22763'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup_unzip'
-
-ARCHIVE_GOG_OLD1='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180619_curiosity_hotfix_3_21661.sh'
-ARCHIVE_GOG_OLD1_MD5='cef24bda9587c1923139ea0c86df317a'
-ARCHIVE_GOG_OLD1_SIZE='66000'
-ARCHIVE_GOG_OLD1_VERSION='3-gog21661'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
-
-ARCHIVE_GOG_OLD0='surviving_mars_digital_deluxe_edition_upgrade_pack_en_180423_opportunity_rc1_20289.sh'
-ARCHIVE_GOG_OLD0_MD5='a574de12f4b7f3aa1f285167109bb6a3'
-ARCHIVE_GOG_OLD0_SIZE="66000"
-ARCHIVE_GOG_OLD0_VERSION="1-gog20289"
+ARCHIVE_GOG_OLD0='baldur_s_gate_siege_of_dragonspear_en_2_3_0_4_20148.sh'
+ARCHIVE_GOG_OLD0_MD5='152225ec02c87e70bfb59970ac33b755'
+ARCHIVE_GOG_OLD0_VERSION='2.3.0.4-gog20148'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD0_SIZE='1900000'
 
-ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
-ARCHIVE_DOC_MAIN_FILES='*'
+ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='DLC'
+ARCHIVE_GAME_MAIN_FILES='sod-dlc.zip'
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_ID="${GAME_ID}-digital-deluxe-upgrade-pack"
+PKG_MAIN_ID="${GAME_ID}-siege-of-dragonspear"
 PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
