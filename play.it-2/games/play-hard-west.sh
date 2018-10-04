@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181004.2
+script_version=20181004.3
 
 # Set game-specific variables
 
@@ -65,7 +65,17 @@ DATA_DIRS='./logs ./Documents'
 CONFIG_DIRS='./.config'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
+APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
+	mkdir --parents libs
+	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
+	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
+else
+	if [ -e "libs/libpulse-simple.so.0" ]; then
+		rm libs/libpulse-simple.so.0
+		rmdir --ignore-fail-on-non-empty libs
+	fi
+	pulseaudio --start
+fi
 export HOME="$PATH_PREFIX"'
 APP_MAIN_EXE_BIN32='HardWest.x86'
 APP_MAIN_EXE_BIN64='HardWest.x86_64'
@@ -78,7 +88,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc glu xcursor libxrandr libudev1 pulseaudio"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc glu xcursor libxrandr libudev1"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
