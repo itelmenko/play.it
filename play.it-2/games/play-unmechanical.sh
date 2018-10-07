@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181005.1
+script_version=20181005.2
 
 # Set game-specific variables
 
@@ -53,7 +53,7 @@ ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='Binaries Engine'
+ARCHIVE_GAME_BIN_FILES='Engine Binaries/Linux/lib/libPhysXCore.so Binaries/Linux/lib/libPhysXExtensions.so.1 Binaries/Linux/lib/libPhysXLoader.so.1 Binaries/Linux/lib/libPhysXCooking.so Binaries/Linux/lib/libSDL2_mixer-2.0.so.0 Binaries/Linux/lib/libtcmalloc.so.0 Binaries/Linux/lib/libsteam_api.so Binaries/Linux/UDKGame-Linux'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='UDKGame UnmechanicalIcon.bmp'
@@ -70,7 +70,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor openal sdl2 pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor openal sdl2 vorbis pulseaudio"
 
 # Load common functions
 
