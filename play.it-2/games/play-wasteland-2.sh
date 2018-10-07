@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Wasteland 2
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20181007.1
 
 # Set game-specific variables
 
@@ -49,16 +49,16 @@ ARCHIVE_GOG_VERSION='1.1.92788-gog2.3.0.5'
 ARCHIVE_GOG_SIZE='16000000'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./WL2 ./WL2_Data/Mono ./WL2_Data/Plugins'
+ARCHIVE_GAME_BIN_FILES='WL2 WL2_Data/Mono WL2_Data/Plugins'
 
 ARCHIVE_GAME_RESOURCES_PATH='data/noarch/game'
-ARCHIVE_GAME_RESOURCES_FILES='./WL2_Data/*.resource'
+ARCHIVE_GAME_RESOURCES_FILES='WL2_Data/*.resource'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./WL2_Data'
+ARCHIVE_GAME_DATA_FILES='WL2_Data'
 
 DATA_DIRS='./logs'
 
@@ -81,29 +81,28 @@ PKG_BIN_DEPS="$PKG_DATA_ID glu xcursor libxrandr alsa pulseaudio"
 
 # Load common functions
 
-target_version='2.8'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
