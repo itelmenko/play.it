@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181007.2
+script_version=20181007.3
 
 # Set game-specific variables
 
@@ -66,7 +66,17 @@ ARCHIVE_GAME_DATA_FILES='Dex_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
+APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
+	mkdir --parents libs
+	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
+	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
+else
+	if [ -e "libs/libpulse-simple.so.0" ]; then
+		rm libs/libpulse-simple.so.0
+		rmdir --ignore-fail-on-non-empty libs
+	fi
+	pulseaudio --start
+fi'
 APP_MAIN_EXE='Dex.x86'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='Dex_Data/Resources/UnityPlayer.png'
@@ -77,7 +87,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1 pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1"
 
 # Load common functions
 
