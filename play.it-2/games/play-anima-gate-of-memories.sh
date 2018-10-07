@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181007.2
+script_version=20181007.3
 
 # Set game-specific variables
 
@@ -67,7 +67,6 @@ ARCHIVE_GAME_DATA_FILES='GoMLinux_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_EXE_BIN32='GoMLinux.x86'
 APP_MAIN_EXE_BIN64='GoMLinux.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -82,7 +81,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_ASSETS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor libxrandr gtk2 libudev1 pulseaudio"
+PKG_BIN32_DEPS="$PKG_ASSETS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor libxrandr gtk2 libudev1"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
