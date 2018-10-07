@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181005.2
+script_version=20181007.1
 
 # Set game-specific variables
 
@@ -59,7 +59,6 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='UDKGame UnmechanicalIcon.bmp'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
 APP_MAIN_EXE='Binaries/Linux/UDKGame-Linux'
 APP_MAIN_LIBS='lib'
 APP_MAIN_ICON='UnmechanicalIcon.bmp'
@@ -70,7 +69,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor openal sdl2 vorbis pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor openal sdl2 vorbis"
 
 # Load common functions
 
