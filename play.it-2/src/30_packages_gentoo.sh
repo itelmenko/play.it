@@ -242,16 +242,16 @@ pkg_set_deps_gentoo() {
 			(*)
 				pkg_dep=''
 				local has_provides=false
-				for pkg in $PACKAGES_LIST; do
-					use_archive_specific_value "${pkg}_PROVIDE"
+				for package in $PACKAGES_LIST; do
+					use_archive_specific_value "${package}_PROVIDE"
 					local provide
-					provide="$(get_value "${pkg}_PROVIDE")"
+					provide="$(get_value "${package}_PROVIDE")"
 					if [ "$provide" = "$dep" ]; then
 						has_provides=true
-						use_archive_specific_value "${pkg}_ID"
-						local pkg_id
-						pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')"
-						pkg_dep="$pkg_dep games-playit/$pkg_id"
+						use_archive_specific_value "${package}_ID"
+						local package_id
+						package_id="$(get_value "${package}_ID" | sed 's/-/_/g')"
+						pkg_dep="$pkg_dep games-playit/$package_id"
 					fi
 				done
 				if [ "$has_provides" != true ]; then
