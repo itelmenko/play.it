@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181010.1
+script_version=20181010.2
 
 # Set game-specific variables
 
@@ -74,7 +74,7 @@ ARCHIVE_GAME_BIN32_FILES='*.json bin'
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game/dontstarve64'
 ARCHIVE_GAME_BIN64_FILES='*.json bin'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game/dontstarve32'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game/dontstarve64'
 ARCHIVE_GAME_DATA_FILES='data mods dontstarve.xpm'
 
 DATA_DIRS='./mods'
@@ -83,16 +83,20 @@ APP_MAIN_TYPE='native'
 APP_MAIN_EXE='bin/dontstarve'
 APP_MAIN_ICON='dontstarve.xpm'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN64 PKG_DATA'
+# Keep compatibility with old archives
+PACKAGES_LIST_GOG_OLD0='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST_GOG_OLD1="$PACKAGES_LIST_GOG_OLD0"
+PACKAGES_LIST_GOG_OLD2="$PACKAGES_LIST_GOG_OLD0"
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID libcurl-gnutls glu sdl2"
-
 PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS="$PKG_DATA_ID glibc libstdc++ libcurl-gnutls glx sdl2"
+
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_BIN64_DEPS"
 
 # Load common functions
 
@@ -121,6 +125,11 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Update packages list depending on source archive
+
+use_archive_specific_value 'PACKAGES_LIST'
+set_temp_directories $PACKAGES_LIST
+
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
@@ -129,24 +138,33 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+PKG='PKG_BIN64'
+write_launcher 'APP_MAIN'
+if [ "$PKG_BIN32_PATH" ] && [ -e "$PKG_BIN32_PATH" ]; then
+	PKG='PKG_BIN32'
 	write_launcher 'APP_MAIN'
-done
+fi
 
 # Set working directory to the directory containing the game binary before running it
 
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
 pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
-file0="${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
-file1="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
-sed --in-place "$pattern" "$file0" "$file1"
+file="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
+sed --in-place "$pattern" "$file"
+if [ "$PKG_BIN32_PATH" ] && [ -e "$PKG_BIN32_PATH" ]; then
+	file="${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
+	sed --in-place "$pattern" "$file"
+fi
 
 # Build package
 
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata 'PKG_BIN64'
+if [ "$PKG_BIN32_PATH" ] && [ -e "$PKG_BIN32_PATH" ]; then
+	write_metadata 'PKG_BIN32'
+fi
 build_pkg
 
 # Clean up
