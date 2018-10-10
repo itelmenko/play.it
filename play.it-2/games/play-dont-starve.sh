@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181010.2
+script_version=20181010.3
 
 # Set game-specific variables
 
@@ -47,32 +47,32 @@ ARCHIVE_GOG_URL='https://www.gog.com/game/dont_starve'
 ARCHIVE_GOG_MD5='611cd70afd9b9feb3aca4d1eaf9ebbda'
 ARCHIVE_GOG_TYPE='mojosetup'
 ARCHIVE_GOG_SIZE='760000'
-ARCHIVE_GOG_VERSION='222215-gog22450'
+ARCHIVE_GOG_VERSION='276758-gog22450'
 
 ARCHIVE_GOG_OLD2='don_t_starve_en_20171215_17629.sh'
 ARCHIVE_GOG_OLD2_MD5='f7dda3b3bdb15ac62acb212a89b24623'
 ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 ARCHIVE_GOG_OLD2_SIZE='670000'
-ARCHIVE_GOG_OLD2_VERSION='20171215-gog17629'
+ARCHIVE_GOG_OLD2_VERSION='246924-gog17629'
 
 ARCHIVE_GOG_OLD1='gog_don_t_starve_2.7.0.9.sh'
 ARCHIVE_GOG_OLD1_MD5='01d7496de1c5a28ffc82172e89dd9cd6'
 ARCHIVE_GOG_OLD1_SIZE='660000'
-ARCHIVE_GOG_OLD1_VERSION='1.222215-gog2.7.0.9'
+ARCHIVE_GOG_OLD1_VERSION='222215-gog2.7.0.9'
 
 ARCHIVE_GOG_OLD0='gog_don_t_starve_2.6.0.8.sh'
 ARCHIVE_GOG_OLD0_MD5='2b0d363bea53654c0267ae424de7130a'
 ARCHIVE_GOG_OLD0_SIZE='650000'
-ARCHIVE_GOG_OLD0_VERSION='1.198251-gog2.6.0.8'
+ARCHIVE_GOG_OLD0_VERSION='198251-gog2.6.0.8'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game/dontstarve32'
-ARCHIVE_GAME_BIN32_FILES='*.json bin'
+ARCHIVE_GAME_BIN32_FILES='*.json bin/dontstarve bin/lib32/libfmodevent.so bin/lib32/libfmodevent-4.44.07.so bin/lib32/libfmodex.so bin/lib32/libfmodex-4.44.07.so'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game/dontstarve64'
-ARCHIVE_GAME_BIN64_FILES='*.json bin'
+ARCHIVE_GAME_BIN64_FILES='*.json bin/dontstarve bin/lib64/libfmodevent.so bin/lib64/libfmodevent-4.44.07.so bin/lib64/libfmodex.so bin/lib64/libfmodex-4.44.07.so'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game/dontstarve64'
 ARCHIVE_GAME_DATA_FILES='data mods dontstarve.xpm'
