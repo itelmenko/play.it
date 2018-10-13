@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181013.3
+script_version=20181013.4
 
 # Set game-specific variables
 
@@ -65,8 +65,6 @@ CONFIG_FILES='./*.ini'
 DATA_DIRS='./save'
 DATA_FILES='./*.txt'
 
-APP_WINETRICKS='vd=1024x768'
-
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='pharaoh.exe'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON1 APP_MAIN_ICON2'
@@ -79,7 +77,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks glx"
+PKG_BIN_DEPS="$PKG_DATA_ID wine glx"
 
 # Load common functions
 
