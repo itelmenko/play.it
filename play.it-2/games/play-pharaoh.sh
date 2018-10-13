@@ -34,9 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181013.1
+script_version=20181013.2
 
 # Set game-specific variables
+
+SCRIPT_DEPS='convert identify wrestool'
 
 GAME_ID='pharaoh'
 GAME_NAME='Pharaoh'
