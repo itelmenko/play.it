@@ -1,5 +1,10 @@
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2017-2018, Solène "Mopi" Huault
+# Copyright (c) 2017-2018, Phil Morrell
+# Copyright (c) 2017-2018, Jacek Szafarkiewicz
+# Copyright (c) 2018, VA
+# Copyright (c) 2018, Janeene "dawnmist" Beeforth
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
