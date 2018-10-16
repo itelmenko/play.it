@@ -48,7 +48,7 @@ check_deps() {
 		SCRIPT_DEPS="$SCRIPT_DEPS fakeroot dpkg"
 	fi
 	if [ "$OPTION_PACKAGE" = 'gentoo' ]; then
-		SCRIPT_DEPS="$SCRIPTS_DEPS fakeroot-ng ebuild"
+		SCRIPT_DEPS="$SCRIPT_DEPS fakeroot-ng ebuild"
 	fi
 	for dep in $SCRIPT_DEPS; do
 		case $dep in
