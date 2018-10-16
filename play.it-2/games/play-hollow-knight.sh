@@ -43,11 +43,11 @@ script_version=20180805.1
 GAME_ID='hollow-knight'
 GAME_NAME='Hollow Knight'
 
-ARCHIVE_GOG='hollow_knight_en_1_3_1_5_20240.sh'
+ARCHIVE_GOG='hollow_knight_1_4_3_2_23987.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/hollow_knight'
-ARCHIVE_GOG_MD5='197d9ffc7e0be447849e22a04da836e4'
+ARCHIVE_GOG_MD5='520af5ebe8ac3977faaafc5d2ed8a779'
 ARCHIVE_GOG_SIZE='9200000'
-ARCHIVE_GOG_VERSION='1.3.1.5-gog20240'
+ARCHIVE_GOG_VERSION='1.4.3.2-gog23987'
 ARCHIVE_GOG_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_hollow_knight_2.1.0.2.sh'
