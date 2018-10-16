@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181015.1
+script_version=20181016.1
 
 # Set game-specific variables
 
@@ -73,7 +73,8 @@ else
 		rmdir --ignore-fail-on-non-empty libs
 	fi
 	pulseaudio --start
-fi'
+fi
+ulimit -n $(($(ulimit -Hn)/2))'
 APP_MAIN_EXE='WL2'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='WL2_Data/Resources/UnityPlayer.png'
