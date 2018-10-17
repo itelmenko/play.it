@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181017.1
+script_version=20181017.2
 
 # Set game-specific variables
 
@@ -77,8 +77,7 @@ ARCHIVE_GAME1_DATA_PATH_GOG_FR="data/noarch/prefix/drive_c/gog games/baldur's ga
 ARCHIVE_GAME1_DATA_FILES='*.ico *.mpi music scripts script?compiler override data'
 
 CONFIG_FILES='./*.ini'
-DATA_DIRS='./characters ./mpsave ./override ./portraits ./save ./scripts'
-DATA_FILES='./*.err ./*.log ./*.tlk ./chitin.key'
+DATA_DIRS='./characters ./mpsave ./save'
 
 APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
 
