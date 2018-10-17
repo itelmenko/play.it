@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181017.2
+script_version=20181017.3
 
 # Set game-specific variables
 
@@ -43,22 +43,38 @@ SCRIPT_DEPS='unix2dos'
 GAME_ID='baldurs-gate-2'
 GAME_NAME='Baldur’s Gate II'
 
-ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
+ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR ARCHIVE_GOG_FR_OLD0'
 
-ARCHIVE_GOG_EN='gog_baldur_s_gate_2_complete_2.1.0.7.sh'
+ARCHIVE_GOG_EN='baldur_s_gate_2_complete_gog_3_23651.sh'
 ARCHIVE_GOG_EN_URL='https://www.gog.com/game/baldurs_gate_2_enhanced_edition'
-ARCHIVE_GOG_EN_MD5='e92161d7fc0a2eea234b2c93760c9cdb'
-ARCHIVE_GOG_EN_VERSION='2.5.26498-gog2.1.0.7'
-ARCHIVE_GOG_EN_SIZE='3000000'
+ARCHIVE_GOG_EN_MD5='030a61ce961ac88cd9506f1fd42135d6'
+ARCHIVE_GOG_EN_VERSION='2.5.26498-gog23651'
+ARCHIVE_GOG_EN_SIZE='3400000'
+ARCHIVE_GOG_EN_TYPE='mojosetup'
 
-ARCHIVE_GOG_FR='gog_baldur_s_gate_2_complete_french_2.1.0.7.sh'
+ARCHIVE_GOG_EN_OLD0='gog_baldur_s_gate_2_complete_2.1.0.7.sh'
+ARCHIVE_GOG_EN_OLD0_MD5='e92161d7fc0a2eea234b2c93760c9cdb'
+ARCHIVE_GOG_EN_OLD0_VERSION='2.5.26498-gog2.1.0.7'
+ARCHIVE_GOG_EN_OLD0_SIZE='3000000'
+
+ARCHIVE_GOG_FR='baldur_s_gate_2_complete_french_gog_3_23651.sh'
 ARCHIVE_GOG_FR_URL='https://www.gog.com/game/baldurs_gate_2_enhanced_edition'
-ARCHIVE_GOG_FR_MD5='6551bda3d8c7330b7ad66842ac1d4ed4'
-ARCHIVE_GOG_FR_VERSION='2.5.26498-gog2.1.0.7'
-ARCHIVE_GOG_FR_SIZE='3000000'
+ARCHIVE_GOG_FR_MD5='c72eb1b9bae7109de6a7005b3dc44e2c'
+ARCHIVE_GOG_FR_VERSION='2.5.26498-gog23651'
+ARCHIVE_GOG_FR_SIZE='3400000'
+ARCHIVE_GOG_FR_TYPE='mojosetup'
 
-ARCHIVE_DOC_L10N_PATH='data/noarch/docs'
+ARCHIVE_GOG_FR_OLD0='gog_baldur_s_gate_2_complete_french_2.1.0.7.sh'
+ARCHIVE_GOG_FR_OLD0_MD5='6551bda3d8c7330b7ad66842ac1d4ed4'
+ARCHIVE_GOG_FR_OLD0_VERSION='2.5.26498-gog2.1.0.7'
+ARCHIVE_GOG_FR_OLD0_SIZE='3000000'
+
+ARCHIVE_DOC_L10N_PATH_GOG_EN='data/noarch/docs/english'
+ARCHIVE_DOC_L10N_PATH_GOG_FR='data/noarch/docs/french'
 ARCHIVE_DOC_L10N_FILES='*'
+# Keep compatibility with old archives
+ARCHIVE_DOC_L10N_PATH_GOG_EN_OLD0='data/noarch/docs'
+ARCHIVE_DOC_L10N_PATH_GOG_FR_OLD0='data/noarch/docs'
 
 ARCHIVE_GAME_BIN_PATH_GOG_EN="data/noarch/prefix/drive_c/gog games/baldur's gate 2"
 ARCHIVE_GAME_BIN_PATH_GOG_FR="data/noarch/prefix/drive_c/gog games/baldur's gate 2 (french)"
