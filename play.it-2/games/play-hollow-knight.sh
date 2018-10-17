@@ -32,11 +32,11 @@ set -o errexit
 
 ###
 # Hollow Knight
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181017.1
+script_version=20181017.2
 
 # Set game-specific variables
 
@@ -62,19 +62,19 @@ ARCHIVE_GOG_OLD0_SIZE='9200000'
 ARCHIVE_GOG_OLD0_VERSION='1.0.3.1-gog2.1.0.2'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='./*'
+ARCHIVE_DOC0_DATA_FILES='*'
 
 ARCHIVE_DOC1_DATA_PATH='data/noarch/support'
-ARCHIVE_DOC1_DATA_FILES='./*.txt'
+ARCHIVE_DOC1_DATA_FILES='*.txt'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./hollow_knight.x86_64 ./*_Data/Mono ./*_Data/Plugins'
+ARCHIVE_GAME_BIN_FILES='hollow_knight.x86_64 hollow_knight_Data/Mono hollow_knight_Data/Plugins'
 
 ARCHIVE_GAME_ASSETS_PATH='data/noarch/game'
-ARCHIVE_GAME_ASSETS_FILES='./*_Data/*.assets ./*_Data/*.assets.resS'
+ARCHIVE_GAME_ASSETS_FILES='hollow_knight_Data/*.assets hollow_knight_Data/*.assets.resS'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*_Data'
+ARCHIVE_GAME_DATA_FILES='hollow_knight_Data'
 
 DATA_DIRS='./logs'
 
@@ -96,29 +96,28 @@ PKG_BIN_DEPS="$PKG_ASSETS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor libxrandr"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
