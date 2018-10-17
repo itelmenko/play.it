@@ -36,7 +36,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180805.1
+script_version=20181017.1
 
 # Set game-specific variables
 
@@ -49,6 +49,12 @@ ARCHIVE_GOG_MD5='520af5ebe8ac3977faaafc5d2ed8a779'
 ARCHIVE_GOG_SIZE='9200000'
 ARCHIVE_GOG_VERSION='1.4.3.2-gog23987'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='hollow_knight_en_1_3_1_5_20240.sh'
+ARCHIVE_GOG_OLD1_MD5='197d9ffc7e0be447849e22a04da836e4'
+ARCHIVE_GOG_OLD1_SIZE='9200000'
+ARCHIVE_GOG_OLD1_VERSION='1.3.1.5-gog20240'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_hollow_knight_2.1.0.2.sh'
 ARCHIVE_GOG_OLD0_MD5='0d18baf29d5552dc094ca2bfe5fcaae6'
