@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Puzzle Agent
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180911.1
+script_version=20181020.1
 
 # Set game-specific variables
 
@@ -55,12 +55,14 @@ ARCHIVE_GOG_OLD0_SIZE='260000'
 ARCHIVE_GOG_OLD0_VERSION='1.0-gog2.0.0.3'
 
 ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='fmodex.dll grickle101.exe steam_api.dll'
+# Keep compatibility with old archives
 ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
-ARCHIVE_GAME_BIN_FILES='./fmodex.dll ./grickle101.exe ./steam_api.dll'
 
 ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='pack'
+# Keep compatibility with old archives
 ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
-ARCHIVE_GAME_DATA_FILES='./pack'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='grickle101.exe'
