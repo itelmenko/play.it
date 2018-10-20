@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20181020.2
+script_version=20181020.3
 
 # Set game-specific variables
 
@@ -64,6 +64,8 @@ ARCHIVE_GAME_DATA_FILES='pack'
 # Keep compatibility with old archives
 ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
+APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='grickle101.exe'
 APP_MAIN_ICON='grickle101.exe'
@@ -74,7 +76,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine-staging glx"
+PKG_BIN_DEPS="$PKG_DATA_ID wine-staging glx winetricks xrandr"
 
 # Load common functions
 
