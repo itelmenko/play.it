@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181021.3
+script_version=20181021.4
 
 # Set game-specific variables
 
@@ -86,7 +86,7 @@ PKG_DATA_PROVIDE='torchlight-data'
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine xcursor"
+PKG_BIN_DEPS="$PKG_DATA_ID wine xcursor glx"
 # Easier upgrade from packages generated with pre-20181021.2 scripts
 PKG_BIN_PROVIDE='torchlight'
 
