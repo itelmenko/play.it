@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181021.2
+script_version=20181021.3
 
 # Set game-specific variables
 
@@ -146,9 +146,8 @@ done
 
 # Copy 'Hammerwatch.exe' into game prefix
 
-pattern='s/cp --parents --remove-destination "$APP_EXE" "$PATH_PREFIX"/&\n'
-pattern="$pattern\\tcd \"\$PATH_GAME\"\\n"
-pattern="$pattern\\tcp --parents --remove-destination 'Hammerwatch.exe' \"\$PATH_PREFIX\"/"
+pattern='s/^\tcp --parents --dereference --remove-destination "$APP_EXE" "$PATH_PREFIX"$/&\n'
+pattern="$pattern"'\tcp --parents --remove-destination "Hammerwatch.exe" "$PATH_PREFIX"/'
 file1="${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
 file2="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
 sed --in-place "$pattern" "$file1" "$file2"
