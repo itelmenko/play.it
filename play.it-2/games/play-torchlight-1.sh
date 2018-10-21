@@ -34,30 +34,42 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181021.2
+script_version=20181021.3
 
 # Set game-specific variables
 
 GAME_ID='torchlight-1'
 GAME_NAME='Torchlight'
 
-ARCHIVE_GOG='setup_torchlight_2.0.0.12.exe'
+ARCHIVE_GOG='setup_torchlight_1.15(a)_(23675).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/torchlight'
-ARCHIVE_GOG_MD5='4b721e1b3da90f170d66f42e60a3fece'
-ARCHIVE_GOG_VERSION='1.15-gog2.0.0.12'
+ARCHIVE_GOG_MD5='a29e51f55aae740f4046d227d33fa64b'
+ARCHIVE_GOG_VERSION='1.15-gog23675'
 ARCHIVE_GOG_SIZE='460000'
+ARCHIVE_GOG_TYPE='innosetup'
+
+ARCHIVE_GOG_OLD0='setup_torchlight_2.0.0.12.exe'
+ARCHIVE_GOG_OLD0_MD5='4b721e1b3da90f170d66f42e60a3fece'
+ARCHIVE_GOG_OLD0_VERSION='1.15-gog2.0.0.12'
+ARCHIVE_GOG_OLD0_SIZE='460000'
 
 ARCHIVE_DOC0_DATA_PATH='tmp'
 ARCHIVE_DOC0_DATA_FILES='*.txt'
 
-ARCHIVE_DOC1_DATA_PATH='app'
+ARCHIVE_DOC1_DATA_PATH='.'
 ARCHIVE_DOC1_DATA_FILES='*.pdf'
+# Keep comaptibility with old archives
+ARCHIVE_DOC1_DATA_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='torchlight.exe *.cfg *.dll'
+# Keep comaptibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='buildver.txt runicgames.ico torchlight.ico logo.bmp pak.zip icons music programs'
+# Keep comaptibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
 DATA_DIRS='./userdata'
 
