@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181021.1
+script_version=20181021.2
 
 # Set game-specific variables
 
-GAME_ID='torchlight'
+GAME_ID='torchlight-1'
 GAME_NAME='Torchlight'
 
 ARCHIVE_GOG='setup_torchlight_2.0.0.12.exe'
@@ -69,10 +69,14 @@ PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20181021.2 scripts
+PKG_DATA_PROVIDE='torchlight-data'
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_DATA_ID wine xcursor"
+# Easier upgrade from packages generated with pre-20181021.2 scripts
+PKG_BIN_PROVIDE='torchlight'
 
 # Load common functions
 
