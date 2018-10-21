@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181021.1
+script_version=20181021.2
 
 # Set game-specific variables
 
@@ -47,26 +47,37 @@ ARCHIVE_GOG_MD5='2d1f01b73f43e0b6399ab578c52c6cb6'
 ARCHIVE_GOG_SIZE='230000'
 ARCHIVE_GOG_VERSION='1.32-gog2.1.0.7'
 
-ARCHIVE_HUMBLE='hammerwatch_linux1.32.zip'
+ARCHIVE_HUMBLE='hammerwatch_linux_141.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/hammerwatch'
-ARCHIVE_HUMBLE_MD5='c31f4053bcde3dc34bc8efe5f232c26e'
+ARCHIVE_HUMBLE_MD5='a342298f2201a33a616e412b70c4a7f8'
 ARCHIVE_HUMBLE_SIZE='230000'
-ARCHIVE_HUMBLE_VERSION='1.32-humble160405'
+ARCHIVE_HUMBLE_VERSION='1.42-humble180913'
+
+ARCHIVE_HUMBLE_OLD0='hammerwatch_linux1.32.zip'
+ARCHIVE_HUMBLE_OLD0_MD5='c31f4053bcde3dc34bc8efe5f232c26e'
+ARCHIVE_HUMBLE_OLD0_SIZE='230000'
+ARCHIVE_HUMBLE_OLD0_VERSION='1.32-humble160405'
 
 ARCHIVE_DOC_DATA_PATH_GOG='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES_GOG='*'
 
 ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='Hammerwatch'
+ARCHIVE_GAME_BIN32_PATH_HUMBLE='.'
 ARCHIVE_GAME_BIN32_FILES='lib Hammerwatch.bin.x86'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN32_PATH_HUMBLE_OLD0='Hammerwatch'
 
 ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='Hammerwatch'
+ARCHIVE_GAME_BIN64_PATH_HUMBLE='.'
 ARCHIVE_GAME_BIN64_FILES='lib64 Hammerwatch.bin.x86_64'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN64_PATH_HUMBLE_OLD0='Hammerwatch'
 
 ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='Hammerwatch'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='.'
 ARCHIVE_GAME_DATA_FILES='*.dll *.dll.config *.pdb Hammerwatch.exe editor levels mono assets*'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_HUMBLE_OLD0='Hammerwatch'
 
 CONFIG_FILES='./*.xml'
 DATA_FILES='./*.log ./*.txt'
