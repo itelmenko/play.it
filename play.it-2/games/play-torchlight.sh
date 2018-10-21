@@ -30,18 +30,16 @@ set -o errexit
 
 ###
 # Torchlight
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20181021.1
 
 # Set game-specific variables
 
 GAME_ID='torchlight'
 GAME_NAME='Torchlight'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='setup_torchlight_2.0.0.12.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/torchlight'
@@ -49,48 +47,57 @@ ARCHIVE_GOG_MD5='4b721e1b3da90f170d66f42e60a3fece'
 ARCHIVE_GOG_VERSION='1.15-gog2.0.0.12'
 ARCHIVE_GOG_SIZE='460000'
 
-ARCHIVE_DOC1_DATA_PATH='tmp'
-ARCHIVE_DOC1_DATA_FILES='./*.txt'
+ARCHIVE_DOC0_DATA_PATH='tmp'
+ARCHIVE_DOC0_DATA_FILES='*.txt'
 
-ARCHIVE_DOC2_DATA_PATH='app'
-ARCHIVE_DOC2_DATA_FILES='./*.pdf'
+ARCHIVE_DOC1_DATA_PATH='app'
+ARCHIVE_DOC1_DATA_FILES='*.pdf'
 
 ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='./torchlight.exe ./ceguibase.dll ./ceguiexpatparser.dll ./ceguifalagardwrbase.dll ./cg.dll ./d3dx9_39.dll ./fmodex.dll ./msvcp90.dll ./msvcr90.dll ./ogreguirenderer.dll ./ogremain.dll ./ois.dll ./particleuniverse.dll ./plugin_cgprogrammanager.dll ./plugin_octreescenemanager.dll ./plugin_particlefx.dll ./referenceapplayer.dll ./rendersystem_direct3d9.dll ./rendersystem_gl.dll ./*.cfg'
+ARCHIVE_GAME_BIN_FILES='torchlight.exe *.cfg *.dll'
 
 ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='./buildver.txt ./runicgames.ico ./torchlight.ico ./logo.bmp ./pak.zip ./icons ./music ./programs'
+ARCHIVE_GAME_DATA_FILES='buildver.txt runicgames.ico torchlight.ico logo.bmp pak.zip icons music programs'
+
+DATA_DIRS='./userdata'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='torchlight.exe'
 APP_MAIN_ICON='torchlight.ico'
-APP_MAIN_ICON_RES='16 24 32 48 256'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS_DEB="$PKG_DATA_ID, wine32-development | wine32 | wine-bin | wine-i386 | wine-staging-i386, wine:amd64 | wine, libxcursor1"
-PKG_BIN_DEPS_ARCH="$PKG_DATA_ID wine lib32-libxcursor"
+PKG_BIN_DEPS="$PKG_DATA_ID wine xcursor"
 
 # Load common functions
 
-target_version='2.1'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 #shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
@@ -98,29 +105,30 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC1_${PKG#PKG_}" "$PATH_DOC"
-	organize_data "DOC2_${PKG#PKG_}" "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
+# Extract icons
 
 PKG='PKG_DATA'
-extract_and_sort_icons_from 'APP_MAIN'
-
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
-# Store saved games outside of WINE prefix
+# Store saved games and settings outside of WINE prefix
 
-for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
-	# shellcheck disable=SC2016
-	sed --in-place 's#cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"#&\n\tmkdir --parents "$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight"\n\tmkdir --parents "$PATH_DATA/save"\n\tln --symbolic "$PATH_DATA/save" "$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight"#' "$file"
-done
+# shellcheck disable=SC2016
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight'
+# shellcheck disable=SC2016
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 
