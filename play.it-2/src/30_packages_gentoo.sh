@@ -161,6 +161,9 @@ pkg_set_deps_gentoo() {
 			('gtk2')
 				pkg_dep="x11-libs/gtk+:2$architecture_suffix"
 			;;
+			('java')
+				pkg_dep='virtual/jre'
+			;;
 			('json')
 				pkg_dep="dev-libs/json-c$architecture_suffix"
 			;;

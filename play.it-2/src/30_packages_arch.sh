@@ -137,6 +137,9 @@ pkg_set_deps_arch32() {
 			('gtk2')
 				pkg_dep='lib32-gtk2'
 			;;
+			('java')
+				pkg_dep='jre8-openjdk'
+			;;
 			('json')
 				pkg_dep='lib32-json-c'
 			;;
@@ -246,6 +249,9 @@ pkg_set_deps_arch64() {
 			;;
 			('gtk2')
 				pkg_dep='gtk2'
+			;;
+			('java')
+				pkg_dep='jre8-openjdk'
 			;;
 			('json')
 				pkg_dep='json-c'

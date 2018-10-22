@@ -126,6 +126,9 @@ pkg_set_deps_deb() {
 			('gtk2')
 				pkg_dep='libgtk2.0-0'
 			;;
+			('java')
+				pkg_dep='default-jre:amd64 | java-runtime:amd64 | default-jre | java-runtime'
+			;;
 			('json')
 				pkg_dep='libjson-c3 | libjson-c2 | libjson0'
 			;;
