@@ -81,6 +81,7 @@ icons_get_from_path() {
 		for icon in $list; do
 			use_archive_specific_value "$icon"
 			file="$(get_value "$icon")"
+			[ -z "$file" ] && icon_path_empty_error "$icon"
 			[ -f "$directory/$file" ] || icon_file_not_found_error "$directory/$file"
 			wrestool_id="$(get_value "${icon}_ID")"
 			icon_extract_png_from_file "$directory/$file" "$destination"
@@ -385,3 +386,21 @@ icon_file_not_found_error() {
 	return 1
 }
 
+# print an error message if an icon path is empty
+# USAGE: icon_path_empty_error $icon
+# CALLED BY: icons_get_from_path
+icon_path_empty_error() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='Le chemin vers l̛’icône est vide : %s'
+		;;
+		('en'|*)
+			string='The icon path is empty: %s'
+		;;
+	esac
+	print_error
+	printf "$string\\n" "$1"
+	return 1
+}

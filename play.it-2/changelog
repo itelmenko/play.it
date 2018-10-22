@@ -13,6 +13,9 @@
   * packages_guess_format: Fix falling back on default package format value
     when host OS couldn’t be guessed
 
+  * icons_get_from_path: Fail with an explicit error message if called with an
+    empty icon path
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in
