@@ -63,6 +63,15 @@ launcher_write_script() {
 			launcher_write_script_prefix_build "$target_file"
 			launcher_write_script_dosbox_run "$application" "$target_file"
 		;;
+		('java')
+			launcher_write_script_java_application_variables "$application" "$target_file"
+			launcher_write_script_game_variables "$target_file"
+			launcher_write_script_user_files "$target_file"
+			launcher_write_script_prefix_variables "$target_file"
+			launcher_write_script_prefix_functions "$target_file"
+			launcher_write_script_prefix_build "$target_file"
+			launcher_write_script_java_run "$application" "$target_file"
+		;;
 		('native')
 			launcher_write_script_native_application_variables "$application" "$target_file"
 			launcher_write_script_game_variables "$target_file"
