@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181023.1
+script_version=20181023.2
 
 # Set game-specific variables
 
@@ -48,6 +48,12 @@ ARCHIVE_GOG_MD5='4d654aeca32de557c109fa5c642ff455'
 ARCHIVE_GOG_SIZE='230000'
 ARCHIVE_GOG_VERSION='1.6.8-gog24110'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD3='ftl_advanced_edition_1_6_7_24012.sh'
+ARCHIVE_GOG_OLD3_MD5='43392da0d11548b1c16f1263fc5fad65'
+ARCHIVE_GOG_OLD3_SIZE='230000'
+ARCHIVE_GOG_OLD3_VERSION='1.6.8-gog24012'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD2='ftl_advanced_edition_en_1_6_7_18662.sh'
 ARCHIVE_GOG_OLD2_MD5='2c5254547639b7718dac7a06dabd1d82'
