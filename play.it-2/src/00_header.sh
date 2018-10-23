@@ -37,5 +37,5 @@
 
 library_version=2.11.0~dev
 # shellcheck disable=SC2034
-library_revision=20181218.1
+library_revision=20181219.1
 

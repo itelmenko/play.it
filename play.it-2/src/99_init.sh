@@ -70,6 +70,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	unset OPTION_PACKAGE
 	unset SOURCE_ARCHIVE
 	DRY_RUN='0'
+	NO_FREE_SPACE_CHECK='0'
 
 	while [ $# -gt 0 ]; do
 		case "$1" in
@@ -110,6 +111,10 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			('--dry-run')
 				DRY_RUN='1'
 				export DRY_RUN
+			;;
+			('--skip-free-space-check')
+				NO_FREE_SPACE_CHECK='1'
+				export NO_FREE_SPACE_CHECK
 			;;
 			('--'*)
 				print_error

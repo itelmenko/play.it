@@ -22,37 +22,43 @@ set_temp_directories() {
 	[ $# = 1 ] && PKG="$1"
 
 	# Look for a directory with enough free space to work in
-	if [ "$ARCHIVE_SIZE" ]; then
-		needed_space=$((ARCHIVE_SIZE * 2))
-	else
-		set_temp_directories_error_no_size
-	fi
-	[ "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="/run/user/$(id -u)"
-	[ "$XDG_CACHE_HOME" ]  || XDG_CACHE_HOME="$HOME/.cache"
 	tmpdir="$(get_tmp_dir)"
 	unset base_directory
-	for directory in \
-		"$XDG_RUNTIME_DIR" \
-		"$tmpdir" \
-		"$XDG_CACHE_HOME" \
-		"$PWD"
-	do
-		free_space=$(df --output=avail "$directory" 2>/dev/null | tail --lines=1)
-		if [ -w "$directory" ] && [ $free_space -ge $needed_space ]; then
-			base_directory="$directory/play.it"
-			if [ "$directory" = "$tmpdir" ]; then
-				if [ ! -e "$base_directory" ]; then
-					mkdir --parents "$base_directory"
-					chmod 777 "$base_directory"
-				fi
-			fi
-			break;
-		fi
-	done
-	if [ -n "$base_directory" ]; then
+	if [ "$NO_FREE_SPACE_CHECK" = '1' ]; then
+		base_directory="$tmpdir/play.it"
 		mkdir --parents "$base_directory"
+		chmod 777 "$base_directory"
 	else
-		set_temp_directories_error_not_enough_space
+		if [ "$ARCHIVE_SIZE" ]; then
+			needed_space=$((ARCHIVE_SIZE * 2))
+		else
+			set_temp_directories_error_no_size
+		fi
+		[ "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="/run/user/$(id -u)"
+		[ "$XDG_CACHE_HOME" ]  || XDG_CACHE_HOME="$HOME/.cache"
+		for directory in \
+			"$XDG_RUNTIME_DIR" \
+			"$tmpdir" \
+			"$XDG_CACHE_HOME" \
+			"$PWD"
+		do
+			free_space=$(df --output=avail "$directory" 2>/dev/null | tail --lines=1)
+			if [ -w "$directory" ] && [ $free_space -ge $needed_space ]; then
+				base_directory="$directory/play.it"
+				if [ "$directory" = "$tmpdir" ]; then
+					if [ ! -e "$base_directory" ]; then
+						mkdir --parents "$base_directory"
+						chmod 777 "$base_directory"
+					fi
+				fi
+				break;
+			fi
+		done
+		if [ -n "$base_directory" ]; then
+			mkdir --parents "$base_directory"
+		else
+			set_temp_directories_error_not_enough_space
+		fi
 	fi
 
 	# Generate a directory with a unique name for the current instance

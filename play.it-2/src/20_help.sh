@@ -1,7 +1,7 @@
 # display script usage
 # USAGE: help
 # NEEDED VARS: (LANG)
-# CALLS: help_checksum help_compression help_prefix help_package
+# CALLS: help_checksum help_compression help_prefix help_package help_dryrun help_skipfreespacecheck
 help() {
 	local format
 	local string
@@ -39,6 +39,8 @@ help() {
 	help_package
 	printf '\n'
 	help_dryrun
+	printf '\n'
+	help_skipfreespacecheck
 	printf '\n'
 
 	printf 'ARCHIVE\n\n'
@@ -234,6 +236,25 @@ help_dryrun() {
 		;;
 	esac
 	printf -- '--dry-run\n\n'
+	printf '\t%s\n\n' "$string"
+}
+
+# display --skip-free-space-check option usage
+# USAGE: help_skipfreespacecheck
+# NEEDED VARS: (LANG)
+# CALLED BY: help
+help_skipfreespacecheck() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='Ne teste pas l’espace libre disponible. Les répertoires temporaires seront créés sous $TMPDIR, ou /tmp par défaut.'
+		;;
+		('en'|*)
+			string='Do not check for free space. Temporary directories are created under $TMPDIR, or /tmp by default.'
+		;;
+	esac
+	printf -- '--skip-free-space-check\n\n'
 	printf '\t%s\n\n' "$string"
 }
 
