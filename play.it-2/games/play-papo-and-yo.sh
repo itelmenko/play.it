@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,66 +30,47 @@ set -o errexit
 ###
 
 ###
-# Wasteland 2
-# build native packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# Papo and Yo
+# build native Linux packages from the original installers
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20181016.1
+script_version=20181024.1
 
 # Set game-specific variables
 
-GAME_ID='wasteland-2'
-GAME_NAME='Wasteland 2'
+GAME_ID='papo-and-yo'
+GAME_NAME='Papo and Yo'
 
-ARCHIVE_GOG='gog_wasteland_2_director_s_cut_2.3.0.5.sh'
-ARCHIVE_GOG_TYPE='mojosetup_unzip'
-ARCHIVE_GOG_URL='https://www.gog.com/game/wasteland_2_directors_cut_digital_classic_edition'
-ARCHIVE_GOG_MD5='dc697b13e1f08de606add7684b5b3f78'
-ARCHIVE_GOG_VERSION='1.1.92788-gog2.3.0.5'
-ARCHIVE_GOG_SIZE='16000000'
+ARCHIVE_HUMBLE='PapoYo_linux_1389070953.sh'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/papo-yo'
+ARCHIVE_HUMBLE_MD5='d8222b87222f4eb05025584bf923da41'
+ARCHIVE_HUMBLE_SIZE='2000000'
+ARCHIVE_HUMBLE_VERSION='2014010601-humble1'
+ARCHIVE_HUMBLE_TYPE='mojosetup'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='*'
+ARCHIVE_DOC_DATA_PATH='data/noarch'
+ARCHIVE_DOC_DATA_FILES='about.html BuildVersion.txt README.linux UpdateLog.txt'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='WL2 WL2_Data/Mono WL2_Data/Plugins'
+ARCHIVE_GAME_BIN_PATH='data/x86'
+ARCHIVE_GAME_BIN_FILES='Binaries/Linux/steam_appid.txt Binaries/Linux/PYGame-Linux Binaries/Linux/lib/libsteam_api.so Binaries/Linux/lib/libPhysXCooking.so Binaries/Linux/lib/libPhysXCore.so Binaries/Linux/lib/libtcmalloc.so.0'
 
-ARCHIVE_GAME_RESOURCES_PATH='data/noarch/game'
-ARCHIVE_GAME_RESOURCES_FILES='WL2_Data/*.resource'
+ARCHIVE_GAME_DATA_PATH='data/noarch'
+ARCHIVE_GAME_DATA_FILES='Engine PapoYoIcon.bmp PapoYoIcon.png PYGame'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='WL2_Data'
-
-DATA_DIRS='./logs'
-
+APP_MAIN_LIBS='lib'
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
-	mkdir --parents libs
-	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
-	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
-else
-	if [ -e "libs/libpulse-simple.so.0" ]; then
-		rm libs/libpulse-simple.so.0
-		rmdir --ignore-fail-on-non-empty libs
-	fi
-	pulseaudio --start
-fi
-ulimit -n $(($(ulimit -Hn)/2))'
-APP_MAIN_EXE='WL2'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='WL2_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE='Binaries/Linux/PYGame-Linux'
+APP_MAIN_ICON='PapoYoIcon.png'
 
-PACKAGES_LIST='PKG_BIN PKG_RESOURCES PKG_DATA'
-
-PKG_RESOURCES_ID="${GAME_ID}-resources"
-PKG_RESOURCES_DESCRIPTION='resources'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glu xcursor libxrandr alsa"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glx alsa libudev1"
+PKG_BIN_DEPS_ARCH='lib32-libpulse'
 
 # Load common functions
 
@@ -128,12 +110,19 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
+# Set working directory to the directory containing the game binary before running it
+
+pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
+pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
+file="${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
+sed --in-place "$pattern" "$file"
+
 # Build package
 
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_RESOURCES' 'PKG_BIN'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up

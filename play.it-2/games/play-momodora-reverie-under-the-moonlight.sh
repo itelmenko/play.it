@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,66 +30,53 @@ set -o errexit
 ###
 
 ###
-# Wasteland 2
-# build native packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# Momodora: Reverie Under the Moonlight
+# build native Linux packages from the original installers
+# send your bug reports to mopi@dotslashplay.it
 ###
 
 script_version=20181016.1
 
 # Set game-specific variables
 
-GAME_ID='wasteland-2'
-GAME_NAME='Wasteland 2'
+GAME_ID='momodora-reverie-under-the-moonlight'
+GAME_NAME='Momodora: Reverie Under the Moonlight'
 
-ARCHIVE_GOG='gog_wasteland_2_director_s_cut_2.3.0.5.sh'
-ARCHIVE_GOG_TYPE='mojosetup_unzip'
-ARCHIVE_GOG_URL='https://www.gog.com/game/wasteland_2_directors_cut_digital_classic_edition'
-ARCHIVE_GOG_MD5='dc697b13e1f08de606add7684b5b3f78'
-ARCHIVE_GOG_VERSION='1.1.92788-gog2.3.0.5'
-ARCHIVE_GOG_SIZE='16000000'
+ARCHIVE_GOG='momodora_reverie_under_the_moonlight_en_20180418_20149.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/momodora_reverie_under_the_moonlight'
+ARCHIVE_GOG_MD5='5ec0d0e8475ced69fbaf3881652d78c1'
+ARCHIVE_GOG_SIZE='330000'
+ARCHIVE_GOG_VERSION='1.02a-gog20149'
+ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='*'
+ARCHIVE_OPTIONAL_LIBCURL='libcurl3_7.60.0_32-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBCURL_URL='https://www.dotslashplay.it/ressources/libcurl/'
+ARCHIVE_OPTIONAL_LIBCURL_MD5='7206100f065d52de5a4c0b49644aa052'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='WL2 WL2_Data/Mono WL2_Data/Plugins'
+ARCHIVE_DOC_PATH='data/noarch/docs'
+ARCHIVE_DOC_FILES='*'
 
-ARCHIVE_GAME_RESOURCES_PATH='data/noarch/game'
-ARCHIVE_GAME_RESOURCES_FILES='WL2_Data/*.resource'
+ARCHIVE_GAME_BIN_PATH='data/noarch/game/GameFiles'
+ARCHIVE_GAME_BIN_FILES='MomodoraRUtM runtime/i386/lib/i386-linux-gnu/libssl.so.1.0.0 runtime/i386/lib/i386-linux-gnu/libcrypto.so.1.0.0'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='WL2_Data'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game/GameFiles'
+ARCHIVE_GAME_DATA_FILES='assets'
 
-DATA_DIRS='./logs'
+CONFIG_FILES='assets/*.ini'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
-	mkdir --parents libs
-	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
-	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
-else
-	if [ -e "libs/libpulse-simple.so.0" ]; then
-		rm libs/libpulse-simple.so.0
-		rmdir --ignore-fail-on-non-empty libs
-	fi
-	pulseaudio --start
-fi
-ulimit -n $(($(ulimit -Hn)/2))'
-APP_MAIN_EXE='WL2'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='WL2_Data/Resources/UnityPlayer.png'
+APP_MAIN_LIBS='runtime/i386/lib/i386-linux-gnu'
+APP_MAIN_PRERUN='export LANG=C'
+APP_MAIN_EXE='MomodoraRUtM'
+APP_MAIN_ICON='assets/icon.png'
 
-PACKAGES_LIST='PKG_BIN PKG_RESOURCES PKG_DATA'
-
-PKG_RESOURCES_ID="${GAME_ID}-resources"
-PKG_RESOURCES_DESCRIPTION='resources'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glu xcursor libxrandr alsa"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal libxrandr libcurl"
 
 # Load common functions
 
@@ -117,23 +105,43 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Use libcurl 3 32-bit archive
+
+ARCHIVE_MAIN="$ARCHIVE"
+set_archive 'ARCHIVE_LIBCURL' 'ARCHIVE_OPTIONAL_LIBCURL'
+ARCHIVE="$ARCHIVE_MAIN"
+
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
+# Include libcurl 3 32-bit
+
+if [ "$ARCHIVE_LIBCURL" ]; then
+	(
+		ARCHIVE='ARCHIVE_LIBCURL'
+		extract_data_from "$ARCHIVE_LIBCURL"
+	)
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	rm --recursive "$PLAYIT_WORKDIR/gamedata"
+	ln --symbolic 'libcurl.so.4.5.0' "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS/libcurl.so.4"
+fi
+
 # Write launchers
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
+chmod +x "${PKG_BIN_PATH}${PATH_GAME}/MomodoraRUtM"
 
 # Build package
 
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_RESOURCES' 'PKG_BIN'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up
