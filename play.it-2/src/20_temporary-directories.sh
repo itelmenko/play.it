@@ -14,6 +14,8 @@ set_temp_directories() {
 	local free_space
 	local needed_space
 	local tmpdir
+	local -n directory
+	local directory_candidates
 
 	# If $PLAYIT_WORKDIR is already set, delete it before setting a new one
 	[ "$PLAYIT_WORKDIR" ] && rm --force --recursive "$PLAYIT_WORKDIR"
@@ -27,15 +29,19 @@ set_temp_directories() {
 	else
 		set_temp_directories_error_no_size
 	fi
-	[ "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="/run/user/$(id -u)"
-	[ "$XDG_CACHE_HOME" ]  || XDG_CACHE_HOME="$HOME/.cache"
 	tmpdir="$(get_tmp_dir)"
 	unset base_directory
-	for directory in \
-		"$XDG_RUNTIME_DIR" \
-		"$tmpdir" \
-		"$XDG_CACHE_HOME" \
-		"$PWD"
+	if [ $OPTION_PACKAGE == raw ]; then
+		directory_candidates=OPTION_PREFIX
+	else
+		[ "$XDG_RUNTIME_DIR" ] || XDG_RUNTIME_DIR="/run/user/$(id -u)"
+		[ "$XDG_CACHE_HOME" ]  || XDG_CACHE_HOME="$HOME/.cache"
+		eval directory_candidates=\"XDG_RUNTIME_DIR \
+						tmpdir \
+						XDG_CACHE_HOME \
+						PWD\"
+	fi
+	for directory in $directory_candidates
 	do
 		free_space=$(df --output=avail "$directory" 2>/dev/null | tail --lines=1)
 		if [ -w "$directory" ] && [ $free_space -ge $needed_space ]; then
@@ -80,26 +86,30 @@ set_temp_directories() {
 set_temp_directories_pkg() {
 	PKG="$1"
 
-	# Get package ID
-	use_archive_specific_value "${PKG}_ID"
-	local pkg_id
-	pkg_id="$(get_value "${PKG}_ID")"
-	if [ -z "$pkg_id" ]; then
-		eval ${PKG}_ID=\"$GAME_ID\"
-		export ${PKG?}_ID
-		pkg_id="$GAME_ID"
-	fi
+	if [ $OPTION_PACKAGE != raw ]; then
+		# Get package ID
+		use_archive_specific_value "${PKG}_ID"
+		local pkg_id
+		pkg_id="$(get_value "${PKG}_ID")"
+		if [ -z "$pkg_id" ]; then
+			eval ${PKG}_ID=\"$GAME_ID\"
+			export ${PKG?}_ID
+			pkg_id="$GAME_ID"
+		fi
 
-	# Get package architecture
-	local pkg_architecture
-	set_architecture "$PKG"
+		# Get package architecture
+		local pkg_architecture
+		set_architecture "$PKG"
 
-	# Set $PKG_PATH
-	if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(get_value "${PKG}_ARCH")" = '32' ]; then
-		pkg_id="lib32-$pkg_id"
+		# Set $PKG_PATH
+		if [ "$OPTION_PACKAGE" = 'arch' ] && [ "$(get_value "${PKG}_ARCH")" = '32' ]; then
+			pkg_id="lib32-$pkg_id"
+		fi
+		get_package_version
+		eval ${PKG}_PATH=\"$PLAYIT_WORKDIR/${pkg_id}_${PKG_VERSION}_${pkg_architecture}\"
+	else
+		eval ${PKG}_PATH=/
 	fi
-	get_package_version
-	eval ${PKG}_PATH=\"$PLAYIT_WORKDIR/${pkg_id}_${PKG_VERSION}_${pkg_architecture}\"
 	export ${PKG?}_PATH
 }
 
@@ -139,9 +149,11 @@ set_temp_directories_error_not_enough_space() {
 		;;
 	esac
 	printf "$string"
-	for path in "$XDG_RUNTIME_DIR" "$(get_tmp_dir)" "$XDG_CACHE_HOME" "$PWD"; do
-		printf '%s\n' "$path"
-	done
+	if [ $OPTION_PACKAGE == raw ]; then
+		echo "$OPTION_PREFIX"
+	else
+		echo -e "$XDG_RUNTIME_DIR"\\n"$(get_tmp_dir)"\\n"$XDG_CACHE_HOME"\\n"$PWD"
+	fi
 	return 1
 }
 

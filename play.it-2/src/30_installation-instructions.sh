@@ -47,6 +47,9 @@ print_instructions() {
 			('deb')
 				print_instructions_deb "$@"
 			;;
+			('raw')
+				echo -e The game is already installed.\\nTo uninstall, just drop Application Directory: \""$OPTION_PREFIX/play.it/$GAME_ID"/\"
+			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'print_instructions'
 			;;

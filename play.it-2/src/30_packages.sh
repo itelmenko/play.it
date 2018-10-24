@@ -3,6 +3,8 @@
 # NEEDED VARS: (ARCHIVE) GAME_NAME (OPTION_PACKAGE) PACKAGES_LIST (PKG_ARCH) PKG_DEPS_ARCH PKG_DEPS_DEB PKG_DESCRIPTION PKG_ID (PKG_PATH) PKG_PROVIDE
 # CALLS: liberror pkg_write_arch pkg_write_deb set_architecture testvar
 write_metadata() {
+	[ $OPTION_PACKAGE == raw ] && return
+
 	if [ $# = 0 ]; then
 		write_metadata $PACKAGES_LIST
 		return 0
@@ -71,6 +73,8 @@ build_pkg() {
 			;;
 			('deb')
 				pkg_build_deb "$pkg_path"
+			;;
+			('raw')
 			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'build_pkg'

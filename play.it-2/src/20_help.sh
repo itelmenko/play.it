@@ -178,7 +178,8 @@ help_prefix() {
 	printf -- '--prefix $path\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\t%s\n' "$string_absolute"
-	printf '\t%s /usr/local\n' "$string_default"
+	printf '\t%s\n\t\t/usr/local or\n' "$string_default"
+	echo -e "\t\t$XDG_DATA_HOME/applications in RAW mode (see below)"
 }
 
 # display --package option usage
@@ -190,6 +191,7 @@ help_package() {
 	local string_default
 	local string_arch
 	local string_deb
+	local string_raw
 	case "${LANG%_*}" in
 		('fr')
 			string='Choix du type de paquet à construire'
@@ -202,15 +204,17 @@ help_package() {
 			string_default='(default type)'
 			string_arch='.pkg.tar package (Arch Linux)'
 			string_deb='.deb package (Debian, Ubuntu)'
+			string_raw='install to AppDir (distro-agnostic) EXPERIMENTAL'
 		;;
 	esac
-	printf -- '--package=arch|deb\n'
-	printf -- '--package arch|deb\n\n'
+	echo	'--package=arch|deb|raw'
+	echo -e '--package arch|deb|raw\n'
 	printf '\t%s\n\n' "$string"
 	printf '\tarch\t%s' "$string_arch"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'arch' ] && printf ' %s\n' "$string_default" || printf '\n'
 	printf '\tdeb\t%s' "$string_deb"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'deb' ] && printf ' %s\n' "$string_default" || printf '\n'
+	echo -e "\traw\t$string_raw"
 }
 
 # display --dry-run option usage

@@ -44,7 +44,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	# shellcheck disable=SC2034
-	ALLOWED_VALUES_PACKAGE='arch deb'
+	ALLOWED_VALUES_PACKAGE='arch deb raw'
 
 	# Set default values for common options
 
@@ -134,7 +134,20 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	# Try to detect the host distribution if no package format has been explicitely set
 
-	[ "$OPTION_PACKAGE" ] || packages_guess_format 'OPTION_PACKAGE'
+	case "$OPTION_PACKAGE" in
+		'')
+			packages_guess_format 'OPTION_PACKAGE'
+			;;
+		raw)
+			if ! ((EUID)); then
+				print_error
+				echo RAW mode is not intended to be run as root!
+				exit 1
+			fi
+
+			DEFAULT_OPTION_PREFIX="${XDG_DATA_HOME:="$HOME/.local/share"}/applications"
+			;;
+	esac
 
 	# Set options not already set by script arguments to default values
 
@@ -230,6 +243,13 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			PATH_DOC="$OPTION_PREFIX/share/doc/$GAME_ID"
 			PATH_GAME="$OPTION_PREFIX/share/games/$GAME_ID"
 			PATH_ICON_BASE='/usr/local/share/icons/hicolor'
+		;;
+		('raw')
+			PATH_BIN="$OPTION_PREFIX/play.it/$GAME_ID"
+			PATH_DESK="$OPTION_PREFIX/play.it/$GAME_ID"
+			PATH_DOC="$OPTION_PREFIX/play.it/$GAME_ID/doc"
+			PATH_GAME="$OPTION_PREFIX/play.it/$GAME_ID"
+			PATH_ICON_BASE="$OPTION_PREFIX/play.it/$GAME_ID/icons/hicolor"
 		;;
 		(*)
 			liberror 'OPTION_PACKAGE' "$0"
