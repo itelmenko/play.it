@@ -29,10 +29,10 @@ print_instructions() {
 	done
 	case "${LANG%_*}" in
 		('fr')
-			string='\nInstallez %s en lançant la série de commandes suivantes en root :\n'
+			string='\nInstallez "%s" en lançant la série de commandes suivantes en root :\n'
 		;;
 		('en'|*)
-			string='\nInstall %s by running the following commands as root:\n'
+			string='\nInstall "%s" by running the following commands as root:\n'
 		;;
 	esac
 	printf "$string" "$GAME_NAME"
