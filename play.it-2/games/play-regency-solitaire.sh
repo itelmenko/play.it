@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181024.1
+script_version=20181024.2
 
 # Set game-specific variables
 
@@ -48,11 +48,18 @@ ARCHIVE_HUMBLE_MD5='15e8377d2cac99a52407cb399bd1ee7c'
 ARCHIVE_HUMBLE_SIZE='71000'
 ARCHIVE_HUMBLE_VERSION='1.17b-humble160829'
 
+ARCHIVE_OPTIONAL_ICONS='regency-solitaire_icons.tar.gz'
+ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/regency-solitaire/'
+ARCHIVE_OPTIONAL_ICONS_MD5='01a7c7b168e2cb315d2058ff5e6a53aa'
+
 ARCHIVE_GAME_BIN_PATH='RegencySolitaireV117b'
 ARCHIVE_GAME_BIN_FILES='RegencySolitaire'
 
 ARCHIVE_GAME_DATA_PATH='RegencySolitaireV117b'
 ARCHIVE_GAME_DATA_FILES='data'
+
+ARCHIVE_ICONS_PATH='.'
+ARCHIVE_ICONS_FILES='16x16 32x32 48x48 256x256'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='RegencySolitaire'
@@ -92,12 +99,30 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Try to load icons archive
+
+ARCHIVE_MAIN="$ARCHIVE"
+archive_set 'ARCHIVE_ICONS' 'ARCHIVE_OPTIONAL_ICONS'
+ARCHIVE="$ARCHIVE_MAIN"
+
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Get icons
+
+if [ "$ARCHIVE_ICONS" ]; then
+	(
+		ARCHIVE='ARCHIVE_ICONS'
+		extract_data_from "$ARCHIVE_ICONS"
+	)
+	PKG='PKG_DATA'
+	organize_data 'ICONS' "$PATH_ICON_BASE"
+	rm --recursive "$PLAYIT_WORKDIR/gamedata"
+fi
 
 # Write launchers
 
