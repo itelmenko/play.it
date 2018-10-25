@@ -190,6 +190,7 @@ help_package() {
 	local string_default
 	local string_arch
 	local string_deb
+	local string_gentoo
 	case "${LANG%_*}" in
 		('fr')
 			string='Choix du type de paquet à construire'
