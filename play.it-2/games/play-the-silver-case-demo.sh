@@ -48,13 +48,21 @@ ARCHIVE_GOG_MD5='3c133cb2031160370917f120055c63b4'
 ARCHIVE_GOG_SIZE='960000'
 ARCHIVE_GOG_VERSION='1.0-gog2.0.0.1'
 
-ARCHIVE_DOC1_DATA_PATH='tmp'
+ARCHIVE_PLAYISM='TheSilverCase_DEMO_Playism0930.zip'
+ARCHIVE_PLAYISM_URL='http://playism-games.com/game/285/the-silver-case'
+ARCHIVE_PLAYISM_MD5='a1bbd59ead01c4e1dc50c38b3a65c5ea'
+ARCHIVE_PLAYISM_SIZE='950000'
+ARCHIVE_PLAYISM_VERSION='1.0-playism0930'
+
+ARCHIVE_DOC1_DATA_PATH_GOG='tmp'
 ARCHIVE_DOC1_DATA_FILES='./*.txt'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_PATH_GOG='app'
+ARCHIVE_GAME_BIN_PATH_PLAYISM='thesilvercase_demo_0930'
 ARCHIVE_GAME_BIN_FILES='./thesilvercase_trial.exe'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH_GOG='app'
+ARCHIVE_GAME_DATA_PATH_PLAYISM='thesilvercase_demo_0930'
 ARCHIVE_GAME_DATA_FILES='./thesilvercase_trial_data'
 
 APP_MAIN_TYPE='wine'
@@ -100,6 +108,7 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+tolower "$PLAYIT_WORKDIR/gamedata"
 
 prepare_package_layout
 
