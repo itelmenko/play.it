@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,14 +35,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20181026.1
 
 # Set game-specific variables
 
 GAME_ID='the-silver-case-demo'
 GAME_NAME='The Silver Case - Demo'
-
-ARCHIVES_LIST='ARCHIVE_GOG'
 
 ARCHIVE_GOG='setup_the_silver_case_demo_2.0.0.1.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/the_silver_case_demo'
@@ -61,7 +60,6 @@ ARCHIVE_GAME_DATA_FILES='./thesilvercase_trial_data'
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='thesilvercase_trial.exe'
 APP_MAIN_ICON='thesilvercase_trial.exe'
-APP_MAIN_ICON_RES='16 24 32 48 64 96 128 192 256'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN'
 
@@ -73,15 +71,25 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
-target_version='2.3'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
+	for path in\
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
+	do
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
+	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
 		exit 1
@@ -93,10 +101,7 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC1_${PKG#PKG_}" "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
+prepare_package_layout
 
 PKG='PKG_BIN'
 extract_and_sort_icons_from 'APP_MAIN'
