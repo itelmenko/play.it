@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20181103.1
 
 # Set game-specific variables
 
@@ -96,6 +96,9 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+
+# Keep Voices on HD
+sed --in-place 's/\(FlagKeepVoice:\) OFF/\1 ON/' "$PLAYIT_WORKDIR/gamedata/app/lba2.cfg"
 
 for PKG in $PACKAGES_LIST; do
 	organize_data "DOC_${PKG#PKG_}"    "$PATH_DOC"
