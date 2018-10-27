@@ -2,6 +2,8 @@
 
   * Improve ShellCheck tests coverage
 
+  * Do not let empty dirs lingering after uninstallation using make
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in
