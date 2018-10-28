@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181017.3
+script_version=20181028.1
 
 # Set game-specific variables
 
@@ -100,13 +100,11 @@ APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='bgmain.exe'
 APP_MAIN_ICON='baldur.exe'
-APP_MAIN_ICON_RES='32 48'
 
 APP_CONFIG_ID="${GAME_ID}_config"
 APP_CONFIG_TYPE='wine'
 APP_CONFIG_EXE='bgconfig.exe'
 APP_CONFIG_ICON='bgconfig.exe'
-APP_CONFIG_ICON_RES='32 48'
 APP_CONFIG_NAME="$GAME_NAME - configuration"
 APP_CONFIG_CAT='Settings'
 
