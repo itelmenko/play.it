@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181029.2
+script_version=20181029.3
 
 # Set game-specific variables
 
 GAME_ID='desperados'
 GAME_NAME='Desperados: Wanted Dead or Alive'
 
-ARCHIVE_GOG='desperados_wanted_dead_or_alive_en_gog_1_22137.sh'
+ARCHIVE_GOG='desperados_wanted_dead_or_alive_en_1_0_2_thqn_22430.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/desperados_wanted_dead_or_alive'
 ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='72e623355b7ca5ccdef0c549d0a77192'
-ARCHIVE_GOG_VERSION='1.0-gog22137'
+ARCHIVE_GOG_MD5='c4338cd7526dc01eef347408368f6bf4'
+ARCHIVE_GOG_VERSION='1.0.2-22430'
 ARCHIVE_GOG_SIZE='2000000'
+
+ARCHIVE_GOG_OLD1='desperados_wanted_dead_or_alive_en_gog_1_22137.sh'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GOG_OLD1_MD5='72e623355b7ca5ccdef0c549d0a77192'
+ARCHIVE_GOG_OLD1_VERSION='1.0-gog22137'
+ARCHIVE_GOG_OLD1_SIZE='2000000'
 
 ARCHIVE_GOG_OLD0='setup_desperados_wanted_dead_or_alive_2.0.0.6.exe'
 ARCHIVE_GOG_OLD0_MD5='8e2f4e2ade9e641fdd35a9dd36d55d00'
@@ -56,6 +62,8 @@ ARCHIVE_GOG_OLD0_SIZE='810000'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC0_DATA_FILES='*'
+ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
+ARCHIVE_DOC1_DATA_FILES='readme.txt'
 # Keep compatibility with old archives
 ARCHIVE_DOC0_DATA_PATH_GOG_OLD0='app'
 ARCHIVE_DOC0_DATA_FILES_GOG_OLD0='manual.pdf readme.txt'
