@@ -35,12 +35,14 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181029.3
+script_version=20181029.4
 
 # Set game-specific variables
 
 GAME_ID='desperados'
 GAME_NAME='Desperados: Wanted Dead or Alive'
+
+ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_OLD1 ARCHIVE_WINDOWS_GOG_OLD0'
 
 ARCHIVE_GOG='desperados_wanted_dead_or_alive_en_1_0_2_thqn_22430.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/desperados_wanted_dead_or_alive'
@@ -55,46 +57,46 @@ ARCHIVE_GOG_OLD1_MD5='72e623355b7ca5ccdef0c549d0a77192'
 ARCHIVE_GOG_OLD1_VERSION='1.0-gog22137'
 ARCHIVE_GOG_OLD1_SIZE='2000000'
 
-ARCHIVE_GOG_OLD0='setup_desperados_wanted_dead_or_alive_2.0.0.6.exe'
-ARCHIVE_GOG_OLD0_MD5='8e2f4e2ade9e641fdd35a9dd36d55d00'
-ARCHIVE_GOG_OLD0_VERSION='1.01-gog2.0.0.6'
-ARCHIVE_GOG_OLD0_SIZE='810000'
+ARCHIVE_WINDOWS_GOG_OLD0='setup_desperados_wanted_dead_or_alive_2.0.0.6.exe'
+ARCHIVE_WINDOWS_GOG_OLD0_MD5='8e2f4e2ade9e641fdd35a9dd36d55d00'
+ARCHIVE_WINDOWS_GOG_OLD0_VERSION='1.01-gog2.0.0.6'
+ARCHIVE_WINDOWS_GOG_OLD0_SIZE='810000'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC0_DATA_FILES='*'
 ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
 ARCHIVE_DOC1_DATA_FILES='readme.txt'
 # Keep compatibility with old archives
-ARCHIVE_DOC0_DATA_PATH_GOG_OLD0='app'
-ARCHIVE_DOC0_DATA_FILES_GOG_OLD0='manual.pdf readme.txt'
-ARCHIVE_DOC1_DATA_PATH_GOG_OLD0='tmp'
-ARCHIVE_DOC1_DATA_FILES_GOG_OLD0='gog_eula.txt'
+ARCHIVE_DOC0_DATA_PATH_WINDOWS='app'
+ARCHIVE_DOC0_DATA_FILES_WINDOWS='manual.pdf readme.txt'
+ARCHIVE_DOC1_DATA_PATH_WINDOWS='tmp'
+ARCHIVE_DOC1_DATA_FILES_WINDOWS='gog_eula.txt'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN_FILES='desperados32 libdbus-1.so.3'
 # Keep compatibility with old archives
-ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app/game'
-ARCHIVE_GAME_BIN_FILES_GOG_OLD0='*.dll *.exe'
+ARCHIVE_GAME_BIN_PATH_WINDOWS='app/game'
+ARCHIVE_GAME_BIN_FILES_WINDOWS='*.dll *.exe'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='bootmenu data demo localisation localisation_demo shaders'
 # Keep compatibility with old archives
-ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app/game'
-ARCHIVE_GAME_DATA_FILES_GOG_OLD0='data'
+ARCHIVE_GAME_DATA_PATH_WINDOWS='app/game'
+ARCHIVE_GAME_DATA_FILES_WINDOWS='data'
 
 # Keep compatibility with old archives
-CONFIG_DIRS_GOG_OLD0='./data/configuration'
-DATA_DIRS_GOG_OLD0='./data/savegame ./data/levels/briefing/Restart'
+CONFIG_DIRS_WINDOWS='./data/configuration'
+DATA_DIRS_WINDOWS='./data/savegame ./data/levels/briefing/Restart'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_LIBS='.'
 APP_MAIN_EXE='desperados32'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 # Keep compatibility with old archives
-APP_MAIN_TYPE_GOG_OLD0='wine'
-APP_MAIN_LIBS_GOG_OLD0=''
-APP_MAIN_EXE_GOG_OLD0='game.exe'
-APP_MAIN_ICON_GOG_OLD0='game.exe'
+APP_MAIN_TYPE_WINDOWS='wine'
+APP_MAIN_LIBS_WINDOWS=''
+APP_MAIN_EXE_WINDOWS='game.exe'
+APP_MAIN_ICON_WINDOWS='game.exe'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -107,10 +109,10 @@ PKG_BIN_DEPS_ARCH='lib32-dbus'
 PKG_BIN_DEPS_DEB='libdbus-1-3'
 PKG_BIN_DEPS_GENTOO='' # TODO
 # Keep compatibility with old archives
-PKG_BIN_DEPS_GOG_OLD0="$PKG_DATA_ID wine"
-PKG_BIN_DEPS_ARCH_GOG_OLD0=''
-PKG_BIN_DEPS_DEB_GOG_OLD0=''
-PKG_BIN_DEPS_GENTOO_GOG_OLD0=''
+PKG_BIN_DEPS_WINDOWS="$PKG_DATA_ID wine"
+PKG_BIN_DEPS_ARCH_WINDOWS=''
+PKG_BIN_DEPS_DEB_WINDOWS=''
+PKG_BIN_DEPS_GENTOO_WINDOWS=''
 
 # Load common functions
 
@@ -147,7 +149,7 @@ prepare_package_layout
 # Extract icons
 
 case "$ARCHIVE" in
-	('ARCHIVE_GOG_OLD0')
+	('ARCHIVE_WINDOWS'*)
 		PKG='PKG_BIN'
 		use_archive_specific_value 'APP_MAIN_ICON'
 		icons_get_from_package 'APP_MAIN'
@@ -163,7 +165,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 case "$ARCHIVE" in
-	('ARCHIVE_GOG_OLD0')
+	('ARCHIVE_WINDOWS'*)
 		use_archive_specific_value 'CONFIG_DIRS'
 		use_archive_specific_value 'DATA_DIRS'
 		use_archive_specific_value 'APP_MAIN_TYPE'
@@ -177,7 +179,7 @@ write_launcher 'APP_MAIN'
 # Build package
 
 case "$ARCHIVE" in
-	('ARCHIVE_GOG_OLD0')
+	('ARCHIVE_WINDOWS'*)
 		use_archive_specific_value 'PKG_BIN_DEPS'
 	;;
 esac
