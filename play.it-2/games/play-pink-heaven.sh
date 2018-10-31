@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2017-2018, Solène Huault
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,47 +30,45 @@ set -o errexit
 ###
 
 ###
-# Regency Solitaire
+# Pink Heaven
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181024.2
+script_version=20181031.1
 
 # Set game-specific variables
 
-GAME_ID='regency-solitaire'
-GAME_NAME='Regency Solitaire'
+GAME_ID='pink-heaven'
+GAME_NAME='Pink Heaven'
 
-ARCHIVE_HUMBLE='RegencySolitaireV117b_1472495785.tar.gz'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/regency-solitaire'
-ARCHIVE_HUMBLE_MD5='15e8377d2cac99a52407cb399bd1ee7c'
-ARCHIVE_HUMBLE_SIZE='71000'
-ARCHIVE_HUMBLE_VERSION='1.17b-humble160829'
+ARCHIVE_PLAYISM='PinkHeavenEn-v1430a.zip'
+ARCHIVE_PLAYISM_URL='http://playism-games.com/game/244/pink-heaven'
+ARCHIVE_PLAYISM_MD5='7d1b3e193a5ba9618cba1ffb0c977762'
+ARCHIVE_PLAYISM_VERSION='1.43-playism1430a'
+ARCHIVE_PLAYISM_SIZE='15000'
+ARCHIVE_PLAYISM_TYPE='zip'
 
-ARCHIVE_OPTIONAL_ICONS='regency-solitaire_icons.tar.gz'
-ARCHIVE_OPTIONAL_ICONS_URL='https://www.dotslashplay.it/ressources/regency-solitaire/'
-ARCHIVE_OPTIONAL_ICONS_MD5='01a7c7b168e2cb315d2058ff5e6a53aa'
+ARCHIVE_DOC_DATA_PATH='PinkHeavenEn'
+ARCHIVE_DOC_DATA_FILES='ReadmeEn.txt'
 
-ARCHIVE_GAME_BIN_PATH='RegencySolitaireV117b'
-ARCHIVE_GAME_BIN_FILES='RegencySolitaire'
+ARCHIVE_GAME_BIN_PATH='PinkHeavenEn'
+ARCHIVE_GAME_BIN_FILES='PinkHeaven.exe'
 
-ARCHIVE_GAME_DATA_PATH='RegencySolitaireV117b'
-ARCHIVE_GAME_DATA_FILES='data'
+ARCHIVE_GAME_DATA_PATH='PinkHeavenEn'
+ARCHIVE_GAME_DATA_FILES='rsc_p'
 
-ARCHIVE_ICONS_PATH='.'
-ARCHIVE_ICONS_FILES='16x16 32x32 48x48 256x256'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE='RegencySolitaire'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='PinkHeaven.exe'
+APP_MAIN_ICON='PinkHeaven.exe'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
@@ -99,30 +97,17 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
-# Try to load icons archive
-
-ARCHIVE_MAIN="$ARCHIVE"
-archive_set 'ARCHIVE_ICONS' 'ARCHIVE_OPTIONAL_ICONS'
-ARCHIVE="$ARCHIVE_MAIN"
-
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Get icons
+# Extract game icons
 
-if [ "$ARCHIVE_ICONS" ]; then
-	(
-		ARCHIVE='ARCHIVE_ICONS'
-		extract_data_from "$ARCHIVE_ICONS"
-	)
-	PKG='PKG_DATA'
-	organize_data 'ICONS' "$PATH_ICON_BASE"
-	rm --recursive "$PLAYIT_WORKDIR/gamedata"
-fi
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN'
+icons_move_to 'PKG_DATA'
 
 # Write launchers
 
