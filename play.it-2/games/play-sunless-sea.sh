@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181111.3
+script_version=20181111.5
 
 # Set game-specific variables
 
@@ -129,7 +129,11 @@ APP_MAIN_ICON2='Icon.png'
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_PROVIDE="$PKG_DATA_ID"
 PKG_DATA_DESCRIPTION='data'
+# Use different package name and description when including Zubmariner DLC
+PKG_DATA_ID_GOG_ZUBMARINER="${GAME_ID}-zubmariner-data"
+PKG_DATA_DESCRIPTION_GOG_ZUBMARINER='data (including Zubmariner DLC)'
 
 PKG_BIN32_ARCH='32'
 PKG_BIN32_DEP="$PKG_DATA_ID glu libxcursor"
