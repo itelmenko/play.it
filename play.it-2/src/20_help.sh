@@ -155,9 +155,10 @@ help_compression() {
 
 # display --prefix option usage
 # USAGE: help_prefix
-# NEEDED VARS: (LANG)
+# NEEDED VARS: (LANG) (OPTION_PACKAGE)
 # CALLED BY: help
 help_prefix() {
+	local path_default
 	local string
 	local string_absolute
 	local string_default
@@ -178,8 +179,16 @@ help_prefix() {
 	printf -- '--prefix $path\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\t%s\n' "$string_absolute"
-	printf '\t%s\n\t\t/usr/local or\n' "$string_default"
-	echo -e "\t\t$XDG_DATA_HOME/applications in RAW mode (see below)"
+	case "$OPTION_PACKAGE" in
+		('appdir')
+			path_default="$OPTION_PREFIX_DEFAULT"
+		;;
+		(*)
+			path_default="$OPTION_PREFIX_DEFAULT_APPDIR"
+		;;
+	esac
+	printf '\t%s\n\t\t/usr/local' "$string_default"
+	printf '\t\t%s in RAW mode (see below)' "$XDG_DATA_HOME/applications"
 }
 
 # display --package option usage
@@ -188,33 +197,34 @@ help_prefix() {
 # CALLED BY: help
 help_package() {
 	local string
-	local string_default
+	local string_appdir
 	local string_arch
 	local string_deb
-	local string_raw
+	local string_default
 	case "${LANG%_*}" in
 		('fr')
 			string='Choix du type de paquet à construire'
 			string_default='(type par défaut)'
 			string_arch='paquet .pkg.tar (Arch Linux)'
 			string_deb='paquet .deb (Debian, Ubuntu)'
+			string_appdir='installation directe AppDir (toutes distributions) EXPÉRIMENTAL'
 		;;
 		('en'|*)
 			string='Generated package Type choice'
 			string_default='(default type)'
 			string_arch='.pkg.tar package (Arch Linux)'
 			string_deb='.deb package (Debian, Ubuntu)'
-			string_raw='install to AppDir (distro-agnostic) EXPERIMENTAL'
+			string_appdir='install to AppDir (distro-agnostic) EXPERIMENTAL'
 		;;
 	esac
-	echo	'--package=arch|deb|raw'
-	echo -e '--package arch|deb|raw\n'
+	printf -- '--package=appdir|arch|deb\n'
+	printf -- '--package appdir|arch|deb\n'
 	printf '\t%s\n\n' "$string"
+	printf '\tappdir\t%s' "$string_appdir"
 	printf '\tarch\t%s' "$string_arch"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'arch' ] && printf ' %s\n' "$string_default" || printf '\n'
 	printf '\tdeb\t%s' "$string_deb"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'deb' ] && printf ' %s\n' "$string_default" || printf '\n'
-	echo -e "\traw\t$string_raw"
 }
 
 # display --dry-run option usage

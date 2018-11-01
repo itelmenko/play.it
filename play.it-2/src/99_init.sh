@@ -44,7 +44,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	# shellcheck disable=SC2034
-	ALLOWED_VALUES_PACKAGE='arch deb raw'
+	ALLOWED_VALUES_PACKAGE='appdir arch deb'
 
 	# Set default values for common options
 
@@ -56,6 +56,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	DEFAULT_OPTION_COMPRESSION='none'
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PREFIX='/usr/local'
+	DEFAULT_OPTION_PREFIX_APPDIR="${XDG_DATA_HOME:="$HOME/.local/share"}/applications"
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PACKAGE='deb'
 	unset winecfg_desktop
@@ -135,18 +136,25 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# Try to detect the host distribution if no package format has been explicitely set
 
 	case "$OPTION_PACKAGE" in
-		'')
-			packages_guess_format 'OPTION_PACKAGE'
-			;;
-		raw)
-			if ! ((EUID)); then
+		('appdir')
+			if [ "$(id -u)" = '0' ]; then
 				print_error
-				echo RAW mode is not intended to be run as root!
+				case "${LANG%_*}" in
+					('fr')
+						string_error='Le mode AppDir ne doit pas être utilisé via le compte root.\n'
+					;;
+					('en'|*)
+						string_error='AppDir mode is not intended to be run as root.\n'
+					;;
+				esac
+				printf "$string_error"
 				exit 1
 			fi
-
-			DEFAULT_OPTION_PREFIX="${XDG_DATA_HOME:="$HOME/.local/share"}/applications"
-			;;
+			DEFAULT_OPTION_PREFIX="$DEFAULT_OPTION_PREFIX_APPDIR"
+		;;
+		(*)
+			packages_guess_format 'OPTION_PACKAGE'
+		;;
 	esac
 
 	# Set options not already set by script arguments to default values
@@ -244,7 +252,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			PATH_GAME="$OPTION_PREFIX/share/games/$GAME_ID"
 			PATH_ICON_BASE='/usr/local/share/icons/hicolor'
 		;;
-		('raw')
+		('appdir')
 			PATH_BIN="$OPTION_PREFIX/play.it/$GAME_ID"
 			PATH_DESK="$OPTION_PREFIX/play.it/$GAME_ID"
 			PATH_DOC="$OPTION_PREFIX/play.it/$GAME_ID/doc"

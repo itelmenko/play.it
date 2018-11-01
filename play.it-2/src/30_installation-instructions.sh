@@ -12,6 +12,12 @@ print_instructions() {
 	local packages_list_64
 	local packages_list_all
 	local string
+	case "$OPTION_PACKAGE" in
+		('appdir')
+			print_instructions_appdir
+			return 0
+		;;
+	esac
 	for package in "$@"; do
 		package_arch="$(get_value "${package}_ARCH")"
 		case "$package_arch" in
@@ -46,9 +52,6 @@ print_instructions() {
 			;;
 			('deb')
 				print_instructions_deb "$@"
-			;;
-			('raw')
-				echo -e The game is already installed.\\nTo uninstall, just drop Application Directory: \""$OPTION_PREFIX/play.it/$GAME_ID"/\"
 			;;
 			(*)
 				liberror 'OPTION_PACKAGE' 'print_instructions'

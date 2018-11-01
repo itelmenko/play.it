@@ -1,3 +1,7 @@
+2.12.0
+
+  * New output format: AppDir
+
 2.10.4
 
   * Improve ShellCheck tests coverage
