@@ -181,14 +181,13 @@ help_prefix() {
 	printf '\t%s\n' "$string_absolute"
 	case "$OPTION_PACKAGE" in
 		('appdir')
-			path_default="$OPTION_PREFIX_DEFAULT"
+			path_default="$DEFAULT_OPTION_PREFIX_APPDIR"
 		;;
 		(*)
-			path_default="$OPTION_PREFIX_DEFAULT_APPDIR"
+			path_default="$DEFAULT_OPTION_PREFIX"
 		;;
 	esac
-	printf '\t%s\n\t\t/usr/local' "$string_default"
-	printf '\t\t%s in RAW mode (see below)' "$XDG_DATA_HOME/applications"
+	printf '\t%s %s\n' "$string_default" "$path_default"
 }
 
 # display --package option usage
@@ -218,9 +217,9 @@ help_package() {
 		;;
 	esac
 	printf -- '--package=appdir|arch|deb\n'
-	printf -- '--package appdir|arch|deb\n'
+	printf -- '--package appdir|arch|deb\n\n'
 	printf '\t%s\n\n' "$string"
-	printf '\tappdir\t%s' "$string_appdir"
+	printf '\tappdir\t%s\n' "$string_appdir"
 	printf '\tarch\t%s' "$string_arch"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'arch' ] && printf ' %s\n' "$string_default" || printf '\n'
 	printf '\tdeb\t%s' "$string_deb"
