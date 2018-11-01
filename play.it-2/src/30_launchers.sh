@@ -374,8 +374,8 @@ write_desktop() {
 
 		case "$OPTION_PACKAGE" in
 			('appdir')
-				pattern='s/^\(Icon\)=.*/'
-				pattern="$pattern=$PATH_ICON_BASE/48x48/apps/$app_id.png"
+				pattern='s#^\(Icon\)=.*#'
+				pattern="$pattern=$PATH_ICON_BASE/48x48/apps/$app_id.png#"
 				sed --in-place "$pattern" "$target"
 			;;
 		esac
