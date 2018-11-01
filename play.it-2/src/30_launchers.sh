@@ -56,6 +56,15 @@ write_bin() {
 		app_prerun="$(get_value "${app}_PRERUN")"
 		app_type="$(get_value "${app}_TYPE")"
 
+		case "$OPTION_PACKAGE" in
+			('appdir')
+				# AppDir mode never uses a prefix for native games
+				if [ "$app_type" = 'native' ]; then
+					app_type='native_no-prefix'
+				fi
+			;;
+		esac
+
 		if [ "$app_type" = 'native' ] ||\
 		   [ "$app_type" = 'native_no-prefix' ]; then
 			chmod +x "${pkg_path}${PATH_GAME}/$app_exe"
