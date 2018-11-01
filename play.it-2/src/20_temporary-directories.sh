@@ -157,7 +157,7 @@ set_temp_directories_error_not_enough_space() {
 	printf "$string"
 	case "$OPTION_PACKAGE" in
 		('appdir')
-			printf '%s' "$OPTION_PREFIX"
+			printf '%s\n' "$OPTION_PREFIX"
 		;;
 		(*)
 			for path in "$XDG_RUNTIME_DIR" "$(get_tmp_dir)" "$XDG_CACHE_HOME" "$PWD"; do
