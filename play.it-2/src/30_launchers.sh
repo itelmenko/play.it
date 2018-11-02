@@ -131,9 +131,11 @@ write_bin() {
 					DATA_DIRS='$DATA_DIRS'
 					DATA_FILES='$DATA_FILES'
 
+
 					EOF
 
 					# Set user-specific directories names and paths
+					# Set generic functions
 					cat >> "$file" <<- 'EOF'
 					# Set prefix name
 
@@ -146,24 +148,9 @@ write_bin() {
 
 					PATH_CONFIG="$XDG_CONFIG_HOME/$PREFIX_ID"
 					PATH_DATA="$XDG_DATA_HOME/games/$PREFIX_ID"
-					EOF
-					if [ "$app_type" = 'wine' ] || \
-					   [ "$app_type" = 'wine32' ] || \
-					   [ "$app_type" = 'wine64' ] || \
-					   [ "$app_type" = 'wine-staging' ] || \
-					   [ "$app_type" = 'wine32-staging' ] || \
-					   [ "$app_type" = 'wine64-staging' ]
-					then
-						write_bin_set_wine
-					else
-						cat >> "$file" <<- 'EOF'
-						PATH_PREFIX="$XDG_DATA_HOME/play.it/prefixes/$PREFIX_ID"
+					PATH_PREFIX="$XDG_DATA_HOME/play.it/prefixes/$PREFIX_ID"
 
-						EOF
-					fi
 
-					# Set generic functions
-					cat >> "$file" <<- 'EOF'
 					# Set ./play.it functions
 
 					init_prefix_dirs() {
@@ -232,22 +219,8 @@ write_bin() {
 					    done
 					  )
 					}
-					EOF
 
-					# Build game prefix
-					cat >> "$file" <<- 'EOF'
-					# Build prefix
-					EOF
-					if [ "$app_type" = 'wine' ] || \
-					   [ "$app_type" = 'wine32' ] || \
-					   [ "$app_type" = 'wine64' ] || \
-					   [ "$app_type" = 'wine-staging' ] || \
-					   [ "$app_type" = 'wine32-staging' ] || \
-					   [ "$app_type" = 'wine64-staging' ]
-					then
-						write_bin_build_wine
-					fi
-					cat >> "$file" <<- 'EOF'
+
 					for dir in "$PATH_PREFIX" "$PATH_CONFIG" "$PATH_DATA"; do
 					  if [ ! -e "$dir" ]; then
 					    mkdir --parents "$dir"
@@ -301,6 +274,9 @@ write_bin() {
 				write_bin_run_scummvm
 			;;
 			('wine'|'wine32'|'wine64'|'wine-staging'|'wine32-staging'|'wine64-staging')
+				write_bin_set_wine
+				# Build game prefix
+				write_bin_build_wine
 				write_bin_run_wine
 			;;
 		esac
