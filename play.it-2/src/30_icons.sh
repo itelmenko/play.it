@@ -350,7 +350,7 @@ icons_move_to() {
 	source="$PKG"
 	source_path="$(get_value "${source}_PATH")"
 	[ -n "$source_path" ] || missing_pkg_error 'icons_move_to' "$source"
-	[ "$DRY_RUN" = '1' ] && return 0
+	[ "$DRY_RUN" = '1' ] || [ "$source_path" = "$destination_path" ] && return 0
 	(
 		cd "$source_path"
 		cp --link --parents --recursive --no-dereference --preserve=links "./$PATH_ICON_BASE" "$destination_path"
