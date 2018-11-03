@@ -30,12 +30,12 @@ set -o errexit
 ###
 
 ###
-# The Silverc Case - Demo
-# build native Linux packages from the original installers
+# The Silver Case - Demo
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181026.1
+script_version=20181103.1
 
 # Set game-specific variables
 
@@ -54,22 +54,22 @@ ARCHIVE_PLAYISM_MD5='a1bbd59ead01c4e1dc50c38b3a65c5ea'
 ARCHIVE_PLAYISM_SIZE='950000'
 ARCHIVE_PLAYISM_VERSION='1.0-playism0930'
 
-ARCHIVE_DOC1_DATA_PATH_GOG='tmp'
-ARCHIVE_DOC1_DATA_FILES='./*.txt'
+ARCHIVE_DOC_DATA_PATH_GOG='tmp'
+ARCHIVE_DOC_DATA_FILES_GOG='*.txt'
 
 ARCHIVE_GAME_BIN_PATH_GOG='app'
 ARCHIVE_GAME_BIN_PATH_PLAYISM='thesilvercase_demo_0930'
-ARCHIVE_GAME_BIN_FILES='./thesilvercase_trial.exe'
+ARCHIVE_GAME_BIN_FILES='thesilvercase_trial.exe'
 
 ARCHIVE_GAME_DATA_PATH_GOG='app'
 ARCHIVE_GAME_DATA_PATH_PLAYISM='thesilvercase_demo_0930'
-ARCHIVE_GAME_DATA_FILES='./thesilvercase_trial_data'
+ARCHIVE_GAME_DATA_FILES='thesilvercase_trial_data'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='thesilvercase_trial.exe'
 APP_MAIN_ICON='thesilvercase_trial.exe'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
@@ -82,41 +82,44 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-tolower "$PLAYIT_WORKDIR/gamedata"
-
+case "$ARCHIVE" in
+	('ARCHIVE_PLAYISM')
+		tolower "$PLAYIT_WORKDIR/gamedata"
+	;;
+esac
 prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Extract icons
 
 PKG='PKG_BIN'
-extract_and_sort_icons_from 'APP_MAIN'
-move_icons_to 'PKG_DATA'
-
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+icons_get_from_package 'APP_MAIN'
+icons_move_to 'PKG_DATA'
 
 # Write launchers
 
