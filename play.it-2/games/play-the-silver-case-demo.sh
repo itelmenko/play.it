@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181103.1
+script_version=20181103.2
 
 # Set game-specific variables
 
@@ -59,7 +59,7 @@ ARCHIVE_DOC_DATA_FILES_GOG='*.txt'
 
 ARCHIVE_GAME_BIN_PATH_GOG='app'
 ARCHIVE_GAME_BIN_PATH_PLAYISM='thesilvercase_demo_0930'
-ARCHIVE_GAME_BIN_FILES='thesilvercase_trial.exe'
+ARCHIVE_GAME_BIN_FILES='thesilvercase_trial.exe thesilvercase_trial_data/mono thesilvercase_trial_data/plugins'
 
 ARCHIVE_GAME_DATA_PATH_GOG='app'
 ARCHIVE_GAME_DATA_PATH_PLAYISM='thesilvercase_demo_0930'
