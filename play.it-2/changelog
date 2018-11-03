@@ -1,3 +1,8 @@
+2.11.0
+
+  * Rewrite of launchers-related functions. Compatibility wrappers still
+    exist for old functions
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or
