@@ -36,7 +36,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181103.2
+script_version=20181103.3
 
 # Set game-specific variables
 
@@ -56,11 +56,12 @@ ARCHIVE_GAME_BIN_PATH='app'
 ARCHIVE_GAME_BIN_FILES='*.bat *.cfg *.dos *.exe *.ini drivers'
 
 ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='*.hqr *.ile *.obl lba2.dat lba2.gog lba2.ogg save vox'
+ARCHIVE_GAME_DATA_FILES='*.hqr *.ile *.obl lba2.dat lba2.gog lba2.ogg'
 
 GAME_IMAGE='lba2.dat'
 
 CONFIG_FILES='./*.cfg'
+DATA_DIRS='./save ./vox'
 
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='lba2.exe'
