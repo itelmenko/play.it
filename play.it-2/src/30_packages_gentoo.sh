@@ -21,7 +21,7 @@ pkg_write_gentoo() {
 				local provide
 				provide="$(get_value "${package}_PROVIDE")"
 				if [ "$provide" = "$pkg_provide" ]; then
-					use_archive_specific_value "${pkg}_ID"
+					use_archive_specific_value "${package}_ID"
 					local package_id
 					package_id="$(get_value "${package}_ID" | sed 's/-/_/g')"
 					pkg_deps="$pkg_deps !!games-playit/$package_id"
