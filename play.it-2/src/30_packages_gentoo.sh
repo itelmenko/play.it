@@ -263,7 +263,7 @@ pkg_set_deps_gentoo() {
 			;;
 		esac
 		pkg_deps="$pkg_deps $pkg_dep"
-		if [ -n "$pkg_overlay" ] && ! printf '%s' "$pkg_overlays" | sed 's/\s+/\n/' | grep -Fx "$pkg_overlay"; then
+		if [ -n "$pkg_overlay" ] && ! printf '%s' "$pkg_overlays" | sed 's/\s+/\n/' | grep --fixed-strings --line-regexp "$pkg_overlay"; then
 			pkg_overlays="$pkg_overlays $pkg_overlay"
 			pkg_overlay=''
 		fi
