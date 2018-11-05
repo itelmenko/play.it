@@ -249,7 +249,9 @@ icon_get_resolution_from_file() {
 	local version_major_target
 	local version_minor_target
 	file="$1"
+	# shellcheck disable=SC2154
 	version_major_target="${target_version%%.*}"
+	# shellcheck disable=SC2154
 	version_minor_target=$(printf '%s' "$target_version" | cut --delimiter='.' --fields=2)
 	if
 		{ [ $version_major_target -lt 2 ] || [ $version_minor_target -lt 8 ] ; } &&
@@ -282,7 +284,9 @@ icons_linking_postinst() {
 	local path_pkg
 	local version_major_target
 	local version_minor_target
+	# shellcheck disable=SC2154
 	version_major_target="${target_version%%.*}"
+	# shellcheck disable=SC2154
 	version_minor_target=$(printf '%s' "$target_version" | cut --delimiter='.' --fields=2)
 	path_pkg="$(get_value "${PKG}_PATH")"
 	[ -n "$path_pkg" ] || missing_pkg_error 'icons_linking_postinst' "$PKG"
@@ -366,6 +370,7 @@ icon_file_not_found_error() {
 	file="$1"
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string1='Le fichier d’icône suivant est introuvable : %s'
 			string2='Merci de signaler cette erreur sur notre outil de gestion de bugs : %s'
 		;;

@@ -140,6 +140,7 @@ packages_guess_format() {
 			print_warning
 			case "${LANG%_*}" in
 				('fr')
+					# shellcheck disable=SC1112
 					string1='L’auto-détection du format de paquet le plus adapté a échoué.\n'
 					string2='Le format de paquet %s sera utilisé par défaut.\n'
 				;;
@@ -153,6 +154,6 @@ packages_guess_format() {
 			printf '\n'
 		;;
 	esac
-	export $variable_name
+	export ${variable_name?}
 }
 
