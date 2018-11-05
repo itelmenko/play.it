@@ -6,6 +6,8 @@
 
   * main script: Fix wrong usage of 'return' instead of 'exit'
 
+  * main script: Update search paths for library and game scripts
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in
