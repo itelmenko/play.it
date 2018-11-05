@@ -176,7 +176,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="media-libs/openal$architecture_suffix"
 			;;
 			('pulseaudio')
-				pkg_dep='media-sound/pulseaudio' #TODO: maybe apulse could work too
+				pkg_dep='media-sound/pulseaudio'
 			;;
 			('sdl1.2')
 				pkg_dep="media-libs/libsdl$architecture_suffix"
