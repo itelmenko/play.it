@@ -37,7 +37,7 @@ pkg_write_gentoo() {
 		"$PLAYIT_WORKDIR/gentoo-overlay/metadata" \
 		"$PLAYIT_WORKDIR/gentoo-overlay/profiles" \
 		"$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files"
-	printf '%s\n' 'masters = gentoo steam-overlay' > "$PLAYIT_WORKDIR/gentoo-overlay/metadata/layout.conf"
+	printf '%s\n' "masters = gentoo $pkg_overlays" > "$PLAYIT_WORKDIR/gentoo-overlay/metadata/layout.conf"
 	printf '%s\n' 'games-playit' > "$PLAYIT_WORKDIR/gentoo-overlay/profiles/categories"
 	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
 	local target
@@ -158,7 +158,8 @@ pkg_set_deps_gentoo() {
 				pkg_dep="net-misc/curl$architecture_suffix"
 			;;
 			('libcurl-gnutls')
-				pkg_dep="net-libs/libcurl-debian$architecture_suffix" #available in the steam overlay
+				pkg_dep="net-libs/libcurl-debian$architecture_suffix"
+				pkg_overlay='steam-overlay'
 			;;
 			('libstdc++')
 				pkg_dep='' #maybe this should be virtual/libstdc++, otherwise, it is included in gcc, which should be in @system
@@ -262,6 +263,10 @@ pkg_set_deps_gentoo() {
 			;;
 		esac
 		pkg_deps="$pkg_deps $pkg_dep"
+		if [ -n "$pkg_overlay" ] && ! printf '%s' "$pkg_overlays" | sed 's/\s+/\n/' | grep -Fx "$pkg_overlay"; then
+			pkg_overlays="$pkg_overlays $pkg_overlay"
+			pkg_overlay=''
+		fi
 	done
 }
 
