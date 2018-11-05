@@ -26,7 +26,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	if [ -z "$PLAYIT_LIB2" ]; then
 		printf '\n\033[1;31mError:\033[0m\n'
 		printf 'libplayit2.sh not found.\n'
-		return 1
+		exit 1
 	fi
 fi
 # shellcheck source=play.it-2/lib/libplayit2.sh
@@ -50,7 +50,7 @@ if [ ! -f "$INPUT_FILE" ]; then
 	esac
 	# shellcheck disable=SC2059
 	printf "$string" "$INPUT_FILE"
-	return 1
+	exit 1
 fi
 
 # Locate script by file name
@@ -99,7 +99,7 @@ if [ -z "$SCRIPT" ]; then
 	esac
 	# shellcheck disable=SC2059
 	printf "$string" "$FILE_NAME"
-	return 1
+	exit 1
 fi
 
 export PLAYIT_LIB2
