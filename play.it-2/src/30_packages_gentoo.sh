@@ -235,7 +235,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-libs/libXft$architecture_suffix"
 			;;
 			('xgamma')
-				pkg_dep="x11-apss/xgamma$architecture_suffix"
+				pkg_dep="x11-apps/xgamma$architecture_suffix"
 			;;
 			('xrandr')
 				pkg_dep="x11-apps/xrandr$architecture_suffix"
