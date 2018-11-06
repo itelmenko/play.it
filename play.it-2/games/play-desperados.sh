@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181029.4
+script_version=20181106.1
 
 # Set game-specific variables
 
@@ -48,7 +48,7 @@ ARCHIVE_GOG='desperados_wanted_dead_or_alive_en_1_0_2_thqn_22430.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/desperados_wanted_dead_or_alive'
 ARCHIVE_GOG_TYPE='mojosetup'
 ARCHIVE_GOG_MD5='c4338cd7526dc01eef347408368f6bf4'
-ARCHIVE_GOG_VERSION='1.0.2-22430'
+ARCHIVE_GOG_VERSION='1.0.2-gog22430'
 ARCHIVE_GOG_SIZE='2000000'
 
 ARCHIVE_GOG_OLD1='desperados_wanted_dead_or_alive_en_gog_1_22137.sh'
