@@ -3,6 +3,7 @@
 # NEEDED VARS: (LANG)
 # CALLS: help_checksum help_compression help_prefix help_package
 help() {
+	local format
 	local string
 	local string_archive
 	case "${LANG%_*}" in
@@ -19,7 +20,12 @@ help() {
 		;;
 	esac
 	printf '\n'
-	printf '%s %s [OPTION]… [ARCHIVE]\n\n' "$string" "${0##*/}"
+	if [ "${0##*/}" = 'play.it' ]; then
+		format='%s %s ARCHIVE [OPTION]…\n\n'
+	else
+		format='%s %s [OPTION]… [ARCHIVE]\n\n'
+	fi
+	printf "$format" "$string" "${0##*/}"
 	
 	printf 'OPTIONS\n\n'
 	help_architecture
