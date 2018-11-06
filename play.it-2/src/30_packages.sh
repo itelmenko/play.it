@@ -152,6 +152,7 @@ packages_guess_format() {
 			printf "$string1"
 			printf "$string2" "$DEFAULT_OPTION_PACKAGE"
 			printf '\n'
+			eval $variable_name=\'$DEFAULT_OPTION_PACKAGE\'
 		;;
 	esac
 	export ${variable_name?}

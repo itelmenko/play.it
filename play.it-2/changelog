@@ -10,6 +10,9 @@
 
   * help: Fix usage instructions when called from main script
 
+  * packages_guess_format: Fix falling back on default package format value
+    when host OS couldn’t be guessed
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in
