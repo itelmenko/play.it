@@ -152,26 +152,23 @@ write_bin() {
 
 			init_prefix_dirs() {
 			  (
-			    cd "$1"
+			    cd "$PATH_GAME"
 			    for dir in $2; do
-			      if [ ! -e "$dir" ]; then
+			      if [ ! -e "$1/$dir" ]; then
 			        if [ -e "$PATH_PREFIX/$dir" ]; then
 			          (
 			            cd "$PATH_PREFIX"
 			            cp --dereference --parents --recursive "$dir" "$1"
 			          )
 			        elif [ -e "$PATH_GAME/$dir" ]; then
-			          (
-			            cd "$PATH_GAME"
-			            cp --parents --recursive "$dir" "$1"
-			          )
+			          cp --parents --recursive "$dir" "$1"
 			        else
-			          mkdir --parents "$dir"
+			          mkdir --parents "$1/$dir"
 			        fi
 			      fi
 			      rm --force --recursive "$PATH_PREFIX/$dir"
 			      mkdir --parents "$PATH_PREFIX/${dir%/*}"
-			      ln --symbolic "$(readlink --canonicalize-existing "$dir")" "$PATH_PREFIX/$dir"
+			      ln --symbolic "$(readlink --canonicalize-existing "$1/$dir")" "$PATH_PREFIX/$dir"
 			    done
 			  )
 			}

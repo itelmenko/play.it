@@ -18,6 +18,9 @@
 
   * print_instructions: Improve message readability
 
+  * write_bin - init_prefix_dirs: Fix use of globbing when setting the paths to
+    user directories
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in
