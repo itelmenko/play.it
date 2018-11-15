@@ -296,26 +296,12 @@ icons_linking_postinst() {
 				{ [ $version_major_target -lt 2 ] || [ $version_minor_target -lt 8 ] ; } &&
 				[ -n "${file##* *}" ]
 			then
-				cat >> "$postinst" <<- EOF
-				if [ ! -e "$path_icon/$name.png" ]; then
-				  mkdir --parents "$path_icon"
-				  ln --symbolic "$PATH_GAME"/$file "$path_icon/$name.png"
-				fi
-				EOF
+				mkdir --parents "${path_pkg}$path_icon"
+				ln --symbolic "$(realpath --canonicalize-missing --relative-to "$path_icon" "$PATH_GAME"/$file)" "${path_pkg}$path_icon/$name.png"
 			else
-				cat >> "$postinst" <<- EOF
-				if [ ! -e "$path_icon/$name.png" ]; then
-				  mkdir --parents "$path_icon"
-				  ln --symbolic "$PATH_GAME/$file" "$path_icon/$name.png"
-				fi
-				EOF
+				mkdir --parents "${path_pkg}$path_icon"
+				ln --symbolic "$(realpath --canonicalize-missing --relative-to "$path_icon" "$PATH_GAME/$file")" "${path_pkg}$path_icon/$name.png"
 			fi
-			cat >> "$prerm" <<- EOF
-			if [ -e "$path_icon/$name.png" ]; then
-			  rm "$path_icon/$name.png"
-			  rmdir --parents --ignore-fail-on-non-empty "$path_icon"
-			fi
-			EOF
 		done
 	done
 }
