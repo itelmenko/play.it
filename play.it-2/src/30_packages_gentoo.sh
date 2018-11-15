@@ -1,3 +1,19 @@
+# Get packages that provides the given package
+# USAGE: get_pkg_providers $provided_package
+# NEEDED VARS: PACKAGES_LIST pkg
+# CALLED BY: pkg_write_gentoo pkg_set_deps_gentoo
+get_pkg_providers() {
+	local provided="$1"
+	for package in $PACKAGES_LIST; do
+		if [ "$package" != "$pkg" ]; then
+			use_archive_specific_value "${package}_ID"
+			if [ "$(get_value "${package}_PROVIDE")" = "$provided" ]; then
+				printf '%s\n' "$(get_value "${package}_ID")"
+			fi
+		fi
+	done
+}
+
 # write .ebuild package meta-data
 # USAGE: pkg_write_arch
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
@@ -15,18 +31,8 @@ pkg_write_gentoo() {
 	fi
 
 	if [ -n "$pkg_provide" ]; then
-		for package in $PACKAGES_LIST; do
-			if [ "$package" != "$pkg" ]; then
-				use_archive_specific_value "${package}_PROVIDE"
-				local provide
-				provide="$(get_value "${package}_PROVIDE")"
-				if [ "$provide" = "$pkg_provide" ]; then
-					use_archive_specific_value "${package}_ID"
-					local package_id
-					package_id="$(get_value "${package}_ID" | sed 's/-/_/g')"
-					pkg_deps="$pkg_deps !!games-playit/$package_id"
-				fi
-			fi
+		for package_provide in $pkg_provide; do
+			pkg_deps="$pkg_deps $(get_pkg_providers "$package_provide" | sed -e 's/-/_/g' -e 's|^|!!games-playit/|')"
 		done
 	fi
 
@@ -241,24 +247,11 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-apps/xrandr$architecture_suffix"
 			;;
 			(*)
-				pkg_dep=''
-				local has_provides=false
-				for package in $PACKAGES_LIST; do
-					use_archive_specific_value "${package}_PROVIDE"
-					local provide
-					provide="$(get_value "${package}_PROVIDE")"
-					if [ "$provide" = "$dep" ]; then
-						has_provides=true
-						use_archive_specific_value "${package}_ID"
-						local package_id
-						package_id="$(get_value "${package}_ID" | sed 's/-/_/g')"
-						pkg_dep="$pkg_dep games-playit/$package_id"
-					fi
-				done
-				if [ "$has_provides" != true ]; then
+				pkg_dep="$(get_pkg_providers "$dep" | sed -e 's/-/_/g' -e 's|^|games-playit/|')"
+				if [ -z "$pkg_dep" ]; then
 					pkg_dep='games-playit/'"$(printf '%s' "$dep" | sed 's/-/_/g')"
 				else
-					pkg_dep="|| ($pkg_dep )"
+					pkg_dep="|| ( $pkg_dep )"
 				fi
 			;;
 		esac
