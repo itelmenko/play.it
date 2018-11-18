@@ -1,8 +1,8 @@
 # Get packages that provides the given package
-# USAGE: get_pkg_providers $provided_package
+# USAGE: gentoo_get_pkg_providers $provided_package
 # NEEDED VARS: PACKAGES_LIST pkg
 # CALLED BY: pkg_write_gentoo pkg_set_deps_gentoo
-get_pkg_providers() {
+gentoo_get_pkg_providers() {
 	local provided="$1"
 	for package in $PACKAGES_LIST; do
 		if [ "$package" != "$pkg" ]; then
@@ -32,7 +32,7 @@ pkg_write_gentoo() {
 
 	if [ -n "$pkg_provide" ]; then
 		for package_provide in $pkg_provide; do
-			pkg_deps="$pkg_deps $(get_pkg_providers "$package_provide" | sed -e 's/-/_/g' -e 's|^|!!games-playit/|')"
+			pkg_deps="$pkg_deps $(gentoo_get_pkg_providers "$package_provide" | sed -e 's/-/_/g' -e 's|^|!!games-playit/|')"
 		done
 	fi
 
@@ -247,7 +247,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-apps/xrandr$architecture_suffix"
 			;;
 			(*)
-				pkg_dep="$(get_pkg_providers "$dep" | sed -e 's/-/_/g' -e 's|^|games-playit/|')"
+				pkg_dep="$(gentoo_get_pkg_providers "$dep" | sed -e 's/-/_/g' -e 's|^|games-playit/|')"
 				if [ -z "$pkg_dep" ]; then
 					pkg_dep='games-playit/'"$(printf '%s' "$dep" | sed 's/-/_/g')"
 				else
