@@ -18,6 +18,9 @@ check_deps() {
 			('innosetup'*)
 				SCRIPT_DEPS="$SCRIPT_DEPS innoextract"
 			;;
+			('lzh')
+				SCRIPT_DEPS="$SCRIPT_DEPS lzh"
+			;;
 			('nixstaller')
 				SCRIPT_DEPS="$SCRIPT_DEPS gzip tar unxz"
 			;;
@@ -59,6 +62,9 @@ check_deps() {
 			('innoextract'*)
 				check_deps_innoextract "$dep"
 			;;
+			('lzh')
+				check_deps_lzh
+			;;
 			(*)
 				if ! command -v "$dep" >/dev/null 2>&1; then
 					check_deps_error_not_found "$dep"
@@ -81,6 +87,26 @@ check_deps_7z() {
 		extract_7z() { unar -output-directory "$2" -force-overwrite -no-directory "$1"; }
 	else
 		check_deps_error_not_found 'p7zip'
+	fi
+}
+
+# check presence of a software to handle .lzh archives
+# USAGE: check_deps_lzh
+# CALLS: check_deps_error_not_found
+# CALLED BY: check_deps
+check_deps_lzh() {
+	if command -v bsdtar >/dev/null 2>&1; then
+		extract_lzh() {
+			bsdtar --directory "$2" --extract --file "$1"
+			set_standard_permissions "$2"
+		}
+	elif command -v lha >/dev/null 2>&1; then
+		extract_lzh() {
+			lha "-ew=$2" "$1"
+			set_standard_permissions "$2"
+		}
+	else
+		check_deps_error_not_found 'bsdtar/lhasa'
 	fi
 }
 

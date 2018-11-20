@@ -31,6 +31,9 @@ extract_data_from() {
 			('innosetup'*)
 				archive_extraction_innosetup "$archive_type" "$file" "$destination"
 			;;
+			('lzh')
+				extract_lzh "$file" "$destination"
+			;;
 			('msi')
 				msiextract --directory "$destination" "$file" 1>/dev/null 2>&1
 				tolower "$destination"
