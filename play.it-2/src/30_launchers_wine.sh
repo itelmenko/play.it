@@ -6,8 +6,11 @@
 write_bin_winecfg() {
 	if [ "$winecfg_launcher" != '1' ]; then
 		winecfg_launcher='1'
+		# shellcheck disable=SC2034
 		APP_WINECFG_ID="${GAME_ID}_winecfg"
+		# shellcheck disable=SC2034
 		APP_WINECFG_TYPE='wine'
+		# shellcheck disable=SC2034
 		APP_WINECFG_EXE='winecfg'
 		write_bin 'APP_WINECFG'
 		local target
@@ -133,8 +136,11 @@ write_desktop_winecfg() {
 	local pkg_path
 	pkg_path="$(get_value "${PKG}_PATH")"
 	[ -n "$pkg_path" ] || missing_pkg_error 'write_desktop_winecfg' "$PKG"
+	# shellcheck disable=SC2034
 	APP_WINECFG_ID="${GAME_ID}_winecfg"
+	# shellcheck disable=SC2034
 	APP_WINECFG_NAME="$GAME_NAME - WINE configuration"
+	# shellcheck disable=SC2034
 	APP_WINECFG_CAT='Settings'
 	write_desktop 'APP_WINECFG'
 	sed --in-place 's/Icon=.\+/Icon=winecfg/' "${pkg_path}${PATH_DESK}/${APP_WINECFG_ID}.desktop"

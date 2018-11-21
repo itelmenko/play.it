@@ -5,6 +5,7 @@
 pkg_write_deb() {
 	local pkg_deps
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		# shellcheck disable=SC2046
 		pkg_set_deps_deb $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_DEB"
@@ -50,11 +51,13 @@ pkg_write_deb() {
 	fi
 
 	if [ -n "$pkg_description" ]; then
+		# shellcheck disable=SC2154
 		cat >> "$target" <<- EOF
 		Description: $GAME_NAME - $pkg_description
 		 ./play.it script version $script_version
 		EOF
 	else
+		# shellcheck disable=SC2154
 		cat >> "$target" <<- EOF
 		Description: $GAME_NAME
 		 ./play.it script version $script_version
@@ -231,7 +234,7 @@ pkg_build_deb() {
 	if [ -e "$pkg_filename" ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"
 		eval ${pkg}_PKG=\"$pkg_filename\"
-		export ${pkg}_PKG
+		export ${pkg?}_PKG
 		return 0
 	fi
 
@@ -249,12 +252,12 @@ pkg_build_deb() {
 	if [ "$DRY_RUN" = '1' ]; then
 		printf '\n'
 		eval ${pkg}_PKG=\"$pkg_filename\"
-		export ${pkg}_PKG
+		export ${pkg?}_PKG
 		return 0
 	fi
 	TMPDIR="$PLAYIT_WORKDIR" fakeroot -- dpkg-deb $dpkg_options --build "$1" "$pkg_filename" 1>/dev/null
 	eval ${pkg}_PKG=\"$pkg_filename\"
-	export ${pkg}_PKG
+	export ${pkg?}_PKG
 
 	print_ok
 }

@@ -3,11 +3,13 @@
 # NEEDED VARS: (LANG)
 # CALLS: help_checksum help_compression help_prefix help_package
 help() {
+	local format
 	local string
 	local string_archive
 	case "${LANG%_*}" in
 		('fr')
 			string='Utilisation :'
+			# shellcheck disable=SC1112
 			string_archive='Ce script reconnaît l’archive suivante :'
 			string_archives='Ce script reconnaît les archives suivantes :'
 		;;
@@ -18,7 +20,12 @@ help() {
 		;;
 	esac
 	printf '\n'
-	printf '%s %s [OPTION]… [ARCHIVE]\n\n' "$string" "${0##*/}"
+	if [ "${0##*/}" = 'play.it' ]; then
+		format='%s %s ARCHIVE [OPTION]…\n\n'
+	else
+		format='%s %s [OPTION]… [ARCHIVE]\n\n'
+	fi
+	printf "$format" "$string" "${0##*/}"
 	
 	printf 'OPTIONS\n\n'
 	help_architecture
@@ -59,10 +66,12 @@ help_architecture() {
 	local string_auto
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string='Choix de l’architecture à construire'
 			string_all='toutes les architectures disponibles (méthode par défaut)'
 			string_32='paquets 32-bit seulement'
 			string_64='paquets 64-bit seulement'
+			# shellcheck disable=SC1112
 			string_auto='paquets pour l’architecture du système courant uniquement'
 		;;
 		('en'|*)
@@ -92,6 +101,7 @@ help_checksum() {
 	local string_none
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string='Choix de la méthode de vérification d’intégrité de l’archive'
 			string_md5='vérification via md5sum (méthode par défaut)'
 			string_none='pas de vérification'
@@ -153,6 +163,7 @@ help_prefix() {
 	local string_default
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string='Choix du chemin d’installation du jeu'
 			string_absolute='Cette option accepte uniquement un chemin absolu.'
 			string_default='chemin par défaut :'
@@ -210,6 +221,7 @@ help_dryrun() {
 	local string
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string='Effectue des tests de syntaxe mais n’extrait pas de données et ne construit pas de paquets.'
 		;;
 		('en'|*)

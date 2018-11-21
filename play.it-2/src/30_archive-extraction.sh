@@ -131,6 +131,7 @@ archive_extraction_innosetup_error_version() {
 	print_error
 	case "${LANG%_*}" in
 		('fr')
+			# shellcheck disable=SC1112
 			string='La version de innoextract disponible sur ce système est trop ancienne pour extraire les données de l’archive suivante :'
 		;;
 		('en'|*)

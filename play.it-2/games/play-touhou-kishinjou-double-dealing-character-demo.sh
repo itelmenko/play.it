@@ -3,8 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Solène Huault
-# Copyright (c) 2018, Andrey Butirsky
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,41 +30,48 @@ set -o errexit
 ###
 
 ###
-# Little Big Adventure 2
+# Touhou Kishinjou ~ Double Dealing Character - Demo
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181103.3
+script_version=20181114.2
 
 # Set game-specific variables
 
-GAME_ID='little-big-adventure-2'
-GAME_NAME='Little Big Adventure 2'
+GAME_ID='touhou-kishinjou-double-dealing-character-demo'
+GAME_NAME='Touhou Kishinjou ~ Double Dealing Character - Demo'
 
-ARCHIVE_GOG='setup_lba2_2.1.0.8.exe'
-ARCHIVE_GOG_URL='https://www.gog.com/game/little_big_adventure_2'
-ARCHIVE_GOG_MD5='9909163b7285bd37417f6d3c1ccfa3ee'
-ARCHIVE_GOG_SIZE='750000'
-ARCHIVE_GOG_VERSION='1.0-gog2.1.0.8'
+SCRIPT_DEPS='iconv'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='*.pdf *.txt'
+ARCHIVE_PLAYISM='DoubleDealingCharacterDemo.zip'
+ARCHIVE_PLAYISM_URL='http://playism-games.com/game/215/double-dealing-character'
+ARCHIVE_PLAYISM_MD5='76a751e8becb51689c2256d218cda788'
+ARCHIVE_PLAYISM_VERSION='0.01b-playism'
+ARCHIVE_PLAYISM_SIZE='190000'
+ARCHIVE_PLAYISM_TYPE='zip'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.bat *.cfg *.dos *.exe *.ini drivers'
+ARCHIVE_DOC_DATA_PATH='Double Dealing Character DEMO (Touhou14)'
+ARCHIVE_DOC_DATA_FILES='*.txt'
 
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='*.hqr *.ile *.obl lba2.dat lba2.gog lba2.ogg'
+ARCHIVE_GAME_BIN_PATH='Double Dealing Character DEMO (Touhou14)'
+ARCHIVE_GAME_BIN_FILES='*.exe'
 
-GAME_IMAGE='lba2.dat'
+ARCHIVE_GAME_DATA_PATH='Double Dealing Character DEMO (Touhou14)'
+ARCHIVE_GAME_DATA_FILES='*.dat'
 
-CONFIG_FILES='./*.cfg'
-DATA_DIRS='./save ./vox'
+DATA_DIRS='./userdata'
 
-APP_MAIN_TYPE='dosbox'
-APP_MAIN_EXE='lba2.exe'
-APP_MAIN_ICON='lba2.exe'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='th14.exe'
+APP_MAIN_ICON='th14.exe'
+
+APP_CONFIG_ID="${GAME_ID}_config"
+APP_CONFIG_TYPE='wine'
+APP_CONFIG_EXE='custom.exe'
+APP_CONFIG_ICON='custom.exe'
+APP_CONFIG_NAME="$GAME_NAME - configuration"
+APP_CONFIG_CAT='Settings'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -73,7 +79,10 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
+PKG_BIN_DEPS_DEB='fonts-wqy-microhei'
+PKG_BIN_DEPS_ARCH='wqy-microhei'
+PKG_BIN_DEPS_GENTOO='media-fonts/wqy-microhei'
 
 # Load common functions
 
@@ -108,22 +117,39 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icons
+# Convert the text files to UTF-8 encoding
+
+for file in "${PKG_DATA_PATH}${PATH_DOC}"/*.txt; do
+	contents="$(iconv --from-code SHIFT-JIS "$file")"
+	printf '%s' "$contents" > "$file"
+done
+
+# Fix website link
+
+pattern='s|http://www16\.big\.or\.jp/.zun/|http://www16.big.or.jp/~zun/|'
+file="${PKG_DATA_PATH}${PATH_DOC}/readme.txt"
+sed --in-place "$pattern" "$file"
+
+# Extract game icons
 
 PKG='PKG_BIN'
-icons_get_from_package 'APP_MAIN'
+icons_get_from_package 'APP_MAIN' 'APP_CONFIG'
 icons_move_to 'PKG_DATA'
-
-# Keep Voices on HD
-
-file="${PKG_BIN_PATH}${PATH_GAME}/lba2.cfg"
-pattern='s/\(FlagKeepVoice:\) OFF/\1 ON/'
-sed --in-place "$pattern" "$file"
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+write_launcher 'APP_MAIN' 'APP_CONFIG'
+
+# Store saved games and settings outside of WINE prefix
+
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/ShanghaiAlice/th14tr'
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 

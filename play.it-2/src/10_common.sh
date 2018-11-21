@@ -126,7 +126,7 @@ use_archive_specific_value() {
 		value="$(get_value "$name")"
 		if [ -n "$value" ]; then
 			eval $name_real=\"$value\"
-			export $name_real
+			export ${name_real?}
 			return 0
 		fi
 		name="${name%_*}"
@@ -147,7 +147,7 @@ use_package_specific_value() {
 		value="$(get_value "$name")"
 		if [ -n "$value" ]; then
 			eval $name_real=\"$value\"
-			export $name_real
+			export ${name_real?}
 			return 0
 		fi
 		name="${name%_*}"

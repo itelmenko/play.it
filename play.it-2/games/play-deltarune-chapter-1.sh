@@ -3,8 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Solène Huault
-# Copyright (c) 2018, Andrey Butirsky
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,41 +30,39 @@ set -o errexit
 ###
 
 ###
-# Little Big Adventure 2
+# Deltarune - Chapter 1
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181103.3
+script_version=20181114.3
 
 # Set game-specific variables
 
-GAME_ID='little-big-adventure-2'
-GAME_NAME='Little Big Adventure 2'
+GAME_ID='deltarune-chapter-1'
+GAME_NAME='Deltarune - Chapter 1'
 
-ARCHIVE_GOG='setup_lba2_2.1.0.8.exe'
-ARCHIVE_GOG_URL='https://www.gog.com/game/little_big_adventure_2'
-ARCHIVE_GOG_MD5='9909163b7285bd37417f6d3c1ccfa3ee'
-ARCHIVE_GOG_SIZE='750000'
-ARCHIVE_GOG_VERSION='1.0-gog2.1.0.8'
+ARCHIVE_DELTARUNE='SURVEY_PROGRAM_WINDOWS_ENGLISH.exe'
+ARCHIVE_DELTARUNE_URL='https://www.deltarune.com/'
+ARCHIVE_DELTARUNE_MD5='2f92f4ad09d41287b36650aaf1e5359e'
+ARCHIVE_DELTARUNE_VERSION='1.0-deltarune'
+ARCHIVE_DELTARUNE_SIZE='95000'
+ARCHIVE_DELTARUNE_TYPE='nullsoft-installer'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='*.pdf *.txt'
+ARCHIVE_DOC_DATA_PATH='.'
+ARCHIVE_DOC_DATA_FILES='license.txt'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.bat *.cfg *.dos *.exe *.ini drivers'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='deltarune.exe'
 
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='*.hqr *.ile *.obl lba2.dat lba2.gog lba2.ogg'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='data.win *.dat *.ogg mus lang'
 
-GAME_IMAGE='lba2.dat'
+DATA_DIRS='./userdata'
 
-CONFIG_FILES='./*.cfg'
-DATA_DIRS='./save ./vox'
-
-APP_MAIN_TYPE='dosbox'
-APP_MAIN_EXE='lba2.exe'
-APP_MAIN_ICON='lba2.exe'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='deltarune.exe'
+APP_MAIN_ICON='deltarune.exe'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -73,7 +70,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
@@ -105,25 +102,30 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icons
+# Extract game icons
 
 PKG='PKG_BIN'
 icons_get_from_package 'APP_MAIN'
 icons_move_to 'PKG_DATA'
 
-# Keep Voices on HD
-
-file="${PKG_BIN_PATH}${PATH_GAME}/lba2.cfg"
-pattern='s/\(FlagKeepVoice:\) OFF/\1 ON/'
-sed --in-place "$pattern" "$file"
-
 # Write launchers
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
+
+# Store saved games and settings outside of WINE prefix
+
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Local Settings/Application Data/DELTARUNE'
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 

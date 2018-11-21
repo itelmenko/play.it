@@ -6,9 +6,11 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# Check library version against script target version
 
 	version_major_library="${library_version%%.*}"
+	# shellcheck disable=SC2154
 	version_major_target="${target_version%%.*}"
 
 	version_minor_library=$(printf '%s' "$library_version" | cut --delimiter='.' --fields=2)
+	# shellcheck disable=SC2154
 	version_minor_target=$(printf '%s' "$target_version" | cut --delimiter='.' --fields=2)
 
 	if [ $version_major_library -ne $version_major_target ] || [ $version_minor_library -lt $version_minor_target ]; then
@@ -24,6 +26,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			;;
 		esac
 		printf "$string1"
+		# shellcheck disable=SC2154
 		printf "$string2" "$target_version"
 		exit 1
 	fi
@@ -34,17 +37,26 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	# Set allowed values for common options
 
+	# shellcheck disable=SC2034
 	ALLOWED_VALUES_ARCHITECTURE='all 32 64 auto'
+	# shellcheck disable=SC2034
 	ALLOWED_VALUES_CHECKSUM='none md5'
+	# shellcheck disable=SC2034
 	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
+	# shellcheck disable=SC2034
 	ALLOWED_VALUES_PACKAGE='arch deb'
 
 	# Set default values for common options
 
+	# shellcheck disable=SC2034
 	DEFAULT_OPTION_ARCHITECTURE='all'
+	# shellcheck disable=SC2034
 	DEFAULT_OPTION_CHECKSUM='md5'
+	# shellcheck disable=SC2034
 	DEFAULT_OPTION_COMPRESSION='none'
+	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PREFIX='/usr/local'
+	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PACKAGE='deb'
 	unset winecfg_desktop
 	unset winecfg_launcher
@@ -87,7 +99,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 					eval help_$option
 					exit 0
 				else
+					# shellcheck disable=SC2046
 					eval OPTION_$(printf '%s' "$option" | tr '[:lower:]' '[:upper:]')=\"$value\"
+					# shellcheck disable=SC2046
 					export OPTION_$(printf '%s' "$option" | tr '[:lower:]' '[:upper:]')
 				fi
 				unset option
@@ -127,6 +141,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
 		if [ -z "$(get_value "OPTION_$option")" ]\
 		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
+			# shellcheck disable=SC2046
 			eval OPTION_$option=\"$(get_value "DEFAULT_OPTION_$option")\"
 			export OPTION_$option
 		fi
@@ -151,7 +166,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		local string2
 		case "${LANG%_*}" in
 			('fr')
+				# shellcheck disable=SC1112
 				string1='%s n’est pas une valeur valide pour --%s.\n'
+				# shellcheck disable=SC1112
 				string2='Lancez le script avec l’option --%s=help pour une liste des valeurs acceptés.\n'
 			;;
 			('en'|*)
@@ -178,6 +195,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		print_error
 		case "${LANG%_*}" in
 			('fr')
+				# shellcheck disable=SC1112
 				string='Le mode de compression bzip2 n’est pas compatible avec la génération de paquets deb.'
 			;;
 			('en'|*)

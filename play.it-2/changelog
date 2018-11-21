@@ -1,3 +1,26 @@
+2.10.4
+
+  * Improve ShellCheck tests coverage
+
+  * Do not let empty dirs lingering after uninstallation using make
+
+  * main script: Fix wrong usage of 'return' instead of 'exit'
+
+  * main script: Update search paths for library and game scripts
+
+  * help: Fix usage instructions when called from main script
+
+  * packages_guess_format: Fix falling back on default package format value
+    when host OS couldn’t be guessed
+
+  * icons_get_from_path: Fail with an explicit error message if called with an
+    empty icon path
+
+  * print_instructions: Improve message readability
+
+  * write_bin - init_prefix_dirs: Fix use of globbing when setting the paths to
+    user directories
+
 2.10.3
 
   * write_bin - init_prefix_files: Do not ignore symbolic links in

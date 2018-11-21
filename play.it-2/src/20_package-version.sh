@@ -7,6 +7,7 @@ get_package_version() {
 	if [ -z "$PKG_VERSION" ]; then
 		PKG_VERSION='1.0-1'
 	fi
+	# shellcheck disable=SC2154
 	PKG_VERSION="${PKG_VERSION}+$script_version"
 	export PKG_VERSION
 }
