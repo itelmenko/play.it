@@ -34,12 +34,14 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181007.1
+script_version=20181121.1
 
 # Set game-specific variables
 
 GAME_ID='heroes-of-might-and-magic-3'
 GAME_NAME='Heroes of Might and Magic III'
+
+SCRIPT_DEPS='iconv'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR_OLD0'
 
@@ -86,6 +88,7 @@ CONFIG_DIRS='./config'
 DATA_DIRS='./games ./maps ./random_maps'
 DATA_FILES='./data/h3ab_bmp.lod ./data/h3ab_spr.lod ./data/h3bitmap.lod ./data/h3sprite.lod'
 
+APP_REGEDIT='tweaks.reg'
 APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
@@ -168,6 +171,19 @@ if [ "$ARCHIVE_PATCH" ]; then
 	organize_data 'GAME_PATCH_BIN' "$PATH_GAME"
 fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Allow to skip intro video on first launch
+
+file="${PKG_BIN_PATH}${PATH_GAME}/$APP_REGEDIT"
+cat > "$file" << 'EOF'
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\Software\New World Computing\Heroes of Might and Magic® III\1.0]
+"First Time"=dword:00000000
+"Music Volume"=dword:00000005
+"Sound Volume"=dword:00000005
+EOF
+iconv --from-code=UTF-8 --to-code=UTF-16 --output="$file" "$file"
 
 # Extract icons
 
