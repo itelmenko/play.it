@@ -15,7 +15,7 @@ gentoo_get_pkg_providers() {
 }
 
 # write .ebuild package meta-data
-# USAGE: pkg_write_arch
+# USAGE: pkg_write_gentoo
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
 # CALLED BY: write_metadata
 pkg_write_gentoo() {
