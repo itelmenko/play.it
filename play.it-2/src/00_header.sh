@@ -35,7 +35,7 @@
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-library_version=2.10.4~dev
+library_version=2.10.4
 # shellcheck disable=SC2034
-library_revision=20181113.2
+library_revision=20181121.1
 
