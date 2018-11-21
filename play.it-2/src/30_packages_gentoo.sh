@@ -269,8 +269,10 @@ pkg_set_deps_gentoo() {
 # CALLS: pkg_print
 # CALLED BY: build_pkg
 pkg_build_gentoo() {
+	pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
+
 	local pkg_filename
-	pkg_filename="$PWD/${1##*/}.tbz2"
+	pkg_filename="$PWD/$pkg_id-$PKG_VERSION.tbz2"
 
 	if [ -e "$pkg_filename" ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"
@@ -288,11 +290,10 @@ pkg_build_gentoo() {
 	fi
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
-	pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
 	ebuild "$ebuild_path" manifest 1>/dev/null
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" BINPKG_COMPRESS="$OPTION_COMPRESSION" fakeroot-ng -- ebuild "$ebuild_path" package 1>/dev/null
-	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-$pkg_version.tbz2" "$pkg_filename"
+	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-$PKG_VERSION.tbz2" "$pkg_filename"
 	rm --recursive "$PLAYIT_WORKDIR/portage-tmpdir"
 
 	eval ${pkg}_PKG=\"$pkg_filename\"
