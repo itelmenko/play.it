@@ -34,27 +34,40 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181122.1
+script_version=20181122.2
 
 # Set game-specific variables
 
 GAME_ID='dungeon-keeper-2'
 GAME_NAME='Dungeon Keeper II'
 
-ARCHIVE_GOG='setup_dungeon_keeper2_2.0.0.32.exe'
+ARCHIVE_GOG='setup_dungeon_keeper_2_1.7_(22280).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/dungeon_keeper_2'
-ARCHIVE_GOG_MD5='92d04f84dd870d9624cd18449d3622a5'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_MD5='eeb2229ee49518504884a9ac65f611ad'
+ARCHIVE_GOG_VERSION='1.7-gog22280'
 ARCHIVE_GOG_SIZE='510000'
-ARCHIVE_GOG_VERSION='1.7-gog2.0.0.32'
 
-ARCHIVE_DOC_DATA_PATH='app'
+ARCHIVE_GOG_OLD0='setup_dungeon_keeper2_2.0.0.32.exe'
+ARCHIVE_GOG_OLD0_URL='https://www.gog.com/game/dungeon_keeper_2'
+ARCHIVE_GOG_OLD0_MD5='92d04f84dd870d9624cd18449d3622a5'
+ARCHIVE_GOG_OLD0_VERSION='1.7-gog2.0.0.32'
+ARCHIVE_GOG_OLD0_SIZE='510000'
+
+ARCHIVE_DOC_DATA_PATH='.'
 ARCHIVE_DOC_DATA_FILES='*.pdf *.txt'
+# Keep compatibility with old archives
+ARCHIVE_DOC_DATA_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='*.dll *.exe'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='data dk2texturecache'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
 CONFIG_DIRS='./data/settings'
 DATA_DIRS='./data/save'
