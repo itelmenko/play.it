@@ -23,6 +23,7 @@ pkg_write_gentoo() {
 
 	local pkg_deps
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
+		# shellcheck disable=SC2046
 		pkg_set_deps_gentoo $(get_value "${pkg}_DEPS")
 	fi
 	use_archive_specific_value "${pkg}_DEPS_GENTOO"

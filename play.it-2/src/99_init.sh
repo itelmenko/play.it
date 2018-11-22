@@ -215,6 +215,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		print_error
 		case "${LANG%_*}" in
 			('fr')
+				# shellcheck disable=SC1112
 				string='Le mode de compression none n’est pas compatible avec la génération de paquets gentoo.'
 			;;
 			('en'|*)
