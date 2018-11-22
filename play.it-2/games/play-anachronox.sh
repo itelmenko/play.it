@@ -35,30 +35,39 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181122.1
+script_version=20181122.2
 
 # Set game-specific variables
 
 GAME_ID='anachronox'
 GAME_NAME='Anachronox'
 
-ARCHIVE_GOG='setup_anachronox_2.0.0.28.exe'
+ARCHIVE_GOG='setup_anachronox_1.02_(22258).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/anachronox'
-ARCHIVE_GOG_MD5='a9e148972e51a4980a2531d12a85dfc0'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_MD5='4e23d4f7637f6914a7cd6c13feb7ad7d'
+ARCHIVE_GOG_VERSION='1.02-gog22258'
 ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='1.02build46-gog2.0.0.28'
 
-ARCHIVE_DOC0_DATA_PATH='app'
-ARCHIVE_DOC0_DATA_FILES='*.rtf *.txt manual.pdf readme.htm'
+ARCHIVE_GOG_OLD0='setup_anachronox_2.0.0.28.exe'
+ARCHIVE_GOG_OLD0_MD5='a9e148972e51a4980a2531d12a85dfc0'
+ARCHIVE_GOG_OLD0_VERSION='1.02-gog2.0.0.28'
+ARCHIVE_GOG_OLD0_SIZE='1100000'
 
-ARCHIVE_DOC1_DATA_PATH='tmp'
-ARCHIVE_DOC1_DATA_FILES='*eula.txt'
+ARCHIVE_DOC_DATA_PATH='.'
+ARCHIVE_DOC_DATA_FILES='*.rtf *.txt manual.pdf readme.htm'
+# Keep compatibility with old archives
+ARCHIVE_DOC_DATA_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='*.dll *.exe *.inf *.ini *.ocx'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='*.jpg anoxdata anox.ico'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
 DATA_DIRS='anoxdata/logs anoxdata/save'
 DATA_FILES='./anox.log anoxdata/nokill.*'
