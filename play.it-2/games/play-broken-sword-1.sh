@@ -78,7 +78,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS_DEB"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
