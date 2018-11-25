@@ -272,8 +272,15 @@ pkg_set_deps_gentoo() {
 pkg_build_gentoo() {
 	pkg_id="$(get_value "${pkg}_ID" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
 
-	local pkg_filename
-	pkg_filename="$PWD/$pkg_id-$PKG_VERSION.tbz2"
+	local pkg_filename_base="$pkg_id-$PKG_VERSION.tbz2"
+	for package in $PACKAGES_LIST; do
+		if [ "$package" != "$pkg" ] && [ "$(get_value "${package}_ID" | sed 's/-/_/g')" = "$pkg_id" ]; then
+			set_architecture "$pkg"
+			[ -d "$PWD/$pkg_architecture" ] || mkdir "$PWD/$pkg_architecture"
+			pkg_filename_base="$pkg_architecture/$pkg_filename_base"
+		fi
+	done
+	local pkg_filename="$PWD/$pkg_filename_base"
 
 	if [ -e "$pkg_filename" ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"
@@ -282,7 +289,7 @@ pkg_build_gentoo() {
 		return 0
 	fi
 
-	pkg_print "${pkg_filename##*/}"
+	pkg_print "$pkg_filename_base"
 	if [ "$DRY_RUN" = '1' ]; then
 		printf '\n'
 		eval ${pkg}_PKG=\"$pkg_filename\"
