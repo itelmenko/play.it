@@ -41,14 +41,14 @@ pkg_write_gentoo() {
 	get_package_version
 
 	mkdir --parents \
-		"$PLAYIT_WORKDIR/gentoo-overlay/metadata" \
-		"$PLAYIT_WORKDIR/gentoo-overlay/profiles" \
-		"$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files"
-	printf '%s\n' "masters = gentoo $pkg_overlays" > "$PLAYIT_WORKDIR/gentoo-overlay/metadata/layout.conf"
-	printf '%s\n' 'games-playit' > "$PLAYIT_WORKDIR/gentoo-overlay/profiles/categories"
-	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/files/install"
+		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/metadata" \
+		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/profiles" \
+		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/files"
+	printf '%s\n' "masters = gentoo $pkg_overlays" > "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/metadata/layout.conf"
+	printf '%s\n' 'games-playit' > "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/profiles/categories"
+	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/files/install"
 	local target
-	target="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
+	target="$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
 
 	cat > "$target" <<- EOF
 	EAPI=6
@@ -298,7 +298,7 @@ pkg_build_gentoo() {
 	fi
 
 	mkdir --parents "$PLAYIT_WORKDIR/portage-tmpdir"
-	local ebuild_path="$PLAYIT_WORKDIR/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
+	local ebuild_path="$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
 	ebuild "$ebuild_path" manifest 1>/dev/null
 	PORTAGE_TMPDIR="$PLAYIT_WORKDIR/portage-tmpdir" PKGDIR="$PLAYIT_WORKDIR/gentoo-pkgdir" BINPKG_COMPRESS="$OPTION_COMPRESSION" fakeroot-ng -- ebuild "$ebuild_path" package 1>/dev/null
 	mv "$PLAYIT_WORKDIR/gentoo-pkgdir/games-playit/$pkg_id-$PKG_VERSION.tbz2" "$pkg_filename"
