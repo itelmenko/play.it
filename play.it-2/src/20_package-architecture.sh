@@ -65,7 +65,7 @@ select_package_architecture() {
 		('64')
 			if [ -z "$packages_list_64" ]; then
 				select_package_architecture_warning_unavailable
-				OPTION_ARCHITECTURE-'all'
+				OPTION_ARCHITECTURE='all'
 				return 0
 			fi
 			PACKAGES_LIST="$packages_list_64 $packages_list_all"
