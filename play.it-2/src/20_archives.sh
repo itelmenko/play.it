@@ -57,9 +57,10 @@ archive_set() {
 	shift 1
 	current_value="$(get_value "$name")"
 	if [ -n "$current_value" ]; then
+		current_value_md5="$(md5sum "$current_value" | awk '{print $1}')"
 		for archive in "$@"; do
 			file="$(get_value "$archive")"
-			if [ "$(basename "$current_value")" = "$file" ]; then
+			if [ "$(basename "$current_value")" = "$file" ] || [ "$current_value_md5" = "$(get_value "${archive}_MD5")" ]; then
 				archive_get_infos "$archive" "$name" "$current_value"
 				archive_check_for_extra_parts "$archive" "$name"
 				ARCHIVE="$archive"
