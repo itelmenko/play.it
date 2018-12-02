@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181001.1
+script_version=20181128.1
 
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
 GAME_NAME='Renowned Explorers: International Society'
 
-ARCHIVE_GOG='renowned_explorers_international_society_508_23701.sh'
+ARCHIVE_GOG='renowned_explorers_international_society_512_25169.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='247551613c7aba4b4b31f7a98fa31949'
+ARCHIVE_GOG_MD5='3f2eb242da5200a78c53162d152a3cac'
 ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='508-gog23701'
+ARCHIVE_GOG_VERSION='512-gog25169'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD5='renowned_explorers_international_society_508_23701.sh'
+ARCHIVE_GOG_OLD5_MD5='247551613c7aba4b4b31f7a98fa31949'
+ARCHIVE_GOG_OLD5_SIZE='1100000'
+ARCHIVE_GOG_OLD5_VERSION='508-gog23701'
+ARCHIVE_GOG_OLD5_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD4='renowned_explorers_international_society_503_23529.sh'
 ARCHIVE_GOG_OLD4_MD5='6b7555749bc89cc3dda223e2d43bd838'
