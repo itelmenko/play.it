@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181119.1
+script_version=20181203.1
 
 # Set game-specific variables
 
@@ -64,29 +64,24 @@ ARCHIVE_GAME_BIN_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN_PATH_HUMBLE='Chaos on Deponia'
 ARCHIVE_GAME_BIN_FILES='config.ini Deponia2 libs64'
 
-ARCHIVE_GAME_VIDEOS_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_VIDEOS_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_VIDEOS_FILES='videos'
-
 ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_DATA_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_DATA_FILES='characters data.vis lua scenes'
+ARCHIVE_GAME_DATA_FILES='characters data.vis lua scenes videos'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='Deponia2'
 APP_MAIN_LIBS='libs64'
 APP_MAIN_ICON_GOG='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_VIDEOS PKG_BIN PKG_DATA'
-
-PKG_VIDEOS_ID="${GAME_ID}-videos"
-PKG_VIDEOS_DESCRIPTION='videos'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20181119.2 scripts
+PKG_DATA_PROVIDE='deponia-2-videos'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_VIDEOS_ID $PKG_DATA_ID glibc libstdc++ glx openal"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
 
 # Load common functions
 
