@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2017-2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,58 +29,55 @@ set -o errexit
 ###
 
 ###
-# Deponia 2 - Chaos on Deponia
+# Farabel
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181203.1
+script_version=20181125.1
 
 # Set game-specific variables
 
-GAME_ID='deponia-2'
-GAME_NAME='Deponia 2 - Chaos on Deponia'
+GAME_ID='farabel'
+GAME_NAME='Farabel'
 
-ARCHIVE_GOG='gog_deponia_2_chaos_on_deponia_2.1.0.3.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/deponia_2_chaos_on_deponia'
-ARCHIVE_GOG_MD5='7aa1251741a532e4b9f908a3af0d8f2a'
-ARCHIVE_GOG_SIZE='3200000'
-ARCHIVE_GOG_VERSION='3.3.2351-gog2.1.0.3'
+ARCHIVE_HUMBLE='Farabel1.2Linux.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/farabel'
+ARCHIVE_HUMBLE_TYPE='zip'
+ARCHIVE_HUMBLE_MD5='f2bd82b7a9578e8d7f084286cdb5943f'
+ARCHIVE_HUMBLE_VERSION='1.2-humble181031'
+ARCHIVE_HUMBLE_SIZE='430000'
 
-ARCHIVE_HUMBLE='Deponia2_DEB_Full_3.2.2342_Multi_Daedalic_ESD.tar.gz'
-ARCHIVE_HUMBLE_MD5='e7a71d5b8a83b2c2393095256b03553b'
-ARCHIVE_HUMBLE_SIZE='3100000'
-ARCHIVE_HUMBLE_VERSION='3.2.2342-humble'
+ARCHIVE_GAME_BIN32_PATH='.'
+ARCHIVE_GAME_BIN32_FILES='Farabel.x86 Farabel_Data/*/x86'
 
-ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_DOC0_DATA_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_DOC0_DATA_FILES='documents version.txt'
+ARCHIVE_GAME_BIN64_PATH='.'
+ARCHIVE_GAME_BIN64_FILES='Farabel.x86_64 Farabel_Data/*/x86_64'
 
-ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC1_DATA_FILES_GOG='*'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='Farabel_Data'
 
-ARCHIVE_GAME_BIN_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_BIN_FILES='config.ini Deponia2 libs64'
-
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_DATA_FILES='characters data.vis lua scenes videos'
+CONFIG_DIRS='./home/.config/unity3d/Frogames/Farabel'
+DATA_DIRS='./home/Frogames/Farabel/Saves ./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='Deponia2'
-APP_MAIN_LIBS='libs64'
-APP_MAIN_ICON_GOG='data/noarch/support/icon.png'
+APP_MAIN_PRERUN='HOME="$PATH_PREFIX/home"
+export HOME'
+APP_MAIN_EXE_BIN32='Farabel.x86'
+APP_MAIN_EXE_BIN64='Farabel.x86_64'
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='Farabel_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_BIN PKG_DATA'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
-# Easier upgrade from packages generated with pre-20181119.2 scripts
-PKG_DATA_PROVIDE='deponia-2-videos'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr gtk2"
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
@@ -113,30 +109,21 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-case "$ARCHIVE" in
-	('ARCHIVE_HUMBLE')
-		set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
-	;;
-esac
 prepare_package_layout
-
-# Get icon
-
-use_archive_specific_value 'APP_MAIN_ICON'
-if [ "$APP_MAIN_ICON" ]; then
-	PKG='PKG_DATA'
-	icons_get_from_workdir 'APP_MAIN'
-fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	write_launcher 'APP_MAIN'
+done
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN32' 'PKG_BIN64'
 build_pkg
 
 # Clean up

@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2017-2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,58 +29,48 @@ set -o errexit
 ###
 
 ###
-# Deponia 2 - Chaos on Deponia
+# Deadbolt
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181203.1
+script_version=20181107.1
 
 # Set game-specific variables
 
-GAME_ID='deponia-2'
-GAME_NAME='Deponia 2 - Chaos on Deponia'
+GAME_ID='deadbolt'
+GAME_NAME='Deadbolt'
 
-ARCHIVE_GOG='gog_deponia_2_chaos_on_deponia_2.1.0.3.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/deponia_2_chaos_on_deponia'
-ARCHIVE_GOG_MD5='7aa1251741a532e4b9f908a3af0d8f2a'
-ARCHIVE_GOG_SIZE='3200000'
-ARCHIVE_GOG_VERSION='3.3.2351-gog2.1.0.3'
+ARCHIVE_GOG='gog_deadbolt_2.1.0.2.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/deadbolt'
+ARCHIVE_GOG_MD5='bc7831a069546d18f5e12a5ee3da4850'
+ARCHIVE_GOG_SIZE='140000'
+ARCHIVE_GOG_VERSION='1.0.2-gog2.1.0.2'
 
-ARCHIVE_HUMBLE='Deponia2_DEB_Full_3.2.2342_Multi_Daedalic_ESD.tar.gz'
-ARCHIVE_HUMBLE_MD5='e7a71d5b8a83b2c2393095256b03553b'
-ARCHIVE_HUMBLE_SIZE='3100000'
-ARCHIVE_HUMBLE_VERSION='3.2.2342-humble'
+ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
 
-ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_DOC0_DATA_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_DOC0_DATA_FILES='documents version.txt'
+ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
+ARCHIVE_DOC_DATA_FILES='*'
 
-ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC1_DATA_FILES_GOG='*'
+ARCHIVE_GAME_BIN_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN_FILES='deadbolt'
 
-ARCHIVE_GAME_BIN_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_BIN_FILES='config.ini Deponia2 libs64'
-
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='Chaos on Deponia'
-ARCHIVE_GAME_DATA_FILES='characters data.vis lua scenes videos'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='assets'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='Deponia2'
-APP_MAIN_LIBS='libs64'
-APP_MAIN_ICON_GOG='data/noarch/support/icon.png'
+APP_MAIN_EXE='deadbolt'
+APP_MAIN_ICON='assets/icon.png'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
-# Easier upgrade from packages generated with pre-20181119.2 scripts
-PKG_DATA_PROVIDE='deponia-2-videos'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal"
+PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
 
 # Load common functions
 
@@ -110,33 +99,44 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 . "$PLAYIT_LIB2"
 
+# Use libSSL 1.0.0 32-bit archive (Debian packages only)
+
+if [ "$OPTION_PACKAGE" = 'deb' ]; then
+	ARCHIVE_MAIN="$ARCHIVE"
+	set_archive 'ARCHIVE_LIBSSL32' 'ARCHIVE_OPTIONAL_LIBSSL32'
+	ARCHIVE="$ARCHIVE_MAIN"
+fi
+
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-case "$ARCHIVE" in
-	('ARCHIVE_HUMBLE')
-		set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
-	;;
-esac
 prepare_package_layout
-
-# Get icon
-
-use_archive_specific_value 'APP_MAIN_ICON'
-if [ "$APP_MAIN_ICON" ]; then
-	PKG='PKG_DATA'
-	icons_get_from_workdir 'APP_MAIN'
-fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Include libSSL 1.0.0 32-bit (Debian packages only)
+
+if [ "$ARCHIVE_LIBSSL32" ]; then
+	(
+		ARCHIVE='ARCHIVE_LIBSSL32'
+		extract_data_from "$ARCHIVE_LIBSSL32"
+	)
+	APP_MAIN_LIBS="${APP_MAIN_LIBS:=libs}"
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	rm --recursive "$PLAYIT_WORKDIR/gamedata"
+fi
 
 # Write launchers
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
-# Build package
+# Build packages
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up
