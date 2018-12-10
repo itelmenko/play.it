@@ -1,3 +1,9 @@
+2.10.5
+
+  * select_package_architecture: Fix bug when using --architecture=64 (or
+    --architecture=auto on 64-bit systems) on an archive providing 32-bit
+    binaries only
+
 2.10.4
 
   * Improve ShellCheck tests coverage
