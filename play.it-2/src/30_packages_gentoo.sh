@@ -105,7 +105,6 @@ pkg_write_gentoo() {
 
 # set list or Gentoo Linux dependencies from generic names
 # USAGE: pkg_set_deps_gentoo $dep[…]
-# CALLS: pkg_set_deps_gentoo32 pkg_set_deps_gentoo64
 # CALLED BY: pkg_write_gentoo
 pkg_set_deps_gentoo() {
 	use_archive_specific_value "${pkg}_ARCH"
