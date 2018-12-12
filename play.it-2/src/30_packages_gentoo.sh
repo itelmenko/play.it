@@ -17,6 +17,7 @@ gentoo_get_pkg_providers() {
 # write .ebuild package meta-data
 # USAGE: pkg_write_gentoo
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
+# CALLS: gentoo_get_pkg_providers
 # CALLED BY: write_metadata
 pkg_write_gentoo() {
 	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
@@ -105,6 +106,7 @@ pkg_write_gentoo() {
 
 # set list or Gentoo Linux dependencies from generic names
 # USAGE: pkg_set_deps_gentoo $dep[…]
+# CALLS: gentoo_get_pkg_providers
 # CALLED BY: pkg_write_gentoo
 pkg_set_deps_gentoo() {
 	use_archive_specific_value "${pkg}_ARCH"
