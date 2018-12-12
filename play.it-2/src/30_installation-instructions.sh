@@ -27,6 +27,17 @@ print_instructions() {
 		esac
 
 	done
+	if [ "$OPTION_PACKAGE" = 'gentoo' ] && [ -n "$GENTOO_OVERLAYS" ]; then
+		case "${LANG%_*}" in
+			('fr')
+				string='\nVous pouvez avoir besoin des overlays suivants pour installer ces paquets :%s\n'
+			;;
+			('en'|*)
+				string='\nYou may need the following overlays to install these packages:%s\n'
+			;;
+		esac
+		printf "$string" "$GENTOO_OVERLAYS"
+	fi
 	case "${LANG%_*}" in
 		('fr')
 			string='\nInstallez "%s" en lançant la série de commandes suivantes en root :\n'

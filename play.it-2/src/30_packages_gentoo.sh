@@ -26,6 +26,7 @@ pkg_write_gentoo() {
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
 		# shellcheck disable=SC2046
 		pkg_set_deps_gentoo $(get_value "${pkg}_DEPS")
+		export GENTOO_OVERLAYS
 	fi
 	use_archive_specific_value "${pkg}_DEPS_GENTOO"
 	if [ "$(get_value "${pkg}_DEPS_GENTOO")" ]; then
@@ -45,7 +46,7 @@ pkg_write_gentoo() {
 		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/metadata" \
 		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/profiles" \
 		"$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/files"
-	printf '%s\n' "masters = gentoo $pkg_overlays" > "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/metadata/layout.conf"
+	printf '%s\n' "masters = gentoo" > "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/metadata/layout.conf"
 	printf '%s\n' 'games-playit' > "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/profiles/categories"
 	ln --symbolic --force --no-target-directory "$pkg_path" "$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/files/install"
 	local target
@@ -258,8 +259,10 @@ pkg_set_deps_gentoo() {
 			;;
 		esac
 		pkg_deps="$pkg_deps $pkg_dep"
-		if [ -n "$pkg_overlay" ] && ! printf '%s' "$pkg_overlays" | sed 's/\s+/\n/' | grep --fixed-strings --line-regexp "$pkg_overlay"; then
-			pkg_overlays="$pkg_overlays $pkg_overlay"
+		if [ -n "$pkg_overlay" ]; then
+			if ! printf '%s' "$GENTOO_OVERLAYS" | sed --regexp-extended 's/\s+/\n/' | grep --fixed-strings --line-regexp --quiet "$pkg_overlay"; then
+				GENTOO_OVERLAYS="$GENTOO_OVERLAYS $pkg_overlay"
+			fi
 			pkg_overlay=''
 		fi
 	done
