@@ -148,7 +148,7 @@ pkg_set_deps_gentoo() {
 			('glibc')
 				pkg_dep="sys-libs/glibc"
 				if [ "$architecture" = '32' ]; then
-					pkg_dep="$pkg_dep amd64? ( sys-libs/glibc[multilib] )" #TODO: check if it works
+					pkg_dep="$pkg_dep amd64? ( sys-libs/glibc[multilib] )"
 				fi
 			;;
 			('glu')
