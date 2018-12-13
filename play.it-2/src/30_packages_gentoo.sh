@@ -186,7 +186,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="media-libs/openal$architecture_suffix"
 			;;
 			('pulseaudio')
-				pkg_dep='media-sound/pulseaudio'
+				pkg_dep="media-sound/pulseaudio$architecture_suffix"
 			;;
 			('sdl1.2')
 				pkg_dep="media-libs/libsdl$architecture_suffix"
@@ -244,10 +244,10 @@ pkg_set_deps_gentoo() {
 				pkg_dep="x11-libs/libXft$architecture_suffix"
 			;;
 			('xgamma')
-				pkg_dep="x11-apps/xgamma$architecture_suffix"
+				pkg_dep='x11-apps/xgamma'
 			;;
 			('xrandr')
-				pkg_dep="x11-apps/xrandr$architecture_suffix"
+				pkg_dep='x11-apps/xrandr'
 			;;
 			(*)
 				pkg_dep="$(gentoo_get_pkg_providers "$dep" | sed -e 's/-/_/g' -e 's|^|games-playit/|')"
