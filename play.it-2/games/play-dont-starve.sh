@@ -72,7 +72,7 @@ ARCHIVE_GAME_BIN32_PATH='data/noarch/game/dontstarve32'
 ARCHIVE_GAME_BIN32_FILES='*.json bin/dontstarve bin/lib32/libfmodevent.so bin/lib32/libfmodevent-4.44.07.so bin/lib32/libfmodex.so bin/lib32/libfmodex-4.44.07.so'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game/dontstarve64'
-ARCHIVE_GAME_BIN64_FILES='*.json bin/dontstarve bin/lib64/libfmodevent.so bin/lib64/libfmodevent-4.44.07.so bin/lib64/libfmodex.so bin/lib64/libfmodex-4.44.07.so'
+ARCHIVE_GAME_BIN64_FILES='*.json bin/dontstarve bin/lib64/libfmodevent64.so bin/lib64/libfmodevent64-4.44.07.so bin/lib64/libfmodex64.so bin/lib64/libfmodex64-4.44.07.so'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game/dontstarve64'
 ARCHIVE_GAME_DATA_FILES='data mods dontstarve.xpm'
