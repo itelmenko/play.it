@@ -76,6 +76,7 @@ pkg_write_gentoo() {
 	SLOT="0"
 	EOF
 
+	# fowners is needed to make sure all files in the generated package belong to root (arch linux packages use tar options that do the same thing)
 	cat >> "$target" <<- EOF
 	RDEPEND="$pkg_deps"
 
@@ -198,6 +199,7 @@ pkg_set_deps_gentoo() {
 				pkg_dep="media-libs/sdl2-image$architecture_suffix"
 			;;
 			('sdl2_mixer')
+				#Most games will require at least one of flac, mp3, vorbis or wav USE flags, it should better to require them all instead of not requiring any and having non-fonctionnal sound in some games.
 				pkg_dep="media-libs/sdl2-mixer[flac,mp3,vorbis,wav$architecture_suffix_use]"
 			;;
 			('theora')

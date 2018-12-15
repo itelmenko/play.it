@@ -48,6 +48,7 @@ check_deps() {
 		SCRIPT_DEPS="$SCRIPT_DEPS fakeroot dpkg"
 	fi
 	if [ "$OPTION_PACKAGE" = 'gentoo' ]; then
+		# fakeroot doesn't work for me, only fakeroot-ng does
 		SCRIPT_DEPS="$SCRIPT_DEPS fakeroot-ng ebuild"
 	fi
 	for dep in $SCRIPT_DEPS; do
