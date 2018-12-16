@@ -88,9 +88,21 @@ launcher_write_script_nativenoprefix_run() {
 	return 0
 }
 
+# native - get extra LD_LIBRARY_PATH entries (with a trailing :)
+# USAGE: launcher_native_get_extra_library_path
+# NEEDED VARS: OPTION_PACKAGE PKG
+# CALLED BY: launcher_write_script_native_run_common
+launcher_native_get_extra_library_path() {
+	if [ "$OPTION_PACKAGE" = 'gentoo' ] && get_value "${PKG}_DEPS" | sed --regexp-extended 's/\s+/\n/g' | grep --fixed-strings --line-regexp --quiet 'libcurl-gnutls'; then
+		local pkg_architecture
+		set_architecture "$PKG"
+		printf '%s' "/usr/\$(portageq envvar 'LIBDIR_$pkg_architecture')/debiancompat:"
+	fi
+}
+
 # native - run the game (common part)
 # USAGE: launcher_write_script_native_run_common $application $file
-# CALLS: launcher_write_script_prerun launcher_write_script_postrun
+# CALLS: launcher_write_script_prerun launcher_write_script_postrun launcher_native_get_extra_library_path
 # CALLED BY: launcher_write_script_native_run launcher_write_script_nativenoprefix_run
 launcher_write_script_native_run_common() {
 	# parse arguments
@@ -102,8 +114,21 @@ launcher_write_script_native_run_common() {
 	launcher_write_script_prerun "$application" "$file"
 
 	cat >> "$file" <<- 'EOF'
+	library_path=
 	if [ -n "$APP_LIBS" ]; then
-	    LD_LIBRARY_PATH="$APP_LIBS:$LD_LIBRARY_PATH"
+	    library_path="$APP_LIBS:"
+	fi
+	EOF
+	local extra_library_path
+	extra_library_path="$(launcher_native_get_extra_library_path)"
+	if [ -n "$extra_library_path" ]; then
+		cat >> "$file" <<- EOF
+		library_path="\${library_path}$extra_library_path"
+		EOF
+	fi
+	cat >> "$file" <<- 'EOF'
+	if [ -n "$library_path" ]; then
+	    LD_LIBRARY_PATH="${library_path}$LD_LIBRARY_PATH"
 	    export LD_LIBRARY_PATH
 	fi
 	"./$APP_EXE" $APP_OPTIONS $@
