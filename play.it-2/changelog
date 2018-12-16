@@ -1,5 +1,7 @@
 2.11.0
 
+  * Add ability to generate packages for Gentoo, using --package=gentoo
+
   * Rewrite of launchers-related functions. Compatibility wrappers still
     exist for old functions
 
