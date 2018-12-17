@@ -9,6 +9,8 @@
 
   * Nixstaller archives: Guess header length instead of using hardcoded value
 
+  * Improve support for Java games
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or
