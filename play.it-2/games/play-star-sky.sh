@@ -57,7 +57,7 @@ ARCHIVE_GAME_DATA_FILES='./icudtl.dat ./nw.pak ./package.nw'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_LIBS='libs'
-APP_MAIN_EXE_BIN='starsky'
+APP_MAIN_EXE='starsky'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
