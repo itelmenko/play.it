@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181122.2
+script_version=20190101.1
 
 # Set game-specific variables
 
@@ -73,6 +73,8 @@ CONFIG_DIRS='./data/settings'
 DATA_DIRS='./data/save'
 DATA_FILES='./*.LOG'
 
+APP_WINETRICKS='csmt=off'
+
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='dkii-dx.exe'
 APP_MAIN_ICON='dkii.exe'
@@ -90,7 +92,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine"
+PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks"
 
 # Load common functions
 
