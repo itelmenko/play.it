@@ -65,10 +65,10 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc nss gconf freetype xcursor alsa libxrandr libudev1 gtk2 libstdc++"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc nss gconf freetype xcursor alsa libxrandr gtk2 libstdc++"
 PKG_BIN_DEPS_DEB='' #TODO
-PKG_BIN_DEPS_ARCH='glib2 nspr fontconfig pango cairo libx11 libxi libxext libxfixes libxrender libxcomposite libxdamage libxtst expat libcap dbus gdk-pixbuf2 libnotify'
-PKG_BIN_DEPS_GENTOO='dev-libs/glib dev-libs/nspr media-libs/fontconfig x11-libs/pango x11-libs/cairo x11-libs/libX11 x11-libs/libXi x11-libs/libXext x11-libs/libXfixes x11-libs/libXrender x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXtst dev-libs/expat sys-libs/libcap sys-apps/dbus x11-libs/gdk-pixbuf x11-libs/libnotify'
+PKG_BIN_DEPS_ARCH='glib2 nspr fontconfig pango cairo libx11 libxi libxext libxfixes libxrender libxcomposite libxdamage libxtst expat libcap dbus gdk-pixbuf2 libnotify libudev0-shim'
+PKG_BIN_DEPS_GENTOO='dev-libs/glib dev-libs/nspr media-libs/fontconfig x11-libs/pango x11-libs/cairo x11-libs/libX11 x11-libs/libXi x11-libs/libXext x11-libs/libXfixes x11-libs/libXrender x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXtst dev-libs/expat sys-libs/libcap sys-apps/dbus x11-libs/gdk-pixbuf x11-libs/libnotify sys-libs/libudev-compat'
 
 # Load common functions
 
@@ -111,40 +111,6 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-case "$OPTION_PACKAGE" in
-	('arch')
-		cat > "$postinst" <<- EOF
-		if [ ! -e /usr/lib/libudev.so.0 ]; then
-		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
-		    for file in\
-		        libudev.so\
-		        libudev.so.1
-		    do
-		        if [ -e "/usr/lib/\$file" ]; then
-		            ln --symbolic "/usr/lib/\$file" "$PATH_GAME/$APP_MAIN_LIBS/libudev.so.0"
-		            break
-		        fi
-		    done
-		fi
-		EOF
-	;;
-	('deb')
-		#TODO
-	;;
-	('gentoo')
-		cat > "$postinst" <<- EOF
-		if [ ! -e "/usr/\$(portageq envvar LIBDIR_amd64)/libudev.so.0" ] && [ -e "/usr/\$(portageq envvar LIBDIR_amd64)/libudev.so" ]; then
-		    mkdir --parents "$PATH_GAME/$APP_MAIN_LIBS"
-		    ln --symbolic "/usr/\$(portageq envvar LIBDIR_amd64)/libudev.so" "$PATH_GAME/$APP_MAIN_LIBS/libudev.so.0"
-		fi
-		EOF
-	;;
-esac
-cat > "$prerm" <<- EOF
-if [ -e "$PATH_GAME/$APP_MAIN_LIBS/libudev.so.0" ]; then
-    rm "$PATH_GAME/$APP_MAIN_LIBS/libudev.so.0"
-fi
-EOF
 write_metadata 'PKG_DATA'
 write_metadata 'PKG_BIN'
 build_pkg
