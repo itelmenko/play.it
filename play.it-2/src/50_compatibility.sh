@@ -29,6 +29,7 @@ extract_and_sort_icons_from() {
 }
 
 extract_icon_from() {
+	[ "$SKIP_ICONS" = 1 ] && return 0
 	local destination
 	local file
 	destination="$PLAYIT_WORKDIR/icons"

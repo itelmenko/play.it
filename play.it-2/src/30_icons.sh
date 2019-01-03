@@ -1,6 +1,7 @@
 # update dependencies list with commands needed for icons extraction
 # USAGE: icons_list_dependencies
 icons_list_dependencies() {
+	[ "$SKIP_ICONS" = 1 ] && return 0
 	local script
 	script="$0"
 	if grep\
@@ -34,6 +35,7 @@ icons_list_dependencies() {
 # NEEDED VARS: APP_ID|GAME_ID PATH_GAME PATH_ICON_BASE PLAYIT_WORKDIR PKG
 # CALLS: icons_get_from_path
 icons_get_from_package() {
+	[ "$SKIP_ICONS" = 1 ] && return 0
 	local path
 	local path_pkg
 	path_pkg="$(get_value "${PKG}_PATH")"
@@ -47,6 +49,7 @@ icons_get_from_package() {
 # NEEDED VARS: APP_ID|GAME_ID PATH_ICON_BASE PLAYIT_WORKDIR PKG
 # CALLS: icons_get_from_path
 icons_get_from_workdir() {
+	[ "$SKIP_ICONS" = 1 ] && return 0
 	local path
 	path="$PLAYIT_WORKDIR/gamedata"
 	icons_get_from_path "$path" "$@"
@@ -257,6 +260,7 @@ icon_get_resolution_from_file() {
 # NEEDED VARS: APP_ID|GAME_ID PATH_GAME PATH_ICON_BASE PKG
 icons_linking_postinst() {
 	[ "$DRY_RUN" = '1' ] && return 0
+	[ "$SKIP_ICONS" = '1' ] && return 0
 	local app
 	local file
 	local icon
@@ -324,6 +328,7 @@ icons_linking_postinst() {
 # USAGE: icons_move_to $pkg
 # NEEDED VARS: PATH_ICON_BASE PKG
 icons_move_to() {
+	[ "$SKIP_ICONS" = '1' ] && return 0
 	local destination
 	local source
 	destination="$1"

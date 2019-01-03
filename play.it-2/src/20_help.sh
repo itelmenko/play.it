@@ -42,6 +42,8 @@ help() {
 	printf '\n'
 	help_skipfreespacecheck
 	printf '\n'
+	help_skipicons
+	printf '\n'
 
 	printf 'ARCHIVE\n\n'
 	archives_get_list
@@ -255,6 +257,27 @@ help_skipfreespacecheck() {
 		;;
 	esac
 	printf -- '--skip-free-space-check\n\n'
+	printf '\t%s\n\n' "$string"
+}
+
+
+# display --skip-icons option usage
+# USAGE: help_skipicons
+# NEEDED VARS: (LANG)
+# CALLED BY: help
+help_skipicons() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='N’inclus pas les icônes dans les paquets'
+		;;
+		('en'|*)
+			# shellcheck disable=SC1112
+			string='Don’t include icons in packages'
+		;;
+	esac
+	printf -- '--skip-icons\n\n'
 	printf '\t%s\n\n' "$string"
 }
 

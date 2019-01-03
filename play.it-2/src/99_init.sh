@@ -116,6 +116,10 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 				NO_FREE_SPACE_CHECK='1'
 				export NO_FREE_SPACE_CHECK
 			;;
+			('--skip-icons')
+				SKIP_ICONS='1'
+				export SKIP_ICONS
+			;;
 			('--'*)
 				print_error
 				case "${LANG%_*}" in
