@@ -30,12 +30,12 @@ set -o errexit
 ###
 
 ###
-# Gathring Sky
-# build native Linux packages from the original installers
+# Gathering Sky
+# build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180802.2
+script_version=20190120.1
 
 # Set game-specific variables
 
@@ -53,10 +53,10 @@ ARCHIVE_DOC_DATA_PATH='packr/linux/GatheringSky'
 ARCHIVE_DOC_DATA_FILES='jre/ASSEMBLY_EXCEPTION jre/LICENSE jre/THIRD_PARTY_README'
 
 ARCHIVE_GAME_BIN_PATH='packr/linux/GatheringSky'
-ARCHIVE_GAME_BIN_FILES='./config.json ./desktop-0.1.jar ./GatheringSky'
+ARCHIVE_GAME_BIN_FILES='config.json desktop-0.1.jar GatheringSky'
 
 ARCHIVE_GAME_DATA_PATH='packr/linux/GatheringSky'
-ARCHIVE_GAME_DATA_FILES='./jre/lib'
+ARCHIVE_GAME_DATA_FILES='jre/lib'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='GatheringSky'
@@ -71,49 +71,49 @@ PKG_BIN_DEPS="$PKG_DATA_ID glibc"
 
 # Load common functions
 
-target_version='2.8'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
-ARCHIVE_HUMBLE_TYPE='tar.gz'
-extract_data_from "$PLAYIT_WORKDIR/gamedata/GatheringSky.tar.gz"
-rm "$PLAYIT_WORKDIR/gamedata/GatheringSky.tar.gz"
-
+(
+	ARCHIVE_INNER="$PLAYIT_WORKDIR/gamedata/GatheringSky.tar.gz"
+	ARCHIVE_INNER_TYPE='tar.gz'
+	ARCHIVE='ARCHIVE_INNER'
+	extract_data_from "$ARCHIVE_INNER"
+	rm "$ARCHIVE_INNER"
+)
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
-
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
