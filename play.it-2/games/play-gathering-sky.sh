@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190120.2
+script_version=20190120.3
 
 # Set game-specific variables
 
@@ -49,29 +49,22 @@ ARCHIVE_HUMBLE_SIZE='1200000'
 ARCHIVE_HUMBLE_VERSION='1.0-humble1'
 ARCHIVE_HUMBLE_TYPE='zip_unclean'
 
-ARCHIVE_DOC_DATA_PATH='packr/linux/GatheringSky'
-ARCHIVE_DOC_DATA_FILES='jre/ASSEMBLY_EXCEPTION jre/LICENSE jre/THIRD_PARTY_README'
+ARCHIVE_GAME_MAIN_PATH='packr/linux/GatheringSky'
+ARCHIVE_GAME_MAIN_FILES='desktop-0.1.jar'
 
-ARCHIVE_GAME_BIN_PATH='packr/linux/GatheringSky'
-ARCHIVE_GAME_BIN_FILES='config.json desktop-0.1.jar GatheringSky'
-
-ARCHIVE_GAME_DATA_PATH='packr/linux/GatheringSky'
-ARCHIVE_GAME_DATA_FILES='jre/lib'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE='GatheringSky'
+APP_MAIN_TYPE='java'
+APP_MAIN_JAVA_OPTIONS='-Xmx1G'
+APP_MAIN_EXE='desktop-0.1.jar'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON_16 APP_MAIN_ICON_32 APP_MAIN_ICON_128'
 APP_MAIN_ICON_16='images/Icon_16.png'
 APP_MAIN_ICON_32='images/Icon_32.png'
 APP_MAIN_ICON_128='images/Icon_128.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc"
+PKG_MAIN_DEPS='java'
+# Easier upgrade from packages generated with pre-20190120.3 scripts
+PKG_MAIN_PROVIDE='gathering-sky-data'
 
 # Load common functions
 
@@ -117,18 +110,16 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Get game icons
 
 (
-	ARCHIVE_JAR="${PKG_BIN_PATH}${PATH_GAME}/desktop-0.1.jar"
+	ARCHIVE_JAR="${PKG_MAIN_PATH}${PATH_GAME}/desktop-0.1.jar"
 	ARCHIVE_JAR_TYPE='zip'
 	ARCHIVE='ARCHIVE_JAR'
 	extract_data_from "$ARCHIVE_JAR"
 )
-PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
 launchers_write 'APP_MAIN'
 
 # Build package
