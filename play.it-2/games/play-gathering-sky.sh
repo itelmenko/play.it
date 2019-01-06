@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190120.1
+script_version=20190120.2
 
 # Set game-specific variables
 
@@ -60,6 +60,10 @@ ARCHIVE_GAME_DATA_FILES='jre/lib'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='GatheringSky'
+APP_MAIN_ICONS_LIST='APP_MAIN_ICON_16 APP_MAIN_ICON_32 APP_MAIN_ICON_128'
+APP_MAIN_ICON_16='images/Icon_16.png'
+APP_MAIN_ICON_32='images/Icon_32.png'
+APP_MAIN_ICON_128='images/Icon_128.png'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN'
 
@@ -108,6 +112,18 @@ extract_data_from "$SOURCE_ARCHIVE"
 )
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Get game icons
+
+(
+	ARCHIVE_JAR="${PKG_BIN_PATH}${PATH_GAME}/desktop-0.1.jar"
+	ARCHIVE_JAR_TYPE='zip'
+	ARCHIVE='ARCHIVE_JAR'
+	extract_data_from "$ARCHIVE_JAR"
+)
+PKG='PKG_DATA'
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
