@@ -3,7 +3,6 @@
 # NEEDED VARS: (ARCHIVE) (ARCHIVE_TYPE) (OPTION_CHECKSUM) (OPTION_PACKAGE) (SCRIPT_DEPS)
 # CALLS: check_deps_7z check_deps_error_not_found icons_list_dependencies
 check_deps() {
-	icons_list_dependencies
 	if [ "$ARCHIVE" ]; then
 		case "$(get_value "${ARCHIVE}_TYPE")" in
 			('cabinet')
@@ -65,6 +64,22 @@ check_deps() {
 				fi
 			;;
 		esac
+	done
+
+	icons_list_dependencies
+	for dep in $ICONS_DEPS; do
+		if ! command -v "$dep" >/dev/null 2>&1; then
+			case "$OPTION_ICONS" in
+				('yes')
+					check_deps_icons_error_not_found "$dep"
+				;;
+				('auto')
+					check_deps_icons_warning_not_found "$dep"
+					export SKIP_ICONS='1'
+					export ICONS_DEPS=''
+				;;
+			esac
+		fi
 	done
 }
 
@@ -137,5 +152,44 @@ check_deps_error_not_found() {
 	esac
 	printf "$string" "$1"
 	return 1
+}
+
+# display an error message if an icon dependency is missing
+# USAGE: check_deps_icons_error_not_found $dependency
+# NEEDED VARS: (LANG)
+# CALLED BY: check_deps
+check_deps_icons_error_not_found() {
+	print_error
+	case "${LANG%_*}" in
+		('fr')
+			string='%s est introuvable. Installez-le avant de lancer ce script.\n'
+			string="$string"'Vous pouvez aussi utiliser --icons=no ou --icons=auto\n'
+		;;
+		('en'|*)
+			string='%s not found. Install it before running this script.\n'
+			string="$string"'You can also use --icons=no or --icons=auto\n'
+		;;
+	esac
+	printf "$string" "$1"
+	return 1
+}
+
+# display a warning message if an icon dependency is missing
+# USAGE: check_deps_icons_warning_not_found $dependency
+# NEEDED VARS: (LANG)
+# CALLED BY: check_deps
+check_deps_icons_warning_not_found() {
+	print_warning
+	case "${LANG%_*}" in
+		('fr')
+			string='%s est introuvable. Installez-le pour inclure les icônes.\n'
+			string="$string"'Vous pouvez aussi utiliser --icons=no ou --icons=yes\n'
+		;;
+		('en'|*)
+			string='%s not found. Install it to include icons.\n'
+			string="$string"'You can also use --icons=no or --icons=yes\n'
+		;;
+	esac
+	printf "$string\n" "$1"
 }
 

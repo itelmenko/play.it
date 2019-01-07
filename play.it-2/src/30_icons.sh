@@ -1,7 +1,7 @@
 # update dependencies list with commands needed for icons extraction
 # USAGE: icons_list_dependencies
 icons_list_dependencies() {
-	[ "$SKIP_ICONS" = 1 ] && return 0
+	[ "$SKIP_ICONS" = '1' ] && return 0
 	local script
 	script="$0"
 	if grep\
@@ -9,7 +9,7 @@ icons_list_dependencies() {
 		--regexp="^APP_[^_]\\+_ICON_.\\+='.\\+'"\
 		"$script" 1>/dev/null
 	then
-		SCRIPT_DEPS="$SCRIPT_DEPS identify"
+		ICONS_DEPS="$ICONS_DEPS identify"
 		if grep\
 			--regexp="^APP_[^_]\\+_ICON='.\\+\\.bmp'"\
 			--regexp="^APP_[^_]\\+_ICON_.\\+='.\\+\\.bmp'"\
@@ -17,17 +17,17 @@ icons_list_dependencies() {
 			--regexp="^APP_[^_]\\+_ICON_.\\+='.\\+\\.ico'"\
 			"$script" 1>/dev/null
 		then
-			SCRIPT_DEPS="$SCRIPT_DEPS convert"
+			ICONS_DEPS="$ICONS convert"
 		fi
 		if grep\
 			--regexp="^APP_[^_]\\+_ICON='.\\+\\.exe'"\
 			--regexp="^APP_[^_]\\+_ICON_.\\+='.\\+\\.exe'"\
 			"$script" 1>/dev/null
 		then
-			SCRIPT_DEPS="$SCRIPT_DEPS convert wrestool"
+			ICONS_DEPS="$ICONS_DEPS convert wrestool"
 		fi
 	fi
-	export SCRIPT_DEPS
+	export ICONS_DEPS
 }
 
 # get .png file(s) from various icon sources in current package
@@ -35,7 +35,7 @@ icons_list_dependencies() {
 # NEEDED VARS: APP_ID|GAME_ID PATH_GAME PATH_ICON_BASE PLAYIT_WORKDIR PKG
 # CALLS: icons_get_from_path
 icons_get_from_package() {
-	[ "$SKIP_ICONS" = 1 ] && return 0
+	[ "$SKIP_ICONS" = '1' ] && return 0
 	local path
 	local path_pkg
 	path_pkg="$(get_value "${PKG}_PATH")"
@@ -49,7 +49,7 @@ icons_get_from_package() {
 # NEEDED VARS: APP_ID|GAME_ID PATH_ICON_BASE PLAYIT_WORKDIR PKG
 # CALLS: icons_get_from_path
 icons_get_from_workdir() {
-	[ "$SKIP_ICONS" = 1 ] && return 0
+	[ "$SKIP_ICONS" = '1' ] && return 0
 	local path
 	path="$PLAYIT_WORKDIR/gamedata"
 	icons_get_from_path "$path" "$@"
@@ -388,4 +388,23 @@ icon_path_empty_error() {
 	print_error
 	printf "$string\\n" "$1"
 	return 1
+}
+
+# print a warning if an icon dependency wasn't found (in auto mode)
+# USAGE: icons_dep_missing_warning $dependency
+# NEEDED VARS: (LANG)
+# CALLED BY: icons_list_dependencies
+icons_dep_missing_warning() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='%s est introuvable. Installez-le pour inclure les icônes.'
+		;;
+		('en'|*)
+			string='%s not found. Install it to include icons.'
+		;;
+	esac
+	print_warning
+	printf "$string\\n" "$1"
 }

@@ -42,7 +42,7 @@ help() {
 	printf '\n'
 	help_skipfreespacecheck
 	printf '\n'
-	help_skipicons
+	help_icons
 	printf '\n'
 
 	printf 'ARCHIVE\n\n'
@@ -261,23 +261,43 @@ help_skipfreespacecheck() {
 }
 
 
-# display --skip-icons option usage
-# USAGE: help_skipicons
+# display --icons option usage
+# USAGE: help_icons
 # NEEDED VARS: (LANG)
 # CALLED BY: help
-help_skipicons() {
+help_icons() {
 	local string
+	local string_default
+	local string_yes
+	local string_no
+	local string_auto
 	case "${LANG%_*}" in
 		('fr')
+			string='Inclure ou non les icônes dans les paquets'
+			string_default='(option par défaut)'
 			# shellcheck disable=SC1112
-			string='N’inclus pas les icônes dans les paquets'
+			string_yes='Inclure les icônes et s’arrêter si une dépendance n’a pas pu être trouvée'
+			string_no='Ne pas inclure les icônes même si toutes les dépendances sont présentes'
+			string_auto='Inclure les icônes seulement si toutes les dépendances sont présentes'
 		;;
 		('en'|*)
+			string='Include icons in packages'
+			string_default='(default option)'
 			# shellcheck disable=SC1112
-			string='Don’t include icons in packages'
+			string_yes='Include icons and stop if a dependency wasn’t found'
+			# shellcheck disable=SC1112
+			string_no='Don’t include icons even if all dependencies are present'
+			string_auto='Only include icons if all dependencies are present'
 		;;
 	esac
-	printf -- '--skip-icons\n\n'
+	printf -- '--icons=yes|no|auto\n'
+	printf -- '--icons yes|no|auto\n\n'
 	printf '\t%s\n\n' "$string"
+	printf '\tyes\t%s' "$string_yes"
+	[ "$DEFAULT_OPTION_ICONS" = 'yes' ] && printf ' %s\n' "$string_default" || printf '\n'
+	printf '\tno\t%s' "$string_no"
+	[ "$DEFAULT_OPTION_ICONS" = 'no' ] && printf ' %s\n' "$string_default" || printf '\n'
+	printf '\tauto\t%s' "$string_auto"
+	[ "$DEFAULT_OPTION_ICONS" = 'auto' ] && printf ' %s\n' "$string_default" || printf '\n'
 }
 

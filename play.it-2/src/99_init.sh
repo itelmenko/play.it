@@ -45,6 +45,8 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_PACKAGE='arch deb gentoo'
+	# shellcheck disable=SC2034
+	ALLOWED_VALUES_ICONS='yes no auto'
 
 	# Set default values for common options
 
@@ -58,6 +60,8 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	DEFAULT_OPTION_PREFIX='/usr/local'
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PACKAGE='deb'
+	# shellcheck disable=SC2034
+	DEFAULT_OPTION_ICONS='yes'
 	unset winecfg_desktop
 	unset winecfg_launcher
 
@@ -87,7 +91,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			 '--prefix='*|\
 			 '--prefix'|\
 			 '--package='*|\
-			 '--package')
+			 '--package'|\
+			 '--icons='*|\
+			 '--icons')
 				if [ "${1%=*}" != "${1#*=}" ]; then
 					option="$(printf '%s' "${1%=*}" | sed 's/^--//')"
 					value="${1#*=}"
@@ -115,10 +121,6 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			('--skip-free-space-check')
 				NO_FREE_SPACE_CHECK='1'
 				export NO_FREE_SPACE_CHECK
-			;;
-			('--skip-icons')
-				SKIP_ICONS='1'
-				export SKIP_ICONS
 			;;
 			('--'*)
 				print_error
@@ -151,7 +153,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	# Set options not already set by script arguments to default values
 
-	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
+	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX' 'ICONS'; do
 		if [ -z "$(get_value "OPTION_$option")" ]\
 		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
 			# shellcheck disable=SC2046
@@ -195,9 +197,14 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		exit 1
 	}
 
-	for option in 'CHECKSUM' 'COMPRESSION' 'PACKAGE'; do
+	for option in 'CHECKSUM' 'COMPRESSION' 'PACKAGE' 'ICONS'; do
 		check_option_validity "$option"
 	done
+
+	if [ "$OPTION_ICONS" = 'no' ]; then
+		SKIP_ICONS=1
+		export SKIP_ICONS
+	fi
 
 	# Do not allow bzip2 compression when building Debian packages
 
