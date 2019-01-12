@@ -4,6 +4,7 @@
 # CALLED BY: write_metadata
 pkg_write_deb() {
 	local pkg_deps
+	use_archive_specific_value "${pkg}_DEPS"
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
 		# shellcheck disable=SC2046
 		pkg_set_deps_deb $(get_value "${pkg}_DEPS")
@@ -125,6 +126,9 @@ pkg_set_deps_deb() {
 			;;
 			('gtk2')
 				pkg_dep='libgtk2.0-0'
+			;;
+			('java')
+				pkg_dep='default-jre:amd64 | java-runtime:amd64 | default-jre | java-runtime'
 			;;
 			('json')
 				pkg_dep='libjson-c3 | libjson-c2 | libjson0'
