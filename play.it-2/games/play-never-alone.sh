@@ -2,8 +2,9 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, BetaRays
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2017-2019, Solène Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,11 +32,11 @@ set -o errexit
 
 ###
 # Never Alone
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181223.1
+script_version=20190113.1
 
 # Set game-specific variables
 
@@ -49,13 +50,13 @@ ARCHIVE_HUMBLE_SIZE='4900000'
 ARCHIVE_HUMBLE_VERSION='1.04-humble161008'
 
 ARCHIVE_GAME_BIN_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_BIN_FILES='./Never_Alone.x64 ./Never_Alone_Data/*/x86_64'
+ARCHIVE_GAME_BIN_FILES='Never_Alone.x64 Never_Alone_Data/*/x86_64'
 
 ARCHIVE_GAME_VIDEOS_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_VIDEOS_FILES='./Never_Alone_Data/StreamingAssets/Videos'
+ARCHIVE_GAME_VIDEOS_FILES='Never_Alone_Data/StreamingAssets/Videos'
 
 ARCHIVE_GAME_DATA_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_DATA_FILES='./Never_Alone_Data'
+ARCHIVE_GAME_DATA_FILES='Never_Alone_Data'
 
 DATA_DIRS='./logs'
 
@@ -80,26 +81,25 @@ PKG_BIN_DEPS="$PKG_VIDEOS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: ${XDG_DATA_HOME:="$HOME/.local/share"}
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
 fi
 . "$PLAYIT_LIB2"
 
@@ -107,9 +107,7 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
-
 prepare_package_layout
-
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -120,7 +118,7 @@ write_launcher 'APP_MAIN'
 # Build package
 
 PKG='PKG_DATA'
-icons_linking_postinst
+icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
 write_metadata 'PKG_BIN' 'PKG_VIDEOS'
 build_pkg
