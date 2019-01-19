@@ -299,13 +299,15 @@ icons_linking_postinst() {
 		[ "$name" ] || name="$GAME_ID"
 		for icon in $list; do
 			file="$(get_value "$icon")"
-			if
-				{ [ $version_major_target -lt 2 ] || [ $version_minor_target -lt 8 ] ; } &&
-				( ls "$path/$file" >/dev/null 2>&1 || ls "$path"/$file >/dev/null 2>&1 )
-			then
-				icon_get_resolution_from_file "$path/$file"
+			if [ $version_major_target -lt 2 ] || [ $version_minor_target -lt 8 ]; then
+				# ensure compatibility with scripts targeting pre-2.8 library
+				if [ -e "$path/$file" ] || [ -e "$path"/$file ]; then
+					icon_get_resolution_from_file "$path/$file"
+				else
+					icon_get_resolution_from_file "${PKG_DATA_PATH}${PATH_GAME}/$file"
+				fi
 			else
-				icon_get_resolution_from_file "${PKG_DATA_PATH}${PATH_GAME}/$file"
+				icon_get_resolution_from_file "$path/$file"
 			fi
 			path_icon="$PATH_ICON_BASE/$resolution/apps"
 			if

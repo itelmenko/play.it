@@ -17,6 +17,8 @@
   * New option --skip-free-space-check: Bypass free space check, create
     temporary directories under $TMPDIR, defaults to /tmp
 
+  * Fix issue with pre-2.8 compatibility code in icons_linking_postinst
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or
