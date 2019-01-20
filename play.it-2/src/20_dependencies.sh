@@ -18,6 +18,9 @@ check_deps() {
 			('innosetup'*)
 				SCRIPT_DEPS="$SCRIPT_DEPS innoextract"
 			;;
+			('installshield')
+				SCRIPT_DEPS="$SCRIPT_DEPS unshield"
+			;;
 			('nixstaller')
 				SCRIPT_DEPS="$SCRIPT_DEPS gzip tar unxz"
 			;;
