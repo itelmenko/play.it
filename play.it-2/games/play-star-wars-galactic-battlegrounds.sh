@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180923.3
+script_version=20190120.1
 
 # Set game-specific variables
 
@@ -71,7 +71,7 @@ DATA_DIRS='./ai ./campaign ./random ./savegame ./scenario'
 DATA_FILES='./data/*.dat ./player.nf*'
 
 APP_REGEDIT='swgb.reg'
-APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}') csmt=off"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='battlegrounds.exe'
