@@ -3,6 +3,7 @@
 print_instructions_gentoo() {
 	local pkg_path
 	local str_format
+	local str_comment
 	printf 'quickunpkg --'
 	for pkg in "$@"; do
 		if [ "$OPTION_ARCHITECTURE" != all ] && [ -n "${PACKAGES_LIST##*$pkg*}" ]; then
@@ -17,6 +18,14 @@ print_instructions_gentoo() {
 		fi
 		printf "$str_format" "$pkg_path"
 	done
-	printf ' # %s\n' 'https://www.dotslashplay.it/ressources/gentoo/'
+	case "${LANG%_*}" in
+		('fr')
+			str_comment='ou mettez les paquets dans un PKGDIR et emergez-les'
+		;;
+		('en'|*)
+			str_comment='or put the packages in a PKGDIR and emerge them'
+		;;
+	esac
+	printf ' # %s %s\n' 'https://www.dotslashplay.it/ressources/gentoo/' "$str_comment"
 }
 
