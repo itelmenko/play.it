@@ -1,11 +1,12 @@
 #!/usr/bin/env sh
 set -o errexit
 
-for file in play.it-2/games/*; do
-	for shell in 'sh' 'bash' 'dash' 'ksh'; do
-		printf 'Testing %s validity using ShellCheck in %s mode…\n' "$file" "$shell"
-		shellcheck --exclude=SC2034 --external-sources --shell="$shell" "$file"
-	done
+count="$(find 'play.it-2/games' -type f | wc --lines)"
+max_procs="$(nproc)"
+max_args="$((count / max_procs + 1))"
+for shell in 'sh' 'bash' 'dash' 'ksh'; do
+	printf 'Testing game scripts validity using ShellCheck in %s mode…\n' "$shell"
+	find 'play.it-2/games' -type f | xargs --max-args="$max_args" --max-procs="$max_procs" shellcheck --exclude=SC2034 --external-sources --shell="$shell"
 done
 
 exit 0
