@@ -20,10 +20,10 @@ print_instructions_gentoo() {
 	done
 	case "${LANG%_*}" in
 		('fr')
-			str_comment='ou mettez les paquets dans un PKGDIR et emergez-les'
+			str_comment='ou mettez les paquets dans un PKGDIR (dans un dossier nommé games-playit) et emergez-les'
 		;;
 		('en'|*)
-			str_comment='or put the packages in a PKGDIR and emerge them'
+			str_comment='or put the packages in a PKGDIR (in a folder named games-playit) and emerge them'
 		;;
 	esac
 	printf ' # %s %s\n' 'https://www.dotslashplay.it/ressources/gentoo/' "$str_comment"
