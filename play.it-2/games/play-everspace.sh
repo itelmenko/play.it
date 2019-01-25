@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181125.1
+script_version=20190125.1
 
 # Set game-specific variables
 
 GAME_ID='everspace'
 GAME_NAME='Everspace'
 
-ARCHIVE_GOG='everspace_en_1_3_2_3_22978.sh'
+ARCHIVE_GOG='everspace_1_3_3_25886.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/everspace'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
-ARCHIVE_GOG_MD5='4290b47c1396f140198f45a74bf53abf'
-ARCHIVE_GOG_VERSION='1.3.2.3-gog22978'
+ARCHIVE_GOG_MD5='df8f210059a515ef738f247bfcd61bb2'
+ARCHIVE_GOG_VERSION='1.3.3-gog25886'
 ARCHIVE_GOG_SIZE='11000000'
+
+ARCHIVE_GOG_OLD0='everspace_en_1_3_2_3_22978.sh'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_OLD0_MD5='4290b47c1396f140198f45a74bf53abf'
+ARCHIVE_GOG_OLD0_VERSION='1.3.2.3-gog22978'
+ARCHIVE_GOG_OLD0_SIZE='11000000'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN_FILES='Engine RSG/Binaries RSG/Plugins'
