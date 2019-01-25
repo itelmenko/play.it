@@ -19,6 +19,8 @@
 
   * Fix issue with pre-2.8 compatibility code in icons_linking_postinst
 
+  * move_icons_to: Fix crash when --prefix is set to a custom value
+
 2.10.5
 
   * select_package_architecture: Fix bug when using --architecture=64 (or

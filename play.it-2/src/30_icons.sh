@@ -356,8 +356,8 @@ icons_move_to() {
 	(
 		cd "$source_path"
 		cp --link --parents --recursive --no-dereference --preserve=links "./$PATH_ICON_BASE" "$destination_path"
-		rm --recursive "./$PATH_ICON_BASE"
-		rmdir --ignore-fail-on-non-empty --parents "./${PATH_ICON_BASE%/*}"
+		rm --recursive "./$PATH_ICON_BASE"/*
+		rmdir --ignore-fail-on-non-empty --parents "${PATH_ICON_BASE#/}"
 	)
 }
 # compatibility alias
