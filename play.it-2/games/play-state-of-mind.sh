@@ -2,9 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2017-2019, Solène Huault
-# Copyright (c) 2018-2019, BetaRays
+# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,50 +30,49 @@ set -o errexit
 ###
 
 ###
-# Never Alone
+# State of Mind
 # build native packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190113.1
+script_version=20181222.1
 
 # Set game-specific variables
 
-GAME_ID='never-alone'
-GAME_NAME='Never Alone'
+GAME_ID='state-of-mind'
+GAME_NAME='State of Mind'
 
-ARCHIVE_HUMBLE='NeverAlone_ArcticCollection_Linux.1.04.tar.gz'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/never-alone-arctic-collection'
-ARCHIVE_HUMBLE_MD5='3da062abaaa9e3e6ff97d4c82c8ea3c3'
-ARCHIVE_HUMBLE_SIZE='4900000'
-ARCHIVE_HUMBLE_VERSION='1.04-humble161008'
+ARCHIVE_GOG='state_of_mind_1_2_24280_24687.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/state_of_mind'
+ARCHIVE_GOG_MD5='e27071ec1041dc7e529f5fe590783f72'
+ARCHIVE_GOG_SIZE='21000000'
+ARCHIVE_GOG_VERSION='1.2.24280-gog24687'
+ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GAME_BIN_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_BIN_FILES='Never_Alone.x64 Never_Alone_Data/*/x86_64'
+ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
+ARCHIVE_DOC0_DATA_FILES='*'
 
-ARCHIVE_GAME_VIDEOS_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_VIDEOS_FILES='Never_Alone_Data/StreamingAssets/Videos'
+ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
+ARCHIVE_DOC1_DATA_FILES='LICENSE.txt version.txt'
 
-ARCHIVE_GAME_DATA_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_DATA_FILES='Never_Alone_Data'
+ARCHIVE_GAME_BIN_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN_FILES='Engine StateOfMind StateOfMind.cfg'
 
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='StateOfMind.png StateOfMind.desktop'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='Never_Alone.x64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Never_Alone_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE='StateOfMind/Binaries/Linux/StateOfMind-Linux-Shipping'
+APP_MAIN_OPTIONS='StateOfMind'
+APP_MAIN_ICON='StateOfMind.png'
 
-PACKAGES_LIST='PKG_VIDEOS PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
-PKG_VIDEOS_ID="$GAME_ID-videos"
-PKG_VIDEOS_DESCRIPTION='videos'
-
-PKG_DATA_ID="$GAME_ID-data"
+PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_VIDEOS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ openal"
 
 # Load common functions
 
@@ -106,7 +104,6 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
@@ -120,7 +117,7 @@ write_launcher 'APP_MAIN'
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN' 'PKG_VIDEOS'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up

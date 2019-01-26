@@ -44,7 +44,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
 	# shellcheck disable=SC2034
-	ALLOWED_VALUES_PACKAGE='arch deb'
+	ALLOWED_VALUES_PACKAGE='arch deb gentoo'
 
 	# Set default values for common options
 
@@ -70,6 +70,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	unset OPTION_PACKAGE
 	unset SOURCE_ARCHIVE
 	DRY_RUN='0'
+	NO_FREE_SPACE_CHECK='0'
 
 	while [ $# -gt 0 ]; do
 		case "$1" in
@@ -110,6 +111,10 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			('--dry-run')
 				DRY_RUN='1'
 				export DRY_RUN
+			;;
+			('--skip-free-space-check')
+				NO_FREE_SPACE_CHECK='1'
+				export NO_FREE_SPACE_CHECK
 			;;
 			('--'*)
 				print_error
@@ -206,6 +211,26 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		exit 1
 	fi
 
+	# Do not allow none compression when building Gentoo packages
+
+	if
+		[ "$OPTION_PACKAGE" = 'gentoo' ] && \
+		[ "$OPTION_COMPRESSION" = 'none' ]
+	then
+		print_error
+		case "${LANG%_*}" in
+			('fr')
+				# shellcheck disable=SC1112
+				string='Le mode de compression none n’est pas compatible avec la génération de paquets gentoo.'
+			;;
+			('en'|*)
+				string='none compression mode is not compatible with gentoo packages generation.'
+			;;
+		esac
+		printf '%s\n' "$string"
+		exit 1
+	fi
+
 	# Restrict packages list to target architecture
 
 	select_package_architecture
@@ -217,7 +242,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# Set package paths
 
 	case $OPTION_PACKAGE in
-		('arch')
+		('arch'|'gentoo')
 			PATH_BIN="$OPTION_PREFIX/bin"
 			PATH_DESK='/usr/local/share/applications'
 			PATH_DOC="$OPTION_PREFIX/share/doc/$GAME_ID"

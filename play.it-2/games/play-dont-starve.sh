@@ -2,8 +2,9 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2017-2018, Solene Huault
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2017-2019, Solene Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -35,7 +36,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181010.3
+script_version=20190113.1
 
 # Set game-specific variables
 
@@ -69,10 +70,10 @@ ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game/dontstarve32'
-ARCHIVE_GAME_BIN32_FILES='*.json bin/dontstarve bin/lib32/libfmodevent.so bin/lib32/libfmodevent-4.44.07.so bin/lib32/libfmodex.so bin/lib32/libfmodex-4.44.07.so'
+ARCHIVE_GAME_BIN32_FILES='*.json bin/dontstarve bin/lib32/libfmodevent.so bin/lib32/libfmodevent-4.44.07.so bin/lib32/libfmodex.so bin/lib32/libfmodex-4.44.07.so bin/lib32/libSDL2*'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game/dontstarve64'
-ARCHIVE_GAME_BIN64_FILES='*.json bin/dontstarve bin/lib64/libfmodevent.so bin/lib64/libfmodevent-4.44.07.so bin/lib64/libfmodex.so bin/lib64/libfmodex-4.44.07.so'
+ARCHIVE_GAME_BIN64_FILES='*.json bin/dontstarve bin/lib64/libfmodevent64.so bin/lib64/libfmodevent64-4.44.07.so bin/lib64/libfmodex64.so bin/lib64/libfmodex64-4.44.07.so bin/lib64/libSDL2*'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game/dontstarve64'
 ARCHIVE_GAME_DATA_FILES='data mods dontstarve.xpm'

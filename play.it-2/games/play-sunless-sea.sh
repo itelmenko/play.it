@@ -2,8 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, BetaRays
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Sunless Sea + Zubmariner
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181111.5
+script_version=20190119.1
 
 # Set game-specific variables
 
@@ -136,7 +136,7 @@ PKG_DATA_ID_GOG_ZUBMARINER="${GAME_ID}-zubmariner-data"
 PKG_DATA_DESCRIPTION_GOG_ZUBMARINER='data (including Zubmariner DLC)'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEP="$PKG_DATA_ID glu libxcursor"
+PKG_BIN32_DEPS="$PKG_DATA_ID glu xcursor"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"

@@ -1,7 +1,7 @@
 # display script usage
 # USAGE: help
 # NEEDED VARS: (LANG)
-# CALLS: help_checksum help_compression help_prefix help_package
+# CALLS: help_checksum help_compression help_prefix help_package help_dryrun help_skipfreespacecheck
 help() {
 	local format
 	local string
@@ -39,6 +39,8 @@ help() {
 	help_package
 	printf '\n'
 	help_dryrun
+	printf '\n'
+	help_skipfreespacecheck
 	printf '\n'
 
 	printf 'ARCHIVE\n\n'
@@ -190,27 +192,32 @@ help_package() {
 	local string_default
 	local string_arch
 	local string_deb
+	local string_gentoo
 	case "${LANG%_*}" in
 		('fr')
 			string='Choix du type de paquet à construire'
 			string_default='(type par défaut)'
 			string_arch='paquet .pkg.tar (Arch Linux)'
 			string_deb='paquet .deb (Debian, Ubuntu)'
+			string_gentoo='paquet .tbz2 (Gentoo)'
 		;;
 		('en'|*)
 			string='Generated package Type choice'
 			string_default='(default type)'
 			string_arch='.pkg.tar package (Arch Linux)'
 			string_deb='.deb package (Debian, Ubuntu)'
+			string_gentoo='.tbz2 package (Gentoo)'
 		;;
 	esac
-	printf -- '--package=arch|deb\n'
-	printf -- '--package arch|deb\n\n'
+	printf -- '--package=arch|deb|gentoo\n'
+	printf -- '--package arch|deb|gentoo\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\tarch\t%s' "$string_arch"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'arch' ] && printf ' %s\n' "$string_default" || printf '\n'
 	printf '\tdeb\t%s' "$string_deb"
 	[ "$DEFAULT_OPTION_PACKAGE" = 'deb' ] && printf ' %s\n' "$string_default" || printf '\n'
+	printf '\tgentoo\t%s' "$string_gentoo"
+	[ "$DEFAULT_OPTION_PACKAGE" = 'gentoo' ] && printf ' %s\n' "$string_default" || printf '\n'
 }
 
 # display --dry-run option usage
@@ -229,6 +236,25 @@ help_dryrun() {
 		;;
 	esac
 	printf -- '--dry-run\n\n'
+	printf '\t%s\n\n' "$string"
+}
+
+# display --skip-free-space-check option usage
+# USAGE: help_skipfreespacecheck
+# NEEDED VARS: (LANG)
+# CALLED BY: help
+help_skipfreespacecheck() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='Ne teste pas l’espace libre disponible. Les répertoires temporaires seront créés sous $TMPDIR, ou /tmp par défaut.'
+		;;
+		('en'|*)
+			string='Do not check for free space. Temporary directories are created under $TMPDIR, or /tmp by default.'
+		;;
+	esac
+	printf -- '--skip-free-space-check\n\n'
 	printf '\t%s\n\n' "$string"
 }
 

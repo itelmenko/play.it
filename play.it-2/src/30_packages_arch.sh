@@ -4,6 +4,7 @@
 # CALLED BY: write_metadata
 pkg_write_arch() {
 	local pkg_deps
+	use_archive_specific_value "${pkg}_DEPS"
 	if [ "$(get_value "${pkg}_DEPS")" ]; then
 		# shellcheck disable=SC2046
 		pkg_set_deps_arch $(get_value "${pkg}_DEPS")
@@ -137,6 +138,9 @@ pkg_set_deps_arch32() {
 			('gtk2')
 				pkg_dep='lib32-gtk2'
 			;;
+			('java')
+				pkg_dep='jre8-openjdk'
+			;;
 			('json')
 				pkg_dep='lib32-json-c'
 			;;
@@ -246,6 +250,9 @@ pkg_set_deps_arch64() {
 			;;
 			('gtk2')
 				pkg_dep='gtk2'
+			;;
+			('java')
+				pkg_dep='jre8-openjdk'
 			;;
 			('json')
 				pkg_dep='json-c'

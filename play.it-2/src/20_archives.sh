@@ -192,6 +192,9 @@ archive_guess_type() {
 		(*'.zip')
 			type='zip'
 		;;
+		(*'.7z')
+			type='7z'
+		;;
 		(*)
 			archive_guess_type_error "$archive"
 		;;

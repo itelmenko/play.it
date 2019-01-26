@@ -4,7 +4,6 @@ set -o errexit
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
 # Copyright (c) 2017-2019, Solène Huault
-# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,50 +30,51 @@ set -o errexit
 ###
 
 ###
-# Never Alone
+# Secrets of Raetikon
 # build native packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
 script_version=20190113.1
 
 # Set game-specific variables
 
-GAME_ID='never-alone'
-GAME_NAME='Never Alone'
+GAME_ID='secrets-of-raetikon'
+GAME_NAME='Secrets of Raetikon'
 
-ARCHIVE_HUMBLE='NeverAlone_ArcticCollection_Linux.1.04.tar.gz'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/never-alone-arctic-collection'
-ARCHIVE_HUMBLE_MD5='3da062abaaa9e3e6ff97d4c82c8ea3c3'
-ARCHIVE_HUMBLE_SIZE='4900000'
-ARCHIVE_HUMBLE_VERSION='1.04-humble161008'
+ARCHIVE_HUMBLE='SecretsofRaetikonLinux1.1.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/secrets-of-rtikon'
+ARCHIVE_HUMBLE_MD5='16a81710ce12480c9cd75a6992d2956c'
+ARCHIVE_HUMBLE_SIZE='130000'
+ARCHIVE_HUMBLE_VERSION='1.1-humble140731'
+ARCHIVE_HUMBLE_TYPE='zip'
 
-ARCHIVE_GAME_BIN_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_BIN_FILES='Never_Alone.x64 Never_Alone_Data/*/x86_64'
+ARCHIVE_DOC_DATA_PATH='.'
+ARCHIVE_DOC_DATA_FILES='*.pdf'
 
-ARCHIVE_GAME_VIDEOS_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_VIDEOS_FILES='Never_Alone_Data/StreamingAssets/Videos'
+ARCHIVE_GAME_BIN32_PATH='Raetikon'
+ARCHIVE_GAME_BIN32_FILES='lib32 Raetikon'
 
-ARCHIVE_GAME_DATA_PATH='NeverAlone_ArcticCollection_Linux.1.04'
-ARCHIVE_GAME_DATA_FILES='Never_Alone_Data'
+ARCHIVE_GAME_BIN64_PATH='Raetikon'
+ARCHIVE_GAME_BIN64_FILES='lib64 Raetikon64'
 
-DATA_DIRS='./logs'
+ARCHIVE_GAME_DATA_PATH='Raetikon'
+ARCHIVE_GAME_DATA_FILES='data steam_appid.txt'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='Never_Alone.x64'
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Never_Alone_Data/Resources/UnityPlayer.png'
+APP_MAIN_EXE_BIN32='Raetikon'
+APP_MAIN_EXE_BIN64='Raetikon64'
 
-PACKAGES_LIST='PKG_VIDEOS PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
-PKG_VIDEOS_ID="$GAME_ID-videos"
-PKG_VIDEOS_DESCRIPTION='videos'
-
-PKG_DATA_ID="$GAME_ID-data"
+PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_VIDEOS_ID $PKG_DATA_ID glibc libstdc++ glu xcursor"
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ libxrandr glx"
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
@@ -106,21 +106,18 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	write_launcher 'APP_MAIN'
+done
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN' 'PKG_VIDEOS'
+write_metadata
 build_pkg
 
 # Clean up
