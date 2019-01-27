@@ -107,6 +107,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -133,15 +134,15 @@ write_launcher 'APP_1' 'APP_2' 'APP_3'
 # Build package
 
 cat > "$postinst" << EOF
-ln --symbolic ./$GAME_ID.png "$PATH_ICON/$APP_1_ID.png"
-ln --symbolic ./$GAME_ID.png "$PATH_ICON/$APP_2_ID.png"
-ln --symbolic ./$GAME_ID.png "$PATH_ICON/$APP_3_ID.png"
+ln --symbolic ./$GAME_ID.png "$PATH_ICON_BASE/256x256/apps/$APP_1_ID.png"
+ln --symbolic ./$GAME_ID.png "$PATH_ICON_BASE/256x256/apps/$APP_2_ID.png"
+ln --symbolic ./$GAME_ID.png "$PATH_ICON_BASE/256x256/apps/$APP_3_ID.png"
 EOF
 
 cat > "$prerm" << EOF
-rm "$PATH_ICON/$APP_1_ID.png"
-rm "$PATH_ICON/$APP_2_ID.png"
-rm "$PATH_ICON/$APP_3_ID.png"
+rm "$PATH_ICON_BASE/256x256/apps/$APP_1_ID.png"
+rm "$PATH_ICON_BASE/256x256/apps/$APP_2_ID.png"
+rm "$PATH_ICON_BASE/256x256/apps/$APP_3_ID.png"
 EOF
 
 write_metadata 'PKG_DATA'

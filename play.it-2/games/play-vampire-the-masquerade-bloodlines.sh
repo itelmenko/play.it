@@ -156,6 +156,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Set script dependencies depending on source archive
@@ -166,6 +167,7 @@ check_deps
 # Set list of packages to build depending on source archive
 
 use_archive_specific_value 'PACKAGES_LIST'
+# shellcheck disable=SC2086
 set_temp_directories $PACKAGES_LIST
 
 # Extract game data
@@ -184,6 +186,7 @@ case "$ARCHIVE" in
 		prepare_package_layout 'PKG_L10N_DE' 'PKG_DATA'
 		find "$PLAYIT_WORKDIR/gamedata" -type d -empty -delete
 		(
+			# shellcheck disable=SC2030
 			ARCHIVE='ARCHIVE_EN'
 			ARCHIVE_EN="$PLAYIT_WORKDIR/gamedata/en.zip"
 			ARCHIVE_EN_TYPE='zip'
@@ -194,6 +197,7 @@ case "$ARCHIVE" in
 		prepare_package_layout 'PKG_L10N_EN' 'PKG_DATA'
 		find "$PLAYIT_WORKDIR/gamedata" -type d -empty -delete
 		(
+			# shellcheck disable=SC2030
 			ARCHIVE='ARCHIVE_FR'
 			ARCHIVE_FR="$PLAYIT_WORKDIR/gamedata/fr.zip"
 			ARCHIVE_FR_TYPE='zip'
@@ -204,6 +208,7 @@ case "$ARCHIVE" in
 		prepare_package_layout 'PKG_L10N_FR' 'PKG_DATA'
 		find "$PLAYIT_WORKDIR/gamedata" -type d -empty -delete
 		(
+			# shellcheck disable=SC2030
 			ARCHIVE='ARCHIVE_COMMON1'
 			ARCHIVE_COMMON1="$PLAYIT_WORKDIR/gamedata/common1.zip"
 			ARCHIVE_COMMON1_TYPE='zip'
@@ -225,6 +230,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 PKG='PKG_BIN'
 icons_get_from_package 'APP_MAIN'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG'*)
 		icons_get_from_package 'APP_UP'
@@ -237,6 +243,7 @@ icons_move_to 'PKG_DATA'
 PKG='PKG_BIN'
 use_archive_specific_value 'APP_MAIN_EXE'
 write_launcher 'APP_MAIN'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG'*)
 		write_launcher 'APP_UP'
@@ -254,6 +261,7 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_DOTEMU')
 		case "${LANG%_*}" in
@@ -271,10 +279,13 @@ case "$ARCHIVE" in
 			;;
 		esac
 		printf '\n'
+		# shellcheck disable=SC2059
 		printf "$lang_string" "$lang_de"
 		print_instructions 'PKG_L10N_DE' 'PKG_DATA' 'PKG_BIN'
+		# shellcheck disable=SC2059
 		printf "$lang_string" "$lang_en"
 		print_instructions 'PKG_L10N_EN' 'PKG_DATA' 'PKG_BIN'
+		# shellcheck disable=SC2059
 		printf "$lang_string" "$lang_fr"
 		print_instructions 'PKG_L10N_FR' 'PKG_DATA' 'PKG_BIN'
 	;;

@@ -235,6 +235,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -308,18 +309,25 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_en"
 print_instructions 'PKG_L10N_TXT_EN' 'PKG_L10N_VOICES_EN' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_es"
 print_instructions 'PKG_L10N_TXT_ES' 'PKG_L10N_VOICES_ES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_fr"
 print_instructions 'PKG_L10N_TXT_FR' 'PKG_L10N_VOICES_FR' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_it"
 print_instructions 'PKG_L10N_TXT_IT' 'PKG_L10N_VOICES_EN' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_nl"
 print_instructions 'PKG_L10N_TXT_NL' 'PKG_L10N_VOICES_NL' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_pl"
 print_instructions 'PKG_L10N_TXT_PL' 'PKG_L10N_VOICES_PL' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_sv"
 print_instructions 'PKG_L10N_TXT_SV' 'PKG_L10N_VOICES_SV' 'PKG_DATA' 'PKG_BIN'
 

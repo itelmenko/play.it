@@ -95,6 +95,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -112,7 +113,7 @@ PKG='PKG_BIN'
 extract_and_sort_icons_from 'APP_MAIN'
 move_icons_to 'PKG_DATA'
 
-cat > "${PKG_BIN_PATH}${PATH_GAME}/dr2-cdkey.reg" << EOF
+cat > "${PKG_BIN_PATH}${PATH_GAME}/dr2-cdkey.reg" << 'EOF'
 REGEDIT4
 [HKEY_LOCAL_MACHINE\Software\WON\CDKeys]
 "DarkReign2"=hex:56,c1,0c,ed,bb,61,40,19,99,3d,cd,6c,78,51,4c,5e

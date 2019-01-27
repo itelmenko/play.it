@@ -89,7 +89,7 @@ PKG_BIN_DEPS_GENTOO='media-fonts/wqy-microhei'
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -109,6 +109,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -143,7 +144,9 @@ write_launcher 'APP_MAIN' 'APP_CONFIG'
 
 # Store saved games and settings outside of WINE prefix
 
+# shellcheck disable=SC2016
 saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/ShanghaiAlice/th14tr'
+# shellcheck disable=SC2016
 pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
 pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
 pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""

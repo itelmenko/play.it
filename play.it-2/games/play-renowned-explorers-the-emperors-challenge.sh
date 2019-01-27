@@ -39,6 +39,7 @@ script_version=20181128.1
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
+# shellcheck disable=SC1112
 GAME_NAME='Renowned Explorers: The Emperor’s Challenge'
 
 ARCHIVE_GOG='renowned_explorers_international_society_the_emperors_challenge_dlc_512_25169.sh'
@@ -90,7 +91,7 @@ PKG_MAIN_PROVIDE='renowned-explorers-the-emperors-challenge'
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -110,6 +111,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

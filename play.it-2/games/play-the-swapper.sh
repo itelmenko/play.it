@@ -103,6 +103,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Try to load icons archive
@@ -121,6 +122,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 	fi
 )
 
+# shellcheck disable=SC2016
 find "$PLAYIT_WORKDIR/gamedata" -name '*:com.dropbox.attributes:$DATA' -delete
 
 PKG='PKG_BIN32'

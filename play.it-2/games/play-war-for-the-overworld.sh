@@ -111,6 +111,7 @@ DATA_DIRS='./*_Data/GameData ./logs'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_GOG='WFTOGame.x86_64'
 APP_MAIN_EXE_HUMBLE='WFTO.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON_GOG='WFTOGame_Data/Resources/UnityPlayer.png'
 APP_MAIN_ICON_HUMBLE='WFTO_Data/Resources/UnityPlayer.png'
@@ -134,7 +135,7 @@ PKG_BIN_DEPS_GOG_OLD3="$PKG_BIN_DEPS_HUMBLE"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -154,6 +155,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -173,13 +175,14 @@ do
 	fi
 done
 
-file="${PKG_DATA_PATH}${PATH_GAME}"/*_Data/uiresources/maps/Stonegate.unity.png
-if [ -e "$file" ]; then
-	(
-		cd "${file%/*}"
-		mv "${file##*/}" 'stonegate.unity.png'
-	)
-fi
+for file in\
+	"${PKG_DATA_PATH}${PATH_GAME}/WFTO_Data/uiresources/maps/Stonegate.unity.png"\
+	"${PKG_DATA_PATH}${PATH_GAME}/WFTOGame_Data/uiresources/maps/Stonegate.unity.png"
+do
+	if [ -e "$file" ]; then
+		mv "$file" "$(dirname "$file")/stonegate.unity.png"
+	fi
+done
 
 # Write launchers
 

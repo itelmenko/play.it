@@ -58,7 +58,7 @@ ARCHIVE_GAME_DATA_FILES='assets game?data'
 CONFIG_FILES='./game?data/*.ini'
 DATA_FILES='./game?data/*/*.xml'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}') d3dx9_35"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}') d3dx9_35"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='tag.exe'
@@ -78,7 +78,7 @@ PKG_BIN_DEPS_ARCH='lib32-alsa-lib'
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -98,6 +98,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

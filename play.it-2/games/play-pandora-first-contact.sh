@@ -95,6 +95,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Try to load icons archive
@@ -135,6 +136,7 @@ PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
 file="${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
+# shellcheck disable=SC2016
 pattern='s|^"./$APP_EXE"|cd "${APP_EXE%/*}"\n"./${APP_EXE##*/}"|'
 sed --in-place "$pattern" "$file"
 

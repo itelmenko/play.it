@@ -103,6 +103,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Use libSSL 1.0.0 archives
@@ -130,6 +131,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Include libSSL into the game directory
 
+# shellcheck disable=SC2153
 if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
 		ARCHIVE='ARCHIVE_LIBSSL32'
@@ -141,6 +143,7 @@ if [ "$ARCHIVE_LIBSSL32" ]; then
 	APP_MAIN_LIBS_BIN32="$dir"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
+# shellcheck disable=SC2153
 if [ "$ARCHIVE_LIBSSL64" ]; then
 	(
 		ARCHIVE='ARCHIVE_LIBSSL64'

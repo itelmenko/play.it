@@ -39,6 +39,7 @@ script_version=20180929.2
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-1-enhanced-edition'
+# shellcheck disable=SC1112
 GAME_NAME='Baldur’s Gate - Enhanced Edition - Siege of Dragonspear'
 
 ARCHIVE_GOG='baldur_s_gate_siege_of_dragonspear_en_2_5_23121.sh'
@@ -70,7 +71,7 @@ PKG_MAIN_DEPS="$GAME_ID"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -90,6 +91,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='dont-starve'
+# shellcheck disable=SC1112
 GAME_NAME='Don’t Starve: Shipwrecked'
 
 ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_OLD'
@@ -82,6 +83,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

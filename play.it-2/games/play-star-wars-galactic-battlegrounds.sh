@@ -71,7 +71,7 @@ DATA_DIRS='./ai ./campaign ./random ./savegame ./scenario'
 DATA_FILES='./data/*.dat ./player.nf*'
 
 APP_REGEDIT='swgb.reg'
-APP_WINETRICKS="vd=\$(xrandr|awk '/\*/ {print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='battlegrounds.exe'
@@ -103,7 +103,7 @@ PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine winetricks xrandr"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -123,6 +123,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
