@@ -136,8 +136,8 @@ write_launcher 'APP_MAIN' 'APP_SETTINGS'
 cat > "${PKG_BIN_PATH}${PATH_GAME}/install-path.reg" << EOF
 REGEDIT4
 
-[HKEY_LOCAL_MACHINE\Software\Ubisoft\Beyond Good & Evil]
-"Install path"="C:\\\beyond-good-and-evil"
+[HKEY_LOCAL_MACHINE\\Software\\Ubisoft\\Beyond Good & Evil]
+"Install path"="C:\\\\$GAME_ID"
 EOF
 
 # Build package

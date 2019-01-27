@@ -67,6 +67,7 @@ ARCHIVE_GAME_DATA_FILES='./data ./launcher ./qt.conf Linux/*_Data'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Linux/BouT2.x86'
 APP_MAIN_EXE_BIN64='Linux/BouT2.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='Linux/BouT2_Data/Resources/UnityPlayer.png'
 

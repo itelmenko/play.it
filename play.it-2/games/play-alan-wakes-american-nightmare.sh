@@ -39,6 +39,7 @@ script_version=20180401.2
 # Set game-specific variables
 
 GAME_ID='alan-wakes-american-nightmare'
+# shellcheck disable=SC1112
 GAME_NAME='Alan Wake’s American Nightmare'
 
 ARCHIVE_GOG='setup_alan_wake_american_nightmare_2.1.0.24.exe'

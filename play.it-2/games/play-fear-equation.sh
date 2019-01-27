@@ -68,6 +68,7 @@ APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='export LANG="en_US.UTF-8"'
 APP_MAIN_EXE_BIN32='FearEquation.x86'
 APP_MAIN_EXE_BIN64='FearEquation.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='FearEquation_Data/Resources/UnityPlayer.png'

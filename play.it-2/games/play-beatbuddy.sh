@@ -60,6 +60,7 @@ DATA_FILES='./Beatbuddy.x86'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='Beatbuddy.x86'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='Beatbuddy_Data/Resources/UnityPlayer.png'

@@ -159,7 +159,9 @@ PKG='PKG_BIN'
 write_launcher 'APP_MAIN' 'APP_EDIT' 'APP_DM' 'APP_SKILLS'
 (
 	cd "${PKG_BIN_PATH}${PATH_BIN}"
+	# shellcheck disable=SC2016
 	sed --in-place 's|cd "$PATH_PREFIX"|cd "$PATH_PREFIX/${APP_EXE%/*}"|'                     "$GAME_ID" "$APP_EDIT_ID" "$APP_DM_ID"
+	# shellcheck disable=SC2016
 	sed --in-place 's|wine "$APP_EXE" $APP_OPTIONS $@|wine "${APP_EXE##*/}" $APP_OPTIONS $@|' "$GAME_ID" "$APP_EDIT_ID" "$APP_DM_ID"
 )
 

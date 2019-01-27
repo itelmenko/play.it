@@ -121,6 +121,7 @@ DATA_DIRS='./logs'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Sunless Sea.x86'
 APP_MAIN_EXE_BIN64='Sunless Sea.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON1 APP_MAIN_ICON2'
 APP_MAIN_ICON1='Sunless Sea_Data/Resources/UnityPlayer.png'
@@ -146,7 +147,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -174,7 +175,7 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 case "$ARCHIVE" in
 	('ARCHIVE_HUMBLE'*)
-		eval ${ARCHIVE}_TYPE=\'mojosetup\'
+		eval "${ARCHIVE}_TYPE"=\'mojosetup\'
 		archive="$PLAYIT_WORKDIR/gamedata/Sunless Sea.sh"
 		extract_data_from "$archive"
 		rm "$archive"

@@ -59,6 +59,7 @@ DATA_DIRS='./logs ./userdata'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='yono and the celestial elephants.exe'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log -force-d3d9'
 APP_MAIN_ICON='yono and the celestial elephants.exe'
 
@@ -75,7 +76,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine alsa glx"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -117,7 +118,9 @@ write_launcher 'APP_MAIN'
 
 # Store saved games outside of WINE prefix
 
+# shellcheck disable=SC2016
 saves_path='$WINEPREFIX/drive_c/users/$(whoami)/AppData/LocalLow/Neckbolt/Yono and the Celestial Elephants/Resources/savefiles'
+# shellcheck disable=SC2016
 pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
 pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
 pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""

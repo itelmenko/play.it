@@ -158,8 +158,10 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_disk"
 print_instructions 'PKG_DATA_DISK' 'PKG_MAIN'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_floppy"
 print_instructions 'PKG_DATA_FLOPPY' 'PKG_MAIN'
 

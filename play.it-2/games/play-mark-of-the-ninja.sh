@@ -127,11 +127,13 @@ done
 
 # Set working directory to the directory containing the game binary before running it
 
+# shellcheck disable=SC2016
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
-pattern="$pattern;s|^\"\./\$APP_EXE\"|\"./\${APP_EXE##*/}\"|"
+pattern="$pattern;s|^\"\\./\$APP_EXE\"|\"./\${APP_EXE##*/}\"|"
 for file in \
-"${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID" \
-"${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"; do
+	"${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID" \
+	"${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
+do
 	sed --in-place "$pattern" "$file"
 done
 

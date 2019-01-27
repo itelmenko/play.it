@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='mirrors-edge'
+# shellcheck disable=SC1112
 GAME_NAME='Mirror’s Edge'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
@@ -110,8 +111,8 @@ ARCHIVE="$ARCHIVE_MAIN"
 
 # Extract game data
 
-ln --symbolic "$(readlink --canonicalize $ARCHIVE_PART1)" "$PLAYIT_WORKDIR/$GAME_ID.r00"
-ln --symbolic "$(readlink --canonicalize $ARCHIVE_PART2)" "$PLAYIT_WORKDIR/$GAME_ID.r01"
+ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART1")" "$PLAYIT_WORKDIR/$GAME_ID.r00"
+ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART2")" "$PLAYIT_WORKDIR/$GAME_ID.r01"
 extract_data_from "$PLAYIT_WORKDIR/$GAME_ID.r00"
 tolower "$PLAYIT_WORKDIR/gamedata"
 

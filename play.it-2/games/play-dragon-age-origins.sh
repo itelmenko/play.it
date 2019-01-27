@@ -272,7 +272,9 @@ write_launcher 'APP_MAIN'
 
 # Enable included DLCs
 
+# shellcheck disable=SC2016
 settings_path='$WINEPREFIX/drive_c/users/$(whoami)/My Documents/BioWare/Dragon Age/Settings'
+# shellcheck disable=SC2016
 pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
 pattern="$pattern\\nif [ ! -e \"$settings_path\" ]; then"
 pattern="$pattern\\n\\tmkdir --parents \"${settings_path%/*}\""
@@ -282,7 +284,9 @@ sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Store saved games outside of WINE prefix
 
+# shellcheck disable=SC2016
 saves_path='$WINEPREFIX/drive_c/users/$(whoami)/My Documents/BioWare/Dragon Age/Characters'
+# shellcheck disable=SC2016
 pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
 pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
 pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
@@ -328,22 +332,31 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_de"
 print_instructions 'PKG_L10N_VOICE_DE' 'PKG_L10N_TXT_DE' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_en"
 print_instructions 'PKG_L10N_VOICE_EN' 'PKG_L10N_TXT_EN' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_fr"
 print_instructions 'PKG_L10N_VOICE_FR' 'PKG_L10N_TXT_FR' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_ru"
 print_instructions 'PKG_L10N_VOICE_RU' 'PKG_L10N_TXT_RU' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_pl"
 print_instructions 'PKG_L10N_VOICE_PL' 'PKG_L10N_TXT_PL' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_cs"
 print_instructions 'PKG_L10N_VOICE_EN' 'PKG_L10N_TXT_CS' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_es"
 print_instructions 'PKG_L10N_VOICE_EN' 'PKG_L10N_TXT_ES' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_hu"
 print_instructions 'PKG_L10N_VOICE_EN' 'PKG_L10N_TXT_HU' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_it"
 print_instructions 'PKG_L10N_VOICE_EN' 'PKG_L10N_TXT_IT' 'PKG_ENVIRONMENT' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
 

@@ -131,7 +131,7 @@ write_launcher 'APP_MAIN' 'APP_CONFIG'
 # Use base game icon for settings launcher
 
 file="${PKG_BIN_PATH}${PATH_DESK}/$APP_CONFIG_ID.desktop"
-regex="s/\(Icon=\).\+/\1$GAME_ID/"
+regex="s/\\(Icon=\\).\\+/\\1$GAME_ID/"
 sed --in-place "$regex" "$file"
 
 # Build package

@@ -131,6 +131,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 if [ "$ARCHIVE_LIBSSL" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_LIBSSL'
 		extract_data_from "$ARCHIVE_LIBSSL"
 	)
@@ -144,6 +145,7 @@ fi
 # Write launchers
 
 PKG='PKG_BIN'
+# shellcheck disable=SC2031
 if [ "$ARCHIVE" = 'ARCHIVE_GOG_OLDER' ]; then
 	APP_MAIN_EXE="$APP_MAIN_EXE_OLD"
 fi

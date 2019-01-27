@@ -131,6 +131,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Include libSSL into the game directory
 
+# shellcheck disable=SC2153
 if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
 		ARCHIVE='ARCHIVE_LIBSSL32'
@@ -142,6 +143,7 @@ if [ "$ARCHIVE_LIBSSL32" ]; then
 	APP_MAIN_LIBS_BIN32="$dir"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
+# shellcheck disable=SC2153
 if [ "$ARCHIVE_LIBSSL64" ]; then
 	(
 		ARCHIVE='ARCHIVE_LIBSSL64'

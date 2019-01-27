@@ -149,6 +149,7 @@ done
 
 # Fix a crash when starting from some terminals
 
+# shellcheck disable=SC2016
 pattern='s#^"\./$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
 sed --in-place "$pattern" "${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
 sed --in-place "$pattern" "${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"

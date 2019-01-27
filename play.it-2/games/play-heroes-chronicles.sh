@@ -247,6 +247,7 @@ case "$OPTION_PACKAGE" in
 		liberror 'OPTION_PACKAGE' "$0"
 	;;
 esac
+# shellcheck disable=SC2086
 set_temp_directories $PACKAGES_LIST
 
 # Extract game data
@@ -279,12 +280,11 @@ PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
 file="${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
-for pattern in \
-'s,^cd "$PATH_PREFIX",cd "$PATH_PREFIX/${APP_EXE%/*}",' \
-'s,^wine "$APP_EXE" $APP_OPTIONS $@,wine "${APP_EXE##*/}" $APP_OPTIONS $@,'
-do
-	sed --in-place "$pattern" "$file"
-done
+# shellcheck disable=SC2016
+pattern='s,^cd "$PATH_PREFIX",cd "$PATH_PREFIX/${APP_EXE%/*}",'
+# shellcheck disable=SC2016
+pattern="$pattern"';s,^wine "$APP_EXE" $APP_OPTIONS $@,wine "${APP_EXE##*/}" $APP_OPTIONS $@,'
+sed --in-place "$pattern" "$file"
 
 # Build package
 

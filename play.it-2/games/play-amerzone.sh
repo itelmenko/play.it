@@ -40,6 +40,7 @@ script_version=20180612.1
 # Set game-specific variables
 
 GAME_ID='amerzone'
+# shellcheck disable=SC1112 
 GAME_NAME='L’Amerzone'
 
 ARCHIVE_GOG='setup_amerzone_french_2.1.0.10.exe'

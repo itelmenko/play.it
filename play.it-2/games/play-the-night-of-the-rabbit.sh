@@ -168,11 +168,13 @@ write_launcher 'APP_MAIN'
 
 # Store saved games outside of WINE prefix
 
+# shellcheck disable=SC2016
 save_path='$WINEPREFIX/drive_c/users/$(whoami)/Local Settings/Application Data/Daedalic Entertainment/The Night of the Rabbit/Savegames'
+# shellcheck disable=SC2016
 pattern='s#cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"#&\n'
-pattern="$pattern\tmkdir --parents \"${save_path%/*}\"\n"
-pattern="$pattern\tmkdir --parents \"\$PATH_DATA/saves\"\n"
-pattern="$pattern\tln --symbolic \"\$PATH_DATA/saves\" \"$save_path\"#"
+pattern="$pattern\\tmkdir --parents \"${save_path%/*}\"\\n"
+pattern="$pattern\\tmkdir --parents \"\$PATH_DATA/saves\"\\n"
+pattern="$pattern\\tln --symbolic \"\$PATH_DATA/saves\" \"$save_path\"#"
 for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
 	sed --in-place "$pattern" "$file"
 done

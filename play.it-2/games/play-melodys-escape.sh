@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='melodys-escape'
+# shellcheck disable=SC1112
 GAME_NAME='Melody’s Escape'
 
 ARCHIVES_LIST='ARCHIVE_HUMBLE'

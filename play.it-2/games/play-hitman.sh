@@ -61,7 +61,7 @@ ARCHIVE_GAME_DATA_FILES='./repeat.* ./intro.zip ./optionsscreen.zip ./alllevels 
 CONFIG_FILES='./*.cfg ./*.ini'
 DATA_FILES='./*.sav'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='hitman.exe'

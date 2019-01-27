@@ -41,6 +41,7 @@ script_version=20190113.1
 # Set game-specific variables
 
 GAME_ID='dont-starve'
+# shellcheck disable=SC1112
 GAME_NAME='Don’t Starve'
 
 ARCHIVE_GOG='don_t_starve_en_222215_22450.sh'
@@ -104,7 +105,7 @@ PKG_BIN32_DEPS="$PKG_BIN64_DEPS"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -130,6 +131,7 @@ fi
 # Update packages list depending on source archive
 
 use_archive_specific_value 'PACKAGES_LIST'
+# shellcheck disable=SC2086
 set_temp_directories $PACKAGES_LIST
 
 # Extract game data
@@ -149,7 +151,9 @@ fi
 
 # Set working directory to the directory containing the game binary before running it
 
+# shellcheck disable=SC2016
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
+# shellcheck disable=SC2016
 pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
 file="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
 sed --in-place "$pattern" "$file"

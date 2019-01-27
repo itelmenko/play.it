@@ -60,7 +60,7 @@ ARCHIVE_GAME_DATA_FILES='./camerapaths ./db ./editor ./gui ./logfile.log ./movie
 
 CONFIG_FILES='./*.ini'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='guildii.exe'

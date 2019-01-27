@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='torins-passage'
+# shellcheck disable=SC1112
 GAME_NAME='Torin’s Passage'
 
 ARCHIVES_LIST='ARCHIVE_GOG'

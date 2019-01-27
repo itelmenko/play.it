@@ -73,6 +73,7 @@ DATA_DIRS='./logs'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='RaceTheSun.x86'
 APP_MAIN_EXE_BIN64='RaceTheSun.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='RaceTheSun_Data/Resources/UnityPlayer.png'
 APP_MAIN_ICON_RES='128'

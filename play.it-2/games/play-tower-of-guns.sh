@@ -75,7 +75,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID glx sdl2 sdl2_mixer vorbis openal"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -111,7 +111,9 @@ write_launcher 'APP_MAIN'
 
 # Change to the binary directory before running it
 
+# shellcheck disable=SC2016
 pattern='s|^cd "\$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
+# shellcheck disable=SC2016
 pattern="$pattern"';s|^"\./\$APP_EXE" \$APP_OPTIONS \$@$|"./${APP_EXE##*/}" $APP_OPTIONS $@|'
 sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 

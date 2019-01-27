@@ -131,6 +131,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
+# shellcheck disable=SC2016
 sed -i 's|$APP_EXE $APP_OPTIONS $@|cd ${APP_EXE%/*}\n${APP_EXE##*/} $APP_OPTIONS $@|' "${PKG_BIN_PATH}${PATH_BIN}/${GAME_ID}"
 
 # Build package

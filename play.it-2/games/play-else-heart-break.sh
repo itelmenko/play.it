@@ -62,6 +62,7 @@ DATA_DIRS='./logs ElseHeartbreak_Data/Saves ElseHeartbreak_Data/InitData'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='ElseHeartbreak'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='ElseHeartbreak_Data/Resources/UnityPlayer.png'

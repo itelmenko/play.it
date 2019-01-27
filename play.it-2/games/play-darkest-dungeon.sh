@@ -159,6 +159,7 @@ done
 
 # Set up persistent logging
 
+# shellcheck disable=SC2016
 pattern='s|"\./$APP_EXE" $APP_OPTIONS $@|& 1>./logs/$(date +%F-%R).log 2>\&1|'
 file0="${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
 file1="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"

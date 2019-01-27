@@ -63,18 +63,23 @@ ARCHIVE_GAME_DATA_FILES='./Data/*.pak ./DigitalMap'
 CONFIG_FILES='Data/Localization/language.lsx'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='case "${LANG%_*}" in
-	('"'"'fr'"'"') lang='"'"'French'"'"' ;;
-	('"'"'de'"'"') lang='"'"'German'"'"' ;;
-	('"'"'it'"'"') lang='"'"'Italian'"'"' ;;
-	('"'"'pl'"'"') lang='"'"'Polish'"'"' ;;
-	('"'"'zh'"'"') lang='"'"'Chinese'"'"' ;;
-	('"'"'ru'"'"') lang='"'"'Russian'"'"' ;;
-	('"'"'es'"'"') lang='"'"'Spanish'"'"' ;;
-	('"'"'en'"'"'|*) lang='"'"'English'"'"' ;;
-esac
+	('\''fr'\'') lang='\''French'\'' ;;
+	('\''de'\'') lang='\''German'\'' ;;
+	('\''it'\'') lang='\''Italian'\'' ;;
+	('\''pl'\'') lang='\''Polish'\'' ;;
+	('\''zh'\'') lang='\''Chinese'\'' ;;
+	('\''ru'\'') lang='\''Russian'\'' ;;
+	('\''es'\'') lang='\''Spanish'\'' ;;
+	('\''en'\''|*) lang='\''English'\'' ;;
+esac'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN="$APP_MAIN_PRERUN"'
 file="$PATH_CONFIG/Data/Localization/language.lsx"
-pattern="$(printf '"'"'s/id="Value" value=".*"/id="Value" value="%s" type="20"/g'"'"' "$lang")"
+pattern="$(printf '\''s/id="Value" value=".*"/id="Value" value="%s" type="20"/g'\'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN="$APP_MAIN_PRERUN"' "$lang")"
 sed --in-place "$pattern" "$file"
 pulseaudio --start
 gcc -s -O2 -shared -fPIC -o preload.so preload.c -ldl

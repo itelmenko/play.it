@@ -94,7 +94,7 @@ ARCHIVE_GAME_DATA_PATH_GOG_FR_OLD0='app'
 DATA_DIRS='./games'
 DATA_FILES='./data/high_scores.dat ./*.log'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='heroes4.exe'

@@ -118,6 +118,7 @@ write_launcher 'APP_MAIN'
 # Store saved games outside of WINE prefix
 
 for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
+	# shellcheck disable=SC2016
 	sed --in-place 's#cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"#&\n\tmkdir --parents "$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight"\n\tmkdir --parents "$PATH_DATA/save"\n\tln --symbolic "$PATH_DATA/save" "$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight"#' "$file"
 done
 

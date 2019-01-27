@@ -93,6 +93,7 @@ ARCHIVE_DOC_MAIN_PATH_GOG_FR_OLD0='app'
 
 APP_MAIN_TYPE='scummvm'
 APP_MAIN_SCUMMID='gob'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='if [ -e "$PATH_GAME/frgob3.itk" ]; then
 	APP_OPTIONS="-q fr $APP_OPTIONS"
 	export APP_OPTIONS
@@ -193,8 +194,10 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_disk"
 print_instructions 'PKG_L10N' 'PKG_DATA_DISK' 'PKG_MAIN'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_floppy"
 print_instructions 'PKG_DATA_FLOPPY' 'PKG_MAIN'
 

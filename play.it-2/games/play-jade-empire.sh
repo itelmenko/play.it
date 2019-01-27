@@ -204,8 +204,8 @@ ARCHIVE="$ARCHIVE_MAIN"
 
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_FR_OLD')
-		ln --symbolic "$(readlink --canonicalize $ARCHIVE_PART1)" "$PLAYIT_WORKDIR/$GAME_ID.r00"
-		ln --symbolic "$(readlink --canonicalize $ARCHIVE_PART2)" "$PLAYIT_WORKDIR/$GAME_ID.r01"
+		ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART1")" "$PLAYIT_WORKDIR/$GAME_ID.r00"
+		ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART2")" "$PLAYIT_WORKDIR/$GAME_ID.r01"
 		extract_data_from "$PLAYIT_WORKDIR/$GAME_ID.r00"
 		tolower "$PLAYIT_WORKDIR/gamedata"
 	;;

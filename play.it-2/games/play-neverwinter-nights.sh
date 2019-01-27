@@ -218,6 +218,7 @@ if [ "$OPTION_PACKAGE" != 'arch' ]; then
 	ARCHIVE_MAIN="$ARCHIVE"
 	archive_set 'ARCHIVE_MOVIES' 'ARCHIVE_NWMOVIES'
 	ARCHIVE="$ARCHIVE_MAIN"
+	# shellcheck disable=SC2153
 	if [ "$ARCHIVE_MOVIES" ]; then
 		APP_MAIN_PRERUN="$APP_MAIN_PRERUN_NWMOVIES"
 		PKG_BIN_DEPS="$PKG_BIN_DEPS $PKG_BIN_DEPS_NWMOVIES"
@@ -283,22 +284,29 @@ write_launcher 'APP_MAIN'
 if [ "$ARCHIVE_MOVIES" ]; then
 	file="${PKG_BIN_PATH}$PATH_BIN/$GAME_ID"
 	pattern='s/# Build prefix/&\n'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'if [ ! -d "$PATH_PREFIX" ]; then\n'
 	pattern="$pattern"'\tclean_prefix=1\n'
 	pattern="$pattern"'fi/;'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'s#cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/\* "$PATH_PREFIX"#&\n'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'if [ "$clean_prefix" = 1 ]; then\n'
 	pattern="$pattern"'\tif [ ! -e nwmovies/nwmovies.so ]; then'
 	pattern="$pattern"'\t\t(\n'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'\t\t\tcd "$PATH_PREFIX"\n'
 	pattern="$pattern"'\t\t\tsed --in-place "s/mpv /mpv --fs --no-osc /" ./nwmovies/nwplaymovie\n'
 	pattern="$pattern"'\t\t\t./nwmovies/nwmovies_install.pl build >/dev/null 2>\&1\n'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'\t\t\tcp --no-dereference --parents nwmovies/nwmovies.so nwmovies/libdis/libdisasm.so nwmovies/nwplaymovie nwplaymovie "$PATH_DATA"\n'
 	pattern="$pattern"'\t\t)\n'
 	pattern="$pattern"'\tfi\n'
 	pattern="$pattern"'fi#;'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'s#^"\./$APP_EXE" $APP_OPTIONS $@$#'
 	pattern="$pattern"'if [ ! -e nwmovies.ini ]; then\n'
+	# shellcheck disable=SC2016
 	pattern="$pattern"'\t"./$APP_EXE" $APP_OPTIONS $@\n'
 	pattern="$pattern"'fi\n&#'
 	sed --in-place "$pattern" "$file"

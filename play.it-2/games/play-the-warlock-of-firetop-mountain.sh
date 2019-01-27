@@ -70,6 +70,7 @@ DATA_DIRS='./logs'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='The Warlock of Firetop Mountain.x86'
 APP_MAIN_EXE_BIN64='The Warlock of Firetop Mountain.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='The Warlock of Firetop Mountain_Data/Resources/UnityPlayer.png'
 

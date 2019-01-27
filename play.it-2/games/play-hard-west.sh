@@ -65,6 +65,7 @@ DATA_DIRS='./logs ./Documents'
 CONFIG_DIRS='./.config'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
 	mkdir --parents libs
 	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
@@ -79,6 +80,7 @@ fi
 export HOME="$PATH_PREFIX"'
 APP_MAIN_EXE_BIN32='HardWest.x86'
 APP_MAIN_EXE_BIN64='HardWest.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='HardWest_Data/Resources/UnityPlayer.png'
 
@@ -98,7 +100,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\

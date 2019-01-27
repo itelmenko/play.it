@@ -184,7 +184,7 @@ postinst_icons_linking 'APP_MAIN' 'APP_CONFIG'
 write_metadata 'PKG_DATA'
 
 cat > "$postinst" << EOF
-printf 'Building pack0.dzip, this might take a while…\n'
+printf 'Building pack0.dzip, this might take a while…\\n'
 cat "$PATH_GAME/CookedPC/pack0.dzip.split"* > "$PATH_GAME/CookedPC/pack0.dzip"
 rm "$PATH_GAME/CookedPC/pack0.dzip.split"*
 EOF
@@ -221,14 +221,19 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_de"
 print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_DE' 'PKG_DATA'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_en"
 print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_EN' 'PKG_DATA'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_fr"
 print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_FR' 'PKG_DATA'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_pl"
 print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_PL' 'PKG_DATA'
+# shellcheck disable=SC2059
 printf "$lang_string" "$lang_ru"
 print_instructions 'PKG_BIN' 'PKG_PACK1' 'PKG_PACK2' 'PKG_VOICES_RU' 'PKG_DATA'
 

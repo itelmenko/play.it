@@ -140,7 +140,7 @@ use_archive_specific_value 'APP_MAIN_ICON_RES'
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-if [ $ARCHIVE = 'ARCHIVE_GOG_WINDOWS' ] || [ $ARCHIVE = 'ARCHIVE_GOG_WINDOWS_OLD' ]; then
+if [ "$ARCHIVE" = 'ARCHIVE_GOG_WINDOWS' ] || [ "$ARCHIVE" = 'ARCHIVE_GOG_WINDOWS_OLD' ]; then
 	PKG='PKG_BIN'
 	extract_and_sort_icons_from 'APP_MAIN'
 	move_icons_to 'PKG_DATA'
@@ -155,7 +155,7 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
-if [ $ARCHIVE = 'ARCHIVE_GOG_LINUX' ]; then
+if [ "$ARCHIVE" = 'ARCHIVE_GOG_LINUX' ]; then
 	postinst_icons_linking 'APP_MAIN'
 fi
 write_metadata 'PKG_DATA'

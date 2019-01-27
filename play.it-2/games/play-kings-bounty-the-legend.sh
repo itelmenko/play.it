@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='kings-bounty-the-legend'
+# shellcheck disable=SC1112
 GAME_NAME='King’s Bounty: The Legend'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'

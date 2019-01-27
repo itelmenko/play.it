@@ -71,7 +71,7 @@ CONFIG_FILES='./*.ini'
 DATA_DIRS='./characters ./mpsave ./override ./portraits ./scripts'
 DATA_FILES='./chitin.key ./dialog*.tlk'
 
-APP_WINETRICKS="vd=\$(xrandr|awk '/\*/ {print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='iwd2.exe'
@@ -140,8 +140,8 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 file="${PKG_L10N_PATH}${PATH_GAME}/icewind2.ini"
 pattern="s/HD0:=.\\+/HD0:=C:\\\\${GAME_ID}\\\\/"
-pattern="$pattern;s/CD1:=.\+/CD1:=C:\\\\${GAME_ID}\\\\data\\\\/"
-pattern="$pattern;s/CD2:=.\+/CD2:=C:\\\\${GAME_ID}\\\\cd2\\\\/"
+pattern="$pattern;s/CD1:=.\\+/CD1:=C:\\\\${GAME_ID}\\\\data\\\\/"
+pattern="$pattern;s/CD2:=.\\+/CD2:=C:\\\\${GAME_ID}\\\\cd2\\\\/"
 sed --in-place "$pattern" "$file"
 
 # Write launchers

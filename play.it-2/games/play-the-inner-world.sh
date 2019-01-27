@@ -59,6 +59,7 @@ ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='./fizbin-link.url ./headup-link.url ./innerworld-link.url ./media ./meta-inf ./mimetype'
 
 APP_MAIN_TYPE='wine'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='[ "$(wine --version | sed "s/.\+(\(.\+\))/\\1/")" = "Staging" ] && winetricks csmt=on'
 APP_MAIN_EXE='theinnerworld.exe'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'

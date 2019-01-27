@@ -76,7 +76,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor openal sdl2 vorbis"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -117,7 +117,9 @@ write_launcher 'APP_MAIN'
 
 # Set working directory to the directory containing the game binary before running it
 
+# shellcheck disable=SC2016
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
+# shellcheck disable=SC2016
 pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
 file="${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
 sed --in-place "$pattern" "$file"

@@ -40,6 +40,7 @@ script_version=20180908.1
 # Set game-specific variables
 
 GAME_ID='nightmares-from-the-deep-2'
+# shellcheck disable=SC1112
 GAME_NAME='Nightmares From the Deep 2: The Siren’s Call'
 
 ARCHIVE_GOG='nightmares_from_the_deep_2_the_siren_s_call_en_gog_1_22645.sh'

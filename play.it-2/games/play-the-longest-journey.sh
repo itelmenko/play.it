@@ -122,7 +122,9 @@ write_launcher 'APP_MAIN'
 # Apply registry fix
 
 file="${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
+# shellcheck disable=SC2016
 pattern='s#cp --recursive --remove-destination --symbolic-link "$PATH_GAME"/\* "$PATH_PREFIX"#&\n'
+# shellcheck disable=SC2016
 pattern="$pattern"'wine "C:\\\\$GAME_ID\\\\tljregfix.exe"#'
 sed --in-place "$pattern" "$file"
 

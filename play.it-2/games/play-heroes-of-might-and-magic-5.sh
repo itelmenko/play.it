@@ -166,6 +166,7 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN' 'APP_HOF' 'APP_EDIT' 'APP_HOFEDIT'
+# shellcheck disable=SC2016
 pattern='s|^cd "$PATH_PREFIX"$'
 pattern="$pattern|cd \"\$PATH_PREFIX/\${APP_EXE%/*}\"|"
 pattern="$pattern;s|^wine \"\$APP_EXE\" \$APP_OPTIONS \$@$"
@@ -174,9 +175,11 @@ sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Store saved games outside of WINE prefix
 
+# shellcheck disable=SC2016
 saves_path_base='$WINEPREFIX/drive_c/users/$(whoami)/My Documents/My Games/Heroes of Might and Magic V'
 saves_path1="$saves_path_base/Profiles"
 saves_path2="$saves_path_base/Hammers of Fate/Profiles"
+# shellcheck disable=SC2016
 pattern='s#^init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"$#&'
 pattern="$pattern\\nif [ ! -e \"$saves_path1\" ]; then"
 pattern="$pattern\\n\\tmkdir --parents \"${saves_path1%/*}\""

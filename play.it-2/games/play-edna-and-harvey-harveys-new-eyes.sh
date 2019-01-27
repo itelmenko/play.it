@@ -39,6 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='edna-and-harvey-harveys-new-eyes'
+# shellcheck disable=SC1112
 GAME_NAME='Edna & Harvey: Harvey’s New Eyes'
 
 ARCHIVES_LIST='ARCHIVE_GOG'

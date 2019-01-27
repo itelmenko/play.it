@@ -118,7 +118,7 @@ PKG='PKG_BIN32'
 organize_data 'GAME_BIN32' "$PATH_GAME"
 (
 	cd "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_GAME_BIN32_PATH"
-	find res -name '*.binltl' | while read file; do
+	find res -name '*.binltl' | while read -r file; do
 		cp --parents "$file" "${PKG_BIN32_PATH}${PATH_GAME}"
 		rm "$file"
 	done
@@ -128,7 +128,7 @@ PKG='PKG_BIN64'
 organize_data 'GAME_BIN64' "$PATH_GAME"
 (
 	cd "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_GAME_BIN64_PATH"
-	find res -name '*.binltl64' | while read file; do
+	find res -name '*.binltl64' | while read -r file; do
 		cp --parents "$file" "${PKG_BIN64_PATH}${PATH_GAME}"
 		rm "$file"
 	done

@@ -63,6 +63,7 @@ APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Starship Traveller.x86'
 APP_MAIN_EXE_BIN64='Starship Traveller.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='Starship Traveller_Data/Resources/UnityPlayer.png'
 

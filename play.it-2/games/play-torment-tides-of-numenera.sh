@@ -70,6 +70,7 @@ APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='pulseaudio --start
 export LANG="en_US.UTF-8"'
 APP_MAIN_EXE='TidesOfNumenera'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='TidesOfNumenera_Data/Resources/UnityPlayer.png'

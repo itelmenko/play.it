@@ -128,6 +128,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 if [ "$ARCHIVE_ICONS" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_ICONS'
 		extract_data_from "$ARCHIVE_ICONS"
 	)
@@ -145,6 +146,7 @@ organize_data 'DOC2'      "$PATH_DOC"
 organize_data 'GAME_DATA' "$PATH_GAME"
 
 PKG='PKG_DATA'
+# shellcheck disable=SC2031
 if [ "$ARCHIVE_ICONS" ]; then
 	organize_data 'ICONS' "$PATH_ICON_BASE"
 elif [ "$ARCHIVE" = 'ARCHIVE_GOG' ]; then

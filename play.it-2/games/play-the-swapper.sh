@@ -122,6 +122,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 	fi
 )
 
+# shellcheck disable=SC2016
 find "$PLAYIT_WORKDIR/gamedata" -name '*:com.dropbox.attributes:$DATA' -delete
 
 PKG='PKG_BIN32'

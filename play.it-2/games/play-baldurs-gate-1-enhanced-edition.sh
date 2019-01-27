@@ -39,6 +39,7 @@ script_version=20180930.1
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-1-enhanced-edition'
+# shellcheck disable=SC1112
 GAME_NAME='Baldur’s Gate - Enhanced Edition'
 
 ARCHIVE_GOG='baldur_s_gate_enhanced_edition_en_2_5_23121.sh'
@@ -119,7 +120,7 @@ PKG_BIN_DEPS_GOG_OLD2="$PKG_BIN_DEPS_GOG_OLD0"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -179,6 +180,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_LIBSSL32'
 		extract_data_from "$ARCHIVE_LIBSSL32"
 	)
@@ -195,6 +197,7 @@ write_launcher 'APP_MAIN'
 # Build package
 
 use_archive_specific_value 'PKG_BIN_DEPS'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0'|'ARCHIVE_GOG_OLD1'|'ARCHIVE_GOG_OLD2')
 		case "$OPTION_PACKAGE" in

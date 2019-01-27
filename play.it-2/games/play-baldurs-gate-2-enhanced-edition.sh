@@ -39,6 +39,7 @@ script_version=20180801.4
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-2-enhanced-edition'
+# shellcheck disable=SC1112
 GAME_NAME='Baldur’s Gate 2 - Enhanced Edition'
 
 ARCHIVE_GOG='baldur_s_gate_2_enhanced_edition_en_2_5_21851.sh'
@@ -133,6 +134,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 if [ "$ARCHIVE_LIBSSL" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_LIBSSL'
 		extract_data_from "$ARCHIVE_LIBSSL"
 	)
@@ -148,7 +150,8 @@ write_launcher 'APP_MAIN'
 
 # Ensure that libjson.so.0 can be found and loaded for game versions needing it
 
-if [ 'ARCHIVE' = 'ARCHIVE_GOG_OLD0' ]; then
+# shellcheck disable=SC2031
+if [ "$ARCHIVE" = 'ARCHIVE_GOG_OLD0' ]; then
 	PKG_BIN_DEPS="$PKG_BIN_DEPS json"
 
 	target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"

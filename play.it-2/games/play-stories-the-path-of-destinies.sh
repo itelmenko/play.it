@@ -119,20 +119,24 @@ write_launcher 'APP_MAIN' 'APP_LANGUAGE'
 
 # Store saved games and settings outside of WINE prefix
 
+# shellcheck disable=SC2016
 save_path='$WINEPREFIX/drive_c/users/$(whoami)/Local Settings/Application Data/Stories/Saved/SaveGames'
+# shellcheck disable=SC2016
 pattern='s|cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"|&\n'
-pattern="$pattern\tmkdir --parents \"${save_path%/*}\"\n"
-pattern="$pattern\tmkdir --parents \"\$PATH_DATA/saves\"\n"
-pattern="$pattern\tln --symbolic \"\$PATH_DATA/saves\" \"$save_path\"|"
+pattern="$pattern\\tmkdir --parents \"${save_path%/*}\"\\n"
+pattern="$pattern\\tmkdir --parents \"\$PATH_DATA/saves\"\\n"
+pattern="$pattern\\tln --symbolic \"\$PATH_DATA/saves\" \"$save_path\"|"
 for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
 	sed --in-place "$pattern" "$file"
 done
 
+# shellcheck disable=SC2016
 config_path='$WINEPREFIX/drive_c/users/$(whoami)/Local Settings/Application Data/Stories/Saved/Config'
+# shellcheck disable=SC2016
 pattern='s|cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"|&\n'
-pattern="$pattern\tmkdir --parents \"${config_path%/*}\"\n"
-pattern="$pattern\tmkdir --parents \"\$PATH_CONFIG/config\"\n"
-pattern="$pattern\tln --symbolic \"\$PATH_CONFIG/config\" \"$config_path\"|"
+pattern="$pattern\\tmkdir --parents \"${config_path%/*}\"\\n"
+pattern="$pattern\\tmkdir --parents \"\$PATH_CONFIG/config\"\\n"
+pattern="$pattern\\tln --symbolic \"\$PATH_CONFIG/config\" \"$config_path\"|"
 for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
 	sed --in-place "$pattern" "$file"
 done
