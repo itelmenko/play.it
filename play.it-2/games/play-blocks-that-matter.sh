@@ -2,8 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2018-2019, Solène Huault
+# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,41 +30,45 @@ set -o errexit
 ###
 
 ###
-# Gathering Sky
-# build native packages from the original installers
-# send your bug reports to mopi@dotslashplay.it
+# Blocks that matter
+# build native Linux packages from the original installers
+# send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190120.3
+script_version=20181022.4
 
 # Set game-specific variables
 
-GAME_ID='gathering-sky'
-GAME_NAME='Gathering Sky'
+GAME_ID='blocks-that-matter'
+GAME_NAME='Blocks that matter'
 
-ARCHIVE_HUMBLE='GatheringSky_Linux_64bit.zip'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/gathering-sky'
-ARCHIVE_HUMBLE_MD5='c590edce835070a1ac2ae47ac620dc48'
-ARCHIVE_HUMBLE_SIZE='1200000'
-ARCHIVE_HUMBLE_VERSION='1.0-humble1'
-ARCHIVE_HUMBLE_TYPE='zip_unclean'
+ARCHIVE_GOG='gog_blocks_that_matter_2.0.0.3.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/blocks_that_matter'
+ARCHIVE_GOG_MD5='af9cec2b6104720c32718c02be120657'
+ARCHIVE_GOG_VERSION='1.0-gog2.0.0.3'
+ARCHIVE_GOG_SIZE='200000'
+ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_GAME_MAIN_PATH='packr/linux/GatheringSky'
-ARCHIVE_GAME_MAIN_FILES='desktop-0.1.jar'
+ARCHIVE_DOC0_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC0_MAIN_FILES='*.txt'
+
+ARCHIVE_DOC1_MAIN_PATH='data/noarch/game/README'
+ARCHIVE_DOC1_MAIN_FILES='*'
+
+ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
+ARCHIVE_GAME_MAIN_FILES='BTM.jar BTM_lib liblwjgl*.so libjinput-linux*.so BTM.png BTM.bftm config/DisplayOptions.xml config/KeyMapping.xml'
+
+CONFIG_FILES='./config/*.xml'
 
 APP_MAIN_TYPE='java'
-APP_MAIN_JAVA_OPTIONS='-Xmx1G'
-APP_MAIN_EXE='desktop-0.1.jar'
-APP_MAIN_ICONS_LIST='APP_MAIN_ICON_16 APP_MAIN_ICON_32 APP_MAIN_ICON_128'
-APP_MAIN_ICON_16='images/Icon_16.png'
-APP_MAIN_ICON_32='images/Icon_32.png'
-APP_MAIN_ICON_128='images/Icon_128.png'
+APP_MAIN_LIBS='.'
+APP_MAIN_EXE='BTM.jar'
+APP_MAIN_JAVA_OPTIONS='-Djava.library.path="." -Dorg.lwjgl.librarypath="$PWD"'
+APP_MAIN_ICON='BTM.png'
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_DEPS='java'
-# Easier upgrade from packages generated with pre-20190120.3 scripts
-PKG_MAIN_PROVIDE='gathering-sky-data'
+PKG_MAIN_DEPS="$PKG_DATA_ID xcursor libxrandr openal java"
 
 # Load common functions
 
@@ -96,34 +100,30 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-(
-	ARCHIVE_INNER="$PLAYIT_WORKDIR/gamedata/GatheringSky.tar.gz"
-	ARCHIVE_INNER_TYPE='tar.gz'
-	ARCHIVE='ARCHIVE_INNER'
-	extract_data_from "$ARCHIVE_INNER"
-	rm "$ARCHIVE_INNER"
-)
-set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
-
-# Get game icons
-
-(
-	ARCHIVE_JAR="${PKG_MAIN_PATH}${PATH_GAME}/desktop-0.1.jar"
-	ARCHIVE_JAR_TYPE='zip'
-	ARCHIVE='ARCHIVE_JAR'
-	extract_data_from "$ARCHIVE_JAR"
-)
-icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-launchers_write 'APP_MAIN'
+write_launcher 'APP_MAIN'
 
 # Build package
 
+icons_linking_postinst 'APP_MAIN'
+if [ "$OPTION_PACKAGE" = 'deb' ]; then
+	cat >> "$postinst" <<- EOF
+	if [ -e /usr/lib/i386-linux-gnu/libopenal.so.1 ]; then
+	    ln --force --symbolic /usr/lib/i386-linux-gnu/libopenal.so.1 "$PATH_GAME/libopenal.so"
+	fi
+	if [ -e /usr/lib/x86_64-linux-gnu/libopenal.so.1 ]; then
+	    ln --force --symbolic /usr/lib/x86_64-linux-gnu/libopenal.so.1 "$PATH_GAME/libopenal64.so"
+	fi
+	EOF
+	cat >> "$prerm" <<- EOF
+	rm --force "$PATH_GAME/libopenal.so"
+	rm --force "$PATH_GAME/libopenal64.so"
+	EOF
+fi
 write_metadata
 build_pkg
 
