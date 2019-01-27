@@ -132,6 +132,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Set archive specific variables
@@ -165,7 +166,7 @@ write_launcher 'APP_MAIN' 'APP_EDITOR'
 # Use base game icon for editor launcher
 
 file="${PKG_BIN_PATH}${PATH_DESK}/$APP_EDITOR_ID.desktop"
-pattern="s/\(Icon\)=.*/\1=$GAME_ID/"
+pattern="s/\\(Icon\\)=.*/\\1=$GAME_ID/"
 sed --in-place "$pattern" "$file"
 
 # Build packages

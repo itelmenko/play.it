@@ -114,6 +114,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract data from game
@@ -156,8 +157,10 @@ case "${LANG%_*}" in
 	;;
 esac
 printf '\n'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_disk"
 print_instructions 'PKG_DATA_DISK' 'PKG_MAIN'
+# shellcheck disable=SC2059
 printf "$version_string" "$version_floppy"
 print_instructions 'PKG_DATA_FLOPPY' 'PKG_MAIN'
 

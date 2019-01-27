@@ -39,6 +39,7 @@ script_version=20180303.2
 # Set game-specific variables
 
 GAME_ID='order-of-the-thorne'
+# shellcheck disable=SC1112
 GAME_NAME='Order of the Thorne: The King’s Challenge'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
@@ -102,6 +103,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

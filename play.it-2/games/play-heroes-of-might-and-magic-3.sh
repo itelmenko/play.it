@@ -89,7 +89,7 @@ DATA_DIRS='./games ./maps ./random_maps'
 DATA_FILES='./data/h3ab_bmp.lod ./data/h3ab_spr.lod ./data/h3bitmap.lod ./data/h3sprite.lod'
 
 APP_REGEDIT='tweaks.reg'
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='heroes3.exe'
@@ -127,7 +127,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks xrandr"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -147,6 +147,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Load patch if using old GOG English archive

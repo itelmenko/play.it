@@ -128,7 +128,7 @@ PKG_BIN64_PROVIDE='icewind-dale-enhanced-edition'
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -148,10 +148,12 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Set pakcages list dependending on source archive
 use_archive_specific_value 'PACKAGES_LIST'
+# shellcheck disable=SC2086
 set_temp_directories $PACKAGES_LIST
 
 # Try to load icons archive
@@ -192,6 +194,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_LIBSSL32'
 		extract_data_from "$ARCHIVE_LIBSSL32"
 	)
@@ -201,6 +204,7 @@ if [ "$ARCHIVE_LIBSSL32" ]; then
 fi
 if [ "$ARCHIVE_LIBSSL64" ]; then
 	(
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_LIBSSL64'
 		extract_data_from "$ARCHIVE_LIBSSL64"
 	)
@@ -213,6 +217,7 @@ fi
 
 PKG='PKG_BIN32'
 write_launcher 'APP_MAIN'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0');;
 	(*)
@@ -224,6 +229,7 @@ esac
 # Build package
 
 use_archive_specific_value 'PKG_BIN32_DEPS'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0')
 		case "$OPTION_PACKAGE" in
@@ -261,6 +267,7 @@ case "$ARCHIVE" in
 	;;
 esac
 write_metadata 'PKG_BIN32'
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0');;
 	(*)

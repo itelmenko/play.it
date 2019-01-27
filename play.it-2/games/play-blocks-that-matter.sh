@@ -63,6 +63,7 @@ CONFIG_FILES='./config/*.xml'
 APP_MAIN_TYPE='java'
 APP_MAIN_LIBS='.'
 APP_MAIN_EXE='BTM.jar'
+# shellcheck disable=SC2016
 APP_MAIN_JAVA_OPTIONS='-Djava.library.path="." -Dorg.lwjgl.librarypath="$PWD"'
 APP_MAIN_ICON='BTM.png'
 
@@ -75,7 +76,7 @@ PKG_MAIN_DEPS="$PKG_DATA_ID xcursor libxrandr openal java"
 target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -95,6 +96,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

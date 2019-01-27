@@ -74,7 +74,7 @@ CONFIG_FILES='./*.bnd ./*.cfg ./*.ini'
 DATA_DIRS='./current ./save_0 ./save_1 ./save_2 ./save_3 ./save_4 ./save_5 ./save_6 ./save_7 ./save_8 ./save_9 ./save_10 ./save_11 ./save_12 ./save_13 ./save_14'
 DATA_FILES='./*.log'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='shock2.exe'
@@ -105,6 +105,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

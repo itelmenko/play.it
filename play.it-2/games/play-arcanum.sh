@@ -76,7 +76,7 @@ ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./data ./modules/arcanum/maps ./modules/arcanum/saves'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='arcanum.exe'
@@ -118,6 +118,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

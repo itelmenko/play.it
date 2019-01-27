@@ -53,7 +53,7 @@ ARCHIVE_GOG_PART1='setup_the_guild2_renaissance_2.2.0.5-1.bin'
 ARCHIVE_GOG_PART1_MD5='ae4c17c8e3793befeec8b9a16e4f2b0c'
 ARCHIVE_GOG_PART1_TYPE='rar'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 ARCHIVE_DOC_DATA_PATH='game'
 ARCHIVE_DOC_DATA_FILES='./manual.pdf ./*.txt'
@@ -98,6 +98,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Check that all parts of the installer are present

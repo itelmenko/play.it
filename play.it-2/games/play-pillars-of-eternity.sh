@@ -91,6 +91,7 @@ DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='PillarsOfEternity'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICON='PillarsOfEternity_Data/Resources/UnityPlayer.png'
 # Keep compatibility with old archives
@@ -113,7 +114,7 @@ PKG_BIN_DEPS="$PKG_AREAS_ID $PKG_DATA_ID glu xcursor libxrandr"
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -133,6 +134,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Load extra archives (DLC)
@@ -148,14 +150,17 @@ ARCHIVE="$ARCHIVE_MAIN"
 extract_data_from "$SOURCE_ARCHIVE"
 (
 	if [ "$ARCHIVE_DLC1" ]; then
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_GOG_DLC1'
 		extract_data_from "$ARCHIVE_DLC1"
 	fi
 	if [ "$ARCHIVE_DLC2" ]; then
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_GOG_DLC2'
 		extract_data_from "$ARCHIVE_DLC2"
 	fi
 	if [ "$ARCHIVE_DLC3" ]; then
+		# shellcheck disable=SC2030
 		ARCHIVE='ARCHIVE_GOG_DLC3'
 		extract_data_from "$ARCHIVE_DLC3"
 	fi
@@ -170,6 +175,7 @@ write_launcher 'APP_MAIN'
 
 # Build package
 
+# shellcheck disable=SC2031
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0'|'ARCHIVE_GOG_OLD1')
 		APP_MAIN_ICONS_LIST="$APP_MAIN_ICONS_LIST_OLD"

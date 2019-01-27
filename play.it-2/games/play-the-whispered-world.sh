@@ -76,6 +76,7 @@ ARCHIVE_ICONS_FILES='./16x16 ./32x32 ./48x48 ./256x256'
 CONFIG_FILES='./config.ini'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='mkdir --parents "$HOME/.local/share/Daedalic Entertainment GmbH/The Whispered World Special Edition/Savegames"'
 APP_MAIN_EXE='TWWSE'
 APP_MAIN_LIBS='libs64'
@@ -113,6 +114,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Try to load icons archive

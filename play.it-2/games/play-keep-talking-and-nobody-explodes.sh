@@ -69,6 +69,7 @@ DATA_DIRS='./logs'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='ktane.x86'
 APP_MAIN_EXE_BIN64='ktane.x86_64'
+# shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='ktane_Data/Resources/UnityPlayer.png'
@@ -101,6 +102,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Check for optional archives

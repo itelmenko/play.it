@@ -66,10 +66,12 @@ ARCHIVE_GAME1_DATA_PATH='.'
 ARCHIVE_GAME1_DATA_FILES='./Web ./System/*.ini ./System/*.u ./System/*.int'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN_ARCH='export UT_PREFS="$HOME/.loki/ut"
 mkdir --parents "$UT_PREFS/System"
 pulseaudio --start
 export LD_PRELOAD="/usr/lib32/pulseaudio/libpulsedsp.so"'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN_DEB='export UT_PREFS="$HOME/.loki/ut"
 mkdir --parents "$UT_PREFS/System"
 pulseaudio --start
@@ -114,6 +116,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Check presence of Linux client archive
@@ -161,7 +164,9 @@ write_launcher 'APP_MAIN'
 
 # Set working directory to the directory containing the game binary before running it
 
+# shellcheck disable=SC2016
 pattern='s|^cd "$PATH_PREFIX"$|cd "$PATH_PREFIX/${APP_EXE%/*}"|'
+# shellcheck disable=SC2016
 pattern="$pattern"';s|^"\./$APP_EXE"|"./${APP_EXE##*/}"|'
 sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}/$GAME_ID"
 

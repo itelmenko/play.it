@@ -94,6 +94,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -109,6 +110,7 @@ for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
 	write_launcher 'APP_MAIN'
 done
 
+# shellcheck disable=SC2016
 sed --in-place 's|"./$APP_EXE" \($APP_OPTIONS $@\)|cd "${APP_EXE%/*}"\n"./${APP_EXE##*/}" \1|' "${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID" "${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
 
 # Build package

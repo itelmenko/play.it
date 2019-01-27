@@ -41,6 +41,7 @@ script_version=20180930.4
 SCRIPT_DEPS='unix2dos'
 
 GAME_ID='baldurs-gate-1'
+# shellcheck disable=SC1112
 GAME_NAME='Baldur’s Gate'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR ARCHIVE_GOG_FR_OLD0'
@@ -127,7 +128,7 @@ PKG_BIN_PROVIDE='baldurs-gate'
 target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: ${XDG_DATA_HOME:="$HOME/.local/share"}
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
 		"$PWD"\
 		"$XDG_DATA_HOME/play.it"\
@@ -147,6 +148,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -167,6 +169,7 @@ move_icons_to 'PKG_DATA'
 # Tweak paths in baldur.ini
 
 file="${PKG_L10N_PATH}${PATH_GAME}/baldur.ini"
+# shellcheck disable=SC1003
 pattern='s/^\(.D.:\)=.*/\1=C:\\'"$GAME_ID"'\\/'
 sed --in-place "$pattern" "$file"
 unix2dos "${PKG_L10N_PATH}${PATH_GAME}/baldur.ini" > /dev/null 2>&1

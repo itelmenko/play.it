@@ -59,7 +59,7 @@ ARCHIVE_GAME_DATA_FILES='./*.eng ./audio ./binks ./campaigns ./cities ./data ./d
 CONFIG_FILES='./*.cfg ./*.ini'
 DATA_DIRS='./campaigns ./save'
 
-APP_WINETRICKS="vd=\$(xrandr|grep '\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='emperor.exe'
@@ -105,6 +105,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

@@ -101,6 +101,7 @@ APP_MAIN_TYPE='wine'
 APP_MAIN_PRERUN="rgamma=\$(xgamma 2>&1|sed 's/->//'|cut -d',' -f1|awk '{print \$2}')
 ggamma=\$(xgamma 2>&1|sed 's/->//'|cut -d',' -f2|awk '{print \$2}')
 bgamma=\$(xgamma 2>&1|sed 's/->//'|cut -d',' -f3|awk '{print \$2}')"
+# shellcheck disable=SC2016
 APP_MAIN_POSTRUN='xgamma -rgamma $rgamma -ggamma $ggamma -bgamma $bgamma'
 APP_MAIN_EXE='system/deusex.exe'
 APP_MAIN_ICON='system/deusex.exe'
@@ -139,6 +140,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 		exit 1
 	fi
 fi
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
