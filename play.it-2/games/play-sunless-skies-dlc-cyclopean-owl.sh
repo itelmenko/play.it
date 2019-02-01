@@ -29,53 +29,32 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies
+# Sunless Skies — Cyclopean Owl DLC
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190201.2
+script_version=20190201.1
 
 # Set game-specific variables
 
+# copy game id from play-sunless-skies.sh
 GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies'
+GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
 
-ARCHIVE_GOG='sunless_skies_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/sunless_skies'
+ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
 ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='0fc87cf745c2db5d36e412c9265d1d76'
+ARCHIVE_GOG_MD5='52d6ad60c60dd3a7354696275e00b3b0'
 ARCHIVE_GOG_VERSION='1.1.9.5.08b4e1b8-gog27040'
-ARCHIVE_GOG_SIZE='3600000'
+ARCHIVE_GOG_SIZE='1100'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='Sunless?Skies.x86 Sunless?Skies_Data/*/x86'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
+ARCHIVE_GAME_MAIN_FILES='dlc'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='Sunless?Skies.x86_64 Sunless?Skies_Data/*/x86_64'
+PACKAGES_LIST='PKG_MAIN'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='Sunless?Skies_Data'
-
-DATA_DIRS='./dlc ./logs'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='Sunless Skies.x86'
-APP_MAIN_EXE_BIN64='Sunless Skies.x86_64'
-# shellcheck disable=SC2016
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Sunless Skies_Data/Resources/UnityPlayer.png'
-
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
+PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
@@ -111,18 +90,9 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Write launchers
-
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	launcher_write 'APP_MAIN'
-done
-
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
