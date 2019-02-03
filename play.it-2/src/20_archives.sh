@@ -65,7 +65,7 @@ archive_set_error_not_found() {
 
 # set a single archive for data extraction
 # USAGE: archive_set $name $archive[…]
-# CALLS: archive_get_infos archive_check_for_extra_parts
+# CALLS: archive_get_infos archive_check_for_extra_parts archive_get_md5sum
 archive_set() {
 	local archive
 	local current_value
