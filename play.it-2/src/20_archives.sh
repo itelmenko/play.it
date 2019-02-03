@@ -1,3 +1,21 @@
+# get md5sum for an archive, with caching mechanism using archive name
+# USAGE: archive_get_md5sum $file $name
+# CALLED BY: archive_set archive_integrity_check_md5
+archive_get_md5sum() {
+	local file="$1"
+	local name="$2"
+	local md5sum
+	[ -z "$name" ] || md5sum="$(get_value "${name}_CACHED_MD5SUM")"
+	if [ -z "$md5sum" ]; then
+		md5sum="$(md5sum "$file" | awk '{print $1}')"
+		if [ "$name" ]; then
+			eval "${name}_CACHED_MD5SUM"=\"$md5sum\"
+			export "${name?}_CACHED_MD5SUM"
+		fi
+	fi
+	printf '%s' "$md5sum"
+}
+
 # set main archive for data extraction
 # USAGE: archive_set_main $archive[…]
 # CALLS: archive_set archive_set_error_not_found
@@ -57,10 +75,9 @@ archive_set() {
 	shift 1
 	current_value="$(get_value "$name")"
 	if [ -n "$current_value" ]; then
-		current_value_md5="$(md5sum "$current_value" | awk '{print $1}')"
 		for archive in "$@"; do
 			file="$(get_value "$archive")"
-			if [ "$(basename "$current_value")" = "$file" ] || [ "$current_value_md5" = "$(get_value "${archive}_MD5")" ]; then
+			if [ "$(basename "$current_value")" = "$file" ] || [ "$(archive_get_md5sum "$current_value" "$name")" = "$(get_value "${archive}_MD5")" ]; then
 				archive_get_infos "$archive" "$name" "$current_value"
 				archive_check_for_extra_parts "$archive" "$name"
 				ARCHIVE="$archive"
@@ -130,7 +147,7 @@ archive_get_infos() {
 	md5="$(get_value "${ARCHIVE}_MD5")"
 	type="$(get_value "${ARCHIVE}_TYPE")"
 	size="$(get_value "${ARCHIVE}_SIZE")"
-	[ -n "$md5" ] && archive_integrity_check "$ARCHIVE" "$file"
+	[ -n "$md5" ] && archive_integrity_check "$ARCHIVE" "$file" "$name"
 	if [ -z "$type" ]; then
 		archive_guess_type "$ARCHIVE" "$file"
 		type="$(get_value "${ARCHIVE}_TYPE")"
@@ -238,16 +255,18 @@ archive_print_file_in_use() {
 }
 
 # check integrity of target file
-# USAGE: archive_integrity_check $archive $file
+# USAGE: archive_integrity_check $archive $file ($name)
 # CALLS: archive_integrity_check_md5 liberror
 archive_integrity_check() {
 	local archive
 	local file
+	local name
 	archive="$1"
 	file="$2"
+	name="$3"
 	case "$OPTION_CHECKSUM" in
 		('md5')
-			archive_integrity_check_md5 "$archive" "$file"
+			archive_integrity_check_md5 "$archive" "$file" "$name"
 			print_ok
 		;;
 		('none')
@@ -260,17 +279,19 @@ archive_integrity_check() {
 }
 
 # check integrity of target file against MD5 control sum
-# USAGE: archive_integrity_check_md5 $archive $file
+# USAGE: archive_integrity_check_md5 $archive $file ($name)
 # CALLS: archive_integrity_check_print archive_integrity_check_error
 # CALLED BY: archive_integrity_check
 archive_integrity_check_md5() {
 	local archive
 	local file
+	local name
 	archive="$1"
 	file="$2"
+	name="$3"
 	archive_integrity_check_print "$file"
 	archive_sum="$(get_value "${ARCHIVE}_MD5")"
-	file_sum="$(md5sum "$file" | awk '{print $1}')"
+	file_sum="$(archive_get_md5sum "$file" "$name")"
 	[ "$file_sum" = "$archive_sum" ] || archive_integrity_check_error "$file"
 }
 
