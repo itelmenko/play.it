@@ -1,5 +1,5 @@
 # get md5sum for an archive, with caching mechanism using archive name
-# USAGE: archive_get_md5sum $file $name
+# USAGE: archive_get_md5sum $file ($name)
 # CALLED BY: archive_set archive_integrity_check_md5
 archive_get_md5sum() {
 	local file="$1"
