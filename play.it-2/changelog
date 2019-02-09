@@ -1,3 +1,7 @@
+2.11.1
+
+  * Fix apt version detection on old versions of apt
+
 2.11.0
 
   * Add ability to generate packages for Gentoo, using --package=gentoo
