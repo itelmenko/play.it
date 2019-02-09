@@ -5,6 +5,9 @@
 
   * Move all compatibility aliases to a dedicated source file
 
+  * glx meta-dependency do not install a transitional package anymore on
+    recent Debian versions
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
