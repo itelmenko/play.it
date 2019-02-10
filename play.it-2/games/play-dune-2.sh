@@ -2,8 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Dominique Derrier
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2018-2019, Dominique Derrier
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,16 +31,16 @@ set -o errexit
 
 ###
 # Dune II : Battle for Arrakis
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180825.0
+script_version=20190210.1
 
 # Set game-specific variables
 
-GAME_ID='duneII-game'
-GAME_NAME='DuneII'
+GAME_ID='dune-2'
+GAME_NAME='Dune II: Battle for Arrakis'
 
 ARCHIVE_LTF='setup-00022-DuneII-PCDOS.exe'
 ARCHIVE_LTF_TYPE='innosetup'
@@ -50,13 +50,10 @@ ARCHIVE_LTF_SIZE='340000'
 ARCHIVE_LTF_VERSION='1.0-ltf00022'
 
 ARCHIVE_GAME_BIN_PATH='app/c/dune2'
-ARCHIVE_GAME_BIN_FILES='./dune2.exe ./setup.exe ./setup*.dip'
+ARCHIVE_GAME_BIN_FILES='dune2.exe setup.exe setup*.dip'
 
 ARCHIVE_GAME_DATA_PATH='app/c/dune2'
-ARCHIVE_GAME_DATA_FILES='./*.pak ./*.dat ./*.cfg'
-
-#DATA_DIRS='./dunecd'
-# GAME_IMAGE='' |no cd
+ARCHIVE_GAME_DATA_FILES='*.pak *.dat *.cfg'
 
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='dune2.exe'
@@ -72,30 +69,30 @@ PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -112,7 +109,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launcher_write 'APP_MAIN'
 
 # Build package
 
