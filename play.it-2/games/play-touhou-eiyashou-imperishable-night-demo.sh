@@ -88,6 +88,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine"
 PKG_BIN_DEPS_DEB='fonts-wqy-microhei'
 PKG_BIN_DEPS_ARCH='wqy-microhei'
 PKG_BIN_DEPS_GENTOO='media-fonts/wqy-microhei'
+#shellcheck disable=SC1112
 PKG_BIN_POSTINST_WARN='You may need to generate the ja_JP.UTF-8 locale for the configuration program to run
 You need a MIDI synthetiser for music to play in the game (you can use timidity++ or fluidsynth if you don’t have a hardware synthetiser)'
 
