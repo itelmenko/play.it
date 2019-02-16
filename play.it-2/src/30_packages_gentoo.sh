@@ -40,6 +40,17 @@ pkg_write_gentoo() {
 		done
 	fi
 
+	(
+		IFS='
+'
+		for line in $(get_value "${pkg}_POSTINST_INFO"); do
+			printf "einfo '%s'\n" "$line" >> "$postinst"
+		done
+		for line in $(get_value "${pkg}_POSTINST_WARN"); do
+			printf "ewarn '%s'\n" "$line" >> "$postinst"
+		done
+	)
+
 	PKG="$pkg"
 	get_package_version
 
