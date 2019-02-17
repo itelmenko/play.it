@@ -65,24 +65,30 @@ pkg_write_deb() {
 		EOF
 	fi
 
-	if [ -e "$postinst" ]; then
+	if [ -e "$postinst" ] || [ -n "$(get_value "${pkg}_POSTINST_RUN")" ]; then
 		target="$pkg_path/DEBIAN/postinst"
 		cat > "$target" <<- EOF
 		#!/bin/sh -e
 
-		$(cat "$postinst")
+		EOF
+		[ -e "$postinst" ] && cat "$postinst" >> "$target"
+		[ -n "$(get_value "${pkg}_POSTINST_RUN")" ] && get_value "${pkg}_POSTINST_RUN" >> "$target"
+		cat > "$target" <<- EOF
 
 		exit 0
 		EOF
 		chmod 755 "$target"
 	fi
 
-	if [ -e "$prerm" ]; then
+	if [ -e "$prerm" ] || [ -n "$(get_value "${pkg}_PRERM_RUN")" ]; then
 		target="$pkg_path/DEBIAN/prerm"
 		cat > "$target" <<- EOF
 		#!/bin/sh -e
 
-		$(cat "$prerm")
+		EOF
+		[ -n "$(get_value "${pkg}_PRERM_RUN")" ] && get_value "${pkg}_PRERM_RUN" >> "$target"
+		[ -e "$prerm" ] && cat "$prerm" >> "$target"
+		cat > "$target" <<- EOF
 
 		exit 0
 		EOF

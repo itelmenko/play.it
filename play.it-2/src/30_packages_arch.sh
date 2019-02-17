@@ -59,10 +59,11 @@ pkg_write_arch() {
 
 	target="$pkg_path/.INSTALL"
 
-	if [ -e "$postinst" ]; then
+	if [ -e "$postinst" ] || [ -n "$(get_value "${pkg}_POSTINST_RUN")" ]; then
+		printf 'post_install() {\n' >> "$target"
+		[ -e "$postinst" ] && cat "$postinst" >> "$target"
+		[ -n "$(get_value "${pkg}_POSTINST_RUN")" ] && get_value "${pkg}_POSTINST_RUN" >> "$target"
 		cat >> "$target" <<- EOF
-		post_install() {
-		$(cat "$postinst")
 		}
 
 		post_upgrade() {
@@ -72,9 +73,11 @@ pkg_write_arch() {
 	fi
 
 	if [ -e "$prerm" ]; then
+	if [ -e "$prerm" ] || [ -n "$(get_value "${pkg}_PRERM_RUN")" ]; then
+		printf 'pre_remove() {\n' >> "$target"
+		[ -n "$(get_value "${pkg}_PRERM_RUN")" ] && get_value "${pkg}_PRERM_RUN" >> "$target"
+		[ -e "$prerm" ] && cat "$prerm" >> "$target"
 		cat >> "$target" <<- EOF
-		pre_remove() {
-		$(cat "$prerm")
 		}
 
 		pre_upgrade() {

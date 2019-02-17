@@ -90,20 +90,18 @@ pkg_write_gentoo() {
 	}
 	EOF
 
-	if [ -e "$postinst" ]; then
-		cat >> "$target" <<- EOF
-		pkg_postinst() {
-		$(cat "$postinst")
-		}
-		EOF
+	if [ -e "$postinst" ] || [ -n "$(get_value "${pkg}_POSTINST_RUN")" ]; then
+		printf 'pkg_postinst() {\n' >> "$target"
+		[ -e "$postinst" ] && cat "$postinst" >> "$target"
+		[ -n "$(get_value "${pkg}_POSTINST_RUN")" ] && get_value "${pkg}_POSTINST_RUN" >> "$target"
+		printf '}\n' >> "$target"
 	fi
 
-	if [ -e "$prerm" ]; then
-		cat >> "$target" <<- EOF
-		pkg_prerm() {
-		$(cat "$prerm")
-		}
-		EOF
+	if [ -e "$prerm" ] || [ -n "$(get_value "${pkg}_PRERM_RUN")" ]; then
+		printf 'pkg_prerm() {\n' >> "$target"
+		[ -n "$(get_value "${pkg}_PRERM_RUN")" ] && get_value "${pkg}_PRERM_RUN" >> "$target"
+		[ -e "$prerm" ] && cat "$prerm" >> "$target"
+		printf '}\n' >> "$target"
 	fi
 }
 
