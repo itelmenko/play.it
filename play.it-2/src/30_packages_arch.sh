@@ -72,7 +72,6 @@ pkg_write_arch() {
 		EOF
 	fi
 
-	if [ -e "$prerm" ]; then
 	if [ -e "$prerm" ] || [ -n "$(get_value "${pkg}_PRERM_RUN")" ]; then
 		printf 'pre_remove() {\n' >> "$target"
 		[ -n "$(get_value "${pkg}_PRERM_RUN")" ] && get_value "${pkg}_PRERM_RUN" >> "$target"
