@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190203.2
+script_version=20190220.1
 
 # Set game-specific variables
 
@@ -55,6 +55,7 @@ CONFIG_DIRS='./res/settings'
 DATA_DIRS='./logs ./res/level ./res/db'
 
 APP_MAIN_TYPE='java'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='
 if [ ! -e lib/libva.so.1 ]; then
 	library_file="$(/sbin/ldconfig --print-cache | awk -F " => " '\''/libva\.so/ {print $2}'\'' | head --lines=1)"
