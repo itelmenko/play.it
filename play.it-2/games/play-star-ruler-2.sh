@@ -1,9 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Solène Huault
+# Copyright (c) 2015-2019, Antoine Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,11 +30,11 @@ set -o errexit
 
 ###
 # Star Ruler 2
-# build native Linux packages from the original installers
-# send your bug reports to mopi@dotslashplay.it
+# build native packages from the original installers
+# send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180725.1
+script_version=20190221.1
 
 # Set game-specific variables
 
@@ -49,16 +48,16 @@ ARCHIVE_GOG_SIZE='1100000'
 ARCHIVE_GOG_VERSION='2.0.2-gog2.4.0.6'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./bin/lin32/libcurl.so.4 ./bin/lin32/libGLEW.so.1.13 ./bin/lin32/StarRuler2.bin'
+ARCHIVE_GAME_BIN32_FILES='bin/lin32/libcurl.so.4 bin/lin32/libGLEW.so.1.13 bin/lin32/StarRuler2.bin'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./bin/lin64/libcurl.so.4 ./bin/lin64/libGLEW.so.1.13 ./bin/lin64/StarRuler2.bin'
+ARCHIVE_GAME_BIN64_FILES='bin/lin64/libcurl.so.4 bin/lin64/libGLEW.so.1.13 bin/lin64/StarRuler2.bin'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./credits.txt ./data ./licenses.txt ./locales ./maps ./mods ./scripts ./sr2.icns ./sr2.ico'
+ARCHIVE_GAME_DATA_FILES='credits.txt data licenses.txt locales maps mods scripts sr2.icns sr2.ico'
 
 APP_MAIN_TYPE='native_no-prefix'
 APP_MAIN_LIBS_BIN32='bin/lin32'
@@ -74,40 +73,40 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
 PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ bzip2 freetype gtk2 glu vorbis openal libcurl"
-PKG_BIN32_DEPS_ARCH='libpng'
+PKG_BIN32_DEPS_ARCH='lib32-libpng'
 PKG_BIN32_DEPS_DEB='libpng16-16'
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
-PKG_BIN64_DEPS_ARCH='lib32-libpng'
+PKG_BIN64_DEPS_ARCH='libpng'
 PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -124,7 +123,7 @@ icons_get_from_package 'APP_MAIN'
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launcher_write 'APP_MAIN'
 done
 
 # Build package
