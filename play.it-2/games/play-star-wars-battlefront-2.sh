@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180919.8
+script_version=20190221.1
 
 # Set game-specific variables
 
@@ -81,13 +81,28 @@ ARCHIVE_GAME_BIN_FILES='*.dll *.exe'
 # Keep compatibility with old archives
 ARCHIVE_GAME_BIN_PATH_GOG_OLD0='game/gamedata'
 
+ARCHIVE_GAME_L10N_DE_PATH='gamedata'
+ARCHIVE_GAME_L10N_DE_FILES='data/_lvl_pc/sound/de data/_lvl_pc/movies/*gr.mvs'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_DE_PATH_GOG_OLD0='game/gamedata'
+
+ARCHIVE_GAME_L10N_EN_PATH='gamedata'
+ARCHIVE_GAME_L10N_EN_FILES='data/_lvl_pc/sound/global.lvl data/_lvl_pc/sound/gal.lvl data/_lvl_pc/movies/*uk.mvs'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_EN_PATH_GOG_OLD0='game/gamedata'
+
+ARCHIVE_GAME_L10N_FR_PATH='gamedata'
+ARCHIVE_GAME_L10N_FR_FILES='data/_lvl_pc/sound/fr data/_lvl_pc/movies/*fr.mvs'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_FR_PATH_GOG_OLD0='game/gamedata'
+
 ARCHIVE_GAME_MOVIES_PATH='gamedata'
-ARCHIVE_GAME_MOVIES_FILES='data/_lvl_pc/movies'
+ARCHIVE_GAME_MOVIES_FILES='data/_lvl_pc/movies/crawl.mvs data/_lvl_pc/movies/ingame.mvs data/_lvl_pc/movies/shell.mvs data/_lvl_pc/movies/trailer.mvs data/_lvl_pc/movies/training.mvs'
 # Keep compatibility with old archives
 ARCHIVE_GAME_MOVIES_PATH_GOG_OLD0='game/gamedata'
 
 ARCHIVE_GAME_DATA_PATH='gamedata'
-ARCHIVE_GAME_DATA_FILES='data'
+ARCHIVE_GAME_DATA_FILES='data/_lvl_pc/*.def data/_lvl_pc/*.lvl data/_lvl_pc/sound/*.bnk data/_lvl_pc/sound/*.lvl data/_lvl_pc/??? data/_lvl_pc/load data/_lvl_pc/side data/_lvl_pc/test'
 # Keep compatibility with old archives
 ARCHIVE_GAME_DATA_PATH_GOG_OLD0='game/gamedata'
 
@@ -104,7 +119,21 @@ APP_MAIN_EXE='battlefrontii.exe'
 # Keep compatibility with old archives
 APP_MAIN_ICON_GOG_OLD0='battlefrontii.exe'
 
-PACKAGES_LIST='PKG_MOVIES PKG_BIN PKG_DATA'
+PACKAGES_LIST='PKG_L10N_DE PKG_L10N_EN PKG_L10N_FR PKG_MOVIES PKG_BIN PKG_DATA'
+
+PKG_L10N_ID="${GAME_ID}-l10n"
+
+PKG_L10N_DE_ID="${PKG_L10N_ID}-de"
+PKG_L10N_DE_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_DE_DESCRIPTION='German localization'
+
+PKG_L10N_EN_ID="${PKG_L10N_ID}-en"
+PKG_L10N_EN_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_EN_DESCRIPTION='English localization'
+
+PKG_L10N_FR_ID="${PKG_L10N_ID}-fr"
+PKG_L10N_FR_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_FR_DESCRIPTION='French localization'
 
 PKG_MOVIES_ID="${GAME_ID}-movies"
 PKG_MOVIES_DESCRIPTION='movies'
@@ -113,11 +142,11 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_MOVIES_ID $PKG_DATA_ID wine glx winetricks"
+PKG_BIN_DEPS="$PKG_L10N_ID $PKG_MOVIES_ID $PKG_DATA_ID wine glx winetricks"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -140,7 +169,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Load optional icons pack
@@ -170,7 +199,7 @@ esac
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Estract icons
+# Extract icons
 
 case "$ARCHIVE" in
 	('ARCHIVE_GOG_OLD0')
@@ -192,12 +221,22 @@ case "$ARCHIVE" in
 	;;
 esac
 
+# Handle localizations
+
+for path_pkg in "$PKG_L10N_DE_PATH" "$PKG_L10N_FR_PATH"; do
+	path_sound="${path_pkg}${PATH_GAME}/data/_lvl_pc/sound"
+	mv "$path_sound"/??/* "$path_sound"
+	rmdir "$path_sound"/??
+done
+
 # Write launchers
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN'
 
 # Build package
+
+file="$PATH_BIN/$GAME_ID"
 
 write_metadata
 build_pkg
@@ -208,6 +247,29 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+case "${LANG%_*}" in
+	('fr')
+		lang_string='version %s :'
+		lang_de='allemande'
+		lang_en='anglaise'
+		lang_fr='française'
+	;;
+	('en'|*)
+		lang_string='%s version:'
+		lang_de='German'
+		lang_en='English'
+		lang_fr='French'
+	;;
+esac
+printf '\n'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_de"
+print_instructions 'PKG_L10N_DE' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_en"
+print_instructions 'PKG_L10N_EN' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_fr"
+print_instructions 'PKG_L10N_FR' 'PKG_MOVIES' 'PKG_DATA' 'PKG_BIN'
 
 exit 0
