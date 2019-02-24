@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190125.1
+script_version=20190224.1
 
 # Set game-specific variables
 
@@ -68,13 +68,13 @@ ARCHIVE_GOG_OLD0_SIZE='1500000'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_PATH='data/noarch/docs'
-ARCHIVE_DOC_FILES='./*'
+ARCHIVE_DOC_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN_FILES='libcurl.so.4 libOpenAL.so KosovoLinux This?War?of?Mine TWOMLinux'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*.dat ./*.idx ./*str ./CustomContent ./LocalizationPacks ./svnrev.txt ./WorkshopData'
+ARCHIVE_GAME_DATA_FILES='*.dat *.idx *str CustomContent LocalizationPacks svnrev.txt WorkshopData'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE='KosovoLinux'
@@ -93,31 +93,30 @@ PKG_BIN_DEPS="$PKG_DATA_ID glibc glx openal libcurl"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -135,8 +134,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 PKG='PKG_BIN'
 use_archive_specific_value 'APP_MAIN_EXE'
-write_launcher 'APP_MAIN'
-
+launcher_write 'APP_MAIN'
 
 # Build package
 
