@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190611.2
+script_version=20190611.4
 
 # Set game-specific variables
 
@@ -129,13 +129,21 @@ ARCHIVE_GAME_L10N_TXT_IT_FILES='modules/single?player/locale/it-it addins/*/*/da
 ARCHIVE_SETTINGS_PATH='support/userdocs'
 ARCHIVE_SETTINGS_FILES='*'
 
+ARCHIVE_PHYSX_PATH='game/redist'
+ARCHIVE_PHYSX_FILES='physx_9.09.0408_systemsoftware.exe'
+
 CONFIG_DIRS='./settings'
 DATA_DIRS='./characters'
 
-APP_WINETRICKS='physx csmt=on'
+APP_WINETRICKS='csmt=on'
 
 APP_MAIN_TYPE='wine'
-APP_MAIN_PRERUN='settings_path="$WINEPREFIX/drive_c/users/$(whoami)/My Documents/BioWare/Dragon Age/Settings"
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='if [ ! -e physx/installed ]; then
+	wine physx/physx_9.09.0408_systemsoftware.exe
+	touch physx/installed
+fi
+settings_path="$WINEPREFIX/drive_c/users/$(whoami)/My Documents/BioWare/Dragon Age/Settings"
 if [ ! -e "$settings_path" ]; then
 	mkdir --parents "${settings_path%/*}"
 	ln --symbolic "$PATH_CONFIG/settings" "$settings_path"
@@ -266,6 +274,8 @@ tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 PKG='PKG_DATA'
 organize_data 'SETTINGS' "$PATH_GAME/settings"
+PKG='PKG_BIN'
+organize_data 'PHYSX' "$PATH_GAME/physx"
 
 # Extract icons
 
