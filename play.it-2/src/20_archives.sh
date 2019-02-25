@@ -7,11 +7,13 @@ archive_get_md5sum() {
 	local md5sum
 	[ -z "$name" ] || md5sum="$(get_value "${name}_CACHED_MD5SUM")"
 	if [ -z "$md5sum" ]; then
+		archive_integrity_check_print "$file" >/dev/stderr
 		md5sum="$(md5sum "$file" | awk '{print $1}')"
 		if [ "$name" ]; then
 			eval "${name}_CACHED_MD5SUM"=\"$md5sum\"
 			export "${name?}_CACHED_MD5SUM"
 		fi
+		print_ok >/dev/stderr
 	fi
 	printf '%s' "$md5sum"
 }
@@ -267,7 +269,6 @@ archive_integrity_check() {
 	case "$OPTION_CHECKSUM" in
 		('md5')
 			archive_integrity_check_md5 "$archive" "$file" "$name"
-			print_ok
 		;;
 		('none')
 			return 0
@@ -289,7 +290,6 @@ archive_integrity_check_md5() {
 	archive="$1"
 	file="$2"
 	name="$3"
-	archive_integrity_check_print "$file"
 	archive_sum="$(get_value "${ARCHIVE}_MD5")"
 	file_sum="$(archive_get_md5sum "$file" "$name")"
 	[ "$file_sum" = "$archive_sum" ] || archive_integrity_check_error "$file"
