@@ -79,7 +79,7 @@ archive_set() {
 	if [ -n "$current_value" ]; then
 		for archive in "$@"; do
 			file="$(get_value "$archive")"
-			if [ "$(basename "$current_value")" = "$file" ] || [ "$(archive_get_md5sum "$current_value" "$name")" = "$(get_value "${archive}_MD5")" ]; then
+			if [ "$(basename "$current_value")" = "$file" ] || { [ "$(get_value "${archive}_MD5")" ] && [ "$(archive_get_md5sum "$current_value" "$name")" = "$(get_value "${archive}_MD5")" ]; }; then
 				archive_get_infos "$archive" "$name" "$current_value"
 				archive_check_for_extra_parts "$archive" "$name"
 				ARCHIVE="$archive"
