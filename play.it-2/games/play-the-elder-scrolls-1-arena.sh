@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190302.3
+script_version=20190302.4
 
 # Set game-specific variables
 
@@ -51,7 +51,7 @@ ARCHIVE_DOC_MAIN_PATH='app'
 ARCHIVE_DOC_MAIN_FILES='*.pdf readme.txt'
 
 ARCHIVE_GAME0_MAIN_PATH='app'
-ARCHIVE_GAME0_MAIN_FILES='*.cfg *.exe *.inf *.ini *.65 *.ad *.adv *.bak *.bnk *.bsa *.cel *.cif *.clr *.col *.cpy *.dat *.flc *.gld *.ico *.img *.lgt *.lst *.me *.mif *.mnu *.ntz *.opl *.rci *.txt *.voc *.xfm cityintr citytxt extra speech'
+ARCHIVE_GAME0_MAIN_FILES='*.cfg *.exe *.inf *.ini *.65 *.ad *.adv *.bak *.bnk *.bsa *.cel *.cif *.clr *.col *.cpy *.dat *.flc *.gld *.img *.lgt *.lst *.me *.mif *.mnu *.ntz *.opl *.rci *.txt *.voc *.xfm cityintr citytxt extra speech'
 
 ARCHIVE_GAME1_MAIN_PATH='app/__support'
 ARCHIVE_GAME1_MAIN_FILES='save'
@@ -65,7 +65,7 @@ APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='acd.exe'
 APP_MAIN_OPTIONS='-Ssbpdig.adv -IOS220 -IRQS7 -DMAS1 -Mgenmidi.adv -IOM330 -IRQM2 -DMAM1'
 APP_MAIN_PRERUN='d:'
-APP_MAIN_ICON='goggame-1435828982.ico'
+APP_MAIN_ICON='app/goggame-1435828982.ico'
 
 PACKAGES_LIST='PKG_MAIN'
 
@@ -105,11 +105,11 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-icons_get_from_package 'APP_MAIN'
+icons_get_from_workdir 'APP_MAIN'
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
