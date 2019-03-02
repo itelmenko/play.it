@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190302.2
+script_version=20190302.3
 
 # Set game-specific variables
 
@@ -47,20 +47,14 @@ ARCHIVE_GOG_MD5='ca5a894aa852f9dbb3ede787e51ec828'
 ARCHIVE_GOG_SIZE='130000'
 ARCHIVE_GOG_VERSION='1.07-gog2.0.0.5'
 
-ARCHIVE_DOC0_DATA_PATH='app'
-ARCHIVE_DOC0_DATA_FILES='*.pdf readme.txt'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_FILES='*.pdf readme.txt'
 
-ARCHIVE_DOC1_DATA_PATH='tmp'
-ARCHIVE_DOC1_DATA_FILES='gog_eula.txt'
+ARCHIVE_GAME0_MAIN_PATH='app'
+ARCHIVE_GAME0_MAIN_FILES='*.cfg *.exe *.inf *.ini *.65 *.ad *.adv *.bak *.bnk *.bsa *.cel *.cif *.clr *.col *.cpy *.dat *.flc *.gld *.ico *.img *.lgt *.lst *.me *.mif *.mnu *.ntz *.opl *.rci *.txt *.voc *.xfm cityintr citytxt extra speech'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.cfg *.exe *.inf *.ini'
-
-ARCHIVE_GAME0_DATA_PATH='app'
-ARCHIVE_GAME0_DATA_FILES='*.65 *.ad *.adv *.bak *.bnk *.bsa *.cel *.cif *.clr *.col *.cpy *.dat *.flc *.gld *.ico *.img *.lgt *.lst *.me *.mif *.mnu *.ntz *.opl *.rci *.txt *.voc *.xfm cityintr citytxt extra speech'
-
-ARCHIVE_GAME1_DATA_PATH='app/__support'
-ARCHIVE_GAME1_DATA_FILES='save'
+ARCHIVE_GAME1_MAIN_PATH='app/__support'
+ARCHIVE_GAME1_MAIN_FILES='save'
 
 GAME_IMAGE='.'
 GAME_IMAGE_TYPE='cdrom'
@@ -73,17 +67,11 @@ APP_MAIN_OPTIONS='-Ssbpdig.adv -IOS220 -IRQS7 -DMAS1 -Mgenmidi.adv -IOM330 -IRQM
 APP_MAIN_PRERUN='d:'
 APP_MAIN_ICON='goggame-1435828982.ico'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-# Easier upgrade from packages generated with pre-20190302.1 scripts
-PKG_DATA_PROVIDE='arena-data'
-
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
-# Easier upgrade from packages generated with pre-20190302.1 scripts
-PKG_BIN_PROVIDE='arena'
+PKG_MAIN_DEPS='dosbox'
+# Easier upgrade from packages generated with pre-20190302.3 scripts
+PKG_MAIN_PROVIDE='the-elder-scrolls-1-arena-data'
 
 # Load common functions
 
@@ -121,12 +109,10 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-PKG='PKG_DATA'
 icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-PKG='PKG_BIN'
 launcher_write 'APP_MAIN'
 
 # Build package
