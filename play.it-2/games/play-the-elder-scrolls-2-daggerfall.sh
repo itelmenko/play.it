@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190302.3
+script_version=20190302.4
 
 # Set game-specific variables
 
@@ -55,7 +55,7 @@ ARCHIVE_GAME_MAIN_FILES='*.cfg *.exe *.txt *.ini arena2 dagger.ico data *.bnk *.
 
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./pics ./save0 ./save1 ./save2 ./save3 ./save4 ./save5'
-DATA_FILES='./arena2/copyfile.dat ./arena2/mapsave.sav ./arena2/*.DAT arena2/*.AMF'
+DATA_FILES='./arena2/bio.dat ./arena2/copyfile.dat ./arena2/rumor.dat ./arena2/mapsave.sav ./arena2/*.DAT arena2/*.AMF'
 
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='fall.exe'
