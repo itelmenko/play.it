@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20190302.1
 
 # Set game-specific variables
 
-GAME_ID='daggerfall'
+GAME_ID='the-elder-scrolls-2-daggerfall'
 GAME_NAME='The Elder Scrolls II: Daggerfall'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
@@ -75,10 +75,14 @@ PACKAGES_LIST='PKG_DATA PKG_BIN'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20190302.1 script
+PKG_DATA_PROVIDE='daggerfall-data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS_DEB="$PKG_DATA_ID, dosbox"
 PKG_BIN_DEPS_ARCH="$PKG_DATA_ID dosbox"
+# Easier upgrade from packages generated with pre-20190302.1 scripts
+PKG_BIN_PROVIDE='daggerfall'
 
 # Load common functions
 
