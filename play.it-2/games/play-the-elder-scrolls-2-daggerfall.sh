@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190302.2
+script_version=20190302.3
 
 # Set game-specific variables
 
@@ -47,17 +47,11 @@ ARCHIVE_GOG_MD5='68f1eb4f257d8da4c4eab2104770c49b'
 ARCHIVE_GOG_SIZE='580000'
 ARCHIVE_GOG_VERSION='1.07.213-gog2.0.0.4'
 
-ARCHIVE_DOC0_DATA_PATH='app'
-ARCHIVE_DOC0_DATA_FILES='*.pdf'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_FILES='*.pdf'
 
-ARCHIVE_DOC1_DATA_PATH='tmp'
-ARCHIVE_DOC1_DATA_FILES='gog_eula.txt'
-
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.cfg *.exe data/*.exe *.txt *.ini'
-
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='arena2 dagger.ico data *.bnk *.386 *.scr test*'
+ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_FILES='*.cfg *.exe *.txt *.ini arena2 dagger.ico data *.bnk *.386 *.scr test*'
 
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./pics ./save0 ./save1 ./save2 ./save3 ./save4 ./save5'
@@ -68,17 +62,11 @@ APP_MAIN_EXE='fall.exe'
 APP_MAIN_OPTIONS='z.cfg'
 APP_MAIN_ICON='dagger.ico'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-# Easier upgrade from packages generated with pre-20190302.1 script
-PKG_DATA_PROVIDE='daggerfall-data'
-
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
-# Easier upgrade from packages generated with pre-20190302.1 scripts
-PKG_BIN_PROVIDE='daggerfall'
+PKG_MAIN_DEPS='dosbox'
+# Easier upgrade from packages generated with pre-20190302.3 scripts
+PKG_BIN_PROVIDE='the-elder-scrolls-2-daggerfall-data'
 
 # Load common functions
 
@@ -116,12 +104,10 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-PKG='PKG_DATA'
 icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-PKG='PKG_BIN'
 launcher_write 'APP_MAIN'
 
 # Build package
