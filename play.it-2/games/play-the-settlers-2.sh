@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180303.1
+script_version=20180303.2
 
 # Set game-specific variables
 
@@ -61,20 +61,17 @@ ARCHIVE_GOG_DE_MD5='f87a8fded6de455af4e6a284b3c4ed5e'
 ARCHIVE_GOG_DE_VERSION='1.51-gog2.1.0.17'
 ARCHIVE_GOG_DE_SIZE='370000'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='eula *.txt'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_FILES='eula *.txt'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='dos4gw.exe s2edit.exe s2.exe setup.exe setup.ini video/smackply.exe drivers'
+ARCHIVE_GAME0_MAIN_PATH='app'
+ARCHIVE_GAME0_MAIN_FILES='*.ini *.scr s2edit.exe s2.exe data/resource.idx data/io/*.idx data/maps* data/missions/mis_0100.rtx data/online data/txt* drivers/mdi.ini gfx/pics/setup000.lbm gfx/pics/setup010.lbm gfx/pics/setup011.lbm gfx/pics/setup012.lbm gfx/pics/setup014.lbm gfx/pics/setup897.lbm gfx/pics/setup898.lbm gfx/pics/setup900.lbm gfx/pics/setup901.lbm gfx/pics/setup996.lbm gfx/pics/setup997.lbm gfx/pics/setup998.lbm save/mission.dat video/*.smk'
 
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='settlers2.gog settlers2.inst settler2.vmc data/animdat data/bobs data/*.lst data/cbob data/*.dat data/*.idx data/io/*.dat data/io/*.fnt data/masks data/mbob data/missions/mis_00*.rtx data/missions/mis_10*.rtx data/sounddat data/textures gfx/palette gfx/pics2 gfx/pics/install.lbm gfx/pics/mission gfx/pics/setup013.lbm gfx/pics/setup015.lbm gfx/pics/setup666.lbm gfx/pics/setup667.lbm gfx/pics/setup801.lbm gfx/pics/setup802.lbm gfx/pics/setup803.lbm gfx/pics/setup804.lbm gfx/pics/setup805.lbm gfx/pics/setup806.lbm gfx/pics/setup810.lbm gfx/pics/setup811.lbm gfx/pics/setup895.lbm gfx/pics/setup896.lbm gfx/pics/setup899.lbm gfx/pics/setup990.lbm gfx/pics/world.lbm gfx/pics/worldmsk.lbm gfx/textures gfw_high.ico goggame-1207658786.ico'
+ARCHIVE_GAME1_MAIN_PATH='app/__support/save'
+ARCHIVE_GAME1_MAIN_FILES='save/mission.dat'
 
-ARCHIVE_GAME0_L10N_PATH='app'
-ARCHIVE_GAME0_L10N_FILES='install.scr video/intro.smk save/mission.dat gfx/pics/setup000.lbm gfx/pics/setup010.lbm gfx/pics/setup011.lbm gfx/pics/setup012.lbm gfx/pics/setup014.lbm gfx/pics/setup897.lbm gfx/pics/setup898.lbm gfx/pics/setup900.lbm gfx/pics/setup901.lbm gfx/pics/setup996.lbm gfx/pics/setup997.lbm gfx/pics/setup998.lbm data/resource.idx data/missions/mis_0100.rtx data/txt* data/online data/maps* data/io/editio.idx data/io/io.idx'
-
-ARCHIVE_GAME1_L10N_PATH='app/__support/save'
-ARCHIVE_GAME1_L10N_FILES='save/mission.dat'
+ARCHIVE_GAME_COMMON_PATH='app'
+ARCHIVE_GAME_COMMON_FILES='dos4gw.exe settler2.vmc settlers2.gog settlers2.inst setup.exe data/*.dat data/editres.idx data/animdat data/bobs data/cbob data/io/*.dat data/io/*.fnt data/*.lst data/masks data/mbob data/missions/mis_00*.rtx data/missions/mis_10*.rtx data/sounddat/sng data/sounddat/sound.lst data/textures drivers/*.ad drivers/*.dig drivers/dig.ini drivers/*.exe drivers/*.lst drivers/*.mdi drivers/*.opl gfx/palette gfx/pics2 gfx/pics/install.lbm gfx/pics/mission gfx/pics/setup013.lbm gfx/pics/setup015.lbm gfx/pics/setup666.lbm gfx/pics/setup667.lbm gfx/pics/setup801.lbm gfx/pics/setup802.lbm gfx/pics/setup803.lbm gfx/pics/setup804.lbm gfx/pics/setup805.lbm gfx/pics/setup806.lbm gfx/pics/setup810.lbm gfx/pics/setup811.lbm gfx/pics/setup895.lbm gfx/pics/setup896.lbm gfx/pics/setup899.lbm gfx/pics/setup990.lbm gfx/pics/world.lbm gfx/pics/worldmsk.lbm gfx/textures video/smackply.exe goggame-1207658786.ico gfw_high.ico'
 
 CONFIG_FILES='./setup.ini'
 DATA_DIRS='./data ./gfx ./save ./worlds'
@@ -100,30 +97,20 @@ APP_SETUP_EXE='setup.exe'
 APP_SETUP_NAME="$GAME_NAME - Setup"
 APP_SETUP_CAT='Settings'
 
-PACKAGES_LIST='PKG_DATA PKG_L10N PKG_BIN'
+PACKAGES_LIST='PKG_COMMON PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
+PKG_COMMON_ID="${GAME_ID}-common"
+PKG_COMMON_DESCRIPTION='common data'
 
-PKG_L10N_ID="${GAME_ID}-l10n"
-PKG_L10N_ID_GOG_EN="${PKG_L10N_ID}-en"
-PKG_L10N_ID_GOG_FR="${PKG_L10N_ID}-fr"
-PKG_L10N_ID_GOG_DE="${PKG_L10N_ID}-de"
-PKG_L10N_PROVIDE="$PKG_L10N_ID"
-PKG_L10N_DESCRIPTION_GOG_EN='English localization'
-PKG_L10N_DESCRIPTION_GOG_FR='French localization'
-PKG_L10N_DESCRIPTION_GOG_DE='German localization'
-
-PKG_BIN_ID="$GAME_ID"
-PKG_BIN_ID_GOG_EN="${GAME_ID}-en"
-PKG_BIN_ID_GOG_FR="${GAME_ID}-fr"
-PKG_BIN_ID_GOG_DE="${GAME_ID}-de"
-PKG_BIN_PROVIDE="$PKG_BIN_ID"
-PKG_BIN_DESCRIPTION_GOG_EN='English version'
-PKG_BIN_DESCRIPTION_GOG_FR='French version'
-PKG_BIN_DESCRIPTION_GOG_DE='German version'
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID $PKG_L10N_ID dosbox"
+PKG_MAIN_ID="$GAME_ID"
+PKG_MAIN_ID_GOG_EN="${GAME_ID}-en"
+PKG_MAIN_ID_GOG_FR="${GAME_ID}-fr"
+PKG_MAIN_ID_GOG_DE="${GAME_ID}-de"
+PKG_MAIN_PROVIDE="$PKG_MAIN_ID"
+PKG_MAIN_DESCRIPTION_GOG_EN='English version'
+PKG_MAIN_DESCRIPTION_GOG_FR='French version'
+PKG_MAIN_DESCRIPTION_GOG_DE='German version'
+PKG_MAIN_DEPS="$PKG_COMMON_ID dosbox"
 
 # Load common functions
 
@@ -157,17 +144,17 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-sed --in-place 's/SETTLERS2.gog/settlers2.gog/' "${PKG_DATA_PATH}${PATH_GAME}/$GAME_IMAGE"
+sed --in-place 's/SETTLERS2.gog/settlers2.gog/' "${PKG_COMMON_PATH}${PATH_GAME}/$GAME_IMAGE"
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-PKG='PKG_DATA'
+PKG='PKG_COMMON'
 icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-PKG='PKG_BIN'
+PKG='PKG_MAIN'
 launchers_write 'APP_MAIN' 'APP_EDITOR' 'APP_SETUP'
 
 # Build package
@@ -188,8 +175,8 @@ for res in $APP_MAIN_ICON_RES; do
 done
 EOF
 
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN' 'PKG_L10N'
+write_metadata 'PKG_COMMON'
+write_metadata 'PKG_MAIN'
 build_pkg
 
 # Clean up
