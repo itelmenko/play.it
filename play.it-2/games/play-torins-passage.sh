@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190420.1
+script_version=20190420.2
 
 # Set game-specific variables
 
@@ -48,14 +48,11 @@ ARCHIVE_GOG_MD5='a7398abdb6964bf6a6446248f138d05e'
 ARCHIVE_GOG_SIZE='348952'
 ARCHIVE_GOG_VERSION='1.0-gog2.0.0.7'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='torin.txt *.pdf'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_FILES='torin.txt *.pdf'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.exe resource.cfg'
-
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='*.drv *.shp *.hlp *.scr install.txt movie patches *.000 *.aud *.sfx *.err version'
+ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_FILES='*.exe resource.cfg *.drv *.shp *.hlp *.scr install.txt movie patches *.000 *.aud *.sfx *.err version'
 
 DATA_FILES='./version ./AUTOSAVE.* ./TORINSG.*'
 CONFIG_FILES='./resource.cfg ./TORIN.PRF'
@@ -65,12 +62,8 @@ APP_MAIN_EXE='sierrah.exe'
 APP_MAIN_OPTIONS='resource.cfg'
 APP_MAIN_ICON='app/torinhr.ico'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ARCH='32'
 PKG_BIN_DEPS='dosbox'
 
 # Load common functions
@@ -108,13 +101,11 @@ prepare_package_layout
 
 # Extract icons
 
-PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
 launchers_write 'APP_MAIN'
 
 # Build package
