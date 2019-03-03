@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190303.1
+script_version=20190303.2
 
 # Set game-specific variables
 
@@ -51,13 +51,13 @@ ARCHIVE_DOC_MAIN_PATH='app'
 ARCHIVE_DOC_MAIN_FILES='*.htm *.pdf *.txt'
 
 ARCHIVE_GAME_MAIN_PATH='app'
-ARCHIVE_GAME_MAIN_FILES='goggame-*.ico *.com *.inf data save'
+ARCHIVE_GAME_MAIN_FILES='*.com *.inf data save'
 
 DATA_DIRS='./save'
 
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='_zork3.com'
-APP_MAIN_ICON='goggame-1207661513.ico'
+APP_MAIN_ICON='app/goggame-1207661513.ico'
 
 PACKAGES_LIST='PKG_MAIN'
 
@@ -96,11 +96,11 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-icons_get_from_package 'APP_MAIN'
+icons_get_from_workdir 'APP_MAIN'
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
