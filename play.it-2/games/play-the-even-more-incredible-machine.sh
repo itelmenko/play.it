@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190303.2
+script_version=20190303.3
 
 # Set game-specific variables
 
@@ -49,13 +49,13 @@ ARCHIVE_GOG_SIZE='21000'
 ARCHIVE_GOG_VERSION='1.0-gog2.1.0.24'
 
 ARCHIVE_GAME_MAIN_PATH='app'
-ARCHIVE_GAME_MAIN_FILES='*.tim *.drv *.exe install* resource* goggame-1207664023.ico'
+ARCHIVE_GAME_MAIN_FILES='*.tim *.drv *.exe install* resource*'
 
 CONFIG_FILES='./resource.cfg'
 
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='tim.exe'
-APP_MAIN_ICON='goggame-1207664023.ico'
+APP_MAIN_ICON='app/goggame-1207664023.ico'
 
 PACKAGES_LIST='PKG_MAIN'
 
@@ -93,11 +93,11 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-icons_get_from_package 'APP_MAIN'
+icons_get_from_workdir 'APP_MAIN'
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
