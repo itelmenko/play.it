@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190303.1
+script_version=20190303.2
 
 # Set game-specific variables
 
@@ -59,7 +59,6 @@ APP_MAIN_ICON='goggame-1207664023.ico'
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_ARCH='32'
 PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
