@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180303.2
+script_version=20180303.3
 
 # Set game-specific variables
 
@@ -71,7 +71,7 @@ ARCHIVE_GAME1_MAIN_PATH='app/__support/save'
 ARCHIVE_GAME1_MAIN_FILES='save/mission.dat'
 
 ARCHIVE_GAME_COMMON_PATH='app'
-ARCHIVE_GAME_COMMON_FILES='dos4gw.exe settler2.vmc settlers2.gog settlers2.inst setup.exe data/*.dat data/editres.idx data/animdat data/bobs data/cbob data/io/*.dat data/io/*.fnt data/*.lst data/masks data/mbob data/missions/mis_00*.rtx data/missions/mis_10*.rtx data/sounddat/sng data/sounddat/sound.lst data/textures drivers/*.ad drivers/*.dig drivers/dig.ini drivers/*.exe drivers/*.lst drivers/*.mdi drivers/*.opl gfx/palette gfx/pics2 gfx/pics/install.lbm gfx/pics/mission gfx/pics/setup013.lbm gfx/pics/setup015.lbm gfx/pics/setup666.lbm gfx/pics/setup667.lbm gfx/pics/setup801.lbm gfx/pics/setup802.lbm gfx/pics/setup803.lbm gfx/pics/setup804.lbm gfx/pics/setup805.lbm gfx/pics/setup806.lbm gfx/pics/setup810.lbm gfx/pics/setup811.lbm gfx/pics/setup895.lbm gfx/pics/setup896.lbm gfx/pics/setup899.lbm gfx/pics/setup990.lbm gfx/pics/world.lbm gfx/pics/worldmsk.lbm gfx/textures video/smackply.exe goggame-1207658786.ico gfw_high.ico'
+ARCHIVE_GAME_COMMON_FILES='dos4gw.exe settler2.vmc settlers2.gog settlers2.inst setup.exe data/*.dat data/editres.idx data/animdat data/bobs data/cbob data/io/*.dat data/io/*.fnt data/*.lst data/masks data/mbob data/missions/mis_00*.rtx data/missions/mis_10*.rtx data/sounddat/sng data/sounddat/sound.lst data/textures drivers/*.ad drivers/*.dig drivers/dig.ini drivers/*.exe drivers/*.lst drivers/*.mdi drivers/*.opl gfx/palette gfx/pics2 gfx/pics/install.lbm gfx/pics/mission gfx/pics/setup013.lbm gfx/pics/setup015.lbm gfx/pics/setup666.lbm gfx/pics/setup667.lbm gfx/pics/setup801.lbm gfx/pics/setup802.lbm gfx/pics/setup803.lbm gfx/pics/setup804.lbm gfx/pics/setup805.lbm gfx/pics/setup806.lbm gfx/pics/setup810.lbm gfx/pics/setup811.lbm gfx/pics/setup895.lbm gfx/pics/setup896.lbm gfx/pics/setup899.lbm gfx/pics/setup990.lbm gfx/pics/world.lbm gfx/pics/worldmsk.lbm gfx/textures video/smackply.exe'
 
 CONFIG_FILES='./setup.ini'
 DATA_DIRS='./data ./gfx ./save ./worlds'
@@ -82,20 +82,26 @@ GAME_IMAGE_TYPE='iso'
 APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='s2.exe'
 APP_MAIN_PRERUN='@video\smackply video\intro.smk'
-APP_MAIN_ICON_GOG_EN='gfw_high.ico'
-APP_MAIN_ICON_GOG_FR='goggame-1207658786.ico'
-APP_MAIN_ICON_GOG_DE='goggame-1207658786.ico'
+APP_MAIN_ICON_GOG_EN='app/gfw_high.ico'
+APP_MAIN_ICON_GOG_FR='app/goggame-1207658786.ico'
+APP_MAIN_ICON_GOG_DE='app/goggame-1207658786.ico'
 
 APP_EDITOR_TYPE='dosbox'
 APP_EDITOR_ID="${GAME_ID}_edit"
 APP_EDITOR_EXE='s2edit.exe'
 APP_EDITOR_NAME="$GAME_NAME - Editor"
+APP_EDITOR_ICON_GOG_EN="$APP_MAIN_ICON_GOG_EN"
+APP_EDITOR_ICON_GOG_FR="$APP_MAIN_ICON_GOG_FR"
+APP_EDITOR_ICON_GOG_DE="$APP_MAIN_ICON_GOG_DE"
 
 APP_SETUP_TYPE='dosbox'
 APP_SETUP_ID="${GAME_ID}_setup"
 APP_SETUP_EXE='setup.exe'
 APP_SETUP_NAME="$GAME_NAME - Setup"
 APP_SETUP_CAT='Settings'
+APP_SETUP_ICON_GOG_EN="$APP_MAIN_ICON_GOG_EN"
+APP_SETUP_ICON_GOG_FR="$APP_MAIN_ICON_GOG_FR"
+APP_SETUP_ICON_GOG_DE="$APP_MAIN_ICON_GOG_DE"
 
 PACKAGES_LIST='PKG_COMMON PKG_MAIN'
 
@@ -145,12 +151,12 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 sed --in-place 's/SETTLERS2.gog/settlers2.gog/' "${PKG_COMMON_PATH}${PATH_GAME}/$GAME_IMAGE"
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
 PKG='PKG_COMMON'
-icons_get_from_package 'APP_MAIN'
+icons_get_from_workdir 'APP_MAIN' 'APP_EDITOR' 'APP_SETUP'
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
@@ -159,24 +165,7 @@ launchers_write 'APP_MAIN' 'APP_EDITOR' 'APP_SETUP'
 
 # Build package
 
-cat > "$postinst" << EOF
-for res in $APP_MAIN_ICON_RES; do
-	PATH_ICON="$PATH_ICON_BASE/\${res}x\${res}/apps"
-	ln --symbolic $GAME_ID.png "\$PATH_ICON/$APP_EDITOR_ID.png"
-	ln --symbolic $GAME_ID.png "\$PATH_ICON/$APP_SETUP_ID.png"
-done
-EOF
-
-cat > "$prerm" << EOF
-for res in $APP_MAIN_ICON_RES; do
-	PATH_ICON="$PATH_ICON_BASE/\${res}x\${res}/apps"
-	rm "\$PATH_ICON/$APP_EDITOR_ID.png"
-	rm "\$PATH_ICON/$APP_SETUP_ID.png"
-done
-EOF
-
-write_metadata 'PKG_COMMON'
-write_metadata 'PKG_MAIN'
+write_metadata
 build_pkg
 
 # Clean up
