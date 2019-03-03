@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20190303.1
 
 # Set game-specific variables
 
-GAME_ID='zork'
+GAME_ID='zork-1'
 GAME_NAME='Zork I: The Great Underground Empire'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
@@ -70,6 +70,8 @@ PACKAGES_LIST='PKG_MAIN'
 PKG_MAIN_ARCH='32'
 PKG_MAIN_DEPS_DEB='dosbox'
 PKG_MAIN_DEPS_ARCH='dosbox'
+# Easier upgrade from packages generated with pre-20190303.1 scripts
+PKG_MAIN_PROVIDE='zork'
 
 # Load common functions
 
