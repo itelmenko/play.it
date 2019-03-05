@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190305.2
+script_version=20190305.3
 
 # Set game-specific variables
 
@@ -70,7 +70,7 @@ ARCHIVE_GAME_DATA_FILES='./*_Data'
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Oxenfree.x86'
 APP_MAIN_EXE_BIN64='Oxenfree.x86_64'
-APP_MAIN_ICON='*_Data/Resources/UnityPlayer.png'
+APP_MAIN_ICON='Oxenfree_Data/Resources/UnityPlayer.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
