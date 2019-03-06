@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190306.2
+script_version=20190306.3
 
 # Set game-specific variables
 
@@ -76,6 +76,9 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1 sdl2"
+PKG_BIN_DEPS_ARCH='lib32-libx11'
+PKG_BIN_DEPS_DEB='libx11-6'
+PKG_BIN_DEPS_GENTOO='x11-libs/libX11'
 
 # Load common functions
 
