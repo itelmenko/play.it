@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.2
+script_version=20190310.3
 
 # Set game-specific variables
 
@@ -69,7 +69,8 @@ CONFIG_FILES='./*.ini */*.ini'
 DATA_DIRS='./save'
 
 APP_MAIN_TYPE='dosbox'
-APP_MAIN_EXE='alife/afterdos.bat'
+APP_MAIN_PRERUN='cd alife'
+APP_MAIN_EXE='afterdos.bat'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
 PACKAGES_LIST='PKG_MAIN'
@@ -122,17 +123,6 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 launchers_write 'APP_MAIN'
-
-# Set working directory to the directory containing the game binary before running it
-
-# shellcheck disable=SC2016
-pattern='s|$APP_EXE $APP_OPTIONS $@|'
-# shellcheck disable=SC2016
-pattern="$pattern"'cd ${APP_EXE%/*}\n'
-# shellcheck disable=SC2016
-pattern="$pattern"'${APP_EXE##*/} $APP_OPTIONS $@|'
-file="${PKG_MAIN_PATH}${PATH_BIN}/${GAME_ID}"
-sed --in-place "$pattern" "$file"
 
 # Build package
 
