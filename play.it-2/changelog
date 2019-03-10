@@ -11,6 +11,9 @@
   * Allow to skip control of InnoSetup version used in archive passed to
     innoextract
 
+  * New test: Run a single game script in dry mode once for each supported
+    archive
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
