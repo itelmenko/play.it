@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.1
+script_version=20190310.2
 
 # Set game-specific variables
 
@@ -56,17 +56,14 @@ ARCHIVE_GOG_FR_MD5='56b3efee60bc490c68f8040587fc1878'
 ARCHIVE_GOG_FR_VERSION='1.1-gog2.2.0.8'
 ARCHIVE_GOG_FR_SIZE='250000'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*'
+ARCHIVE_DOC0_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC0_MAIN_FILES='*'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/data'
+ARCHIVE_DOC1_MAIN_PATH='data/noarch/data'
 ARCHIVE_DOC1_DATA_FILES='*.txt'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/data'
-ARCHIVE_GAME_BIN_FILES='*.exe *.ini alife/*.bat alife/*.exe alife/*.ini'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/data'
-ARCHIVE_GAME_DATA_FILES='*'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/data'
+ARCHIVE_GAME_MAIN_FILES='*.asc *.exe *.ini alife.* alife'
 
 CONFIG_FILES='./*.ini */*.ini'
 DATA_DIRS='./save'
@@ -75,20 +72,13 @@ APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='alife/afterdos.bat'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_PROVIDE="$PKG_DATA_ID"
-PKG_DATA_ID_GOG_EN="${PKG_DATA_ID}-en"
-PKG_DATA_ID_GOG_FR="${PKG_DATA_ID}-fr"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ID="$GAME_ID"
-PKG_BIN_ARCH='32'
-PKG_BIN_PROVIDE="$PKG_BIN_ID"
-PKG_BIN_ID_GOG_EN="${PKG_BIN_ID}-en"
-PKG_BIN_ID_GOG_FR="${PKG_BIN_ID}-fr"
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
+PKG_MAIN_ID="$GAME_ID"
+PKG_MAIN_ID_GOG_EN="${PKG_MAIN_ID}-en"
+PKG_MAIN_ID_GOG_FR="${PKG_MAIN_ID}-fr"
+PKG_MAIN_PROVIDE="$PKG_MAIN_ID"
+PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
 
@@ -126,13 +116,11 @@ prepare_package_layout
 
 # Get icon
 
-PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
 launchers_write 'APP_MAIN'
 
 # Set working directory to the directory containing the game binary before running it
@@ -143,7 +131,7 @@ pattern='s|$APP_EXE $APP_OPTIONS $@|'
 pattern="$pattern"'cd ${APP_EXE%/*}\n'
 # shellcheck disable=SC2016
 pattern="$pattern"'${APP_EXE##*/} $APP_OPTIONS $@|'
-file="${PKG_BIN_PATH}${PATH_BIN}/${GAME_ID}"
+file="${PKG_MAIN_PATH}${PATH_BIN}/${GAME_ID}"
 sed --in-place "$pattern" "$file"
 
 # Build package
