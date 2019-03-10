@@ -82,7 +82,9 @@ icons_get_from_path() {
 			use_archive_specific_value "$icon"
 			file="$(get_value "$icon")"
 			[ -z "$file" ] && icon_path_empty_error "$icon"
-			[ -f "$directory/$file" ] || icon_file_not_found_error "$directory/$file"
+			if [ $DRY_RUN -eq 0 ] && [ ! -f "$directory/$file" ]; then
+				icon_file_not_found_error "$directory/$file"
+			fi
 			wrestool_id="$(get_value "${icon}_ID")"
 			icon_extract_png_from_file "$directory/$file" "$destination"
 		done
