@@ -83,8 +83,8 @@ icons_get_from_path() {
 			fi
 			wrestool_id="$(get_value "${icon}_ID")"
 			icon_extract_png_from_file "$directory/$file" "$destination"
+			icons_include_png_from_directory "$app" "$destination"
 		done
-		icons_include_png_from_directory "$app" "$destination"
 	done
 }
 

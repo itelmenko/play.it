@@ -19,6 +19,9 @@
 
   * Display an error when an unknown application type is used
 
+  * When extracting multiple icons at once, ensure that they won’t override
+    the ones extracted before them
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
