@@ -3,6 +3,8 @@
   * Do not throw an error when a script has been called with --dry-run and an
     icon file is not found
 
+  * Move all compatibility aliases to a dedicated source file
+
 2.11.1
 
   * Fix apt version detection on old versions of apt

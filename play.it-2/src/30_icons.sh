@@ -41,8 +41,6 @@ icons_get_from_package() {
 	path="${path_pkg}${PATH_GAME}"
 	icons_get_from_path "$path" "$@"
 }
-# compatibility alias
-extract_and_sort_icons_from() { icons_get_from_package "$@"; }
 
 # get .png file(s) from various icon sources in temporary work directory
 # USAGE: icons_get_from_package $app[…]
@@ -53,8 +51,6 @@ icons_get_from_workdir() {
 	path="$PLAYIT_WORKDIR/gamedata"
 	icons_get_from_path "$path" "$@"
 }
-# compatibility alias
-get_icon_from_temp_dir() { icons_get_from_workdir "$@"; }
 
 # get .png file(s) from various icon sources
 # USAGE: icons_get_from_path $directory $app[…]
@@ -122,22 +118,6 @@ icon_extract_png_from_file() {
 		;;
 	esac
 }
-# compatibility alias
-extract_icon_from() {
-	local destination
-	local file
-	destination="$PLAYIT_WORKDIR/icons"
-	for file in "$@"; do
-		extension="${file##*.}"
-		if [ "$extension" = 'exe' ]; then
-			mkdir --parents "$destination"
-			icon_extract_ico_from_exe "$file" "$destination"
-		else
-			icon_extract_png_from_file "$file" "$destination"
-		fi
-	done
-}
-
 
 # extract .png file(s) for .exe
 # USAGE: icon_extract_png_from_exe $file $destination
@@ -339,8 +319,6 @@ icons_linking_postinst() {
 		done
 	done
 }
-# compatibility alias
-postinst_icons_linking() { icons_linking_postinst "$@"; }
 
 # move icons to the target package
 # USAGE: icons_move_to $pkg
@@ -362,8 +340,6 @@ icons_move_to() {
 		rmdir --ignore-fail-on-non-empty --parents "${PATH_ICON_BASE#/}"
 	)
 }
-# compatibility alias
-move_icons_to() { icons_move_to "$@"; }
 
 # print an error message if an icon can not be found
 # USAGE: icon_file_not_found_error $file
