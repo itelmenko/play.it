@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.2
+script_version=20190310.3
 
 # Set game-specific variables
 
@@ -79,7 +79,6 @@ APP_MAIN_ICON_GOG_1998='akalabeth - bonus 1998/support/gog-akalabeth-bonus-1998.
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_ARCH='32'
 PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
