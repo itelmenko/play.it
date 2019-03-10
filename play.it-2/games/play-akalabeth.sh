@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.1
+script_version=20190310.2
 
 # Set game-specific variables
 
@@ -116,7 +116,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 if [ "$ARCHIVE" = 'ARCHIVE_GOG_1998' ]; then
 	ARCHIVE_GOG_1998_TYPE='tar'
 	extract_data_from "$PLAYIT_WORKDIR/gamedata/gog_akalabeth_bonus_1998_1.0.0.1.tar.gz"
-	rm "$PLAYIT_WORKDIR/gamedata/gog_akalabeth_bonus_1998_1.0.0.1.tar.gz"
+	rm --force "$PLAYIT_WORKDIR/gamedata/gog_akalabeth_bonus_1998_1.0.0.1.tar.gz"
 fi
 tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
