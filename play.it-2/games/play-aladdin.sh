@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.1
+script_version=20190310.2
 
 # Set game-specific variables
 
@@ -48,14 +48,11 @@ ARCHIVE_GOG_MD5='9dd6d84c2276809c5630320335e3415b'
 ARCHIVE_GOG_SIZE='18000'
 ARCHIVE_GOG_VERSION='1.0-gog2.0.0.2'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='*.txt *.pdf'
+ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC_MAIN_FILES='*.txt *.pdf'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/data'
-ARCHIVE_GAME_BIN_FILES='*.exe'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/data'
-ARCHIVE_GAME_DATA_FILES='*'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/data'
+ARCHIVE_GAME_MAIN_FILES='*'
 
 CONFIG_FILES='./*.cfg'
 
@@ -63,13 +60,9 @@ APP_MAIN_TYPE='dosbox'
 APP_MAIN_EXE='aladdin.exe'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
+PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
 
@@ -107,13 +100,11 @@ prepare_package_layout
 
 # Get icon
 
-PKG='PKG_DATA'
 icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
 launchers_write 'APP_MAIN'
 
 # Build package
