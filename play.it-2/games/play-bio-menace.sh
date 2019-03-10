@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.1
+script_version=20190310.2
 
 # Set game-specific variables
 
@@ -48,19 +48,16 @@ ARCHIVE_GOG_MD5='75167ee3594dd44ec8535b29b90fe4eb'
 ARCHIVE_GOG_SIZE='14000'
 ARCHIVE_GOG_VERSION='1.1-gog2.0.0.2'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*.pdf *.txt'
+ARCHIVE_DOC0_MAIN_PATH='data/noarch/docs'
+ARCHIVE_DOC0_MAIN_FILES='*.pdf *.txt'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/data'
-ARCHIVE_DOC1_DATA_FILES='*.txt'
+ARCHIVE_DOC1_MAIN_PATH='data/noarch/data'
+ARCHIVE_DOC1_MAIN_FILES='*.txt'
 
-ARCHIVE_GAME_BIN_PATH='data/noarch/data'
-ARCHIVE_GAME_BIN_FILES='*.exe biopatch.zip'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/data'
+ARCHIVE_GAME_MAIN_FILES='*.bm? *.conf *.exe biopatch.zip'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/data'
-ARCHIVE_GAME_DATA_FILES='*.bm*'
-
-CONFIG_FILES='./*.conf ./config.*'
+CONFIG_FILES='./*.conf ./config.bm?'
 DATA_FILES='./SAVEGAM*'
 
 APP_1_ID="${GAME_ID}-1"
@@ -81,13 +78,9 @@ APP_3_TYPE='dosbox'
 APP_3_EXE='bmenace3.exe'
 APP_3_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_MAIN'
 
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID dosbox"
+PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
 
@@ -125,13 +118,11 @@ prepare_package_layout
 
 # Get icon
 
-PKG='PKG_DATA'
 icons_get_from_workdir 'APP_1' 'APP_2' 'APP_3'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
 launchers_write 'APP_1' 'APP_2' 'APP_3'
 
 # Build package
