@@ -1,10 +1,11 @@
 image: debian:sid
 
 stages:
-    - check
+    - syntax
+    - test
 
 shellcheck:
-    stage: check
+    stage: syntax
     before_script:
         - apt-get --assume-yes --quiet update >/dev/null 2>&1
         - apt-get --assume-yes --quiet install make shellcheck >/dev/null 2>&1
@@ -15,3 +16,13 @@ shellcheck:
     artifacts:
         paths:
             - play.it-2/lib/libplayit2.sh
+
+dryrun:
+    stage: test
+    before_script:
+        - pacman -Sy
+        - pacman --noconfirm -S grep icoutils imagemagick inetutils innoextract libarchive make unarchiver unzip
+        - make
+        - make install
+    script:
+        - ./tests/dry-run-game-scripts.sh
