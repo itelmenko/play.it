@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190311.1
+script_version=20190311.2
 
 # Set game-specific variables
 
@@ -65,7 +65,7 @@ ARCHIVE_GAME1_BIN_FILES='config.ini'
 ARCHIVE_GAME_DATA_PATH='game'
 ARCHIVE_GAME_DATA_FILES='banner.jpg characters data.vis documents folder.jpg Languages.xml scenes videos'
 
-CONFIG_FILES='./config.ini'
+APP_WINE_USER_DATA='Local Settings/Application Data/Daedalic Entertainment/A New Beginning - Final Cut'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='anb.exe'
@@ -83,7 +83,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks"
 
 # Load common functions
 
-target_version='2.11'
+target_version='2.12'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -125,19 +125,6 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 launchers_write 'APP_MAIN'
-
-# Store saved games outside of WINE prefix
-
-# shellcheck disable=SC2016
-save_path='$WINEPREFIX/drive_c/users/$(whoami)/Local Settings/Application Data/Daedalic Entertainment/A New Beginning - Final Cut/Savegames'
-# shellcheck disable=SC2016
-pattern='s#cp --force --recursive --symbolic-link --update "$PATH_GAME"/\* "$PATH_PREFIX"#&\n'
-pattern="$pattern\\tmkdir --parents \"${save_path%/*}\"\\n"
-pattern="$pattern\\tmkdir --parents \"\$PATH_DATA/saves\"\\n"
-pattern="$pattern\\tln --symbolic \"\$PATH_DATA/saves\" \"$save_path\"#"
-for file in "${PKG_BIN_PATH}${PATH_BIN}"/*; do
-	sed --in-place "$pattern" "$file"
-done
 
 # Build package
 
