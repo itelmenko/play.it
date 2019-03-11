@@ -20,8 +20,8 @@ shellcheck:
 dryrun:
     stage: test
     before_script:
-        - pacman -Sy
-        - pacman --noconfirm -S grep icoutils imagemagick inetutils innoextract libarchive make unarchiver unzip
+        - apt-get --assume-yes --quiet update >/dev/null 2>&1
+        - apt-get --assume-yes --quiet install fakeroot grep hostname icoutils imagemagick innoextract libarchive-tools make unar unzip >/dev/null 2>&1
         - make
         - make install
     script:
