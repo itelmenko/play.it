@@ -332,7 +332,7 @@ pkg_set_deps_arch64() {
 # CALLED BY: build_pkg
 pkg_build_arch() {
 	local pkg_filename
-	pkg_filename="$PWD/${1##*/}.pkg.tar"
+	pkg_filename="$OPTION_OUTPUT_DIR/${1##*/}.pkg.tar"
 
 	if [ -e "$pkg_filename" ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"

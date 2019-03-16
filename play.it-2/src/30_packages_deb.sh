@@ -234,7 +234,7 @@ pkg_set_deps_deb() {
 # CALLED BY: build_pkg
 pkg_build_deb() {
 	local pkg_filename
-	pkg_filename="$PWD/${1##*/}.deb"
+	pkg_filename="$OPTION_OUTPUT_DIR/${1##*/}.deb"
 	if [ -e "$pkg_filename" ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"
 		eval ${pkg}_PKG=\"$pkg_filename\"

@@ -58,6 +58,8 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	DEFAULT_OPTION_PREFIX='/usr/local'
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PACKAGE='deb'
+	# shellcheck disable=SC2034
+	DEFAULT_OPTION_OUTPUT_DIR="$PWD"
 	unset winecfg_desktop
 	unset winecfg_launcher
 
@@ -87,12 +89,14 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 			 '--prefix='*|\
 			 '--prefix'|\
 			 '--package='*|\
-			 '--package')
+			 '--package'|\
+			 '--output-dir='*|\
+			 '--output-dir')
 				if [ "${1%=*}" != "${1#*=}" ]; then
-					option="$(printf '%s' "${1%=*}" | sed 's/^--//')"
+					option="$(printf '%s' "${1%=*}" | sed 's/^--//;s/-/_/g')"
 					value="${1#*=}"
 				else
-					option="$(printf '%s' "$1" | sed 's/^--//')"
+					option="$(printf '%s' "$1" | sed 's/^--//;s/-/_/g')"
 					value="$2"
 					shift 1
 				fi
@@ -101,9 +105,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 					exit 0
 				else
 					# shellcheck disable=SC2046
-					eval OPTION_$(printf '%s' "$option" | tr '[:lower:]' '[:upper:]')=\"$value\"
+					eval OPTION_$(printf '%s' "$option" | sed 's/-/_/g' | tr '[:lower:]' '[:upper:]')=\"$value\"
 					# shellcheck disable=SC2046
-					export OPTION_$(printf '%s' "$option" | tr '[:lower:]' '[:upper:]')
+					export OPTION_$(printf '%s' "$option" | sed 's/-/_/g' | tr '[:lower:]' '[:upper:]')
 				fi
 				unset option
 				unset value
@@ -147,7 +151,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	# Set options not already set by script arguments to default values
 
-	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
+	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX' 'OUTPUT_DIR'; do
 		if [ -z "$(get_value "OPTION_$option")" ]\
 		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
 			# shellcheck disable=SC2046
@@ -194,6 +198,11 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	for option in 'CHECKSUM' 'COMPRESSION' 'PACKAGE'; do
 		check_option_validity "$option"
 	done
+
+	# Make sure the output directory exists
+	if [ ! -d "$OPTION_OUTPUT_DIR" ]; then
+		error_not_a_directory "$OPTION_OUTPUT_DIR"
+	fi
 
 	# Do not allow bzip2 compression when building Debian packages
 

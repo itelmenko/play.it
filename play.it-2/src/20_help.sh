@@ -42,6 +42,8 @@ help() {
 	printf '\n'
 	help_skipfreespacecheck
 	printf '\n'
+	help_output_dir
+	printf '\n'
 
 	printf 'ARCHIVE\n\n'
 	archives_get_list
@@ -255,6 +257,24 @@ help_skipfreespacecheck() {
 		;;
 	esac
 	printf -- '--skip-free-space-check\n\n'
+	printf '\t%s\n\n' "$string"
+}
+
+# display --output-dir option usage
+# USAGE: help_output_dir
+# NEEDED VARS: (LANG)
+# CALLED BY: help
+help_output_dir() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			string='Permet de sélectionner le répertoire dans le quel les paquets seront placés.'
+		;;
+		('en'|*)
+			string='Allow to choose in which directory packages will be put.'
+		;;
+	esac
+	printf -- '--output-dir\n\n'
 	printf '\t%s\n\n' "$string"
 }
 

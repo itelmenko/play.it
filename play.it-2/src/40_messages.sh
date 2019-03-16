@@ -108,3 +108,26 @@ error_unknown_application_type() {
 	exit 1
 }
 
+
+# display an error if the path isn't a directory
+# USAGE: error_not_a_directory $directory
+# CALLS: print_error
+error_not_a_directory () {
+	local directory
+	directory="$1"
+	local string
+	print_error
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='"%s" n’est pas un répertoire.'
+		;;
+		('en'|*)
+			# shellcheck disable=SC1112
+			string='"%s" isn’t a directory'
+		;;
+	esac
+	# shellcheck disable=SC2059
+	printf "$string" "$directory"
+	exit 1
+}
