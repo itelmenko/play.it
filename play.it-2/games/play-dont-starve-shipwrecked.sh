@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Don’t Starve: Shipwrecked
+# Donʼt Starve: Shipwrecked
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='dont-starve'
-# shellcheck disable=SC1112
-GAME_NAME='Don’t Starve: Shipwrecked'
+GAME_NAME='Donʼt Starve: Shipwrecked'
 
 ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_OLD'
 

@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Baldur’s Gate - Enhanced Edition
+# Baldurʼs Gate - Enhanced Edition
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20180930.1
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-1-enhanced-edition'
-# shellcheck disable=SC1112
-GAME_NAME='Baldur’s Gate - Enhanced Edition'
+GAME_NAME='Baldurʼs Gate - Enhanced Edition'
 
 ARCHIVE_GOG='baldur_s_gate_enhanced_edition_en_2_5_23121.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_enhanced_edition'

@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Torin’s Passage
+# Torinʼs Passage
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###

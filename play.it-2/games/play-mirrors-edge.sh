@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Mirror’s Edge
+# Mirrorʼs Edge
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='mirrors-edge'
-# shellcheck disable=SC1112
-GAME_NAME='Mirror’s Edge'
+GAME_NAME='Mirrorʼs Edge'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
 

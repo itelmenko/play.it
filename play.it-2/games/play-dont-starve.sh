@@ -31,7 +31,7 @@ set -o errexit
 ###
 
 ###
-# Don’t Starve
+# Donʼt Starve
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -41,8 +41,7 @@ script_version=20190113.1
 # Set game-specific variables
 
 GAME_ID='dont-starve'
-# shellcheck disable=SC1112
-GAME_NAME='Don’t Starve'
+GAME_NAME='Donʼt Starve'
 
 ARCHIVE_GOG='don_t_starve_en_222215_22450.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/dont_starve'

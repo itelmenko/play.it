@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Her Majesty’s SPIFFING
+# Her Majestyʼs SPIFFING
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20181125.1
 # Set game-specific variables
 
 GAME_ID='her-majestys-spiffing'
-# shellcheck disable=SC1112
-GAME_NAME='Her Majesty’s SPIFFING'
+GAME_NAME='Her Majestyʼs SPIFFING'
 
 ARCHIVE_HUMBLE='HMS_Linux.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/her-majestys-spiffing'

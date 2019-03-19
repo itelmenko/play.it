@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Order of the Thorne: The King’s Challenge
+# Order of the Thorne: The Kingʼs Challenge
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20180303.2
 # Set game-specific variables
 
 GAME_ID='order-of-the-thorne'
-# shellcheck disable=SC1112
-GAME_NAME='Order of the Thorne: The King’s Challenge'
+GAME_NAME='Order of the Thorne: The Kingʼs Challenge'
 
 ARCHIVES_LIST='ARCHIVE_GOG'
 

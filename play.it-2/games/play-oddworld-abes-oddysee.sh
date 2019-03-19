@@ -39,8 +39,7 @@ script_version=20180802.1
 # Set game-specific variables
 
 GAME_ID='oddworld-abes-oddysee'
-# shellcheck disable=SC1112
-GAME_NAME='Oddworld: Abe’s Oddysee'
+GAME_NAME='Oddworld: Abeʼs Oddysee'
 
 ARCHIVE_GOG='setup_abes_oddysee_1.0_(19071).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/oddworld_abes_oddysee'

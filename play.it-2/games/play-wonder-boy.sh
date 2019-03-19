@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Wonder Boy: The Dragon’s Trap
+# Wonder Boy: The Dragonʼs Trap
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
@@ -40,8 +40,7 @@ script_version=20181227.1
 # Set game-specific variables
 
 GAME_ID='wonder-boy'
-# shellcheck disable=SC1112
-GAME_NAME='Wonder Boy: The Dragon’s Trap'
+GAME_NAME='Wonder Boy: The Dragonʼs Trap'
 
 ARCHIVE_GOG='wonder_boy_the_dragon_s_trap_en_1_03f_02_20817.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/wonder_boy_the_dragons_trap'

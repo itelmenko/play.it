@@ -212,7 +212,7 @@ archive_set 'ARCHIVE_LINUX_CLIENT_PATCH' "$ARCHIVE_PATCH"
 ARCHIVE="$ARCHIVE_MAIN"
 
 # Check presence of NWMovies archive
-# NWMovies won’t be included in Arch Linux packages until this bug is fixed: https://framagit.org/vv221/play.it-games/issues/45
+# NWMovies wonʼt be included in Arch Linux packages until this bug is fixed: https://framagit.org/vv221/play.it-games/issues/45
 
 if [ "$OPTION_PACKAGE" != 'arch' ]; then
 	ARCHIVE_MAIN="$ARCHIVE"

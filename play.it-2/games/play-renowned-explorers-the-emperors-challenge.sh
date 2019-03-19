@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Renowned Explorers: The Emperor’s Challenge
+# Renowned Explorers: The Emperorʼs Challenge
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20181128.1
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
-# shellcheck disable=SC1112
-GAME_NAME='Renowned Explorers: The Emperor’s Challenge'
+GAME_NAME='Renowned Explorers: The Emperorʼs Challenge'
 
 ARCHIVE_GOG='renowned_explorers_international_society_the_emperors_challenge_dlc_512_25169.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers_the_emperors_challenge'

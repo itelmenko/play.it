@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# L’Amerzone
+# LʼAmerzone
 # build native Linux packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
@@ -40,8 +40,7 @@ script_version=20180612.1
 # Set game-specific variables
 
 GAME_ID='amerzone'
-# shellcheck disable=SC1112 
-GAME_NAME='L’Amerzone'
+GAME_NAME='LʼAmerzone'
 
 ARCHIVE_GOG='setup_amerzone_french_2.1.0.10.exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/amerzone_the_explorer_legacy'

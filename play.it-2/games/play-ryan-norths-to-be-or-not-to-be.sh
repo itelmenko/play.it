@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Ryan North’s To Be or Not To Be
+# Ryan Northʼs To Be or Not To Be
 # build native Linux packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
@@ -40,8 +40,7 @@ script_version=20180725.1
 # Set game-specific variables
 
 GAME_ID='ryan-norths-to-be-or-not-to-be'
-# shellcheck disable=SC1112
-GAME_NAME='Ryan North’s To Be or Not To Be'
+GAME_NAME='Ryan Northʼs To Be or Not To Be'
 
 ARCHIVE_HUMBLE='tobe_linux_3270.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/ryan-norths-to-be-or-not-to-be'

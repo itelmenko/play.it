@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Melody’s Escape
+# Melodyʼs Escape
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -39,8 +39,7 @@ script_version=20180224.1
 # Set game-specific variables
 
 GAME_ID='melodys-escape'
-# shellcheck disable=SC1112
-GAME_NAME='Melody’s Escape'
+GAME_NAME='Melodyʼs Escape'
 
 ARCHIVES_LIST='ARCHIVE_HUMBLE'
 

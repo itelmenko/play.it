@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Baldur’s Gate 2
+# Baldurʼs Gate 2
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -41,8 +41,7 @@ script_version=20181028.1
 SCRIPT_DEPS='unix2dos'
 
 GAME_ID='baldurs-gate-2'
-# shellcheck disable=SC1112
-GAME_NAME='Baldur’s Gate II'
+GAME_NAME='Baldurʼs Gate II'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_EN_OLD0 ARCHIVE_GOG_FR ARCHIVE_GOG_FR_OLD0'
 
