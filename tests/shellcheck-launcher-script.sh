@@ -22,7 +22,7 @@ mkdir --parents "$WORKDIR"
 	cd "$WORKDIR"
 	curl "$WINE_INSTALLER_URL" --output "$WINE_ARCHIVE"
 	"$PLAYIT_SCRIPT" "$WINE_ARCHIVE" --package=arch --compression=none
-	tar xf lib32-*_x86_64.pkg.tar
+	tar xf lib32-*_x86_64.pkg.tar "$WINE_FILE"
 )
 file="$WORKDIR/$WINE_FILE"
 for shell in 'sh' 'bash' 'dash' 'ksh'; do
@@ -37,7 +37,7 @@ mkdir --parents "$WORKDIR"
 	cd "$WORKDIR"
 	curl "$NATIVE_INSTALLER_URL" --output "$NATIVE_ARCHIVE"
 	"$PLAYIT_SCRIPT" "$NATIVE_ARCHIVE" --package=arch --compression=none
-	tar xf fruits-of-a-feather_*_any.pkg.tar
+	tar xf fruits-of-a-feather_*_any.pkg.tar "$NATIVE_FILE"
 )
 file="$WORKDIR/$NATIVE_FILE"
 for shell in 'sh' 'bash' 'dash' 'ksh'; do
