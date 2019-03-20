@@ -20,7 +20,7 @@ printf 'Testing WINE game.\n'
 mkdir --parents "$WORKDIR"
 (
 	cd "$WORKDIR"
-	wget "$WINE_INSTALLER_URL"
+	curl "$WINE_INSTALLER_URL" --output "$WINE_ARCHIVE"
 	"$PLAYIT_SCRIPT" "$WINE_ARCHIVE" --package=arch --compression=none
 	tar xf lib32-*_x86_64.pkg.tar
 )
@@ -35,7 +35,7 @@ printf 'Testing native game.\n'
 mkdir --parents "$WORKDIR"
 (
 	cd "$WORKDIR"
-	wget "$NATIVE_INSTALLER_URL" -O "$NATIVE_ARCHIVE"
+	curl "$NATIVE_INSTALLER_URL" --output "$NATIVE_ARCHIVE"
 	"$PLAYIT_SCRIPT" "$NATIVE_ARCHIVE" --package=arch --compression=none
 	tar xf fruits-of-a-feather_*_any.pkg.tar
 )
