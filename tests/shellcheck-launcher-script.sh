@@ -26,7 +26,7 @@ mkdir --parents "$WORKDIR"
 )
 file="$WORKDIR/$WINE_FILE"
 for shell in 'sh' 'bash' 'dash' 'ksh'; do
-	printf 'Testing using ShellCheck in %s mode…\n' "$file" "$shell"
+	printf 'Testing %s using ShellCheck in %s mode…\n' "$file" "$shell"
 	shellcheck --shell="$shell" "$file"
 done
 rm --force --recursive "${WORKDIR:?}"
@@ -41,7 +41,7 @@ mkdir --parents "$WORKDIR"
 )
 file="$WORKDIR/$NATIVE_FILE"
 for shell in 'sh' 'bash' 'dash' 'ksh'; do
-	printf 'Testing using ShellCheck in %s mode…\n' "$file" "$shell"
+	printf 'Testing %s using ShellCheck in %s mode…\n' "$file" "$shell"
 	shellcheck --shell="$shell" "$file"
 done
 rm --force --recursive "${WORKDIR:?}"
