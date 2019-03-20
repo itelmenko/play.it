@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -o errexit
 
-WORKDIR=$(mktemp --directory --tmpdir="${TMPDIR:-/tmp}" "play.it-tests.XXXXX")
+WORKDIR=$(mktemp --directory --tmpdir "play.it-tests.XXXXX")
 PLAYIT_SCRIPT=$(realpath "$(dirname "$0")/../play.it")
 
 WINE_INSTALLER_URL='http://downloads.digipen.edu/arcade/downloads/043/Tag_setup.exe'
