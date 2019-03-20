@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,11 +31,11 @@ set -o errexit
 
 ###
 # Fruits of a Feather
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180504.1
+script_version=20190521.3
 
 # Set game-specific variables
 
@@ -48,10 +49,10 @@ ARCHIVE_ITCH_VERSION='2.0-itch161118'
 ARCHIVE_ITCH_SIZE='170000'
 
 ARCHIVE_GAME_BIN_PATH='linux'
-ARCHIVE_GAME_BIN_FILES='./FruitsofaFeather.x86 ./*_Data/*/x86'
+ARCHIVE_GAME_BIN_FILES='FruitsofaFeather.x86 FruitsofaFeather_Data/Mono FruitsofaFeather_Data/Plugins'
 
 ARCHIVE_GAME_DATA_PATH='linux'
-ARCHIVE_GAME_DATA_FILES='*_Data'
+ARCHIVE_GAME_DATA_FILES='FruitsofaFeather_Data'
 
 DATA_DIRS='./logs'
 
@@ -59,52 +60,59 @@ APP_MAIN_TYPE='native'
 APP_MAIN_EXE='FruitsofaFeather.x86'
 # shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICONS_LIST='APP_MAIN_ICON'
 APP_MAIN_ICON='FruitsofaFeather_Data/Resources/UnityPlayer.png'
-APP_MAIN_ICON_RES='128'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glx xcursor libxrandr"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID glx xcursor libxrandr"
 
 # Load common functions
 
-target_version='2.7'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
-postinst_icons_linking 'APP_MAIN'
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
 write_metadata 'PKG_BIN'
 build_pkg
