@@ -8,6 +8,9 @@
   * glx meta-dependency do not install a transitional package anymore on
     recent Debian versions
 
+  * Allow to skip control of InnoSetup version used in archive passed to
+    innoextract
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
