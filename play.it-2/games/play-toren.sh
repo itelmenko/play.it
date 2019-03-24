@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2018-2019, Solène Huault
+# Copyright (c) 2016-2019, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,54 +30,39 @@ set -o errexit
 ###
 
 ###
-# Momodora: Reverie Under the Moonlight
+# Toren
 # build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190224.1
+script_version=20190221.2
 
 # Set game-specific variables
 
-GAME_ID='momodora-reverie-under-the-moonlight'
-GAME_NAME='Momodora: Reverie Under the Moonlight'
+GAME_ID='toren'
+GAME_NAME='Toren'
 
-ARCHIVE_GOG='momodora_reverie_under_the_moonlight_1_062_24682.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/momodora_reverie_under_the_moonlight'
-ARCHIVE_GOG_MD5='9da233f084d0a86e4068ca90c89e4f05'
-ARCHIVE_GOG_SIZE='330000'
-ARCHIVE_GOG_VERSION='1.062-gog24682'
-ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG='setup_toren_gog-1_(17651).exe'
+ARCHIVE_GOG_MD5='4785b339bb5918722ff6a9f30f9d5c04'
+ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_PART1='setup_toren_gog-1_(17651)-1.bin'
+ARCHIVE_GOG_PART1_MD5='877ca6f3271cb03b46b5de71a6ff37de'
+ARCHIVE_GOG_PART1_TYPE='innosetup1.7'
+ARCHIVE_GOG_URL='https://www.gog.com/game/toren'
+ARCHIVE_GOG_VERSION='1.0-gog17651'
+ARCHIVE_GOG_SIZE='2400000'
 
-ARCHIVE_GOG_OLD0='momodora_reverie_under_the_moonlight_en_20180418_20149.sh'
-ARCHIVE_GOG_OLD0_MD5='5ec0d0e8475ced69fbaf3881652d78c1'
-ARCHIVE_GOG_OLD0_SIZE='330000'
-ARCHIVE_GOG_OLD0_VERSION='1.02a-gog20149'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_FILES='toren.exe'
 
-ARCHIVE_OPTIONAL_LIBCURL='libcurl3_7.60.0_32-bit.tar.gz'
-ARCHIVE_OPTIONAL_LIBCURL_URL='https://www.dotslashplay.it/ressources/libcurl/'
-ARCHIVE_OPTIONAL_LIBCURL_MD5='7206100f065d52de5a4c0b49644aa052'
+ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_FILES='toren_data'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*'
+DATA_FILES='./*.sav'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='Installation?Notes.pdf Update.txt'
-
-ARCHIVE_GAME_BIN_PATH='data/noarch/game/GameFiles'
-ARCHIVE_GAME_BIN_FILES='MomodoraRUtM runtime/i386/lib/i386-linux-gnu/libssl.so.1.0.0 runtime/i386/lib/i386-linux-gnu/libcrypto.so.1.0.0'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game/GameFiles'
-ARCHIVE_GAME_DATA_FILES='assets'
-
-CONFIG_FILES='assets/*.ini'
-
-APP_MAIN_TYPE='native'
-APP_MAIN_LIBS='runtime/i386/lib/i386-linux-gnu'
-APP_MAIN_PRERUN='export LANG=C'
-APP_MAIN_EXE='MomodoraRUtM'
-APP_MAIN_ICON='assets/icon.png'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='toren.exe'
+APP_MAIN_ICON='toren.exe'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -85,7 +70,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal libxrandr libcurl"
+PKG_BIN_DEPS="$PKG_DATA_ID wine glx"
 
 # Load common functions
 
@@ -115,30 +100,16 @@ fi
 # shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
-# Use libcurl 3 32-bit archive
-
-ARCHIVE_MAIN="$ARCHIVE"
-set_archive 'ARCHIVE_LIBCURL' 'ARCHIVE_OPTIONAL_LIBCURL'
-ARCHIVE="$ARCHIVE_MAIN"
-
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Include libcurl 3 32-bit
+# Extract icon
 
-if [ "$ARCHIVE_LIBCURL" ]; then
-	(
-		ARCHIVE='ARCHIVE_LIBCURL'
-		extract_data_from "$ARCHIVE_LIBCURL"
-	)
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	rm --recursive "$PLAYIT_WORKDIR/gamedata"
-	ln --symbolic 'libcurl.so.4.5.0' "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS/libcurl.so.4"
-fi
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
@@ -147,10 +118,7 @@ launcher_write 'APP_MAIN'
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN'
+write_metadata
 build_pkg
 
 # Clean up

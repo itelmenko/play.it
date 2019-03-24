@@ -1,9 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
-# Copyright (c) 2018, Solène Huault
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2018-2019, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,36 +31,57 @@ set -o errexit
 
 ###
 # This War of Mine
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180617.1
+script_version=20190224.1
 
 # Set game-specific variables
 
 GAME_ID='this-war-of-mine'
 GAME_NAME='This War Of Mine'
 
-ARCHIVE_GOG='this_war_of_mine_en_4_0_0_29_01_2018_18230.sh'
+ARCHIVE_GOG='this_war_of_mine_5_1_0_26027.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/this_war_of_mine'
-ARCHIVE_GOG_MD5='165f4d6158425c3d2861c533f10b5713'
-ARCHIVE_GOG_VERSION='4.0.0-gog18230'
-ARCHIVE_GOG_SIZE='1500000'
+ARCHIVE_GOG_MD5='8c9221653e6fc94a6898f5ef66a3325f'
+ARCHIVE_GOG_VERSION='5.1.0-gog26027'
+ARCHIVE_GOG_SIZE='2200000'
 ARCHIVE_GOG_TYPE='mojosetup'
 
+ARCHIVE_GOG_OLD2='this_war_of_mine_4_0_1_25361.sh'
+ARCHIVE_GOG_OLD2_MD5='c6d96f0722a35821ea30500d8e7658d8'
+ARCHIVE_GOG_OLD2_VERSION='4.0.1-gog25361'
+ARCHIVE_GOG_OLD2_SIZE='2200000'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='this_war_of_mine_4_0_1_24802.sh'
+ARCHIVE_GOG_OLD1_MD5='17daac7e70ee2c783b12114573cb7757'
+ARCHIVE_GOG_OLD1_VERSION='4.0.1-gog24802'
+ARCHIVE_GOG_OLD1_SIZE='1500000'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='this_war_of_mine_en_4_0_0_29_01_2018_18230.sh'
+ARCHIVE_GOG_OLD0_MD5='165f4d6158425c3d2861c533f10b5713'
+ARCHIVE_GOG_OLD0_VERSION='4.0.0-gog18230'
+ARCHIVE_GOG_OLD0_SIZE='1500000'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+
 ARCHIVE_DOC_PATH='data/noarch/docs'
-ARCHIVE_DOC_FILES='./*'
+ARCHIVE_DOC_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./libcurl.so.4 ./libOpenAL.so ./TWOMLinux'
+ARCHIVE_GAME_BIN_FILES='libcurl.so.4 libOpenAL.so KosovoLinux This?War?of?Mine TWOMLinux'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./*.dat ./*.idx ./*str ./CustomContent ./LocalizationPacks ./svnrev.txt ./WorkshopData'
+ARCHIVE_GAME_DATA_FILES='*.dat *.idx *str CustomContent LocalizationPacks svnrev.txt WorkshopData'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE='TWOMLinux'
+APP_MAIN_EXE='KosovoLinux'
 APP_MAIN_ICON='data/noarch/support/icon.png'
+# Keep compatibility with old archives
+APP_MAIN_EXE_GOG_OLD1='This War of Mine'
+APP_MAIN_EXE_GOG_OLD0='TWOMLinux'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -72,31 +93,30 @@ PKG_BIN_DEPS="$PKG_DATA_ID glibc glx openal libcurl"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -113,8 +133,8 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
-
+use_archive_specific_value 'APP_MAIN_EXE'
+launcher_write 'APP_MAIN'
 
 # Build package
 

@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,56 +30,49 @@ set -o errexit
 ###
 
 ###
-# Distance
+# Wing Commander
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190306.3
+script_version=20190224.4
 
 # Set game-specific variables
 
-GAME_ID='distance'
-GAME_NAME='Distance'
+GAME_ID='wing-commander-1'
+GAME_NAME='Wing Commander'
 
-ARCHIVE_HUMBLE='distance_6714_linux.tar.gz'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/distance'
-ARCHIVE_HUMBLE_MD5='6b82a258c4fe4c5fe5dcf3ec70f7c326'
-ARCHIVE_HUMBLE_VERSION='1.11-humble190120'
-ARCHIVE_HUMBLE_SIZE='2300000'
+ARCHIVE_GOG='setup_wing_commander_2.1.0.18.exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/wing_commander_1_2'
+ARCHIVE_GOG_MD5='a4a3a355489e66bcecd34d1d9041ebb5'
+ARCHIVE_GOG_VERSION='1.0-gog21018'
+ARCHIVE_GOG_SIZE='49000'
+ARCHIVE_GOG_TYPE='innosetup'
 
-ARCHIVE_HUMBLE_OLD0='distance_6670_linux.tar.gz'
-ARCHIVE_HUMBLE_OLD0_MD5='7542f19db3aa2f00368b4efb91907a4f'
-ARCHIVE_HUMBLE_OLD0_VERSION='1.02-humble181103'
-ARCHIVE_HUMBLE_OLD0_SIZE='1800000'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_PATH='*.pdf'
 
-ARCHIVE_DOC_PATH='.'
-ARCHIVE_DOC_FILES='EULA.txt'
+ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_FILES='wc.exe sm2.exe gamedat *.cfg'
 
-ARCHIVE_GAME_BIN_PATH='bin'
-ARCHIVE_GAME_BIN_FILES='Distance Distance_Data/Mono Distance_Data/Plugins'
+CONFIG_FILES='./*.cfg'
+DATA_DIRS='./gamedat'
 
-ARCHIVE_GAME_DATA_PATH='bin'
-ARCHIVE_GAME_DATA_FILES='Distance_Data'
+APP_MAIN_TYPE='dosbox'
+APP_MAIN_EXE='wc.exe'
+APP_MAIN_ICON='app/goggame-1207662643.ico'
 
-DATA_DIRS='./logs'
+APP_SM2_ID="${GAME_ID}_sm2"
+APP_SM2_TYPE='dosbox'
+APP_SM2_EXE='sm2.exe'
+APP_SM2_ICON='app/goggame-1207662643.ico'
+APP_SM2_NAME="$GAME_NAME - The Secret Missions 2 - Crusade"
 
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE='Distance'
-# shellcheck disable=SC2016
-APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON='Distance_Data/Resources/UnityPlayer.png'
+PACKAGES_LIST='PKG_MAIN'
 
-PACKAGES_LIST='PKG_BIN PKG_DATA'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1 sdl2"
-PKG_BIN_DEPS_ARCH='lib32-libx11'
-PKG_BIN_DEPS_DEB='libx11-6'
-PKG_BIN_DEPS_GENTOO='x11-libs/libX11'
+PKG_MAIN_DEPS='dosbox'
+# Easier upgrade from packages generated with pre-20190224.1 scripts
+PKG_MAIN_PROVIDE='wing-commander'
 
 # Load common functions
 
@@ -111,21 +105,20 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
+
+# Extract icons
+
+icons_get_from_workdir 'APP_MAIN' 'APP_SM2'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-PKG='PKG_BIN'
-launcher_write 'APP_MAIN'
+launchers_write 'APP_MAIN' 'APP_SM2'
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN'
+write_metadata
 build_pkg
 
 # Clean up

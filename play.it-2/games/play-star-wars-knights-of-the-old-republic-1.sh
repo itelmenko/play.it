@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,59 +30,73 @@ set -o errexit
 ###
 
 ###
-# Star Wars: Galactic Battlegrounds
+# STAR WARS™: Knights of the Old Republic
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190224.1
+script_version=20190221.2
 
 # Set game-specific variables
 
-GAME_ID='star-wars-galactic-battlegrounds'
-GAME_NAME='Star Wars: Galactic Battlegrounds'
+GAME_ID='star-wars-knights-of-the-old-republic-1'
+GAME_NAME='Star Wars: Knights of the Old Republic'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
 
-ARCHIVE_GOG_EN='setup_sw_galactic_battlegrounds_saga_2.0.0.4.exe'
-ARCHIVE_GOG_EN_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
-ARCHIVE_GOG_EN_MD5='6af25835c5f240914cb04f7b4f741813'
-ARCHIVE_GOG_EN_VERSION='1.1-gog2.0.0.4'
-ARCHIVE_GOG_EN_SIZE='830000'
+ARCHIVE_GOG_EN='setup_sw_kotor_2.0.0.3.exe'
+ARCHIVE_GOG_EN_URL='https://www.gog.com/game/star_wars_knights_of_the_old_republic'
+ARCHIVE_GOG_EN_MD5='9962e94dabb07411a066c95efb4b78a4'
+ARCHIVE_GOG_EN_VERSION='1.03-gog2003'
+ARCHIVE_GOG_EN_SIZE='3800000'
+ARCHIVE_GOG_EN_TYPE='rar'
+ARCHIVE_GOG_EN_GOGID='1207666283'
+ARCHIVE_GOG_EN_PART1='setup_sw_kotor_2.0.0.3.bin'
+ARCHIVE_GOG_EN_PART1_MD5='2c2cc27ee410948b417f8fa30d0c9201'
+ARCHIVE_GOG_EN_PART1_TYPE='rar'
 
-ARCHIVE_GOG_FR='setup_sw_galactic_battlegrounds_saga_french_2.0.0.4.exe'
-ARCHIVE_GOG_FR_URL='https://www.gog.com/game/star_wars_galactic_battlegrounds_saga'
-ARCHIVE_GOG_FR_MD5='b30458033e825ad252e2d5b3dc8a7845'
-ARCHIVE_GOG_FR_VERSION='1.1-gog2.0.0.4'
-ARCHIVE_GOG_FR_SIZE='820000'
+ARCHIVE_GOG_FR='setup_sw_kotor_french_2.0.0.3.exe'
+ARCHIVE_GOG_FR_URL='https://www.gog.com/game/star_wars_knights_of_the_old_republic'
+ARCHIVE_GOG_FR_MD5='42b90743d069ca60dfd96f9991a5a37c'
+ARCHIVE_GOG_FR_VERSION='1.03-gog2003'
+ARCHIVE_GOG_FR_SIZE='3900000'
+ARCHIVE_GOG_FR_TYPE='rar'
+ARCHIVE_GOG_FR_GOGID='1207666283'
+ARCHIVE_GOG_FR_PART1='setup_sw_kotor_french_2.0.0.3.bin'
+ARCHIVE_GOG_FR_PART1_MD5='81c2b828d0b2708fae8c7b15248bb22d'
+ARCHIVE_GOG_FR_PART1_TYPE='rar'
 
-ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_FILES='*.pdf'
+ARCHIVE_DOC_L10N_PATH='game'
+ARCHIVE_DOC_L10N_FILES='docs'
 
-ARCHIVE_GAME_BIN_PATH='app/game'
-ARCHIVE_GAME_BIN_FILES='*.exe libogg-0.dll libvorbis-0.dll libvorbisfile-3.dll win32.dll'
+ARCHIVE_DOC_DATA_PATH='game'
+ARCHIVE_DOC_DATA_FILES='swkotorv103.txt manual.pdf'
 
-ARCHIVE_GAME_L10N_PATH='app/game'
-ARCHIVE_GAME_L10N_FILES='language*.dll campaign/media/1c2s6_end.mm data/gamedata_x1.drs data/genie*.dat data/list*.crx data/sounds.*drs history sound/campaign sound/scenario scenario/default0.scx taunt'
+ARCHIVE_GAME_BIN_PATH='game'
+ARCHIVE_GAME_BIN_FILES='*.exe binkw32.dll patchw32.dll mss32.dll utils/*.exe utils/*.txt'
 
-ARCHIVE_GAME_DATA_PATH='app/game'
-ARCHIVE_GAME_DATA_FILES='ai campaign data extras music random savegame scenario sound *.avi'
+ARCHIVE_GAME_L10N_PATH='game'
+ARCHIVE_GAME_L10N_FILES='patch.erf utils/*.ini utils/swupdateskins lips streamwaves streamsounds dialog.tlk movies/01a.bik movies/02.bik movies/09.bik movies/31a.bik movies/50.bik movies/56b.bik movies/leclogo.bik movies/legal.bik movies/01a.bik movies/02.bik movies/09.bik movies/31a.bik movies/50.bik movies/56b.bik movies/leclogo.bik movies/legal.bik'
 
-DATA_DIRS='./ai ./campaign ./random ./savegame ./scenario'
-DATA_FILES='./data/*.dat ./player.nf*'
+ARCHIVE_GAME0_DATA_PATH='game'
+ARCHIVE_GAME0_DATA_FILES='chitin.key data miles modules rims streammusic texturepacks movies'
 
-APP_REGEDIT='swgb.reg'
-APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}') csmt=off"
+ARCHIVE_GAME1_DATA_PATH='support/app'
+ARCHIVE_GAME1_DATA_FILES='swkotor.ini'
+
+DATA_DIRS='./saves ./override'
+CONFIG_FILES='./swkotor.ini'
 
 APP_MAIN_TYPE='wine'
-APP_MAIN_EXE='battlegrounds.exe'
-APP_MAIN_ICON='battlegrounds.exe'
+APP_MAIN_EXE='swkotor.exe'
+APP_MAIN_ICON='swkotor.exe'
 
-APP_ADDON_ID="${GAME_ID}_clone-wars"
-APP_ADDON_NAME="$GAME_NAME - Clone Wars"
-APP_ADDON_TYPE='wine'
-APP_ADDON_EXE='battlegrounds_x1.exe'
-APP_ADDON_ICON='battlegrounds_x1.exe'
+APP_CONFIG_ID="${GAME_ID}_config"
+APP_CONFIG_TYPE='wine'
+APP_CONFIG_EXE='swconfig.exe'
+APP_CONFIG_ICON='swconfig.exe'
+APP_CONFIG_NAME="${GAME_NAME} - Configuration"
+APP_CONFIG_CAT='Settings'
 
 PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
 
@@ -94,9 +109,13 @@ PKG_L10N_DESCRIPTION_GOG_FR='French localization'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with 20190122.6 scripts
+PKG_DATA_PROVIDE='star-wars-knights-of-the-old-republic-data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine winetricks xrandr"
+PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine glx libxrandr"
+# Easier upgrade from packages generated with 20190122.6 scripts
+PKG_BIN_PROVIDE='star-wars-knights-of-the-old-republic'
 
 # Load common functions
 
@@ -128,29 +147,21 @@ fi
 
 # Extract game data
 
-extract_data_from "$SOURCE_ARCHIVE"
+extract_data_from "$SOURCE_ARCHIVE_PART1"
+tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icons
+# Extract game icons
 
 PKG='PKG_BIN'
-icons_get_from_package 'APP_MAIN' 'APP_ADDON'
+icons_get_from_package 'APP_MAIN' 'APP_CONFIG'
 icons_move_to 'PKG_DATA'
 
 # Write launchers
 
 PKG='PKG_BIN'
-launchers_write 'APP_MAIN' 'APP_ADDON'
-
-# Work around CD check
-
-cat > "${PKG_BIN_PATH}${PATH_GAME}/swgb.reg" << 'EOF'
-Windows Registry Editor Version 5.00
-
-[HKEY_LOCAL_MACHINE\Software\LucasArts Entertainment Company LLC\Star Wars Galactic Battlegrounds\1.0]
-"CDPath"="C:"
-EOF
+launchers_write 'APP_MAIN' 'APP_CONFIG'
 
 # Build package
 

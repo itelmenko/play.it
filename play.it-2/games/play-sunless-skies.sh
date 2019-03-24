@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2018-2019, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,62 +29,53 @@ set -o errexit
 ###
 
 ###
-# Momodora: Reverie Under the Moonlight
+# Sunless Skies
 # build native packages from the original installers
-# send your bug reports to mopi@dotslashplay.it
+# send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190224.1
+script_version=20190201.2
 
 # Set game-specific variables
 
-GAME_ID='momodora-reverie-under-the-moonlight'
-GAME_NAME='Momodora: Reverie Under the Moonlight'
+GAME_ID='sunless-skies'
+GAME_NAME='Sunless Skies'
 
-ARCHIVE_GOG='momodora_reverie_under_the_moonlight_1_062_24682.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/momodora_reverie_under_the_moonlight'
-ARCHIVE_GOG_MD5='9da233f084d0a86e4068ca90c89e4f05'
-ARCHIVE_GOG_SIZE='330000'
-ARCHIVE_GOG_VERSION='1.062-gog24682'
+ARCHIVE_GOG='sunless_skies_1_1_9_5_08b4e1b8_27040.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/sunless_skies'
 ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG_MD5='0fc87cf745c2db5d36e412c9265d1d76'
+ARCHIVE_GOG_VERSION='1.1.9.5.08b4e1b8-gog27040'
+ARCHIVE_GOG_SIZE='3600000'
 
-ARCHIVE_GOG_OLD0='momodora_reverie_under_the_moonlight_en_20180418_20149.sh'
-ARCHIVE_GOG_OLD0_MD5='5ec0d0e8475ced69fbaf3881652d78c1'
-ARCHIVE_GOG_OLD0_SIZE='330000'
-ARCHIVE_GOG_OLD0_VERSION='1.02a-gog20149'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN32_FILES='Sunless?Skies.x86 Sunless?Skies_Data/*/x86'
 
-ARCHIVE_OPTIONAL_LIBCURL='libcurl3_7.60.0_32-bit.tar.gz'
-ARCHIVE_OPTIONAL_LIBCURL_URL='https://www.dotslashplay.it/ressources/libcurl/'
-ARCHIVE_OPTIONAL_LIBCURL_MD5='7206100f065d52de5a4c0b49644aa052'
+ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_FILES='Sunless?Skies.x86_64 Sunless?Skies_Data/*/x86_64'
 
-ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='*'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='Sunless?Skies_Data'
 
-ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='Installation?Notes.pdf Update.txt'
-
-ARCHIVE_GAME_BIN_PATH='data/noarch/game/GameFiles'
-ARCHIVE_GAME_BIN_FILES='MomodoraRUtM runtime/i386/lib/i386-linux-gnu/libssl.so.1.0.0 runtime/i386/lib/i386-linux-gnu/libcrypto.so.1.0.0'
-
-ARCHIVE_GAME_DATA_PATH='data/noarch/game/GameFiles'
-ARCHIVE_GAME_DATA_FILES='assets'
-
-CONFIG_FILES='assets/*.ini'
+DATA_DIRS='./dlc ./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_LIBS='runtime/i386/lib/i386-linux-gnu'
-APP_MAIN_PRERUN='export LANG=C'
-APP_MAIN_EXE='MomodoraRUtM'
-APP_MAIN_ICON='assets/icon.png'
+APP_MAIN_EXE_BIN32='Sunless Skies.x86'
+APP_MAIN_EXE_BIN64='Sunless Skies.x86_64'
+# shellcheck disable=SC2016
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='Sunless Skies_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_BIN PKG_DATA'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu openal libxrandr libcurl"
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor libxrandr libudev1"
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
@@ -115,42 +105,24 @@ fi
 # shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
-# Use libcurl 3 32-bit archive
-
-ARCHIVE_MAIN="$ARCHIVE"
-set_archive 'ARCHIVE_LIBCURL' 'ARCHIVE_OPTIONAL_LIBCURL'
-ARCHIVE="$ARCHIVE_MAIN"
-
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Include libcurl 3 32-bit
-
-if [ "$ARCHIVE_LIBCURL" ]; then
-	(
-		ARCHIVE='ARCHIVE_LIBCURL'
-		extract_data_from "$ARCHIVE_LIBCURL"
-	)
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	rm --recursive "$PLAYIT_WORKDIR/gamedata"
-	ln --symbolic 'libcurl.so.4.5.0' "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS/libcurl.so.4"
-fi
-
 # Write launchers
 
-PKG='PKG_BIN'
-launcher_write 'APP_MAIN'
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	launcher_write 'APP_MAIN'
+done
 
 # Build package
 
 PKG='PKG_DATA'
 icons_linking_postinst 'APP_MAIN'
 write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN'
+write_metadata 'PKG_BIN32' 'PKG_BIN64'
 build_pkg
 
 # Clean up
