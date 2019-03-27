@@ -34,24 +34,34 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190302.4
+script_version=20190327.1
 
 # Set game-specific variables
 
 GAME_ID='the-elder-scrolls-2-daggerfall'
 GAME_NAME='The Elder Scrolls II: Daggerfall'
 
-ARCHIVE_GOG='setup_tes_daggerfall_2.0.0.4.exe'
+ARCHIVE_GOG='setup_the_elder_scrolls_ii_daggerfall_1.07_(28043).exe'
+ARCHIVE_GOG_TYPE='innosetup'
 ARCHIVE_GOG_URL='https://www.gog.com/game/the_elder_scrolls_iii_morrowind_goty_edition'
-ARCHIVE_GOG_MD5='68f1eb4f257d8da4c4eab2104770c49b'
-ARCHIVE_GOG_SIZE='580000'
-ARCHIVE_GOG_VERSION='1.07.213-gog2.0.0.4'
+ARCHIVE_GOG_MD5='94acfb7acfe2242241d4355ada481d98'
+ARCHIVE_GOG_SIZE='560000'
+ARCHIVE_GOG_VERSION='1.07.213-gog28043'
 
-ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_GOG_OLD0='setup_tes_daggerfall_2.0.0.4.exe'
+ARCHIVE_GOG_OLD0_MD5='68f1eb4f257d8da4c4eab2104770c49b'
+ARCHIVE_GOG_OLD0_SIZE='580000'
+ARCHIVE_GOG_OLD0_VERSION='1.07.213-gog2.0.0.4'
+
+ARCHIVE_DOC_MAIN_PATH='.'
 ARCHIVE_DOC_MAIN_FILES='*.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_MAIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_PATH='.'
 ARCHIVE_GAME_MAIN_FILES='*.cfg *.exe *.txt *.ini arena2 dagger.ico data *.bnk *.386 *.scr test*'
+# Keep compatibility with old archives
+ARCHIVE_GAME_MAIN_PATH_GOG_OLD0='app'
 
 CONFIG_FILES='./*.cfg'
 DATA_DIRS='./pics ./save0 ./save1 ./save2 ./save3 ./save4 ./save5'
