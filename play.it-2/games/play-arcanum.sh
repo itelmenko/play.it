@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190327.1
+script_version=20190327.2
 
 # Set game-specific variables
 
@@ -43,12 +43,18 @@ SCRIPT_DEPS='upx'
 GAME_ID='arcanum'
 GAME_NAME='Arcanum: Of Steamworks and Magick Obscura'
 
-ARCHIVE_GOG='setup_arcanum_-_of_steamworks_and_magick_obscura_1.0.7.4_(19476).exe'
+ARCHIVE_GOG='setup_arcanum_-_of_steamworks_and_magick_obscura_1.0.7.4_hotfix_(24155).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/arcanum_of_steamworks_and_magick_obscura'
-ARCHIVE_GOG_MD5='298a3315baebf40f3cc6cee4acae9947'
-ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_MD5='6d14d07f7cc8c9823cba5322cf2336f4'
+ARCHIVE_GOG_TYPE='innosetup'
 ARCHIVE_GOG_SIZE='1200000'
-ARCHIVE_GOG_VERSION='1.0.7.4-gog19476'
+ARCHIVE_GOG_VERSION='1.0.7.4-gog24155'
+
+ARCHIVE_GOG_OLD1='setup_arcanum_-_of_steamworks_and_magick_obscura_1.0.7.4_(19476).exe'
+ARCHIVE_GOG_OLD1_MD5='298a3315baebf40f3cc6cee4acae9947'
+ARCHIVE_GOG_OLD1_TYPE='innosetup1.7'
+ARCHIVE_GOG_OLD1_SIZE='1200000'
+ARCHIVE_GOG_OLD1_VERSION='1.0.7.4-gog19476'
 
 ARCHIVE_GOG_OLD0='setup_arcanum_2.0.0.15.exe'
 ARCHIVE_GOG_OLD0_MD5='c09523c61edd18abb97da97463e07a88'
