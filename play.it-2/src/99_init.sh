@@ -130,8 +130,12 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 				return 1
 			;;
 			(*)
-				SOURCE_ARCHIVE="$1"
-				export SOURCE_ARCHIVE
+				if [ -f "$1" ]; then
+					SOURCE_ARCHIVE="$1"
+					export SOURCE_ARCHIVE
+				else
+					error_not_a_file "$1"
+				fi
 			;;
 		esac
 		shift 1

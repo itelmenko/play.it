@@ -14,6 +14,9 @@
   * New test: Run a single game script in dry mode once for each supported
     archive
 
+  * Check for file existence when an archive is given as argument to a
+    game-specific script
+
 2.11.1
 
   * Fix apt version detection on old versions of apt

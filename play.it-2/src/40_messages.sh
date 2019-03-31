@@ -61,3 +61,28 @@ error_no_pkg() {
 	exit 1
 }
 
+# display an error if a file is expected and something else has been given
+# USAGE: error_not_a_file $param
+# CALLS: print_error
+error_not_a_file() {
+	if [ $# -lt 1 ]; then
+		error_missing_argument 'error_not_a_file'
+	fi
+	if [ $# -gt 1 ]; then
+		error_extra_arguments 'error_not_a_file'
+	fi
+	local param
+	param="$1"
+	print_error
+	case "${LANG%_*}" in
+		('fr')
+			string='"%s" nʼest pas un fichier valide.\n'
+		;;
+		('en'|*)
+			string='"%s" is not a valid file.\n'
+		;;
+	esac
+	printf "$string" "$param"
+	exit 1
+}
+
