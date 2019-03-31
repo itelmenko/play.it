@@ -116,6 +116,10 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 				NO_FREE_SPACE_CHECK='1'
 				export NO_FREE_SPACE_CHECK
 			;;
+			('--overwrite')
+				OVERWRITE_PACKAGES='1'
+				export OVERWRITE_PACKAGES
+			;;
 			('--'*)
 				print_error
 				case "${LANG%_*}" in

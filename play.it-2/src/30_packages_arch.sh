@@ -334,7 +334,7 @@ pkg_build_arch() {
 	local pkg_filename
 	pkg_filename="$PWD/${1##*/}.pkg.tar"
 
-	if [ -e "$pkg_filename" ]; then
+	if [ -e "$pkg_filename" ] && [ "$OVERWRITE_PACKAGES" != '1' ]; then
 		pkg_build_print_already_exists "${pkg_filename##*/}"
 		eval ${pkg}_PKG=\"$pkg_filename\"
 		export ${pkg?}_PKG

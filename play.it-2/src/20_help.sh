@@ -42,6 +42,8 @@ help() {
 	printf '\n'
 	help_skipfreespacecheck
 	printf '\n'
+	help_overwrite
+	printf '\n'
 
 	printf 'ARCHIVE\n\n'
 	archives_get_list
@@ -255,6 +257,25 @@ help_skipfreespacecheck() {
 		;;
 	esac
 	printf -- '--skip-free-space-check\n\n'
+	printf '\t%s\n\n' "$string"
+}
+
+# display --overwrite
+# USAGE: help_overwrite
+# NEEDED VARS: (LANG)
+# CALLED BY: help
+help_overwrite() {
+	local string
+	case "${LANG%_*}" in
+		('fr')
+			# shellcheck disable=SC1112
+			string='Remplace les paquets si ils existent déjà.'
+		;;
+		('en'|*)
+			string='Replace packages if they already exist.'
+		;;
+	esac
+	printf -- '--overwrite\n\n'
 	printf '\t%s\n\n' "$string"
 }
 
