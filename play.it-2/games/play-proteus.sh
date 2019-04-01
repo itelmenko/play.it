@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190401.1
+script_version=20190401.2
 
 # Set game-specific variables
 
@@ -53,19 +53,18 @@ ARCHIVE_DOC_DATA_PATH='data'
 ARCHIVE_DOC_DATA_FILES='./Linux.README'
 
 ARCHIVE_GAME_BIN32_PATH='data'
-ARCHIVE_GAME_BIN32_FILES='./Proteus.bin.x86 ./lib/libmono-2.0.so.1 ./lib/libSDL2-2.0.so.0 ./lib/libSDL2_mixer-2.0.so.0'
+ARCHIVE_GAME_BIN32_FILES='./lib/libmono-2.0.so.1 ./lib/libSDL2-2.0.so.0 ./lib/libSDL2_mixer-2.0.so.0 ./lib/libSDL2_image-2.0.so.0'
 
 ARCHIVE_GAME_BIN64_PATH='data'
-ARCHIVE_GAME_BIN64_FILES='./Proteus.bin.x86_64 ./lib64/libmono-2.0.so.1 ./lib64/libSDL2-2.0.so.0 lib64/libSDL2_mixer-2.0.so.0'
+ARCHIVE_GAME_BIN64_FILES='./lib64/libmono-2.0.so.1 ./lib64/libSDL2-2.0.so.0 lib64/libSDL2_mixer-2.0.so.0 ./lib64/libSDL2_image-2.0.so.0'
 
 ARCHIVE_GAME_DATA_PATH='data'
 ARCHIVE_GAME_DATA_FILES='./resources ./Proteus.png ./Proteus.exe ./*.dll ./*.config ./mono'
 
 DATA_DIRS='./logs'
 
-APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='Proteus.bin.x86'
-APP_MAIN_EXE_BIN64='Proteus.bin.x86_64'
+APP_MAIN_TYPE='mono'
+APP_MAIN_EXE='Proteus.exe'
 APP_MAIN_ICON='Proteus.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
@@ -123,7 +122,7 @@ done
 # Fix a crash when starting from some terminals
 
 # shellcheck disable=SC2016
-pattern='s#^"\./$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
+pattern='s#^mono .* "$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
 sed --in-place "$pattern" "${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
 sed --in-place "$pattern" "${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
 
