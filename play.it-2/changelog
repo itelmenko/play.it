@@ -17,6 +17,8 @@
   * Check for file existence when an archive is given as argument to a
     game-specific script
 
+  * Display an error when an unknown application type is used
+
 2.11.1
 
   * Fix apt version detection on old versions of apt

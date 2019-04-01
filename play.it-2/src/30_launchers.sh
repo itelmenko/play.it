@@ -106,6 +106,9 @@ launcher_write_script() {
 				launcher_write_script_wine_run "$application" "$target_file"
 			fi
 		;;
+		(*)
+			error_unknown_application_type "$application_type"
+		;;
 	esac
 	cat >> "$target_file" <<- 'EOF'
 	exit 0

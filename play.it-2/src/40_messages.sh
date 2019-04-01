@@ -86,3 +86,25 @@ error_not_a_file() {
 	exit 1
 }
 
+# display an error when an unknown application type is used
+# USAGE: error_unknown_application_type $app_type
+# CALLS: print_error
+error_unknown_application_type() {
+	local application_type
+	application_type="$1"
+	local string
+	print_error
+	case "${LANG%_*}" in
+		('fr')
+			string='Le type dʼapplication "%s" est inconnu.\n'
+			string="$string"'Merci de signaler cette erreur sur notre outil de gestion de bugs : %s\n'
+		;;
+		('en'|*)
+			string='"%s" application type is unknown.\n'
+			string="$string"'Please report this issue in our bug tracker: %s\n'
+		;;
+	esac
+	printf "$string" "$application_type" "$PLAYIT_GAMES_BUG_TRACKER_URL"
+	exit 1
+}
+
