@@ -148,6 +148,9 @@ pkg_set_deps_deb() {
 			('libxrandr')
 				pkg_dep='libxrandr2'
 			;;
+			('mono')
+				pkg_dep='mono-runtime'
+			;;
 			('nss')
 				pkg_dep='libnss3'
 			;;

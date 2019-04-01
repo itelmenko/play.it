@@ -275,6 +275,9 @@ pkg_set_deps_arch64() {
 			('nss')
 				pkg_dep='nss'
 			;;
+			('mono')
+				pkg_dep='mono'
+			;;
 			('openal')
 				pkg_dep='openal'
 			;;
