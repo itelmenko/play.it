@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180825.1
+script_version=20190401.1
 
 # Set game-specific variables
 
@@ -81,7 +81,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
@@ -117,7 +117,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launcher_write 'APP_MAIN'
 done
 
 # Fix a crash when starting from some terminals
