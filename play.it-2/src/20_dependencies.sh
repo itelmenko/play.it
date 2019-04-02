@@ -157,13 +157,9 @@ check_deps_deb() {
 		}
 	elif command -v tar >/dev/null 2>&1; then
 		if command -v 7z >/dev/null 2>&1; then
-			extract_deb() {
-				7z x -i'!data*' -so "$1" | tar --directory "$2" --extract
-			}
+			extract_deb() { 7z x -i'!data*' -so "$1" | tar --directory "$2" --extract; }
 		elif command -v 7zr >/dev/null 2>&1; then
-			extract_deb() {
-				7zr x -so "$1" | tar --directory "$2" --extract
-			}
+			extract_deb() { 7zr x -so "$1" | tar --directory "$2" --extract; }
 		elif command -v ar >/dev/null 2>&1; then
 			extract_deb() {
 				[ -d "$PLAYIT_WORKDIR/extraction" ] || mkdir "$PLAYIT_WORKDIR/extraction"
