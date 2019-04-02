@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190402.2
+script_version=20190402.3
 
 # Set game-specific variables
 
@@ -61,11 +61,11 @@ ARCHIVE_DOC_DATA_FILES='*.pdf'
 ARCHIVE_DOC_L10N_PATH='app'
 ARCHIVE_DOC_L10N_FILES='*.txt'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.exe binkw32.dll morrowind.ini tes?construction?set.cnt tes?construction?set.hlp'
+ARCHIVE_GAME_BIN_WINE_PATH='app'
+ARCHIVE_GAME_BIN_WINE_FILES='*.exe binkw32.dll tes?construction?set.cnt tes?construction?set.hlp'
 
 ARCHIVE_GAME_L10N_PATH='app'
-ARCHIVE_GAME_L10N_FILES='data?files/bookart/*_377_253.tga data?files/bookart/empire?small*.bmp data?files/*.bsa data?files/*.esm data?files/sound/vo data?files/splash data?files/textures/menu_credits* data?files/textures/menu_*game* data?files/textures/menu_options* data?files/textures/menu_return* data?files/textures/tx_menubook_cancel* data?files/textures/tx_menubook_close* data?files/textures/tx_menubook_journal* data?files/textures/tx_menubook_next* data?files/textures/tx_menubook_prev* data?files/textures/tx_menubook_take* data?files/textures/tx_menubook_topics* data?files/video/bethesda?logo.bik data?files/video/bm_bearhunt?.bik data?files/video/bm_ceremony?.bik data?files/video/bm_endgame.bik data?files/video/bm_frostgiant?.bik data?files/video/mw_cavern.bik data?files/video/mw_credits.bik data?files/video/mw_end.bik data?files/video/mw_intro.bik data?files/video/mw_logo.bik data?files/meshes/r/*atronach_frost.*'
+ARCHIVE_GAME_L10N_FILES='morrowind.ini data?files/bookart/*_377_253.tga data?files/bookart/empire?small*.bmp data?files/*.bsa data?files/*.esm data?files/sound/vo data?files/splash data?files/textures/menu_credits* data?files/textures/menu_*game* data?files/textures/menu_options* data?files/textures/menu_return* data?files/textures/tx_menubook_cancel* data?files/textures/tx_menubook_close* data?files/textures/tx_menubook_journal* data?files/textures/tx_menubook_next* data?files/textures/tx_menubook_prev* data?files/textures/tx_menubook_take* data?files/textures/tx_menubook_topics* data?files/video/bethesda?logo.bik data?files/video/bm_bearhunt?.bik data?files/video/bm_ceremony?.bik data?files/video/bm_endgame.bik data?files/video/bm_frostgiant?.bik data?files/video/mw_cavern.bik data?files/video/mw_credits.bik data?files/video/mw_end.bik data?files/video/mw_intro.bik data?files/video/mw_logo.bik data?files/meshes/r/*atronach_frost.*'
 
 ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='data?files/bookart/barbarian_*.tga data?files/bookart/boethiah_256.tga data?files/bookart/divinemetaphysics_text?.tga data?files/bookart/divinemetaphysics.tga data?files/bookart/efoulkefirmament_*.tga data?files/bookart/eggoftime_illust?.tga data?files/bookart/*.htm data?files/bookart/magicstonemap4.dds data?files/bookart/moragtong.tga data?files/bookart/secret_of_dwemer?.tga data?files/bookart/*.ttf data?files/bookart/tx_icon_waterbreath.bmp data?files/*.esp data?files/fonts data?files/icons data?files/meshes data?files/music data?files/sound/cr data?files/sound/fx data?files/textures data?files/*.txt data?files/video/bm_were*.bik data?files/video/mw_menu.bik knife.ico'
@@ -77,11 +77,12 @@ CONFIG_FILES='./*.ini'
 DATA_DIRS='./saves'
 DATA_FILES='./ProgramFlow.txt ./Warnings.txt ./Journal.htm'
 
-APP_MAIN_TYPE='wine'
+APP_MAIN_TYPE_BIN_WINE='wine'
+APP_MAIN_TYPE_BIN_OPENMW='native'
 APP_MAIN_EXE='morrowind launcher.exe'
 APP_MAIN_ICON='morrowind.exe'
 
-PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
+PACKAGES_LIST='PKG_BIN_WINE PKG_BIN_OPENMW PKG_L10N PKG_DATA'
 
 PKG_L10N_ID="${GAME_ID}-l10n"
 PKG_L10N_ID_GOG_EN="${PKG_L10N_ID}-en"
@@ -96,13 +97,22 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE='morrowind-data'
 
 PKG_BIN_ID="$GAME_ID"
-PKG_BIN_ARCH='32'
-PKG_BIN_ID_GOG_EN="${PKG_BIN_ID}-en"
-PKG_BIN_ID_GOG_FR="${PKG_BIN_ID}-fr"
-PKG_BIN_PROVIDE="$PKG_BIN_ID"
-PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine"
-PKG_BIN_DESCRIPTION_GOG_EN='English version'
-PKG_BIN_DESCRIPTION_GOG_FR='French version'
+
+PKG_BIN_WINE_ID="${PKG_BIN_ID}-wine"
+PKG_BIN_WINE_ARCH='32'
+PKG_BIN_WINE_ID_GOG_EN="${PKG_BIN_WINE_ID}-en"
+PKG_BIN_WINE_ID_GOG_FR="${PKG_BIN_WINE_ID}-fr"
+PKG_BIN_WINE_PROVIDE="$PKG_BIN_ID"
+PKG_BIN_WINE_DEPS="$PKG_L10N_ID $PKG_DATA_ID wine"
+PKG_BIN_WINE_DESCRIPTION_GOG_EN='English version'
+PKG_BIN_WINE_DESCRIPTION_GOG_FR='French version'
+
+PKG_BIN_OPENMW_ID="${PKG_BIN_ID}-openmw"
+PKG_BIN_OPENMW_PROVIDE="$PKG_BIN_ID"
+PKG_BIN_OPENMW_DEPS="$PKG_L10N_ID $PKG_DATA_ID"
+PKG_BIN_OPENMW_DEPS_ARCH='openmw'
+PKG_BIN_OPENMW_DEPS_DEB='openmw'
+PKG_BIN_OPENMW_DEPS_GENTOO='games-engines/openmw'
 
 # Load common functions
 
@@ -142,7 +152,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-PKG='PKG_BIN'
+PKG='PKG_BIN_WINE'
 icons_get_from_package 'APP_MAIN'
 icons_move_to 'PKG_DATA'
 
@@ -162,8 +172,38 @@ fi
 
 # Write launchers
 
-PKG='PKG_BIN'
+PKG='PKG_BIN_WINE'
+use_package_specific_value 'APP_MAIN_TYPE'
 launchers_write 'APP_MAIN'
+
+PKG='PKG_BIN_OPENMW'
+use_package_specific_value 'APP_MAIN_TYPE'
+launcher="${PKG_BIN_OPENMW_PATH}${PATH_BIN}/$GAME_ID"
+mkdir --parents "${launcher%/*}"
+touch "$launcher"
+chmod 755 "$launcher"
+launcher_write_script_headers "$launcher"
+cat >> "$launcher" << EOF
+CONFIG_FILE="\${XDG_CONFIG_HOME:=\$HOME/.config}/openmw/openmw.cfg"
+
+if [ ! -e "\$CONFIG_FILE" ]; then
+	mkdir --parents "\${CONFIG_FILE%/*}"
+	cat > "\$CONFIG_FILE" <<- EOF
+	data="$PATH_GAME/data files"
+	content=morrowind.esm
+	EOF
+	openmw-iniimporter --ini "$PATH_GAME/morrowind.ini" --cfg "\$CONFIG_FILE"
+	cat > "\${CONFIG_FILE%/*}/launcher.cfg" <<- EOF
+	[General]
+	firstrun=false
+	EOF
+fi
+
+openmw-launcher
+
+exit 0
+EOF
+launcher_write_desktop 'APP_MAIN'
 
 # Build package
 
@@ -176,6 +216,10 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+printf '\n'
+printf 'OpenMW:'
+print_instructions 'PKG_DATA' 'PKG_L10N' 'PKG_BIN_OPENMW'
+printf 'WINE:'
+print_instructions 'PKG_DATA' 'PKG_L10N' 'PKG_BIN_WINE'
 
 exit 0
