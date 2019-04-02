@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,11 +34,11 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20190402.1
 
 # Set game-specific variables
 
-GAME_ID='morrowind'
+GAME_ID='the-elder-scrolls-3-morrowind'
 GAME_NAME='The Elder Scrolls III: Morrowind'
 
 ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_FR'
@@ -93,6 +93,8 @@ PKG_L10N_DESCRIPTION_GOG_FR='French localization'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20190204.1 scripts
+PKG_DATA_PROVIDE='morrowind-data'
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='32'
