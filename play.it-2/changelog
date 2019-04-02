@@ -25,6 +25,8 @@
   * Fix get_archive_specific_value / get_package_specific_value on corner
     cases, by dropping avoidable calls to eval
 
+  * Use cabextract’s -L option to extract files as lowercase
+
 2.11.1
 
   * Fix apt version detection on old versions of apt

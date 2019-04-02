@@ -23,8 +23,7 @@ extract_data_from() {
 				extract_7z "$file" "$destination"
 			;;
 			('cabinet')
-				cabextract -d "$destination" -q "$file"
-				tolower "$destination"
+				cabextract -L -d "$destination" -q "$file"
 			;;
 			('debian')
 				dpkg-deb --extract "$file" "$destination"
