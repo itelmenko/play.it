@@ -26,7 +26,7 @@ extract_data_from() {
 				cabextract -L -d "$destination" -q "$file"
 			;;
 			('debian')
-				dpkg-deb --extract "$file" "$destination"
+				extract_deb "$file" "$destination"
 			;;
 			('innosetup'*)
 				archive_extraction_innosetup "$archive_type" "$file" "$destination"
