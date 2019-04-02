@@ -183,6 +183,7 @@ mkdir --parents "${launcher%/*}"
 touch "$launcher"
 chmod 755 "$launcher"
 launcher_write_script_headers "$launcher"
+# shellcheck disable=SC1039
 cat >> "$launcher" << EOF
 CONFIG_FILE="\${XDG_CONFIG_HOME:=\$HOME/.config}/openmw/openmw.cfg"
 
