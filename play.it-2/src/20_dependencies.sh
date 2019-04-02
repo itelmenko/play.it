@@ -171,6 +171,8 @@ check_deps_deb() {
 				tar --directory "$2" --extract --file "$PLAYIT_WORKDIR/extraction"/data*
 				rm --recursive --force "$PLAYIT_WORKDIR/extraction"
 			}
+		else
+			check_deps_error_not_found 'dpkg-deb/bsdtar/unar/p7zip/ar'
 		fi
 	else
 		check_deps_error_not_found 'dpkg-deb/bsdtar/unar/tar'
