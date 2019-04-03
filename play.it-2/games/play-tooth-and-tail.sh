@@ -74,7 +74,7 @@ PACKAGES_LIST='PKG_MAIN PKG_LIBS32 PKG_LIBS64'
 PKG_MAIN_DEPS="$GAME_ID-libs mono openal sdl2 sdl2_image theora vorbis"
 PKG_MAIN_DEPS_DEB='' #TODO
 PKG_MAIN_DEPS_ARCH='' #TODO
-PKG_MAIN_DEPS_GENTOO='virtual/jpeg media-libs/libogg media-libs/libpng:1.5'
+PKG_MAIN_DEPS_GENTOO='virtual/jpeg:62 media-libs/libogg media-libs/libpng:1.5'
 
 PKG_LIBS32_ARCH='32'
 PKG_LIBS32_ID="$GAME_ID-libs32"
