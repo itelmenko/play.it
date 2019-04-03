@@ -168,7 +168,7 @@ check_deps_deb() {
 				[ -d "$PLAYIT_WORKDIR/extraction" ] || mkdir "$PLAYIT_WORKDIR/extraction"
 				(
 					cd "$PLAYIT_WORKDIR/extraction"
-					ar x "$1" "$(ar l "$1" | grep ^data)"
+					ar x "$1" "$(ar t "$1" | grep ^data)"
 
 				)
 				tar --directory "$2" --extract --file "$PLAYIT_WORKDIR/extraction"/data*
