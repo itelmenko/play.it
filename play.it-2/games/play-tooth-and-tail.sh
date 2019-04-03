@@ -49,10 +49,10 @@ ARCHIVE_HUMBLE_SIZE='600000'
 ARCHIVE_HUMBLE_TYPE='zip'
 
 ARCHIVE_GAME_LIBS32_PATH='.'
-ARCHIVE_GAME_LIBS32_FILES='lib'
+ARCHIVE_GAME_LIBS32_FILES='lib/libfmod.so.10 lib/libfmodstudio.so.10 lib/libmojoshader.so lib/libtheorafile.so'
 
 ARCHIVE_GAME_LIBS64_PATH='.'
-ARCHIVE_GAME_LIBS64_FILES='lib64'
+ARCHIVE_GAME_LIBS64_FILES='lib64/libfmod.so.10 lib64/libfmodstudio.so.10 lib64/libmojoshader.so lib64/libtheorafile.so'
 
 ARCHIVE_GAME_MAIN_PATH='.'
 ARCHIVE_GAME_MAIN_FILES='
@@ -71,7 +71,10 @@ APP_MAIN_ICON='ToothAndTail.exe'
 
 PACKAGES_LIST='PKG_MAIN PKG_LIBS32 PKG_LIBS64'
 
-PKG_MAIN_DEPS="$GAME_ID-libs mono"
+PKG_MAIN_DEPS="$GAME_ID-libs mono openal sdl2 sdl2_image theora vorbis"
+PKG_MAIN_DEPS_DEB='' #TODO
+PKG_MAIN_DEPS_ARCH='' #TODO
+PKG_MAIN_DEPS_GENTOO='virtual/jpeg media-libs/libogg media-libs/libpng:1.5'
 
 PKG_LIBS32_ARCH='32'
 PKG_LIBS32_ID="$GAME_ID-libs32"
