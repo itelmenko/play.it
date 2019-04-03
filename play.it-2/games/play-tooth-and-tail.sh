@@ -62,6 +62,7 @@ content'
 DATA_DIRS='logs'
 
 APP_MAIN_TYPE='mono'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='
 LD_LIBRARY_PATH="$PWD/lib$(uname --machine | sed --regexp-extended '"'"'s/^x86_?//'"'"'):$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH'
@@ -119,6 +120,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 PKG='PKG_MAIN'
 write_launcher 'APP_MAIN'
 
+# shellcheck disable=SC2016
 pattern='s#^mono .* "$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
 sed --in-place "$pattern" "${PKG_MAIN_PATH}${PATH_BIN}/$GAME_ID"
 
