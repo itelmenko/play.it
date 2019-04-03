@@ -154,8 +154,8 @@ check_deps_deb() {
 	elif command -v unar >/dev/null 2>&1; then
 		extract_deb() {
 			[ -d "$PLAYIT_WORKDIR/extraction" ] || mkdir "$PLAYIT_WORKDIR/extraction"
-			unar -output-directory "$PLAYIT_WORKDIR/extraction" -force-overwrite -no-directory "$1" 'data*'
-			unar -output-directory "$2" -force-overwrite -no-directory "$PLAYIT_WORKDIR/extraction"/data*
+			unar -output-directory "$PLAYIT_WORKDIR/extraction" -force-overwrite -no-directory "$1" 'data*' 1>/dev/null
+			unar -output-directory "$2" -force-overwrite -no-directory "$PLAYIT_WORKDIR/extraction"/data* 1>/dev/null
 			rm --recursive --force "$PLAYIT_WORKDIR/extraction"
 		}
 	elif command -v tar >/dev/null 2>&1; then
