@@ -9,6 +9,9 @@ check_deps() {
 			('cabinet')
 				SCRIPT_DEPS="$SCRIPT_DEPS cabextract"
 			;;
+			('debian')
+				SCRIPT_DEPS="$SCRIPT_DEPS debian"
+			;;
 			('innosetup1.7'*)
 				SCRIPT_DEPS="$SCRIPT_DEPS innoextract1.7"
 			;;
