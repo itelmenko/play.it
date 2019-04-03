@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190403.1
+script_version=20190403.2
 
 # Set game-specific variables
 
@@ -98,6 +98,7 @@ PKG_BIN_ARCH='64'
 PKG_BIN_DEPS="$PKG_L10N_ID $PKG_DATA_ID glibc libstdc++ sdl2 openal glx pulseaudio"
 PKG_BIN_DEPS_ARCH='gcc mesa'
 PKG_BIN_DEPS_DEB='gcc, mesa-common-dev'
+PKG_BIN_DEPS_GENTOO='sys-devel/gcc media-libs/mesa'
 
 # Load common functions
 
