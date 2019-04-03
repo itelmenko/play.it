@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2016-2019, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,11 +31,11 @@ set -o errexit
 
 ###
 # Divinity Original Sin
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20190403.1
 
 # Set game-specific variables
 
@@ -49,16 +50,16 @@ ARCHIVE_GOG_SIZE='11000000'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
 ARCHIVE_DOC_L10N_PATH='data/noarch/docs'
-ARCHIVE_DOC_L10N_FILES='./*'
+ARCHIVE_DOC_L10N_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./lib* ./EoCApp'
+ARCHIVE_GAME_BIN_FILES='lib* EoCApp'
 
 ARCHIVE_GAME_L10N_PATH='data/noarch/game'
-ARCHIVE_GAME_L10N_FILES='./Data/Localization'
+ARCHIVE_GAME_L10N_FILES='Data/Localization'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./Data/*.pak ./DigitalMap'
+ARCHIVE_GAME_DATA_FILES='Data/*.pak DigitalMap'
 
 CONFIG_FILES='Data/Localization/language.lsx'
 
@@ -73,22 +74,16 @@ APP_MAIN_PRERUN='case "${LANG%_*}" in
 	('\''ru'\'') lang='\''Russian'\'' ;;
 	('\''es'\'') lang='\''Spanish'\'' ;;
 	('\''en'\''|*) lang='\''English'\'' ;;
-esac'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN="$APP_MAIN_PRERUN"'
+esac
 file="$PATH_CONFIG/Data/Localization/language.lsx"
-pattern="$(printf '\''s/id="Value" value=".*"/id="Value" value="%s" type="20"/g'\'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN="$APP_MAIN_PRERUN"' "$lang")"
+pattern="$(printf '\''s/id="Value" value=".*"/id="Value" value="%s" type="20"/g'\'' "$lang")"
 sed --in-place "$pattern" "$file"
 pulseaudio --start
 gcc -s -O2 -shared -fPIC -o preload.so preload.c -ldl
 export LD_PRELOAD=./preload.so'
-
 APP_MAIN_EXE='EoCApp'
 APP_MAIN_LIBS='.'
 APP_MAIN_ICON='data/noarch/support/icon.png'
-APP_MAIN_ICON_RES='256'
 
 PACKAGES_LIST='PKG_BIN PKG_L10N PKG_DATA'
 
@@ -106,21 +101,30 @@ PKG_BIN_DEPS_DEB='gcc, mesa-common-dev'
 
 # Load common functions
 
-target_version='2.7'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -128,17 +132,16 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 
-# Extract icon
+# Get icon
 
 PKG='PKG_DATA'
-get_icon_from_temp_dir 'APP_MAIN'
-
+icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Hack to work around crash on Mesa drivers
 
@@ -159,7 +162,7 @@ const GLubyte *GLAPIENTRY glGetString( GLenum name ) {
 		next = dlsym(RTLD_NEXT, "glGetString");
 	return ((const GLubyte *GLAPIENTRY (*)(GLenum))next)(name);
 }
- _GLX_PUBLIC void (*glXGetProcAddressARB(const GLubyte * procName)) (void) {
+_GLX_PUBLIC void (*glXGetProcAddressARB(const GLubyte * procName)) (void) {
 	static void *next = NULL;
 	if (
 		strcmp((const char *) procName, "glNamedStringARB") == 0 ||
@@ -171,7 +174,7 @@ const GLubyte *GLAPIENTRY glGetString( GLenum name ) {
 	) return NULL;
 	if(!next)
 		next = dlsym(RTLD_NEXT, "glXGetProcAddressARB");
-		return ((_GLX_PUBLIC void (*(*)(const GLubyte *))(void))next)(procName);
+	return ((_GLX_PUBLIC void (*(*)(const GLubyte *))(void))next)(procName);
 }
 EOF
 
