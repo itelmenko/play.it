@@ -120,6 +120,8 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 PKG='PKG_MAIN'
 write_launcher 'APP_MAIN'
 
+# Fix a crash when starting from some terminals
+
 # shellcheck disable=SC2016
 pattern='s#^mono .* "$APP_EXE" .*#& > ./logs/$(date +%F-%R).log#'
 sed --in-place "$pattern" "${PKG_MAIN_PATH}${PATH_BIN}/$GAME_ID"
