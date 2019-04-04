@@ -158,6 +158,7 @@ archive_extract_with_unzip() {
 # USAGE: archive_get_files_to_extract
 # CALLS: archive_concat_needed_files_with_path
 archive_get_files_to_extract() {
+	[ $version_major_target -lt 2 ] || [ $version_minor_target -lt 12 ] && return 0
 	for package in $PACKAGES_LIST; do
 		PKG="${package#PKG_}"
 		archive_concat_needed_files_with_path "GAME_$PKG" "DOC_$PKG"
