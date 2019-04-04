@@ -151,6 +151,7 @@ archive_extract_with_unzip() {
 	archive="$1"
 	destination="$2"
 	# shellcheck disable=SC2046
+	# The sed command is needed for unzip to extract files inside directories
 	unzip -d "$destination" "$archive" $(archive_get_files_to_extract | sed 's/$/*/') 1>/dev/null
 }
 
