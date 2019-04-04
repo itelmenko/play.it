@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190404.1
+script_version=20190404.2
 
 # Set game-specific variables
 
@@ -78,7 +78,7 @@ PKG_LIBS32_ID="$GAME_ID-libs32"
 PKG_LIBS32_PROVIDE="$GAME_ID-libs"
 PKG_LIBS32_DEPS='mono openal sdl2 sdl2_image theora vorbis'
 PKG_LIBS32_DEPS_DEB='' #TODO
-PKG_LIBS32_DEPS_ARCH='' #TODO
+PKG_LIBS32_DEPS_ARCH='lib32-libjpeg6 lib32-libogg lib32-libpng15'
 PKG_LIBS32_DEPS_GENTOO='virtual/jpeg:62[abi_x86_32] media-libs/libogg[abi_x86_32] media-libs/libpng:1.5[abi_x86_32]'
 
 PKG_LIBS64_ARCH='64'
@@ -86,7 +86,7 @@ PKG_LIBS64_ID="$GAME_ID-libs64"
 PKG_LIBS64_PROVIDE="$GAME_ID-libs"
 PKG_LIBS64_DEPS="$PKG_LIBS32_DEPS"
 PKG_LIBS64_DEPS_DEB="$PKG_LIBS32_DEPS_DEB"
-PKG_LIBS64_DEPS_ARCH='' #TODO
+PKG_LIBS64_DEPS_ARCH='libjpeg6 libogg libpng15'
 PKG_LIBS64_DEPS_GENTOO="virtual/jpeg:62 media-libs/libogg media-libs/libpng:1.5"
 
 # Load common functions
