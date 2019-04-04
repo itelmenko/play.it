@@ -63,7 +63,7 @@ extract_data_from() {
 				tar --extract --file "$file" --directory "$destination"
 			;;
 			('zip')
-				unzip -d "$destination" "$file" 1>/dev/null
+				archive_extract_with_unzip "$file" "$destination"
 			;;
 			('zip_unclean'|'mojosetup_unzip')
 				set +o errexit
@@ -143,3 +143,37 @@ archive_extraction_innosetup_error_version() {
 	exit 1
 }
 
+# extract data using unzip
+# USAGE: archive_extract_with_unzip $archive $destination
+archive_extract_with_unzip() {
+	local archive
+	local destination
+	archive="$1"
+	destination="$2"
+	# shellcheck disable=SC2046
+	unzip -d "$destination" "$archive" $(archive_get_files_to_extract | sed 's/$/*/') 1>/dev/null
+}
+
+# Outputs all files that need to be extracted
+# USAGE: archive_get_files_to_extract
+# CALLS: archive_concat_needed_files_with_path
+archive_get_files_to_extract() {
+	for package in $PACKAGES_LIST; do
+		PKG="${package#PKG_}"
+		archive_concat_needed_files_with_path "GAME_$PKG" "DOC_$PKG"
+		for i in $(seq 0 9); do
+			archive_concat_needed_files_with_path "GAME${i}_$PKG" "DOC${i}_$PKG"
+		done
+	done
+}
+
+# Adds path prefix for files in ARCHIVE_*_FILES
+# USAGE: archive_concat_needed_files_with_path $specifier …
+# CALLED BY: archive_get_files_to_extract
+archive_concat_needed_files_with_path() {
+	for specifier in "$@"; do
+		for file in $(get_value "ARCHIVE_${specifier}_FILES"); do
+			printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH")/$file"
+		done
+	done
+}
