@@ -102,7 +102,7 @@ check_deps_lzh() {
 		}
 	elif command -v lha >/dev/null 2>&1; then
 		extract_lzh() {
-			lha "-ew=$2" "$1"
+			lha "-ew=$2" "$1" >/dev/null
 			set_standard_permissions "$2"
 		}
 	else
