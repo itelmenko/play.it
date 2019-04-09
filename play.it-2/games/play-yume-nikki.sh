@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190216.1
+script_version=20190409.1
 
 # Set game-specific variables
 
@@ -129,7 +129,7 @@ sed -i 's/¥/\\/g' "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_DOC_DATA_PATH/YumeNikkiREA
 
 # Convert the file names to UTF-8 encoding
 
-find "$PLAYIT_WORKDIR/gamedata" -exec convmv --notest -f SHIFT-JIS -t UTF-8 {} +
+find "$PLAYIT_WORKDIR/gamedata" -exec convmv --notest -f SHIFT-JIS -t UTF-8 {} + >/dev/null 2>/dev/null
 
 prepare_package_layout
 
