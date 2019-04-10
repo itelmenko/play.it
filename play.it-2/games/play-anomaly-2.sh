@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190410.1
+script_version=20190410.2
 
 # Set game-specific variables
 
@@ -63,6 +63,7 @@ ARCHIVE_ICONS_FILES='32x32 48x48 64x64 256x256'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='gcc -m32 -o preload.so preload.c -ldl -shared -fPIC -Wall -Wextra
+pulseaudio --start
 export LD_PRELOAD=./preload.so'
 APP_MAIN_EXE='Anomaly2'
 
@@ -72,7 +73,10 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTIOn='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal gcc32"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal gcc32 pulseaudio"
+PKG_BIN_DEPS_ARCH='lib32-libpulse'
+PKG_BIN_DEPS_DEB='libpulse0'
+PKG_BIN_DEPS_GENTOO='media-sound/pulseaudio[abi_x86_32]'
 
 # Load common functions
 
