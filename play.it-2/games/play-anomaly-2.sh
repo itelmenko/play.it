@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190410.3
+script_version=20190410.4
 
 # Set game-specific variables
 
@@ -61,10 +61,40 @@ ARCHIVE_GAME_DATA_FILES='*.dat *.idx'
 ARCHIVE_ICONS_PATH='.'
 ARCHIVE_ICONS_FILES='32x32 48x48 64x64 256x256'
 
+CONFIG_FILES='./userdata/config.bin'
+DATA_DIRS='./userdata/DefaultUser'
+DATA_FILES='./userdata/iPhoneProfiles'
+
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='gcc -m32 -o preload.so preload.c -ldl -shared -fPIC -Wall -Wextra
+APP_MAIN_PRERUN='NEW_LAUNCH_REQUIRED=0
+if [ -e "$HOME/.Anomaly 2" ] && [ ! -h "$HOME/.Anomaly 2" ]; then
+	NEW_LAUNCH_REQUIRED=1
+	if [ -e "$HOME/.Anomaly 2/config.bin" ]; then
+		mkdir --parents "$PATH_CONFIG/userdata"
+		cp "$HOME/.Anomaly 2/config.bin" "$PATH_CONFIG/userdata"
+	fi
+	if [ -e "$HOME/.Anomaly 2/DefaultUser" ]; then
+		mkdir --parents "$PATH_DATA/userdata"
+		cp --recursive "$HOME/.Anomaly 2/DefaultUser" "$PATH_DATA/userdata"
+	fi
+	if [ -e "$HOME/.Anomaly 2/iPhoneProfiles" ]; then
+		mkdir --parents "$PATH_DATA/userdata"
+		cp "$HOME/.Anomaly 2/iPhoneProfiles" "$PATH_DATA/userdata"
+	fi
+	mv "$HOME/.Anomaly 2" "$HOME/.Anomaly 2.old"
+fi
+if [ ! -e "$HOME/.Anomaly 2" ]; then
+	rm --force "$HOME/.Anomaly 2"
+	ln --symbolic "$PATH_PREFIX/userdata" "$HOME/.Anomaly 2"
+fi
+if [ $NEW_LAUNCH_REQUIRED -eq 1 ]; then
+	"$0"
+	exit 0
+fi
+gcc -m32 -o preload.so preload.c -ldl -shared -fPIC -Wall -Wextra
 pulseaudio --start
-export LD_PRELOAD=./preload.so'
+LD_PRELOAD=./preload.so
+export LD_PRELOAD'
 APP_MAIN_EXE='Anomaly2'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN'
