@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190410.2
+script_version=20190410.3
 
 # Set game-specific variables
 
@@ -74,9 +74,9 @@ PKG_DATA_DESCRIPTIOn='data'
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal gcc32 pulseaudio"
-PKG_BIN_DEPS_ARCH='lib32-libpulse'
-PKG_BIN_DEPS_DEB='libpulse0'
-PKG_BIN_DEPS_GENTOO='media-sound/pulseaudio[abi_x86_32]'
+PKG_BIN_DEPS_ARCH='lib32-libpulse lib32-libx11'
+PKG_BIN_DEPS_DEB='libpulse0, libx11-6'
+PKG_BIN_DEPS_GENTOO='media-sound/pulseaudio[abi_x86_32] x11-libs/libX11[abi_x86_32]'
 
 # Load common functions
 
