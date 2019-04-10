@@ -22,6 +22,9 @@
   * When extracting multiple icons at once, ensure that they won’t override
     the ones extracted before them
 
+  * Fix get_archive_specific_value / get_package_specific_value on corner
+    cases, by dropping avoidable calls to eval
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
