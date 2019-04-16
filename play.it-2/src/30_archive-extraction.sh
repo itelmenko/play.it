@@ -167,6 +167,8 @@ archive_get_files_to_extract() {
 			archive_concat_needed_files_with_path "GAME${i}_$PKG" "DOC${i}_$PKG"
 		done
 	done
+	# shellcheck disable=2086
+	printf '%s\n' $EXTRA_ARCHIVE_FILES
 }
 
 # Adds path prefix for files in ARCHIVE_*_FILES
