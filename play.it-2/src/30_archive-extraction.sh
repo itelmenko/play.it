@@ -163,7 +163,7 @@ archive_get_files_to_extract_unzip() {
 	local archive
 	archive="$1"
 	for glob in $(archive_get_files_to_extract); do
-		glob="$glob*" # The * is needed for unzip to extract files inside directories
+		glob="$glob*" # The * is needed for unzip to match files inside directories
 		# Check if the glob matches, if it doesn't, unzip would print an error during extraction
 		set +o errexit
 		unzip -l "$archive" "$glob" 1>/dev/null
