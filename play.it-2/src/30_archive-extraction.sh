@@ -195,6 +195,8 @@ archive_get_files_to_extract() {
 # CALLED BY: archive_get_files_to_extract
 archive_concat_needed_files_with_path() {
 	for specifier in "$@"; do
+		use_archive_specific_value "ARCHIVE_${specifier}_FILES"
+		use_archive_specific_value "ARCHIVE_${specifier}_PATH"
 		for file in $(get_value "ARCHIVE_${specifier}_FILES"); do
 			printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH")/$file"
 		done
