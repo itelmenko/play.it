@@ -145,14 +145,33 @@ archive_extraction_innosetup_error_version() {
 
 # extract data using unzip
 # USAGE: archive_extract_with_unzip $archive $destination
+# CALLS: archive_get_files_to_extract_unzip
 archive_extract_with_unzip() {
 	local archive
 	local destination
 	archive="$1"
 	destination="$2"
 	# shellcheck disable=SC2046
-	# The sed command is needed for unzip to extract files inside directories
-	unzip -d "$destination" "$archive" $(archive_get_files_to_extract | sed 's/$/*/') 1>/dev/null
+	unzip -d "$destination" "$archive" $(archive_get_files_to_extract_unzip "$archive") 1>/dev/null
+}
+
+# Output all files that need to be extracted for unzip
+# USAGE: archive_get_files_to_extract_unzip $archive
+# CALLS: archive_get_files_to_extract
+# CALLED BY: archive_extract_with_unzip
+archive_get_files_to_extract_unzip() {
+	local archive
+	archive="$1"
+	for glob in $(archive_get_files_to_extract); do
+		glob="$glob*" # The * is needed for unzip to extract files inside directories
+		# Check if the glob matches, if it doesn't, unzip would print an error during extraction
+		set +o errexit
+		unzip -l "$archive" "$glob" 1>/dev/null
+		if [ $? -ne 11 ]; then
+			printf '%s\n' "$glob"
+		fi
+		set -o errexit
+	done
 }
 
 # Outputs all files that need to be extracted
