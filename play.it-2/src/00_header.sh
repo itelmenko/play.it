@@ -5,6 +5,7 @@
 # Copyright (c) 2017-2019, Jacek Szafarkiewicz
 # Copyright (c) 2018-2019, VA
 # Copyright (c) 2018-2019, Janeene "dawnmist" Beeforth
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
