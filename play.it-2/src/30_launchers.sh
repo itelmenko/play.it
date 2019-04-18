@@ -55,12 +55,14 @@ launcher_write_script() {
 	launcher_write_script_headers "$target_file"
 	case "$application_type" in
 		('dosbox')
+			CONFIG_FILES="$CONFIG_FILES dosbox.conf"
 			launcher_write_script_dosbox_application_variables "$application" "$target_file"
 			launcher_write_script_game_variables "$target_file"
 			launcher_write_script_user_files "$target_file"
 			launcher_write_script_prefix_variables "$target_file"
 			launcher_write_script_prefix_functions "$target_file"
 			launcher_write_script_prefix_build "$target_file"
+			launcher_write_script_dosbox_generate_config "$target_file"
 			launcher_write_script_dosbox_run "$application" "$target_file"
 		;;
 		('java')

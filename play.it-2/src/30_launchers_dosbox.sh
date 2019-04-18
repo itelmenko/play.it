@@ -26,6 +26,29 @@ launcher_write_script_dosbox_application_variables() {
 	return 0
 }
 
+# DOSBox - generate the play.it config file if missing
+# USAGE: launcher_write_script_dosbox_generate_config $file
+# NEEDED_VARS: GAME_IMAGE GAME_IMAGE_TYPE PACKAGES_LIST PATH_GAME
+# CALLED BY: launcher_write_script
+launcher_write_script_dosbox_generate_config() {
+	# parse arguments
+	local file
+	file="$1"
+
+	cat >> "$file" <<- 'EOFEOF'
+	# Generate the play.it config file if missing
+	[ -d "$HOME/.dosbox" ] || mkdir "$HOME/.dosbox"
+	if [ ! -f "$HOME/.dosbox/play.it.conf" ]; then
+	cat >> "$HOME/.dosbox/play.it.conf" <<- 'EOF'
+	[sdl]
+	output=overlay
+	#fullscreen=true # enable this if you want fullscreen by default
+	fullresolution=desktop # makes dosbox use the right screen resolution in fullscreen: BROKEN FOR >1 SCREEN, use your smallest used resolution instead
+	EOF
+	fi
+
+	EOFEOF
+}
 # DOSBox - run the game
 # USAGE: launcher_write_script_dosbox_run $application $file
 # NEEDED_VARS: GAME_IMAGE GAME_IMAGE_TYPE PACKAGES_LIST PATH_GAME
@@ -42,7 +65,7 @@ launcher_write_script_dosbox_run() {
 	# Run the game
 
 	cd "$PATH_PREFIX"
-	dosbox -c "mount c .
+	dosbox -userconf -conf ~/.dosbox/play.it.conf -conf dosbox.conf -c "mount c .
 	c:
 	EOF
 
