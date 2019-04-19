@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190409.1
+script_version=20190419.1
 
 # Set game-specific variables
 
@@ -114,7 +114,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 
 for file in "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_DOC_DATA_PATH"/*.txt
 do
-	contents="$(iconv --from-code SHIFT-JIS "$file")"
+	contents="$(iconv --from-code SHIFT-JIS --to-code UTF-8 "$file")"
 	printf '%s' "$contents" > "$file"
 done
 sed -i 's/¥/\\/g' "$PLAYIT_WORKDIR/gamedata/$ARCHIVE_DOC_DATA_PATH/YumeNikkiREADME.txt" # Fix windows paths
