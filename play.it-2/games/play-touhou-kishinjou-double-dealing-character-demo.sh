@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190626.8
+script_version=20190626.9
 
 # Set game-specific variables
 
@@ -120,16 +120,12 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Convert the text files to UTF-8 encoding
 
-for file in "${PKG_DATA_PATH}${PATH_DOC}"/*.txt; do
-	contents="$(iconv --from-code SHIFT-JIS "$file")"
-	printf '%s' "$contents" > "$file"
-done
-
-# Fix website link
-
-pattern='s|http://www16\.big\.or\.jp/.zun/|http://www16.big.or.jp/~zun/|'
-file="${PKG_DATA_PATH}${PATH_DOC}/readme.txt"
-sed --in-place "$pattern" "$file"
+if [ $DRY_RUN -eq 0 ]; then
+	for file in "${PKG_DATA_PATH}${PATH_DOC}"/*.txt; do
+		contents="$(iconv --from-code CP932 --to-code UTF-8 "$file")"
+		printf '%s' "$contents" > "$file"
+	done
+fi
 
 # Extract game icons
 
