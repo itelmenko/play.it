@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190216.1
+script_version=20190419.1
 
 # Set game-specific variables
 
@@ -131,7 +131,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Convert the text files to UTF-8 encoding
 
 for file in "${PKG_DATA_PATH}${PATH_DOC}"/*.txt; do
-	contents="$(iconv --from-code SHIFT-JIS "$file")"
+	contents="$(iconv --from-code SHIFT-JIS --to-code UTF-8 "$file")"
 	printf '%s' "$contents" > "$file"
 done
 
