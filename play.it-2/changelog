@@ -27,6 +27,8 @@
 
   * Use cabextract’s -L option to extract files as lowercase
 
+  * Gentoo packages: bump EAPI version to 7
+
 2.11.1
 
   * Fix apt version detection on old versions of apt
