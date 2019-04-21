@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190325.1
+script_version=20190421.1
 
 # Set game-specific variables
 
@@ -145,7 +145,7 @@ PKG_BIN64_DEPS_GENTOO_ADDITIONAL_OPTIONAL_DOCONFIG_LINUX='x11-libs/fltk'
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
@@ -274,15 +274,15 @@ fi
 # Write launchers
 
 PKG='PKG_BIN32'
-write_launcher 'APP_MAIN' 'APP_CONFIG'
+launchers_write 'APP_MAIN' 'APP_CONFIG'
 if [ "$ARCHIVE_LINUX_PORT" ]; then
 	PKG='PKG_BIN64'
-	write_launcher 'APP_MAIN'
+	launcher_write 'APP_MAIN'
 fi
 if [ "$ARCHIVE_DOCONFIG_LINUX" ]; then
 	for PKG in $PACKAGES_LIST; do
 		if [ "$PKG" = 'PKG_BIN64' ]; then
-			write_launcher 'APP_CONFIG'
+			launcher_write 'APP_CONFIG'
 		fi
 	done
 fi
