@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190623.5
+script_version=20190623.6
 
 # Set game-specific variables
 
@@ -87,16 +87,25 @@ ARCHIVE_GAME1_DATA_FILES='engine.ini'
 # Keep compatibility with old archives
 ARCHIVE_GAME1_DATA_PATH_GOG_OLD0='game'
 
-CONFIG_FILES='./*.ini'
+DATA_DIRS='./userdata'
 
 APP_WINETRICKS='d3dx9'
 
 APP_MAIN_TYPE='wine'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='user_data_path="$WINEPREFIX/drive_c/users/$(whoami)/Application Data/Ubisoft/Anno1404"
+if [ ! -e "$user_data_path" ]; then
+	mkdir --parents "${user_data_path%/*}"
+	mkdir --parents "$PATH_DATA/userdata"
+	ln --symbolic "$PATH_DATA/userdata" "$user_data_path"
+	init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"
+fi'
 APP_MAIN_EXE='anno4.exe'
 APP_MAIN_ICON='anno4.exe'
 
 APP_VENICE_ID="${GAME_ID}_venice"
 APP_VENICE_TYPE='wine'
+APP_VENICE_PRERUN="$APP_MAIN_PRERUN"
 APP_VENICE_EXE='addon.exe'
 APP_VENICE_ICON='addon.exe'
 APP_VENICE_NAME="$GAME_NAME - Venice"
