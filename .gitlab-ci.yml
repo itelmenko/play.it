@@ -1,4 +1,4 @@
-image: archlinux/base
+image: debian:sid
 
 stages:
     - check
@@ -6,8 +6,8 @@ stages:
 shellcheck:
     stage: check
     before_script:
-        - pacman -Sy
-        - pacman --noconfirm -S make shellcheck
+        - apt-get --assume-yes --quiet update >/dev/null 2>&1
+        - apt-get --assume-yes --quiet install make shellcheck >/dev/null 2>&1
     script:
         - ./tests/shellcheck-lib.sh
         - ./tests/shellcheck-main-script.sh
