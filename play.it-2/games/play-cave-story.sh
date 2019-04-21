@@ -184,6 +184,7 @@ if [ "$ARCHIVE_LINUX_PORT" ]; then
 	PKG_BIN32_DEPS="$PKG_DATA_ID $PKG_BIN32_DEPS_OPTIONAL_LINUX_NODATA"
 	PACKAGES_LIST="$PACKAGES_LIST PKG_BIN64"
 	select_package_architecture
+	# shellcheck disable=SC2086
 	set_temp_directories $PACKAGES_LIST
 fi
 
