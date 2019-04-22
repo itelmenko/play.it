@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190310.2
+script_version=20190422.1
 
 # Set game-specific variables
 
@@ -61,19 +61,19 @@ CONFIG_FILES='./*.conf ./config.bm?'
 DATA_FILES='./SAVEGAM*'
 
 APP_1_ID="${GAME_ID}-1"
-APP_1_NAME="$GAME_NAME - 1"
+APP_1_NAME="$GAME_NAME - Episode One: Dr. Mangleʼs Lab"
 APP_1_TYPE='dosbox'
 APP_1_EXE='bmenace1.exe'
 APP_1_ICON='data/noarch/support/icon.png'
 
 APP_2_ID="${GAME_ID}-2"
-APP_2_NAME="$GAME_NAME - 2"
+APP_2_NAME="$GAME_NAME - Episode Two: The Hidden Lab"
 APP_2_TYPE='dosbox'
 APP_2_EXE='bmenace2.exe'
 APP_2_ICON='data/noarch/support/icon.png'
 
 APP_3_ID="${GAME_ID}-3"
-APP_3_NAME="$GAME_NAME - 3"
+APP_3_NAME="$GAME_NAME - Episode Three: Master Cain"
 APP_3_TYPE='dosbox'
 APP_3_EXE='bmenace3.exe'
 APP_3_ICON='data/noarch/support/icon.png'
