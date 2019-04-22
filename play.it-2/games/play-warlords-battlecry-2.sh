@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2017-2019, Solène Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,37 +29,48 @@ set -o errexit
 ###
 
 ###
-# The Even More Incredible Machine
+# Warlords Battlecry 2
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190303.5
+script_version=20190301.1
 
 # Set game-specific variables
 
-GAME_ID='the-even-more-incredible-machine'
-GAME_NAME='The Even More Incredible Machine'
+GAME_ID='warlords-battlecry-2'
+GAME_NAME='Warlords Battlecry II'
 
-ARCHIVE_GOG='setup_the_even_more_incredible_machine_2.1.0.24.exe'
-ARCHIVE_GOG_URL='https://www.gog.com/game/the_incredible_machine_mega_pack'
-ARCHIVE_GOG_MD5='0486b8d5e65ea49ebf59b62a06cb9edd'
-ARCHIVE_GOG_SIZE='21000'
-ARCHIVE_GOG_VERSION='1.0-gog2.1.0.24'
+ARCHIVE_GOG='setup_warlords_battlecry2_2.0.0.4.exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/warlords_battlecry_2'
+ARCHIVE_GOG_TYPE='innosetup'
+ARCHIVE_GOG_MD5='baa54ca0285182d18d532abfcbb8769f'
+ARCHIVE_GOG_VERSION='1.04-gog2.0.0.4'
+ARCHIVE_GOG_SIZE='940000'
 
-ARCHIVE_GAME_MAIN_PATH='app'
-ARCHIVE_GAME_MAIN_FILES='*.tim *.drv *.exe install* resource*'
+ARCHIVE_DOC_DATA_PATH='app'
+ARCHIVE_DOC_DATA_FILES='*.pdf'
 
-CONFIG_FILES='./*.cfg ./*.CFG'
-DATA_FILES='./*.tim ./*.TIM'
+ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_FILES='*.asi *.m3d */*.cfg */*.ini battlecry?ii.exe binkw32.dll cpuinf32.dll mss32.dll wetstd32.dll terrain.cfg'
 
-APP_MAIN_TYPE='dosbox'
-APP_MAIN_EXE='tim.exe'
-APP_MAIN_ICON='app/goggame-1207664023.ico'
+ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_FILES='*.xcr war4gfx.xcg war4int.xci wbc.dat campaignscenario customai customunitai data documentation english events fonts herodata music namingsets scenario soundfx tutorial video'
 
-PACKAGES_LIST='PKG_MAIN'
+CONFIG_FILES='./*.cfg */*.cfg */*.ini */*.txt'
+DATA_DIRS='./userdata'
 
-PKG_MAIN_DEPS='dosbox'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='battlecry ii.exe'
+APP_MAIN_ICON='battlecry ii.exe'
+
+PACKAGES_LIST='PKG_BIN PKG_DATA'
+
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
+
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine"
 
 # Load common functions
 
@@ -94,15 +104,30 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icons
 
-icons_get_from_workdir 'APP_MAIN'
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN'
+icons_move_to 'PKG_DATA'
 
 # Write launchers
 
+PKG='PKG_BIN'
 launcher_write 'APP_MAIN'
+
+# Store saved games and settings outside of WINE prefix
+
+# shellcheck disable=SC2016
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/My Documents/Warlords Battlecry II'
+# shellcheck disable=SC2016
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 

@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/sh -e
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine Le Gonidec
-# Copyright (c) 2017-2019, Solène Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,83 +30,91 @@ set -o errexit
 ###
 
 ###
-# The Even More Incredible Machine
-# build native packages from the original installers
+# Basingstoke
+# build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190303.5
+script_version=20190315.1
 
 # Set game-specific variables
 
-GAME_ID='the-even-more-incredible-machine'
-GAME_NAME='The Even More Incredible Machine'
+GAME_ID='basingstoke'
+GAME_NAME='Basingstoke'
 
-ARCHIVE_GOG='setup_the_even_more_incredible_machine_2.1.0.24.exe'
-ARCHIVE_GOG_URL='https://www.gog.com/game/the_incredible_machine_mega_pack'
-ARCHIVE_GOG_MD5='0486b8d5e65ea49ebf59b62a06cb9edd'
-ARCHIVE_GOG_SIZE='21000'
-ARCHIVE_GOG_VERSION='1.0-gog2.1.0.24'
+ARCHIVE_ITCH='basingstoke-linux.zip'
+ARCHIVE_ITCH_URL='https://puppygames001.itch.io/basingstoke'
+ARCHIVE_ITCH_MD5='46c7127a2bbf07f158b8a70eb44185f2'
+ARCHIVE_ITCH_VERSION='1.0-itch'
+ARCHIVE_ITCH_SIZE='720000'
+ARCHIVE_ITCH_TYPE='zip'
 
-ARCHIVE_GAME_MAIN_PATH='app'
-ARCHIVE_GAME_MAIN_FILES='*.tim *.drv *.exe install* resource*'
+ARCHIVE_GAME_BIN_PATH='basingstoke'
+ARCHIVE_GAME_BIN_FILES='./*.x86_64 ./*_Data/*/x86_64'
 
-CONFIG_FILES='./*.cfg ./*.CFG'
-DATA_FILES='./*.tim ./*.TIM'
+ARCHIVE_GAME_DATA_PATH='basingstoke'
+ARCHIVE_GAME_DATA_FILES='./*_Data'
 
-APP_MAIN_TYPE='dosbox'
-APP_MAIN_EXE='tim.exe'
-APP_MAIN_ICON='app/goggame-1207664023.ico'
+APP_MAIN_TYPE='native'
+APP_MAIN_EXE='Basingstoke.x86_64'
+APP_MAIN_ICON='Basingstoke_Data/Resources/UnityPlayer.png'
 
-PACKAGES_LIST='PKG_MAIN'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
-PKG_MAIN_DEPS='dosbox'
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
+
+PKG_BIN_ARCH='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glx xcursor glibc libstdc++ libxrandr"
 
 # Load common functions
 
 target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
+	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
 	for path in\
-		"$PWD"\
-		"$XDG_DATA_HOME/play.it"\
-		'/usr/local/share/games/play.it'\
-		'/usr/local/share/play.it'\
-		'/usr/share/games/play.it'\
-		'/usr/share/play.it'
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
 	do
-		if [ -e "$path/libplayit2.sh" ]; then
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
+	if [ -z "$PLAYIT_LIB2" ]; then
+		printf '\n\033[1;31mError:\033[0m\n'
+		printf 'libplayit2.sh not found.\n'
+		exit 1
+	fi
 fi
-if [ -z "$PLAYIT_LIB2" ]; then
-	printf '\n\033[1;31mError:\033[0m\n'
-	printf 'libplayit2.sh not found.\n'
-	exit 1
-fi
-# shellcheck source=play.it-2/lib/libplayit2.sh
+#shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+
 prepare_package_layout
 
-# Extract icons
-
-icons_get_from_workdir 'APP_MAIN'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
+PKG='PKG_BIN'
 launcher_write 'APP_MAIN'
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up
