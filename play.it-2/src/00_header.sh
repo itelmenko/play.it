@@ -1,5 +1,5 @@
 ###
-# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
 # Copyright (c) 2016-2019, Solène "Mopi" Huault
 # Copyright (c) 2017-2019, Phil Morrell
 # Copyright (c) 2017-2019, Jacek Szafarkiewicz

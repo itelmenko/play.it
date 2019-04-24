@@ -2,8 +2,8 @@
 set -o errexit
 
 ###
-# Copyright (c) 2018, VA
-# Copyright (c) 2015-2018, Antoine Le Gonidec
+# Copyright (c) 2018-2019, VA
+# Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without

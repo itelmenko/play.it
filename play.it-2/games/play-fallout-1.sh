@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
 # Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
