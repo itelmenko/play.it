@@ -1,3 +1,34 @@
+2.11.2
+
+  * Do not throw an error when a script has been called with --dry-run and an
+    icon file is not found
+
+  * Move all compatibility aliases to a dedicated source file
+
+  * glx meta-dependency do not install a transitional package anymore on
+    recent Debian versions
+
+  * Allow to skip control of InnoSetup version used in archive passed to
+    innoextract
+
+  * New test: Run a single game script in dry mode once for each supported
+    archive
+
+  * Check for file existence when an archive is given as argument to a
+    game-specific script
+
+  * Display an error when an unknown application type is used
+
+  * When extracting multiple icons at once, ensure that they won’t override
+    the ones extracted before them
+
+  * Fix get_archive_specific_value / get_package_specific_value on corner
+    cases, by dropping avoidable calls to eval
+
+  * Use cabextract’s -L option to extract files as lowercase
+
+  * Gentoo packages: bump EAPI version to 7
+
 2.11.1
 
   * Fix apt version detection on old versions of apt

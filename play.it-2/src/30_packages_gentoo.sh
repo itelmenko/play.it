@@ -54,7 +54,7 @@ pkg_write_gentoo() {
 	target="$PLAYIT_WORKDIR/$pkg/gentoo-overlay/games-playit/$pkg_id/$pkg_id-$PKG_VERSION.ebuild"
 
 	cat > "$target" <<- EOF
-	EAPI=6
+	EAPI=7
 	RESTRICT="fetch strip binchecks"
 	EOF
 	local pkg_architectures
