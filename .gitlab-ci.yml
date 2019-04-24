@@ -1,17 +1,47 @@
-image: debian:sid
+image: hatsoftwares/play.it
 
 stages:
+    - lib
     - check
 
-shellcheck:
+.check: &check
     stage: check
-    before_script:
-        - apt-get --assume-yes --quiet update >/dev/null 2>&1
-        - apt-get --assume-yes --quiet install make shellcheck >/dev/null 2>&1
+    cache:
+        key: "${CI_COMMIT_REF_SLUG}"
+        paths:
+            - play.it-2/lib/libplayit2.sh
+        policy: pull
+
+shellcheck-lib:
+    stage: lib
     script:
         - ./tests/shellcheck-lib.sh
+    cache:
+        key: "${CI_COMMIT_REF_SLUG}"
+        paths:
+            - play.it-2/lib/libplayit2.sh
+        policy: push
+
+shellcheck-main-script:
+    <<: *check
+    script:
         - ./tests/shellcheck-main-script.sh
-        - ./tests/shellcheck-game-scripts.sh
     artifacts:
         paths:
             - play.it-2/lib/libplayit2.sh
+shellcheck-game-scripts-sh:
+    <<: *check
+    script:
+        - ./tests/shellcheck-game-scripts.sh -s sh
+shellcheck-game-scripts-bash:
+    <<: *check
+    script:
+        - ./tests/shellcheck-game-scripts.sh -s bash
+shellcheck-game-scripts-dash:
+    <<: *check
+    script:
+        - ./tests/shellcheck-game-scripts.sh -s dash
+shellcheck-game-scripts-ksh:
+    <<: *check
+    script:
+        - ./tests/shellcheck-game-scripts.sh -s ksh
