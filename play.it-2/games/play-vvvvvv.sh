@@ -66,6 +66,7 @@ DATA_FILES='./play.it_xdg-data-home/VVVVVV/saves/tsave.vvv ./play.it_xdg-data-ho
 DATA_DIRS='./play.it_xdg-data-home/VVVVVV/levels'
 
 APP_MAIN_TYPE='native'
+#shellcheck disable=SC2016
 APP_MAIN_PRERUN='XDG_DATA_HOME="$PATH_PREFIX/play.it_xdg-data-home"
 export XDG_DATA_HOME
 [ -d "$XDG_DATA_HOME" ] || mkdir "$XDG_DATA_HOME"'
