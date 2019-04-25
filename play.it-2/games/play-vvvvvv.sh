@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190424.1
+script_version=20190425.1
 
 # Set game-specific variables
 
@@ -61,7 +61,14 @@ ARCHIVE_GAME_BIN64_FILES='vvvvvv.x86_64'
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='data.zip VVVVVV.png'
 
+CONFIG_FILES='./play.it_xdg-data-home/VVVVVV/saves/unlock.vvv'
+DATA_FILES='./play.it_xdg-data-home/VVVVVV/saves/tsave.vvv ./play.it_xdg-data-home/VVVVVV/saves/qsave.vvv'
+DATA_DIRS='./play.it_xdg-data-home/VVVVVV/levels'
+
 APP_MAIN_TYPE='native'
+APP_MAIN_PRERUN='XDG_DATA_HOME="$PATH_PREFIX/play.it_xdg-data-home"
+export XDG_DATA_HOME
+[ -d "$XDG_DATA_HOME" ] || mkdir "$XDG_DATA_HOME"'
 APP_MAIN_EXE_BIN32='vvvvvv.x86'
 APP_MAIN_EXE_BIN64='vvvvvv.x86_64'
 APP_MAIN_ICON='VVVVVV.png'
