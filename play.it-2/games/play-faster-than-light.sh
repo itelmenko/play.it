@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181023.5
+script_version=20190501.1
 
 # Set game-specific variables
 
@@ -143,7 +143,7 @@ PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx alsa"
 PKG_BIN32_DEPS_PRE16="$PKG_DATA_ID sdl glu"
 
 PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS_GOG"
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 # Keep compatibility with old archives
 PKG_BIN64_DEPS_PRE16="$PKG_BIN32_DEPS_PRE16"
 
