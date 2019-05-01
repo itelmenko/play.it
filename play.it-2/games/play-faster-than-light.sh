@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
@@ -31,11 +32,11 @@ set -o errexit
 
 ###
 # Faster Than Light
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190501.1
+script_version=20190501.2
 
 # Set game-specific variables
 
@@ -149,7 +150,7 @@ PKG_BIN64_DEPS_PRE16="$PKG_BIN32_DEPS_PRE16"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -172,7 +173,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -201,7 +202,7 @@ for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
 			use_archive_specific_value "APP_MAIN_LIBS_${PKG#PKG_}"
 		;;
 	esac
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Build package
