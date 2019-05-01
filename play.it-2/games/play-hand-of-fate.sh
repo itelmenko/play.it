@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190619.1
+script_version=20190619.2
 
 # Set game-specific variables
 
 GAME_ID='hand-of-fate'
 GAME_NAME='Hand Of Fate'
 
-ARCHIVE_GOG='hand_of_fate_en_1_3_19_21087.sh'
+ARCHIVE_GOG='hand_of_fate_1_3_20_25356.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/hand_of_fate'
-ARCHIVE_GOG_MD5='5895ccaf640afff877b6cab5fa348748'
+ARCHIVE_GOG_MD5='f0a1b47a6e4b5cb7a9f1494b55982b54'
 ARCHIVE_GOG_SIZE='2800000'
-ARCHIVE_GOG_VERSION='1.3.19-gog21087'
+ARCHIVE_GOG_VERSION='1.3.20-gog25356'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='hand_of_fate_en_1_3_19_21087.sh'
+ARCHIVE_GOG_OLD1_MD5='5895ccaf640afff877b6cab5fa348748'
+ARCHIVE_GOG_OLD1_SIZE='2800000'
+ARCHIVE_GOG_OLD1_VERSION='1.3.19-gog21087'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_hand_of_fate_2.12.0.16.sh'
 ARCHIVE_GOG_OLD0_MD5='54c61dce76b1281b4161d53d096d6ffe'
