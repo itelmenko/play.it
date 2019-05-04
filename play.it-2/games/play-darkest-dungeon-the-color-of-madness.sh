@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190504.1
+script_version=20190504.2
 
 # Set game-specific variables
 
@@ -42,12 +42,24 @@ script_version=20190504.1
 GAME_ID='darkest-dungeon'
 GAME_NAME='Darkest Dungeon: The Color of Madness'
 
-ARCHIVE_GOG='darkest_dungeon_the_color_of_madness_dlc_en_24358_23005.sh'
+ARCHIVE_GOG='darkest_dungeon_the_color_of_madness_24839_28859.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/darkest_dungeon_the_color_of_madness'
-ARCHIVE_GOG_MD5='0447fad1313ab47f6521debc3e75d308'
+ARCHIVE_GOG_MD5='9830e2b3cefc653db593a022e1c87359'
 ARCHIVE_GOG_SIZE='640000'
-ARCHIVE_GOG_VERSION='24358-gog23005'
+ARCHIVE_GOG_VERSION='24839-gog28859'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD3='darkest_dungeon_the_color_of_madness_24788_26004.sh'
+ARCHIVE_GOG_OLD3_MD5='a92a69e13e7ddb5da63d283ea40d93f7'
+ARCHIVE_GOG_OLD3_SIZE='640000'
+ARCHIVE_GOG_OLD3_VERSION='24788-gog26004'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='darkest_dungeon_the_color_of_madness_dlc_en_24358_23005.sh'
+ARCHIVE_GOG_OLD2_MD5='0447fad1313ab47f6521debc3e75d308'
+ARCHIVE_GOG_OLD2_SIZE='640000'
+ARCHIVE_GOG_OLD2_VERSION='24358-gog23005'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='darkest_dungeon_the_color_of_madness_dlc_en_24154_22522.sh'
 ARCHIVE_GOG_OLD1_MD5='40088860d8e3e3a651074e84eb2746ac'

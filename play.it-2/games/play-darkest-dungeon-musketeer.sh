@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190504.1
+script_version=20190504.2
 
 # Set game-specific variables
 
@@ -42,12 +42,24 @@ script_version=20190504.1
 GAME_ID='darkest-dungeon'
 GAME_NAME='Darkest Dungeon: Musketeer'
 
-ARCHIVE_GOG='darkest_dungeon_musketeer_dlc_en_24358_23005.sh'
+ARCHIVE_GOG='darkest_dungeon_musketeer_24839_28859.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/darkest_dungeon_musketeer'
-ARCHIVE_GOG_MD5='c8ebb84ab177b4ffcee79faadd8f5981'
+ARCHIVE_GOG_MD5='ee9980710f2d4e229b5b2afb22918dac'
 ARCHIVE_GOG_SIZE='22000'
-ARCHIVE_GOG_VERSION='24358-gog23005'
+ARCHIVE_GOG_VERSION='24839-gog28859'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD3='darkest_dungeon_musketeer_24788_26004.sh'
+ARCHIVE_GOG_OLD3_MD5='2e24f30855bd6404f940d66d0b1b44d9'
+ARCHIVE_GOG_OLD3_SIZE='22000'
+ARCHIVE_GOG_OLD3_VERSION='24788-gog26004'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='darkest_dungeon_musketeer_dlc_en_24358_23005.sh'
+ARCHIVE_GOG_OLD2_MD5='c8ebb84ab177b4ffcee79faadd8f5981'
+ARCHIVE_GOG_OLD2_SIZE='22000'
+ARCHIVE_GOG_OLD2_VERSION='24358-gog23005'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='darkest_dungeon_musketeer_dlc_en_24154_22522.sh'
 ARCHIVE_GOG_OLD1_MD5='d68e50da94cc01920759ff7009a7a3c2'

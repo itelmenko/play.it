@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190504.1
+script_version=20190504.2
 
 # Set game-specific variables
 
@@ -42,12 +42,24 @@ script_version=20190504.1
 GAME_ID='darkest-dungeon'
 GAME_NAME='Darkest Dungeon: The Shieldbreaker'
 
-ARCHIVE_GOG='darkest_dungeon_the_shieldbreaker_dlc_en_24358_23005.sh'
+ARCHIVE_GOG='darkest_dungeon_the_shieldbreaker_24839_28859.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/darkest_dungeon_the_shieldbreaker'
-ARCHIVE_GOG_MD5='e47653b8750583df1fea96ad2c52bad2'
+ARCHIVE_GOG_MD5='6d28e99b0b66d9a0b7e528b961371131'
 ARCHIVE_GOG_SIZE='42000'
-ARCHIVE_GOG_VERSION='24358-gog23005'
+ARCHIVE_GOG_VERSION='24839-gog28859'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD3='darkest_dungeon_the_shieldbreaker_24788_26004.sh'
+ARCHIVE_GOG_OLD3_MD5='df614551f769df6b3ee3f9f2bcfcf94e'
+ARCHIVE_GOG_OLD3_SIZE='42000'
+ARCHIVE_GOG_OLD3_VERSION='24788-gog26004'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='darkest_dungeon_the_shieldbreaker_dlc_en_24358_23005.sh'
+ARCHIVE_GOG_OLD2_MD5='e47653b8750583df1fea96ad2c52bad2'
+ARCHIVE_GOG_OLD2_SIZE='42000'
+ARCHIVE_GOG_OLD2_VERSION='24358-gog23005'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD1='darkest_dungeon_the_shieldbreaker_dlc_en_23885_21662.sh'
 ARCHIVE_GOG_OLD1_MD5='795cdfaecd19177264731d9acb0daca2'
