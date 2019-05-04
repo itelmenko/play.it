@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Darkest Dungeon: The Shieldbreaker
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20190504.1
 
 # Set game-specific variables
 
@@ -62,10 +62,10 @@ ARCHIVE_GOG_OLD0_VERSION='21142-gog16140'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
-ARCHIVE_DOC_MAIN_FILES='./*'
+ARCHIVE_DOC_MAIN_FILES='*'
 
 ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='./dlc'
+ARCHIVE_GAME_MAIN_FILES='dlc'
 
 PACKAGES_LIST='PKG_MAIN'
 
@@ -74,31 +74,30 @@ PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
-target_version=2.10
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -30,11 +30,11 @@ set -o errexit
 
 ###
 # Darkest Dungeon
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20190520.1
 
 # Set game-specific variables
 
@@ -81,19 +81,19 @@ ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 DATA_DIRS='./logs'
 
 ARCHIVE_DOC0_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC0_DATA_FILES='./*'
+ARCHIVE_DOC0_DATA_FILES='*'
 
 ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
-ARCHIVE_DOC1_DATA_FILES='./README.linux'
+ARCHIVE_DOC1_DATA_FILES='README.linux'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./lib ./darkest.bin.x86'
+ARCHIVE_GAME_BIN32_FILES='lib darkest.bin.x86'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./lib64 ./darkest.bin.x86_64'
+ARCHIVE_GAME_BIN64_FILES='lib64 darkest.bin.x86_64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./audio ./video ./Icon.bmp ./pin ./svn_revision.txt ./activity_log ./campaign ./colours ./curios ./cursors ./dungeons ./effects ./fe_flow ./fonts ./fx ./game_over ./heroes ./inventory ./loading_screen ./loot ./maps ./modes ./mods ./monsters ./overlays ./panels ./props ./raid ./raid_results ./scripts ./scrolls ./shaders ./shared ./trinkets ./upgrades ./user_information ./localization/*.bat ./localization/*.csv ./localization/*.loc ./localization/*.txt ./localization/*.xml ./localization/pc'
+ARCHIVE_GAME_DATA_FILES='audio video Icon.bmp pin svn_revision.txt activity_log campaign colours curios cursors dungeons effects fe_flow fonts fx game_over heroes inventory loading_screen loot maps modes mods monsters overlays panels props raid raid_results scripts scrolls shaders shared trinkets upgrades user_information localization/*.bat localization/*.csv localization/*.loc localization/*.txt localization/*.xml localization/pc'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='darkest.bin.x86'
@@ -113,31 +113,30 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version=2.10
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -154,7 +153,7 @@ icons_get_from_package 'APP_MAIN'
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Set up persistent logging
@@ -163,7 +162,9 @@ done
 pattern='s|"\./$APP_EXE" $APP_OPTIONS $@|& 1>./logs/$(date +%F-%R).log 2>\&1|'
 file0="${PKG_BIN32_PATH}${PATH_BIN}/$GAME_ID"
 file1="${PKG_BIN64_PATH}${PATH_BIN}/$GAME_ID"
-sed --in-place "$pattern" "$file0" "$file1"
+if [ $DRY_RUN -eq 0 ]; then
+	sed --in-place "$pattern" "$file0" "$file1"
+fi
 
 # Build package
 
