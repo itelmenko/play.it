@@ -35,18 +35,23 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190520.2
+script_version=20190520.3
 
 # Set game-specific variables
 
 GAME_ID='mini-metro'
 GAME_NAME='Mini Metro'
 
-ARCHIVE_HUMBLE='MiniMetro-release-37a-linux.tar.gz'
+ARCHIVE_HUMBLE='MiniMetro-release-38-linux.tar.gz'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/mini-metro'
-ARCHIVE_HUMBLE_MD5='879d12ce7255feebf7406f65519112dd'
-ARCHIVE_HUMBLE_VERSION='1.37a-humble180913'
-ARCHIVE_HUMBLE_SIZE='310000'
+ARCHIVE_HUMBLE_MD5='1535053549257fd3139a46ed91c193a4'
+ARCHIVE_HUMBLE_VERSION='1.38-humble181120'
+ARCHIVE_HUMBLE_SIZE='320000'
+
+ARCHIVE_HUMBLE_OLD3='MiniMetro-release-37a-linux.tar.gz'
+ARCHIVE_HUMBLE_OLD3_MD5='879d12ce7255feebf7406f65519112dd'
+ARCHIVE_HUMBLE_OLD3_VERSION='1.37a-humble180913'
+ARCHIVE_HUMBLE_OLD3_SIZE='310000'
 
 ARCHIVE_HUMBLE_OLD2='MiniMetro-release-37-linux.tar.gz'
 ARCHIVE_HUMBLE_OLD2_MD5='0ee6efa77a16e7775253334640b6d20a'
