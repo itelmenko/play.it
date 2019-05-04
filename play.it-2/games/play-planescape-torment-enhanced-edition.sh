@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190721.2
+script_version=20190721.3
 
 # Set game-specific variables
 
 GAME_ID='planescape-torment-enhanced-edition'
 GAME_NAME='Planescape Torment - Enhanced Edition'
 
-ARCHIVE_GOG='gog_planescape_torment_enhanced_edition_2.1.0.3.sh'
+ARCHIVE_GOG='planescape_torment_enhanced_edition_3_1_4_26532.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/planescape_torment_enhanced_edition'
-ARCHIVE_GOG_MD5='649c1bf9d7ccd81553c574ff1bec2cef'
+ARCHIVE_GOG_MD5='7d42ae99df8c0a4ff460235ae406f2d6'
 ARCHIVE_GOG_SIZE='1800000'
-ARCHIVE_GOG_VERSION='3.1.3-gog2.1.0.3'
+ARCHIVE_GOG_VERSION='3.1.4-gog26532'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='gog_planescape_torment_enhanced_edition_2.1.0.3.sh'
+ARCHIVE_GOG_OLD0_MD5='649c1bf9d7ccd81553c574ff1bec2cef'
+ARCHIVE_GOG_OLD0_SIZE='1800000'
+ARCHIVE_GOG_OLD0_VERSION='3.1.3-gog2.1.0.3'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
 ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
