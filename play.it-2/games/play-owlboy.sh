@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,11 +31,11 @@ set -o errexit
 
 ###
 # Owlboy
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180224.1
+script_version=20190505.1
 
 # Set game-specific variables
 
@@ -43,32 +44,30 @@ SCRIPT_DEPS='find dos2unix'
 GAME_ID='owlboy'
 GAME_NAME='Owlboy'
 
-ARCHIVES_LIST='ARCHIVE_HUMBLE ARCHIVE_HUMBLE_OLD'
-
 ARCHIVE_HUMBLE='owlboy-11022017-bin'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/owlboy'
 ARCHIVE_HUMBLE_MD5='d3a1e4753a604431c58eb1ea26c35543'
 ARCHIVE_HUMBLE_SIZE='570000'
 ARCHIVE_HUMBLE_VERSION='1.3.6515.19883-humble171102'
 ARCHIVE_HUMBLE_TYPE='mojosetup'
 
-ARCHIVE_HUMBLE_OLD='owlboy-05232017-bin'
-ARCHIVE_HUMBLE_OLD_URL='https://www.humblebundle.com/store/owlboy'
-ARCHIVE_HUMBLE_OLD_MD5='f35fba69fadffbf498ca8a38dbceeac1'
-ARCHIVE_HUMBLE_OLD_SIZE='570000'
-ARCHIVE_HUMBLE_OLD_VERSION='1.2.6382.15868-humble1'
-ARCHIVE_HUMBLE_OLD_TYPE='mojosetup'
+ARCHIVE_HUMBLE_OLD0='owlboy-05232017-bin'
+ARCHIVE_HUMBLE_OLD0_MD5='f35fba69fadffbf498ca8a38dbceeac1'
+ARCHIVE_HUMBLE_OLD0_SIZE='570000'
+ARCHIVE_HUMBLE_OLD0_VERSION='1.2.6382.15868-humble1'
+ARCHIVE_HUMBLE_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data'
-ARCHIVE_DOC_DATA_FILES='./Linux.README'
+ARCHIVE_DOC_DATA_FILES='Linux.README'
 
 ARCHIVE_GAME_BIN32_PATH='data'
-ARCHIVE_GAME_BIN32_FILES='./Owlboy.bin.x86 ./lib'
+ARCHIVE_GAME_BIN32_FILES='Owlboy.bin.x86 lib'
 
 ARCHIVE_GAME_BIN64_PATH='data'
-ARCHIVE_GAME_BIN64_FILES='./Owlboy.bin.x86_64 ./lib64'
+ARCHIVE_GAME_BIN64_FILES='Owlboy.bin.x86_64 lib64'
 
 ARCHIVE_GAME_DATA_PATH='data'
-ARCHIVE_GAME_DATA_FILES='./content ./*.dll ./*.config ./monoconfig ./monomachineconfig ./Owlboy.bmp ./Owlboy.exe'
+ARCHIVE_GAME_DATA_FILES='content *.dll *.config monoconfig monomachineconfig Owlboy.bmp Owlboy.exe'
 
 CONFIG_FILES='./content/localizations/*/speechbubbleconfig.ini ./content/fonts/*.ini'
 
@@ -76,7 +75,6 @@ APP_MAIN_TYPE='native'
 APP_MAIN_EXE_BIN32='Owlboy.bin.x86'
 APP_MAIN_EXE_BIN64='Owlboy.bin.x86_64'
 APP_MAIN_ICON='Owlboy.bmp'
-APP_MAIN_ICON_RES='512'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
 
@@ -91,48 +89,53 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.3'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
-	if [ -e "$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh" ]; then
-		PLAYIT_LIB2="$XDG_DATA_HOME/play.it/play.it-2/lib/libplayit2.sh"
-	elif [ -e './libplayit2.sh' ]; then
-		PLAYIT_LIB2='./libplayit2.sh'
-	else
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
+	for path in\
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
+	do
+		if [ -e "$path/libplayit2.sh" ]; then
+			PLAYIT_LIB2="$path/libplayit2.sh"
+			break
+		fi
+	done
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC_${PKG#PKG_}"  "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}" "$PATH_GAME"
-done
-
-res="$APP_MAIN_ICON_RES"
-PATH_ICON="$PATH_ICON_BASE/${res}x${res}/apps"
-extract_icon_from "${PKG_DATA_PATH}${PATH_GAME}/$APP_MAIN_ICON"
-mkdir --parents "${PKG_DATA_PATH}${PATH_ICON}"
-mv "$PLAYIT_WORKDIR/icons/${APP_MAIN_ICON%.bmp}.png" "${PKG_DATA_PATH}${PATH_ICON}/$GAME_ID.png"
-
+prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Extract icon
+
+PKG='PKG_DATA'
+icons_get_from_package 'APP_MAIN'
 
 # Convert .ini files to Unix-style line separators
 
-find "${PKG_DATA_PATH}${PATH_GAME}" -type f -name '*.ini' -exec dos2unix '{}' + > /dev/null 2>&1
+if [ $DRY_RUN -eq 0 ]; then
+	find "${PKG_DATA_PATH}${PATH_GAME}" -type f -name '*.ini' -exec dos2unix '{}' + > /dev/null 2>&1
+fi
 
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Build package
@@ -146,10 +149,6 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-printf '\n'
-printf '32-bit:'
-print_instructions 'PKG_DATA' 'PKG_BIN32'
-printf '64-bit:'
-print_instructions 'PKG_DATA' 'PKG_BIN64'
+print_instructions
 
 exit 0
