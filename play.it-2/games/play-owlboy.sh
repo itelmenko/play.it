@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190626.2
+script_version=20190626.5
 
 # Set game-specific variables
 
@@ -72,6 +72,8 @@ ARCHIVE_GAME_DATA_FILES='content *.dll *.config monoconfig monomachineconfig Owl
 CONFIG_FILES='./content/localizations/*/speechbubbleconfig.ini ./content/fonts/*.ini'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='Owlboy.bin.x86'
 APP_MAIN_EXE_BIN64='Owlboy.bin.x86_64'
 APP_MAIN_ICON='Owlboy.bmp'
