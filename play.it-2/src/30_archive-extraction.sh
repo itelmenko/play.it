@@ -198,7 +198,11 @@ archive_concat_needed_files_with_path() {
 		use_archive_specific_value "ARCHIVE_${specifier}_FILES"
 		use_archive_specific_value "ARCHIVE_${specifier}_PATH"
 		for file in $(get_value "ARCHIVE_${specifier}_FILES"); do
-			printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH")/$file"
+			if [ "$(get_value "ARCHIVE_${specifier}_PATH")" != '.' ]; then
+				printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH")/$file"
+			else
+				printf '%s\n' "$file"
+			fi
 		done
 	done
 }
