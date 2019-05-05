@@ -162,19 +162,23 @@ archive_extract_with_unzip() {
 archive_get_files_to_extract_unzip() {
 	local archive
 	archive="$1"
+	local list=''
 	# shellcheck disable=SC2167
 	for glob in $(archive_get_files_to_extract); do
 		# shellcheck disable=SC2165
 		for glob in "$glob" "$glob/*"; do # The * is needed for unzip to match files inside directories
 			# Check if the glob matches, if it doesn't, unzip would print an error during extraction
+			# It uses the existing list to ensure the glob matches even while using other working globs
 			set +o errexit
-			unzip -l "$archive" "$glob" 1>/dev/null
+			unzip -p "$archive" $list "$glob" 1>/dev/null 2>/dev/null
 			if [ $? -ne 11 ]; then
-				printf '%s\n' "$glob"
+				list="$list$glob
+"
 			fi
 			set -o errexit
 		done
 	done
+	printf '%s' "$list"
 }
 
 # Outputs all files that need to be extracted
