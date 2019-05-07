@@ -145,40 +145,17 @@ archive_extraction_innosetup_error_version() {
 
 # extract data using unzip
 # USAGE: archive_extract_with_unzip $archive $destination
-# CALLS: archive_get_files_to_extract_unzip
 archive_extract_with_unzip() {
 	local archive
 	local destination
 	archive="$1"
 	destination="$2"
+	set +o errexit
 	# shellcheck disable=SC2046
-	unzip -d "$destination" "$archive" $(archive_get_files_to_extract_unzip "$archive") 1>/dev/null
-}
-
-# Output all files that need to be extracted for unzip
-# USAGE: archive_get_files_to_extract_unzip $archive
-# CALLS: archive_get_files_to_extract
-# CALLED BY: archive_extract_with_unzip
-archive_get_files_to_extract_unzip() {
-	local archive
-	archive="$1"
-	local list=''
-	# shellcheck disable=SC2167
-	for glob in $(archive_get_files_to_extract); do
-		# shellcheck disable=SC2165
-		for glob in "$glob" "$glob/*"; do # The * is needed for unzip to match files inside directories
-			# Check if the glob matches, if it doesn't, unzip would print an error during extraction
-			# It uses the existing list to ensure the glob matches even while using other working globs
-			set +o errexit
-			unzip -p "$archive" $list "$glob" 1>/dev/null 2>/dev/null
-			if [ $? -ne 11 ]; then
-				list="$list$glob
-"
-			fi
-			set -o errexit
-		done
-	done
-	printf '%s' "$list"
+	unzip -d "$destination" "$archive" $(archive_get_files_to_extract "$archive" | sed 'p;s|$|/*|') 1>/dev/null 2>/dev/null
+	local status="$?"
+	set -o errexit
+	[ "$status" -eq 0 ] || [ "$status" -eq 11 ] || return "$status"
 }
 
 # Outputs all files that need to be extracted
