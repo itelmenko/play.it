@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190508.1
+script_version=20190508.2
 
 # Set game-specific variables
 
@@ -165,7 +165,7 @@ case "$ARCHIVE" in
 	;;
 esac
 
-# Allow to skip intro video on first launch
+# Allow to skip intro video on first launch + set default settings
 
 file="${PKG_BIN_PATH}${PATH_GAME}/$APP_REGEDIT"
 if [ $DRY_RUN -eq 0 ];then
@@ -173,9 +173,42 @@ if [ $DRY_RUN -eq 0 ];then
 	Windows Registry Editor Version 5.00
 
 	[HKEY_LOCAL_MACHINE\Software\New World Computing\Heroes of Might and Magic® III\1.0]
+	"Animate SpellBook"=dword:00000001
+	"Autosave"=dword:00000001
+	"Bink Video"=dword:00000001
+	"Blackout Computer"=dword:00000000
+	"Combat Army Info Level"=dword:00000000
+	"Combat Auto Creatures"=dword:00000001
+	"Combat Auto Spells"=dword:00000001
+	"Combat Ballista"=dword:00000001
+	"Combat Catapult"=dword:00000001
+	"Combat First Aid Tent"=dword:00000001
+	"Combat Shade Level"=dword:00000000
+	"Combat Speed"=dword:00000000
+	"Computer Walk Speed"=dword:00000003
 	"First Time"=dword:00000000
+	"Last Music Volume"=dword:00000005
+	"Last Sound Volume"=dword:00000005
+	"Main Game Full Screen"=dword:00000001
+	"Main Game Show Menu"=dword:00000001
+	"Main Game X"=dword:0000000a
+	"Main Game Y"=dword:0000000a
+	"Move Reminder"=dword:00000001
 	"Music Volume"=dword:00000005
+	"Network Default Name"="Player"
+	"Quick Combat"=dword:00000000
+	"Show Combat Grid"=dword:00000000
+	"Show Combat Mouse Hex"=dword:00000000
+	"Show Intro"=dword:00000001
+	"Show Route"=dword:00000001
 	"Sound Volume"=dword:00000005
+	"Test Blit"=dword:00000000
+	"Test Decomp"=dword:00000000
+	"Test Read"=dword:00000000
+	"Town Outlines"=dword:00000001
+	"Video Subtitles"=dword:00000001
+	"Walk Speed"=dword:00000002
+	"Window Scroll Speed"=dword:00000001
 	EOF
 	iconv --from-code=UTF-8 --to-code=UTF-16 --output="$file" "$file"
 fi
