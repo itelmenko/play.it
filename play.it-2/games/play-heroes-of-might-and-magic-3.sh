@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181121.1
+script_version=20190508.1
 
 # Set game-specific variables
 
@@ -61,8 +61,9 @@ ARCHIVE_GOG_EN_OLD0='setup_homm3_complete_2.0.0.16.exe'
 ARCHIVE_GOG_EN_OLD0_MD5='263d58f8cc026dd861e9bbcadecba318'
 ARCHIVE_GOG_EN_OLD0_VERSION='3.0-gog2.0.0.16'
 ARCHIVE_GOG_EN_OLD0_SIZE='1100000'
-ARCHIVE_GOG_EN_OLD0_PATCH='patch_heroes_of_might_and_magic_3_complete_2.0.1.17.exe'
-ARCHIVE_GOG_EN_OLD0_PATCH_MD5='815b9c097cd57d0e269beb4cc718dad3'
+ARCHIVE_GOG_EN_OLD0_PART1='patch_heroes_of_might_and_magic_3_complete_2.0.1.17.exe'
+ARCHIVE_GOG_EN_OLD0_PART1_MD5='815b9c097cd57d0e269beb4cc718dad3'
+ARCHIVE_GOG_EN_OLD0_PART1_TYPE='innosetup'
 
 ARCHIVE_GOG_FR_OLD0='setup_homm3_complete_french_2.1.0.20.exe'
 ARCHIVE_GOG_FR_OLD0_MD5='ca8e4726acd7b5bc13c782d59c5a459b'
@@ -75,11 +76,12 @@ ARCHIVE_DOC0_DATA_FILES='*eula.txt'
 ARCHIVE_DOC1_DATA_PATH='app'
 ARCHIVE_DOC1_DATA_FILES='eula *.cnt *.hlp *.pdf *.txt'
 
-ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_FILES='*.exe binkw32.dll ifc20.dll ifc21.dll mcp.dll mp3dec.asi mss32.dll smackw32.dll'
+ARCHIVE_GAME0_BIN_PATH='app'
+ARCHIVE_GAME0_BIN_FILES='*.exe binkw32.dll ifc20.dll ifc21.dll mcp.dll mp3dec.asi mss32.dll smackw32.dll'
 
-ARCHIVE_GAME_PATCH_BIN_PATH='tmp'
-ARCHIVE_GAME_PATCH_BIN_FILES='heroes3.exe'
+# Keep compatibility with old archives
+ARCHIVE_GAME1_BIN_PATH_GOG_EN_OLD0='tmp'
+ARCHIVE_GAME1_BIN_FILES_GOG_EN_OLD0='heroes3.exe'
 
 ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='data maps mp3'
@@ -89,7 +91,7 @@ DATA_DIRS='./games ./maps ./random_maps'
 DATA_FILES='./data/h3ab_bmp.lod ./data/h3ab_spr.lod ./data/h3bitmap.lod ./data/h3sprite.lod'
 
 APP_REGEDIT='tweaks.reg'
-APP_WINETRICKS="vd=\$(xrandr|grep '\\*'|awk '{print \$1}')"
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}')"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='heroes3.exe'
@@ -124,7 +126,7 @@ PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks xrandr"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -147,44 +149,36 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
-
-# Load patch if using old GOG English archive
-
-if [ "$ARCHIVE" = 'ARCHIVE_GOG_EN_OLD0' ]; then
-	ARCHIVE_MAIN="$ARCHIVE"
-	archive_set 'ARCHIVE_PATCH' 'ARCHIVE_GOG_EN_OLD0_PATCH'
-	[ "$ARCHIVE_PATCH" ] || archive_set_error_not_found 'ARCHIVE_GOG_EN_OLD0_PATCH'
-	ARCHIVE="$ARCHIVE_MAIN"
-fi
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-if [ "$ARCHIVE_PATCH" ]; then
-	(
-		ARCHIVE='ARCHIVE_PATCH'
-		extract_data_from "$ARCHIVE_PATCH"
-	)
-	PKG='PKG_BIN'
-	organize_data 'GAME_PATCH_BIN' "$PATH_GAME"
-fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+case "$ARCHIVE" in
+	('ARCHIVE_GOG_EN_OLD0')
+		extract_data_from "$SOURCE_ARCHIVE_PART1"
+		prepare_package_layout
+		rm --recursive "$PLAYIT_WORKDIR/gamedata"
+	;;
+esac
 
 # Allow to skip intro video on first launch
 
 file="${PKG_BIN_PATH}${PATH_GAME}/$APP_REGEDIT"
-cat > "$file" << 'EOF'
-Windows Registry Editor Version 5.00
+if [ $DRY_RUN -eq 0 ];then
+	cat > "$file" <<- 'EOF'
+	Windows Registry Editor Version 5.00
 
-[HKEY_LOCAL_MACHINE\Software\New World Computing\Heroes of Might and Magic® III\1.0]
-"First Time"=dword:00000000
-"Music Volume"=dword:00000005
-"Sound Volume"=dword:00000005
-EOF
-iconv --from-code=UTF-8 --to-code=UTF-16 --output="$file" "$file"
+	[HKEY_LOCAL_MACHINE\Software\New World Computing\Heroes of Might and Magic® III\1.0]
+	"First Time"=dword:00000000
+	"Music Volume"=dword:00000005
+	"Sound Volume"=dword:00000005
+	EOF
+	iconv --from-code=UTF-8 --to-code=UTF-16 --output="$file" "$file"
+fi
 
 # Extract icons
 
@@ -195,7 +189,7 @@ icons_move_to 'PKG_DATA'
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN' 'APP_EDITOR_MAP' 'APP_EDITOR_CAMPAIGN'
+launchers_write 'APP_MAIN' 'APP_EDITOR_MAP' 'APP_EDITOR_CAMPAIGN'
 
 # Build package
 
