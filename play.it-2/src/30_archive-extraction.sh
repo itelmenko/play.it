@@ -150,11 +150,13 @@ archive_extract_with_unzip() {
 	local destination
 	archive="$1"
 	destination="$2"
+	set -f
 	set +o errexit
 	# shellcheck disable=SC2046
 	unzip -d "$destination" "$archive" $(archive_get_files_to_extract "$archive" | sed 'p;/^.+$/s|$|/*|') 1>/dev/null 2>/dev/null
 	local status="$?"
 	set -o errexit
+	set +f
 	[ "$status" -eq 0 ] || [ "$status" -eq 11 ] || return "$status"
 }
 
