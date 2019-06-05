@@ -123,7 +123,7 @@ extract_data_from "$SOURCE_ARCHIVE"
 
 # Convert the file names to UTF-8 encoding
 
-find "$PLAYIT_WORKDIR/gamedata" -exec convmv --notest -f SHIFT-JIS -t UTF-8 {} +
+find "$PLAYIT_WORKDIR/gamedata" -exec convmv --notest -f SHIFT-JIS -t UTF-8 {} + >/dev/null 2>&1
 
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
