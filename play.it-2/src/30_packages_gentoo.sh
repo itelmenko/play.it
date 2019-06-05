@@ -94,14 +94,14 @@ pkg_write_gentoo() {
 		printf 'pkg_postinst() {\n' >> "$target"
 		[ -e "$postinst" ] && cat "$postinst" >> "$target"
 		[ -n "$(get_value "${pkg}_POSTINST_RUN")" ] && get_value "${pkg}_POSTINST_RUN" >> "$target"
-		printf '}\n' >> "$target"
+		printf '\n}\n' >> "$target"
 	fi
 
 	if [ -e "$prerm" ] || [ -n "$(get_value "${pkg}_PRERM_RUN")" ]; then
 		printf 'pkg_prerm() {\n' >> "$target"
 		[ -n "$(get_value "${pkg}_PRERM_RUN")" ] && get_value "${pkg}_PRERM_RUN" >> "$target"
 		[ -e "$prerm" ] && cat "$prerm" >> "$target"
-		printf '}\n' >> "$target"
+		printf '\n}\n' >> "$target"
 	fi
 }
 
