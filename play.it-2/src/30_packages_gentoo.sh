@@ -14,10 +14,25 @@ gentoo_get_pkg_providers() {
 	done
 }
 
+# print postinst messages as gentoo ebuild format
+# USAGE: pkg_print_messages_postinst_gentoo
+# NEEDED VARS: pkg
+# CALLED BY: pkg_write_gentoo
+pkg_print_messages_postinst_gentoo() {
+       IFS='
+'
+       for line in $(get_value "${pkg}_POSTINST_INFO"); do
+               printf "einfo '%s'\n" "$line"
+       done
+       for line in $(get_value "${pkg}_POSTINST_WARN"); do
+               printf "ewarn '%s'\n" "$line"
+       done
+}
+
 # write .ebuild package meta-data
 # USAGE: pkg_write_gentoo
 # NEEDED VARS: GAME_NAME PKG_DEPS_GENTOO
-# CALLS: gentoo_get_pkg_providers
+# CALLS: gentoo_get_pkg_providers pkg_print_messages_postinst_gentoo
 # CALLED BY: write_metadata
 pkg_write_gentoo() {
 	pkg_id="$(printf '%s' "$pkg_id" | sed 's/-/_/g')" # This makes sure numbers in the package name doesn't get interpreted as a version by portage
@@ -40,17 +55,8 @@ pkg_write_gentoo() {
 		done
 	fi
 
-	(
-		IFS='
-'
-		for line in $(get_value "${pkg}_POSTINST_INFO"); do
-			printf "einfo '%s'\n" "$line" >> "$postinst"
-		done
-		for line in $(get_value "${pkg}_POSTINST_WARN"); do
-			printf "ewarn '%s'\n" "$line" >> "$postinst"
-		done
-	)
-
+	export ${pkg?}_POSTINST_RUN="$(get_value "${pkg}_POSTINST_RUN")
+$(pkg_print_messages_postinst_gentoo)"
 	PKG="$pkg"
 	get_package_version
 
