@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190419.1
+script_version=20190606.1
 
 # Set game-specific variables
 
@@ -60,8 +60,8 @@ ARCHIVE_GAME_BIN_FILES='*.exe'
 ARCHIVE_GAME_DATA_PATH='eiya'
 ARCHIVE_GAME_DATA_FILES='*.dat'
 
-DATA_DIRS='./userdata'
-DATA_FILES='./log.txt'
+DATA_DIRS='./replay ./backup'
+DATA_FILES='./log.txt ./score.dat'
 CONFIG_FILES='./th08.cfg'
 
 APP_MAIN_TYPE='wine'
@@ -154,18 +154,6 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN' 'APP_CONFIG'
-
-# Store saved games and settings outside of WINE prefix
-
-# shellcheck disable=SC2016
-saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/ShanghaiAlice/th08tr' #TODO: check this
-# shellcheck disable=SC2016
-pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
-pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
-pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
-pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
-pattern="$pattern\\nfi#"
-sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 
