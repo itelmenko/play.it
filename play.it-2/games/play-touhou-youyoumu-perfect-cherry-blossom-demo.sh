@@ -61,7 +61,8 @@ ARCHIVE_GAME_DATA_PATH='youmu'
 ARCHIVE_GAME_DATA_FILES='*.dat'
 
 CONFIG_FILES='th07.cfg'
-DATA_DIRS='./userdata'
+DATA_FILES='./log.txt ./score.dat'
+DATA_DIRS='./replay'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='th07.exe'
@@ -151,18 +152,6 @@ icons_move_to 'PKG_DATA'
 
 PKG='PKG_BIN'
 write_launcher 'APP_MAIN' 'APP_CONFIG'
-
-# Store saved games and settings outside of WINE prefix
-
-# shellcheck disable=SC2016
-saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/ShanghaiAlice/th07tr' #TODO: check this
-# shellcheck disable=SC2016
-pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
-pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
-pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
-pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
-pattern="$pattern\\nfi#"
-sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 
