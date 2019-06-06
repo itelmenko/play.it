@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190419.1
+script_version=20190606.1
 
 # Set game-specific variables
 
