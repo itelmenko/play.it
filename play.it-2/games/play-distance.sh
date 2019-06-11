@@ -34,18 +34,23 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190611.2
+script_version=20190611.3
 
 # Set game-specific variables
 
 GAME_ID='distance'
 GAME_NAME='Distance'
 
-ARCHIVE_HUMBLE='distance_6802_linux.tar.gz'
+ARCHIVE_HUMBLE='distance_6839_linux.tar.gz'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/distance'
-ARCHIVE_HUMBLE_MD5='e98812e71ce42e667c33cdf3f38793b7'
-ARCHIVE_HUMBLE_VERSION='1.24-humble190418'
+ARCHIVE_HUMBLE_MD5='308b8276a490f641476098900180d1d3'
+ARCHIVE_HUMBLE_VERSION='1.3-humble190609'
 ARCHIVE_HUMBLE_SIZE='2400000'
+
+ARCHIVE_HUMBLE_OLD2='distance_6802_linux.tar.gz'
+ARCHIVE_HUMBLE_OLD2_MD5='e98812e71ce42e667c33cdf3f38793b7'
+ARCHIVE_HUMBLE_OLD2_VERSION='1.24-humble190418'
+ARCHIVE_HUMBLE_OLD2_SIZE='2400000'
 
 ARCHIVE_HUMBLE_OLD1='distance_6714_linux.tar.gz'
 ARCHIVE_HUMBLE_OLD1_MD5='6b82a258c4fe4c5fe5dcf3ec70f7c326'
