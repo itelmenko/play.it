@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190521.4
+script_version=20190611.2
 
 # Set game-specific variables
 
@@ -223,7 +223,7 @@ PKG_L10N_TXT_IT_PROVIDE="$PKG_L10N_TXT_ID"
 PKG_L10N_TXT_IT_DESCRIPTION="$PKG_L10N_TXT_DESCRIPTION - Italian"
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_L10N_VOICE_ID $PKG_L10N_TXT_ID $PKG_ENVIRONMENT_ID $PKG_MOVIES_ID $PKG_DATA_ID wine winetricks"
+PKG_BIN_DEPS="$PKG_L10N_VOICE_ID $PKG_L10N_TXT_ID $PKG_ENVIRONMENT_ID $PKG_MOVIES_ID $PKG_DATA_ID wine winetricks glx xcursor"
 
 # Load common functions
 
