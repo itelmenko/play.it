@@ -35,19 +35,31 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191103.1
+script_version=20191103.2
 
 # Set game-specific variables
 
 GAME_ID='deus-ex'
 GAME_NAME='Deus Ex'
 
-ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.4)_(21273).exe'
+ARCHIVE_GOG='setup_deus_ex_goty_1.112fm(revision_1.4.0.2)_(26650).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/deus_ex'
-ARCHIVE_GOG_MD5='9ec295ecad72e96fb7b9f0109dd90324'
-ARCHIVE_GOG_VERSION='1.112fm-gog21273'
-ARCHIVE_GOG_SIZE='750000'
-ARCHIVE_GOG_TYPE='innosetup1.7'
+ARCHIVE_GOG_MD5='ab165b74b26623ccee5bfd7b6f65f734'
+ARCHIVE_GOG_VERSION='1.112fm-gog26650'
+ARCHIVE_GOG_SIZE='760000'
+ARCHIVE_GOG_TYPE='innosetup'
+
+ARCHIVE_GOG_OLD6='setup_deus_ex_goty_1.112fm(revision_1.4.0.1.5)_(24946).exe'
+ARCHIVE_GOG_OLD6_MD5='daa330f1e7a427af64b952cd138cfc59'
+ARCHIVE_GOG_OLD6_VERSION='1.112fm-gog24946'
+ARCHIVE_GOG_OLD6_SIZE='760000'
+ARCHIVE_GOG_OLD6_TYPE='innosetup'
+
+ARCHIVE_GOG_OLD5='setup_deus_ex_goty_1.112fm(revision_1.4)_(21273).exe'
+ARCHIVE_GOG_OLD5_MD5='9ec295ecad72e96fb7b9f0109dd90324'
+ARCHIVE_GOG_OLD5_VERSION='1.112fm-gog21273'
+ARCHIVE_GOG_OLD5_SIZE='750000'
+ARCHIVE_GOG_OLD5_TYPE='innosetup1.7'
 
 ARCHIVE_GOG_OLD4='setup_deus_ex_goty_1.112fm(revision_1.3.1)_(17719).exe'
 ARCHIVE_GOG_OLD4_MD5='92e9e6a33642f9e6c41cb24055df9b3c'
