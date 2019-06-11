@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190520.13
+script_version=20190611.2
 
 # Set game-specific variables
 
@@ -64,6 +64,8 @@ CONFIG_FILES='./*.ini'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='Convoy.x86'
 APP_MAIN_EXE_BIN64='Convoy.x86_64'
 # shellcheck disable=SC2016
