@@ -98,13 +98,13 @@ PKG_MAIN_32_ARCH='32'
 PKG_MAIN_32_DEPS='glx nss alsa glibc gtk2 xcursor libxrandr'
 PKG_MAIN_32_DEPS_DEB='' #TODO: fill
 PKG_MAIN_32_DEPS_ARCH='' #TODO: fill
-PKG_MAIN_32_DEPS_GENTOO='dev-libs/glib:2[abi_x86_32] dev-libs/nspr[abi_x86_32] app-accessibility/at-spi2-core[abi_x86_32] dev-libs/atk[abi_x86_32] dev-libs/expat[abi_x86_32] net-print/cups[abi_x86_32] sys-apps/dbus[abi_x86_32] sys-apps/util-linux[abi_x86_32] x11-libs/cairo[abi_x86_32] x11-libs/gdk-pixbuf[abi_x86_32] x11-libs/gtk+:3[abi_x86_32] x11-libs/libX11[abi_x86_32] x11-libs/libxcb[abi_x86_32] x11-libs/libXcomposite[abi_x86_32] x11-libs/libXdamage[abi_x86_32] x11-libs/libXext[abi_x86_32] x11-libs/libXfixes[abi_x86_32] x11-libs/libXi[abi_x86_32] x11-libs/libXrender[abi_x86_32] x11-libs/libXScrnSaver[abi_x86_32] x11-libs/libXtst[abi_x86_32] x11-libs/pango[abi_x86_32]'
+PKG_MAIN_32_DEPS_GENTOO='dev-libs/glib:2[abi_x86_32] dev-libs/nspr[abi_x86_32] app-accessibility/at-spi2-core[abi_x86_32] dev-libs/atk[abi_x86_32] dev-libs/expat[abi_x86_32] net-print/cups[abi_x86_32] sys-apps/dbus[abi_x86_32] sys-apps/util-linux[abi_x86_32] x11-libs/cairo[abi_x86_32] x11-libs/gdk-pixbuf[abi_x86_32] x11-libs/gtk+:3[X,abi_x86_32] x11-libs/libX11[abi_x86_32] x11-libs/libxcb[abi_x86_32] x11-libs/libXcomposite[abi_x86_32] x11-libs/libXdamage[abi_x86_32] x11-libs/libXext[abi_x86_32] x11-libs/libXfixes[abi_x86_32] x11-libs/libXi[abi_x86_32] x11-libs/libXrender[abi_x86_32] x11-libs/libXScrnSaver[abi_x86_32] x11-libs/libXtst[abi_x86_32] x11-libs/pango[abi_x86_32]'
 
 PKG_MAIN_64_ARCH='64'
 PKG_MAIN_64_DEPS='glx glibc nss alsa gtk2 xcursor libxrandr'
 PKG_MAIN_64_DEPS_DEB='' #TODO: fill
 PKG_MAIN_64_DEPS_ARCH='' #TODO: fill
-PKG_MAIN_64_DEPS_GENTOO='dev-libs/glib:2 dev-libs/nspr app-accessibility/at-spi2-core dev-libs/atk dev-libs/expat net-print/cups sys-apps/dbus sys-apps/util-linux x11-libs/cairo x11-libs/gdk-pixbuf x11-libs/gtk+:3 x11-libs/libX11 x11-libs/libxcb x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXext x11-libs/libXfixes x11-libs/libXi x11-libs/libXrender x11-libs/libXScrnSaver x11-libs/libXtst x11-libs/pango'
+PKG_MAIN_64_DEPS_GENTOO='dev-libs/glib:2 dev-libs/nspr app-accessibility/at-spi2-core dev-libs/atk dev-libs/expat net-print/cups sys-apps/dbus sys-apps/util-linux x11-libs/cairo x11-libs/gdk-pixbuf x11-libs/gtk+:3[X] x11-libs/libX11 x11-libs/libxcb x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXext x11-libs/libXfixes x11-libs/libXi x11-libs/libXrender x11-libs/libXScrnSaver x11-libs/libXtst x11-libs/pango'
 
 # Load common functions
 
