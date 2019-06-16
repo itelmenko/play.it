@@ -109,6 +109,7 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+organize_data 'DOC1_DATA' "$PATH_DOC"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
