@@ -414,10 +414,10 @@ shellcheck-game-cultist-simulator:
     script:
         - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-cultist-simulator.sh
 
-shellcheck-game-daggerfall:
+shellcheck-game-the-elder-scrolls-2-daggerfall:
     stage: shellcheck-games
     script:
-        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-daggerfall.sh
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-the-elder-scrolls-2-daggerfall.sh
 
 shellcheck-game-dark-echo:
     stage: shellcheck-games
