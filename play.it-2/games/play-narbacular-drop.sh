@@ -63,7 +63,7 @@ ARCHIVE_GAME_BIN_PATH='app'
 ARCHIVE_GAME_BIN_FILES='*.exe *.dll'
 
 ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_FILES='file.ore' #TODO: check if it is needed
+ARCHIVE_GAME_DATA_FILES='file.ore'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='narbacular drop.exe'
