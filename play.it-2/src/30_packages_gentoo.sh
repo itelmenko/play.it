@@ -22,10 +22,10 @@ pkg_print_messages_postinst_gentoo() {
        IFS='
 '
        for line in $(get_value "${pkg}_POSTINST_INFO"); do
-               printf "einfo '%s'\n" "$line"
+               printf "einfo '%s'\\n" "$line"
        done
        for line in $(get_value "${pkg}_POSTINST_WARN"); do
-               printf "ewarn '%s'\n" "$line"
+               printf "ewarn '%s'\\n" "$line"
        done
 }
 
