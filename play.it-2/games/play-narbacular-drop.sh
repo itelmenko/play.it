@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190619.1
+script_version=20190619.2
 
 # Set game-specific variables
 
@@ -64,6 +64,8 @@ ARCHIVE_GAME_BIN_FILES='*.exe *.dll'
 
 ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='file.ore'
+
+CONFIG_FILES='./system.opt'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='narbacular drop.exe'
