@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190422.3
+script_version=20190619.1
 
 # Set game-specific variables
 
@@ -52,7 +52,7 @@ ARCHIVE_NUCLEARMONKEY_TYPE='innosetup'
 ARCHIVE_DIGIPEN='NarbacularDropSetup.exe'
 ARCHIVE_DIGIPEN_URL='https://www.digipen.edu/showcase/student-games/narbacular-drop'
 ARCHIVE_DIGIPEN_MD5='f335eaf8f667e0584ec84af6b9104252'
-ARCHIVE_DIGIPEN_VERSION='1.4-digipen'
+ARCHIVE_DIGIPEN_VERSION='1.0-digipen'
 ARCHIVE_DIGIPEN_SIZE='40000'
 ARCHIVE_DIGIPEN_TYPE='innosetup'
 
