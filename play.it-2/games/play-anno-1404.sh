@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190623.6
+script_version=20190623.7
 
 # Set game-specific variables
 
@@ -77,6 +77,31 @@ ARCHIVE_GAME_BIN_FILES='*.exe *.dll bin tools'
 # Keep compatibility with old archives
 ARCHIVE_GAME_BIN_PATH_GOG_OLD0='game'
 
+ARCHIVE_GAME_L10N_DE_PATH='app'
+ARCHIVE_GAME_L10N_DE_FILES='addon/ger0.rda maindata/ger0.rda'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_DE_PATH_GOG_OLD0='game'
+
+ARCHIVE_GAME_L10N_EN_PATH='app'
+ARCHIVE_GAME_L10N_EN_FILES='addon/eng0.rda maindata/eng0.rda'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_EN_PATH_GOG_OLD0='game'
+
+ARCHIVE_GAME_L10N_ES_PATH='app'
+ARCHIVE_GAME_L10N_ES_FILES='addon/esp0.rda maindata/esp0.rda'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_ES_PATH_GOG_OLD0='game'
+
+ARCHIVE_GAME_L10N_FR_PATH='app'
+ARCHIVE_GAME_L10N_FR_FILES='addon/fra0.rda maindata/fra0.rda'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_FR_PATH_GOG_OLD0='game'
+
+ARCHIVE_GAME_L10N_IT_PATH='app'
+ARCHIVE_GAME_L10N_IT_FILES='addon/ita0.rda maindata/ita0.rda'
+# Keep compatibility with old archives
+ARCHIVE_GAME_L10N_IT_PATH_GOG_OLD0='game'
+
 ARCHIVE_GAME0_DATA_PATH='app'
 ARCHIVE_GAME0_DATA_FILES='addon data maindata resources'
 # Keep compatibility with old archives
@@ -110,20 +135,36 @@ APP_VENICE_EXE='addon.exe'
 APP_VENICE_ICON='addon.exe'
 APP_VENICE_NAME="$GAME_NAME - Venice"
 
-APP_L10N_ID="${GAME_ID}_l10n"
-APP_L10N_TYPE='wine'
-APP_L10N_EXE='language_selector.exe'
-APP_L10N_ICON='language_selector.exe'
-APP_L10N_NAME="$GAME_NAME - language selector"
-APP_L10N_CAT='Settings'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN'
+PACKAGES_LIST='PKG_L10N_DE PKG_L10N_EN PKG_L10N_ES PKG_L10N_FR PKG_L10N_IT PKG_DATA PKG_BIN'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
+PKG_L10N_ID="${GAME_ID}-l10n"
+PKG_L10N_DESCRIPTION='localization'
+
+PKG_L10N_DE_ID="${PKG_L10N_ID}-de"
+PKG_L10N_DE_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_DE_DESCRIPTION="$PKG_L10N_DESCRIPTION - German"
+
+PKG_L10N_EN_ID="${PKG_L10N_ID}-en"
+PKG_L10N_EN_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_EN_DESCRIPTION="$PKG_L10N_DESCRIPTION - English"
+
+PKG_L10N_ES_ID="${PKG_L10N_ID}-es"
+PKG_L10N_ES_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_ES_DESCRIPTION="$PKG_L10N_DESCRIPTION - Spanish"
+
+PKG_L10N_FR_ID="${PKG_L10N_ID}-fr"
+PKG_L10N_FR_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_FR_DESCRIPTION="$PKG_L10N_DESCRIPTION - French"
+
+PKG_L10N_IT_ID="${PKG_L10N_ID}-it"
+PKG_L10N_IT_PROVIDE="$PKG_L10N_ID"
+PKG_L10N_IT_DESCRIPTION="$PKG_L10N_DESCRIPTION - Italian"
+
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID winetricks wine glx xcursor"
+PKG_BIN_DEPS="$PKG_DATA_ID $PKG_L10N_ID winetricks wine glx xcursor"
 
 # Load common functions
 
@@ -174,7 +215,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Extract icons
 
 PKG='PKG_BIN'
-icons_get_from_package 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
+icons_get_from_package 'APP_MAIN' 'APP_VENICE'
 icons_move_to 'PKG_DATA'
 
 # Fix immediate crash
@@ -198,7 +239,7 @@ fi
 # Write launchers
 
 PKG='PKG_BIN'
-launchers_write 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
+launchers_write 'APP_MAIN' 'APP_VENICE'
 
 # Build package
 
@@ -211,6 +252,39 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+case "${LANG%_*}" in
+	('fr')
+		lang_string='version %s :'
+		lang_de='allemande'
+		lang_en='anglaise'
+		lang_es='espagnole'
+		lang_fr='française'
+		lang_it='italienne'
+	;;
+	('en'|*)
+		lang_string='%s version:'
+		lang_de='German'
+		lang_en='English'
+		lang_es='Spanish'
+		lang_fr='French'
+		lang_it='Italian'
+	;;
+esac
+printf '\n'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_de"
+print_instructions 'PKG_L10N_DE' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_en"
+print_instructions 'PKG_L10N_EN' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_es"
+print_instructions 'PKG_L10N_ES' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_fr"
+print_instructions 'PKG_L10N_FR' 'PKG_DATA' 'PKG_BIN'
+# shellcheck disable=SC2059
+printf "$lang_string" "$lang_it"
+print_instructions 'PKG_L10N_IT' 'PKG_DATA' 'PKG_BIN'
 
 exit 0
