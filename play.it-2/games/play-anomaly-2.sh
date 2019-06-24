@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190410.6
+script_version=20190624.1
 
 # Set game-specific variables
 
@@ -256,7 +256,9 @@ case "$ARCHIVE" in
 		pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
 		pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
 		pattern="$pattern\\nfi#"
-		sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
+		if [ $DRY_RUN -eq 0 ]; then
+			sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
+		fi
 	;;
 esac
 
