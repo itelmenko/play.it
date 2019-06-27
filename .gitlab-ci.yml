@@ -2134,6 +2134,11 @@ shellcheck-game-wing-commander-1:
     script:
         - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-wing-commander-1.sh
 
+shellcheck-game-wing-commander-2:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-wing-commander-2.sh
+
 shellcheck-game-wonder-boy:
     stage: shellcheck-games
     script:
@@ -2193,3 +2198,13 @@ shellcheck-game-zork-3:
     stage: shellcheck-games
     script:
         - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-zork-3.sh
+
+shellcheck-game-element4l:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-element4l.sh
+
+shellcheck-game-minecraft-4k:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-minecraft-4k.sh
