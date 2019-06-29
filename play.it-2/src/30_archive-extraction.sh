@@ -151,7 +151,7 @@ archive_extract_with_unzip() {
 	local files_list
 	archive="$1"
 	destination="$2"
-	files_list="$(archive_get_files_to_extract "$archive" | sed 'p;/^.+$/s|$|/*|')"
+	files_list="$(archive_get_files_to_extract "$archive" | sed --regexp-extended 'p;/^.+$/s|$|/*|')"
 	set -f
 	set +o errexit
 	# shellcheck disable=SC2046
