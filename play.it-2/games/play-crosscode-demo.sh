@@ -166,10 +166,10 @@ extract_data_from "$SOURCE_ARCHIVE"
 	ARCHIVE='ARCHIVE_NWJS_64'
 	extract_data_from "$ARCHIVE_NWJS_64"
 )
-if [ "$ARCHIVE_NWJS_32" ] || [ "$ARCHIVE_NWJS_64" ]; then
-	exe_path="$PLAYIT_WORKDIR/gamedata/crosscode-demo.exe"
-	dd if="$exe_path" bs="$(unzip -l "$exe_path" 2>&1 1>/dev/null | grep --extended-regexp --only-matching '[0-9]+ extra bytes' | grep --extended-regexp --only-matching '^[0-9]+')" skip=1 of="$PLAYIT_WORKDIR/gamedata/crosscode-demo_exe.zip" status=none
-fi
+
+exe_path="$PLAYIT_WORKDIR/gamedata/crosscode-demo.exe"
+dd if="$exe_path" bs="$(unzip -l "$exe_path" 2>&1 1>/dev/null | grep --extended-regexp --only-matching '[0-9]+ extra bytes' | grep --extended-regexp --only-matching '^[0-9]+')" skip=1 of="$PLAYIT_WORKDIR/gamedata/crosscode-demo_exe.zip" status=none
+
 for PKG in $PACKAGES_LIST; do
 	if [ "$PKG" = 'PKG_WINE' ]; then
 		continue
