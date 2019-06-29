@@ -152,7 +152,7 @@ archive_extract_with_unzip() {
 	archive="$1"
 	destination="$2"
 	files_list="$(archive_get_files_to_extract "$archive" | sed --regexp-extended 'p;/^.+$/s|$|/*|')"
-	set -f
+	set -o noglob
 	set +o errexit
 	# shellcheck disable=SC2046
 	(
@@ -162,7 +162,7 @@ archive_extract_with_unzip() {
 	)
 	local status="$?"
 	set -o errexit
-	set +f
+	set +o noglob
 	[ "$status" -eq 0 ] || [ "$status" -eq 11 ] || return "$status"
 }
 
