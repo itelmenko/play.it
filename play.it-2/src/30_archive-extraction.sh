@@ -191,7 +191,7 @@ archive_concat_needed_files_with_path() {
 		use_archive_specific_value "ARCHIVE_${specifier}_PATH"
 		for file in $(get_value "ARCHIVE_${specifier}_FILES"); do
 			if [ "$(get_value "ARCHIVE_${specifier}_PATH")" != '.' ]; then
-				printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH" | sed 's/[][\\?*]/\\&/g' | tr '\n' '?')/$file"
+				printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH" | sed 's/[][\\?*]/\\&/g' | tr '\n' '?')/$file" # Print glob escaped version of the path with the file
 			else
 				printf '%s\n' "$file"
 			fi
