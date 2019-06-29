@@ -148,12 +148,18 @@ archive_extraction_innosetup_error_version() {
 archive_extract_with_unzip() {
 	local archive
 	local destination
+	local files_list
 	archive="$1"
 	destination="$2"
 	set -f
+	files_list="$(archive_get_files_to_extract "$archive" | sed 'p;/^.+$/s|$|/*|')"
 	set +o errexit
 	# shellcheck disable=SC2046
-	unzip -d "$destination" "$archive" $(archive_get_files_to_extract "$archive" | sed 'p;/^.+$/s|$|/*|') 1>/dev/null 2>/dev/null
+	(
+		IFS='
+'
+		unzip -d "$destination" "$archive" $files_list 1>/dev/null 2>/dev/null
+	)
 	local status="$?"
 	set -o errexit
 	set +f
