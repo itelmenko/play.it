@@ -185,6 +185,7 @@ archive_get_files_to_extract() {
 		icons_list="$(get_value "${app}_ICONS_LIST")"
 		[ -n "$icons_list" ] || icons_list="${app}_ICON"
 		for icon in $icons_list; do
+			use_archive_specific_value "$icon"
 			printf '%s\n' "$(get_value "$icon" | sed 's/[][\\?*]/\\&/g' | tr '\n' '?')" # Print glob escaped version
 		done
 	done
