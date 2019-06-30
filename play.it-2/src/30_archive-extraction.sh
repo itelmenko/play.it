@@ -178,7 +178,7 @@ archive_get_files_to_extract() {
 			archive_concat_needed_files_with_path "GAME${i}_$PKG" "DOC${i}_$PKG"
 		done
 	done
-	# awk '!x[$0]++' removes duplicate lines, but without sorting (unlike sort -u)
+	# awk '!x[$0]++' removes duplicate lines, but without sorting (unlike sort --unique, which needs to wait for all the input first)
 	grep --fixed-strings 'icons_get_from_workdir' "$0" | grep --extended-regexp --only-matching 'APP_[_0-9A-Z]+' | awk '!x[$0]++' | while read -r app; do
 		use_archive_specific_value "${app}_ICONS_LIST"
 		local icons_list
