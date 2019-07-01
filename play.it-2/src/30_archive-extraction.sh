@@ -200,6 +200,7 @@ archive_concat_needed_files_with_path() {
 	for specifier in "$@"; do
 		use_archive_specific_value "ARCHIVE_${specifier}_FILES"
 		use_archive_specific_value "ARCHIVE_${specifier}_PATH"
+		set -o noglob
 		for file in $(get_value "ARCHIVE_${specifier}_FILES"); do
 			if [ "$(get_value "ARCHIVE_${specifier}_PATH")" != '.' ]; then
 				printf '%s\n' "$(get_value "ARCHIVE_${specifier}_PATH" | sed 's/[][\\?*]/\\&/g' | tr '\n' '?')/$file" # Print glob escaped version of the path with the file
@@ -207,5 +208,6 @@ archive_concat_needed_files_with_path() {
 				printf '%s\n' "$file"
 			fi
 		done
+		set +o noglob
 	done
 }
