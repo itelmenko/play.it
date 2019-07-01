@@ -66,9 +66,9 @@ extract_data_from() {
 				archive_extract_with_unzip "$file" "$destination"
 			;;
 			('zip_unclean'|'mojosetup_unzip')
-				set +o errexit
-				unzip -d "$destination" "$file" 1>/dev/null 2>&1
-				set -o errexit
+				local exitcode=0
+				archive_extract_with_unzip "$file" "$destination" || exitcode="$?"
+				[ "$exitcode" -eq 0 ] || [ "$exitcode" -eq 1 ] || [ "$exitcode" -eq 2 ] || return "$exitcode"
 				set_standard_permissions "$destination"
 			;;
 			(*)
