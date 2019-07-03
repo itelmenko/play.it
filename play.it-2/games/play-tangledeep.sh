@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,68 +30,69 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies — Cyclopean Owl DLC
+# Tangledeep
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190505.1
+script_version=20190521.4
 
 # Set game-specific variables
 
-# copy game id from play-sunless-skies.sh
-GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
+GAME_ID='tangledeep'
+GAME_NAME='Tangledeep'
 
-ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_2_1_3_0224b0c8_28905.sh'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='a1172610549c60fdd0631de49b48414c'
-ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
-ARCHIVE_GOG_SIZE='1100'
+ARCHIVE_HUMBLE='Tangledeep_124k_LinuxUniversal.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/tangledeep'
+ARCHIVE_HUMBLE_MD5='b708a12e20816dba8e863290dc5580d0'
+ARCHIVE_HUMBLE_VERSION='1.24k-humble190410'
+ARCHIVE_HUMBLE_SIZE='730000'
 
-ARCHIVE_GOG_OLD5='sunless_skies_cyclopean_owl_dlc_1_2_1_2_b0df8add_28695.sh'
-ARCHIVE_GOG_OLD5_TYPE='mojosetup'
-ARCHIVE_GOG_OLD5_MD5='d709c9b0c944bff07f2d2a0e1f424732'
-ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
-ARCHIVE_GOG_OLD5_SIZE='1100'
+ARCHIVE_HUMBLE_OLD0='tangledeep_linux.zip'
+ARCHIVE_HUMBLE_OLD0_MD5='ce38aaab0bf4838697fd1f76e30722f1'
+ARCHIVE_HUMBLE_OLD0_VERSION='1.23e-humble'
+ARCHIVE_HUMBLE_OLD0_SIZE='690000'
 
-ARCHIVE_GOG_OLD4='sunless_skies_cyclopean_owl_dlc_1_2_0_4_20d30549_27995.sh'
-ARCHIVE_GOG_OLD4_TYPE='mojosetup'
-ARCHIVE_GOG_OLD4_MD5='e9c2a969bc2129dcbffd6219b79798c2'
-ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
-ARCHIVE_GOG_OLD4_SIZE='1100'
+ARCHIVE_GAME_BIN32_PATH_HUMBLE='linuxuniversal'
+ARCHIVE_GAME_BIN32_FILES='Tangledeep.x86 Tangledeep_Data/*/x86'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN32_PATH_HUMBLE_OLD0='tangledeep_123e_linux'
 
-ARCHIVE_GOG_OLD3='sunless_skies_cyclopean_owl_dlc_1_2_0_2_4cf00080_27469.sh'
-ARCHIVE_GOG_OLD3_TYPE='mojosetup'
-ARCHIVE_GOG_OLD3_MD5='02fcfda980f0a396554e550a03c3f5f2'
-ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
-ARCHIVE_GOG_OLD3_SIZE='1100'
+ARCHIVE_GAME_BIN64_PATH_HUMBLE='linuxuniversal'
+ARCHIVE_GAME_BIN64_FILES='Tangledeep.x86_64 Tangledeep_Data/*/x86_64'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN64_PATH_HUMBLE_OLD0='tangledeep_123e_linux'
 
-ARCHIVE_GOG_OLD2='sunless_skies_cyclopean_owl_dlc_1_2_0_0_157b386b_27304.sh'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-ARCHIVE_GOG_OLD2_MD5='1eb1b2a3e4886794ccf18133279274cd'
-ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
-ARCHIVE_GOG_OLD2_SIZE='1100'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='linuxuniversal'
+ARCHIVE_GAME_DATA_FILES='Tangledeep_Data'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_HUMBLE_OLD0='tangledeep_123e_linux'
 
-ARCHIVE_GOG_OLD1='sunless_skies_cyclopean_owl_dlc_1_1_9_6_e24eac9e_27177.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='2bb27f4cb86ee68b2bd2204260487ee3'
-ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
-ARCHIVE_GOG_OLD1_SIZE='1100'
+DATA_DIRS='./logs'
 
-ARCHIVE_GOG_OLD0='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-ARCHIVE_GOG_OLD0_MD5='52d6ad60c60dd3a7354696275e00b3b0'
-ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
-ARCHIVE_GOG_OLD0_SIZE='1100'
+APP_MAIN_TYPE='native'
+APP_MAIN_EXE_BIN32='Tangledeep.x86'
+APP_MAIN_EXE_BIN64='Tangledeep.x86_64'
+APP_MAIN_ICON='Tangledeep_Data/Resources/UnityPlayer.png'
+# shellcheck disable=SC2016
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
 
-ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='dlc'
+PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
-PACKAGES_LIST='PKG_MAIN'
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
 
-PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
-PKG_MAIN_DEPS="$GAME_ID"
+PKG_BIN32_ARCH='32'
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx gtk2"
+PKG_BIN32_DEPS_ARCH='lib32-gdk-pixbuf2 lib32-glib2'
+PKG_BIN32_DEPS_DEB='libgdk-pixbuf2.0-0, libglib2.0-0'
+PKG_BIN32_DEPS_GENTOO='x11-libs/gdk-pixbuf[abi_x86_32] dev-libs/glib[abi_x86_32]'
+
+PKG_BIN64_ARCH='64'
+PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS_ARCH='gdk-pixbuf2 glib2'
+PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS_GENTOO='x11-libs/gdk-pixbuf dev-libs/glib'
 
 # Load common functions
 
@@ -123,12 +125,22 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
+# Write launchers
+
+for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
+	launchers_write 'APP_MAIN'
+done
+
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN32' 'PKG_BIN64'
 build_pkg
 
 # Clean up

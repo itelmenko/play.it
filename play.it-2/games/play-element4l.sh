@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/sh -e
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,68 +30,54 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies — Cyclopean Owl DLC
+# Element4l
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190505.1
+script_version=20190210.1
 
 # Set game-specific variables
 
-# copy game id from play-sunless-skies.sh
-GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
+GAME_ID='element4l'
+GAME_NAME='Element4l'
 
-ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_2_1_3_0224b0c8_28905.sh'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='a1172610549c60fdd0631de49b48414c'
-ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
-ARCHIVE_GOG_SIZE='1100'
+ARCHIVE_PLAYISM='Element4l-WIN-1.2.3.zip'
+ARCHIVE_PLAYISM_URL='https://playism.com/product/element4l'
+ARCHIVE_PLAYISM_MD5='04f761ddf4e9e9b14cad67ae32c1598e'
+ARCHIVE_PLAYISM_SIZE='320000'
+ARCHIVE_PLAYISM_VERSION='1.2.3-playism'
+ARCHIVE_PLAYISM_TYPE='zip'
 
-ARCHIVE_GOG_OLD5='sunless_skies_cyclopean_owl_dlc_1_2_1_2_b0df8add_28695.sh'
-ARCHIVE_GOG_OLD5_TYPE='mojosetup'
-ARCHIVE_GOG_OLD5_MD5='d709c9b0c944bff07f2d2a0e1f424732'
-ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
-ARCHIVE_GOG_OLD5_SIZE='1100'
+ARCHIVE_GAME_BIN_PATH='Update-1.2.3-WIN'
+ARCHIVE_GAME_BIN_FILES='element4l.exe element4l_Data/Mono element4l_Data/Managed'
 
-ARCHIVE_GOG_OLD4='sunless_skies_cyclopean_owl_dlc_1_2_0_4_20d30549_27995.sh'
-ARCHIVE_GOG_OLD4_TYPE='mojosetup'
-ARCHIVE_GOG_OLD4_MD5='e9c2a969bc2129dcbffd6219b79798c2'
-ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
-ARCHIVE_GOG_OLD4_SIZE='1100'
+ARCHIVE_GAME_DATA_PATH='Update-1.2.3-WIN'
+ARCHIVE_GAME_DATA_FILES='element4l_Data/Resources element4l_Data/level* element4l_Data/*.assets element4l_Data/sharedassets* element4l_Data/mainData element4l_Data/hints element4l_Data/replays'
 
-ARCHIVE_GOG_OLD3='sunless_skies_cyclopean_owl_dlc_1_2_0_2_4cf00080_27469.sh'
-ARCHIVE_GOG_OLD3_TYPE='mojosetup'
-ARCHIVE_GOG_OLD3_MD5='02fcfda980f0a396554e550a03c3f5f2'
-ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
-ARCHIVE_GOG_OLD3_SIZE='1100'
+DATA_DIRS='./logs'
+DATA_FILES='./game_data.reg'
 
-ARCHIVE_GOG_OLD2='sunless_skies_cyclopean_owl_dlc_1_2_0_0_157b386b_27304.sh'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-ARCHIVE_GOG_OLD2_MD5='1eb1b2a3e4886794ccf18133279274cd'
-ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
-ARCHIVE_GOG_OLD2_SIZE='1100'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='element4l.exe'
+# shellcheck disable=SC2016
+APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
+APP_MAIN_ICON='element4l.exe'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='
+if [ -f "$WINEPREFIX/drive_c/$GAME_ID/game_data.reg" ]; then
+	regedit "C:\\\\$GAME_ID\\\\game_data.reg"
+fi'
+# shellcheck disable=SC2016
+APP_MAIN_POSTRUN='regedit -E "C:\\\\$GAME_ID\\\\game_data.reg" HKEY_CURRENT_USER\\\\Software\\\\I-Illusions\\\\element4l'
 
-ARCHIVE_GOG_OLD1='sunless_skies_cyclopean_owl_dlc_1_1_9_6_e24eac9e_27177.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='2bb27f4cb86ee68b2bd2204260487ee3'
-ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
-ARCHIVE_GOG_OLD1_SIZE='1100'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
-ARCHIVE_GOG_OLD0='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-ARCHIVE_GOG_OLD0_MD5='52d6ad60c60dd3a7354696275e00b3b0'
-ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
-ARCHIVE_GOG_OLD0_SIZE='1100'
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
 
-ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='dlc'
-
-PACKAGES_LIST='PKG_MAIN'
-
-PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
-PKG_MAIN_DEPS="$GAME_ID"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine alsa glx"
 
 # Load common functions
 
@@ -125,6 +112,17 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Extract icons
+
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN'
+icons_move_to 'PKG_DATA'
+
+# Write launchers
+
+PKG='PKG_BIN'
+launcher_write 'APP_MAIN'
 
 # Build package
 

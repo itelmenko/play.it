@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
-# Copyright (c) 2016-2019, Solène "Mopi" Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,82 +30,73 @@ set -o errexit
 ###
 
 ###
-# Bio Menace
+# Factorio - Demo
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190422.1
+script_version=20190507.2
 
 # Set game-specific variables
 
-GAME_ID='bio-menace'
-GAME_NAME='Bio Menace'
+GAME_ID='factorio-demo'
+GAME_NAME='Factorio - Demo'
 
-ARCHIVE_GOG='gog_bio_menace_2.0.0.2.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/bio_menace'
-ARCHIVE_GOG_MD5='75167ee3594dd44ec8535b29b90fe4eb'
-ARCHIVE_GOG_SIZE='14000'
-ARCHIVE_GOG_VERSION='1.1-gog2.0.0.2'
+ARCHIVE_OFFICIAL='factorio_demo_x64_0.16.51.tar.xz'
+ARCHIVE_OFFICIAL_URL='https://www.factorio.com/download-demo'
+ARCHIVE_OFFICIAL_MD5='130267c91df0be6c2034b64fb05d389b'
+ARCHIVE_OFFICIAL_VERSION='0.16.51'
+ARCHIVE_OFFICIAL_SIZE='680000'
+ARCHIVE_OFFICIAL_TYPE='tar'
 
-ARCHIVE_DOC0_MAIN_PATH='data/noarch/docs'
-ARCHIVE_DOC0_MAIN_FILES='*.pdf *.txt'
+ARCHIVE_GAME_BIN_PATH='factorio'
+ARCHIVE_GAME_BIN_FILES='bin/x64/factorio'
 
-ARCHIVE_DOC1_MAIN_PATH='data/noarch/data'
-ARCHIVE_DOC1_MAIN_FILES='*.txt'
+ARCHIVE_GAME_DATA_PATH='factorio'
+ARCHIVE_GAME_DATA_FILES='config-path.cfg data'
 
-ARCHIVE_GAME_MAIN_PATH='data/noarch/data'
-ARCHIVE_GAME_MAIN_FILES='*.bm? *.conf *.exe biopatch.zip'
+CONFIG_FILES='./config-path.cfg'
+CONFIG_DIRS='./config'
+DATA_FILES='./*.dat ./player-data.json'
+DATA_DIRS='./saves ./mods'
 
-CONFIG_FILES='./*.conf ./config.bm?'
-DATA_FILES='./SAVEGAM*'
+APP_MAIN_TYPE='native'
+APP_MAIN_EXE='bin/x64/factorio'
+APP_MAIN_ICON='data/core/graphics/factorio-icon.png'
 
-APP_1_ID="${GAME_ID}-1"
-APP_1_NAME="$GAME_NAME - Episode One: Dr. Mangleʼs Lab"
-APP_1_TYPE='dosbox'
-APP_1_EXE='bmenace1.exe'
-APP_1_ICON='data/noarch/support/icon.png'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
-APP_2_ID="${GAME_ID}-2"
-APP_2_NAME="$GAME_NAME - Episode Two: The Hidden Lab"
-APP_2_TYPE='dosbox'
-APP_2_EXE='bmenace2.exe'
-APP_2_ICON='data/noarch/support/icon.png'
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
 
-APP_3_ID="${GAME_ID}-3"
-APP_3_NAME="$GAME_NAME - Episode Three: Master Cain"
-APP_3_TYPE='dosbox'
-APP_3_EXE='bmenace3.exe'
-APP_3_ICON='data/noarch/support/icon.png'
-
-PACKAGES_LIST='PKG_MAIN'
-
-PKG_MAIN_DEPS='dosbox'
+PKG_BIN_ARCH='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc glx libxrandr xcursor alsa"
 
 # Load common functions
 
 target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
+	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
 	for path in\
-		"$PWD"\
-		"$XDG_DATA_HOME/play.it"\
-		'/usr/local/share/games/play.it'\
-		'/usr/local/share/play.it'\
-		'/usr/share/games/play.it'\
-		'/usr/share/play.it'
+		'./'\
+		"$XDG_DATA_HOME/play.it/"\
+		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
+		'/usr/local/share/games/play.it/'\
+		'/usr/local/share/play.it/'\
+		'/usr/share/games/play.it/'\
+		'/usr/share/play.it/'
 	do
-		if [ -e "$path/libplayit2.sh" ]; then
+		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-fi
-if [ -z "$PLAYIT_LIB2" ]; then
-	printf '\n\033[1;31mError:\033[0m\n'
-	printf 'libplayit2.sh not found.\n'
-	exit 1
+	if [ -z "$PLAYIT_LIB2" ]; then
+		printf '\n\033[1;31mError:\033[0m\n'
+		printf 'libplayit2.sh not found.\n'
+		exit 1
+	fi
 fi
 # shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
@@ -113,21 +104,20 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
-tolower "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
-
-# Get icon
-
-icons_get_from_workdir 'APP_1' 'APP_2' 'APP_3'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-launchers_write 'APP_1' 'APP_2' 'APP_3'
+PKG='PKG_BIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
-write_metadata
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up

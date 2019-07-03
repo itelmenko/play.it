@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -34,28 +34,38 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181125.1
+script_version=20190505.2
 
 # Set game-specific variables
 
 GAME_ID='farabel'
 GAME_NAME='Farabel'
 
-ARCHIVE_HUMBLE='Farabel1.2Linux.zip'
+ARCHIVE_HUMBLE='Farabel_Linux_1.2.1.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/farabel'
-ARCHIVE_HUMBLE_TYPE='zip'
-ARCHIVE_HUMBLE_MD5='f2bd82b7a9578e8d7f084286cdb5943f'
-ARCHIVE_HUMBLE_VERSION='1.2-humble181031'
+ARCHIVE_HUMBLE_MD5='383d59983be2cedd151006d8f932e5ff'
+ARCHIVE_HUMBLE_VERSION='1.2.1-humble181130'
 ARCHIVE_HUMBLE_SIZE='430000'
 
-ARCHIVE_GAME_BIN32_PATH='.'
+ARCHIVE_HUMBLE_OLD0='Farabel1.2Linux.zip'
+ARCHIVE_HUMBLE_OLD0_MD5='f2bd82b7a9578e8d7f084286cdb5943f'
+ARCHIVE_HUMBLE_OLD0_VERSION='1.2-humble181031'
+ARCHIVE_HUMBLE_OLD0_SIZE='430000'
+
+ARCHIVE_GAME_BIN32_PATH='Farabel'
 ARCHIVE_GAME_BIN32_FILES='Farabel.x86 Farabel_Data/*/x86'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN32_PATH_HUMBLE_OLD0='.'
 
-ARCHIVE_GAME_BIN64_PATH='.'
+ARCHIVE_GAME_BIN64_PATH='Farabel'
 ARCHIVE_GAME_BIN64_FILES='Farabel.x86_64 Farabel_Data/*/x86_64'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN64_PATH_HUMBLE_OLD0='.'
 
-ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_PATH='Farabel'
 ARCHIVE_GAME_DATA_FILES='Farabel_Data'
+# Keep compatibility with old archives
+ARCHIVE_GAME_DATA_PATH_HUMBLE_OLD0='.'
 
 CONFIG_DIRS='./home/.config/unity3d/Frogames/Farabel'
 DATA_DIRS='./home/Frogames/Farabel/Saves ./logs'
@@ -83,7 +93,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -106,7 +116,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -118,7 +128,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Build package

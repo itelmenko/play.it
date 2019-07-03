@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2017-2019, Phil Morrell
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,11 +31,11 @@ set -o errexit
 
 ###
 # Anno 1404: Gold Edition
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180802.1
+script_version=20190623.6
 
 # Set game-specific variables
 
@@ -53,56 +54,66 @@ ARCHIVE_GOG_PART2='setup_anno_1404_gold_edition_2.01.5010_(13111)-2.bin'
 ARCHIVE_GOG_PART2_MD5='2f71f5378b5f27a84a41cc481a482bd6'
 ARCHIVE_GOG_PART2_TYPE='innosetup'
 
-ARCHIVE_GOG_OLD='setup_anno_1404_2.0.0.2.exe'
-ARCHIVE_GOG_OLD_MD5='9c48c8159edaee14aaa6c7e7add60623'
-ARCHIVE_GOG_OLD_VERSION='2.01.5010-gog2.0.0.2'
-ARCHIVE_GOG_OLD_SIZE='6200000'
-ARCHIVE_GOG_OLD_TYPE='rar'
-ARCHIVE_GOG_OLD_GOGID='1440426004'
-ARCHIVE_GOG_OLD_PART1='setup_anno_1404_2.0.0.2-1.bin'
-ARCHIVE_GOG_OLD_PART1_MD5='b9ee29615dfcab8178608fecaa5d2e2b'
-ARCHIVE_GOG_OLD_PART1_TYPE='rar'
-ARCHIVE_GOG_OLD_PART2='setup_anno_1404_2.0.0.2-2.bin'
-ARCHIVE_GOG_OLD_PART2_MD5='eb49c917d6218b58e738dd781e9c6751'
-ARCHIVE_GOG_OLD_PART2_TYPE='rar'
+ARCHIVE_GOG_OLD0='setup_anno_1404_2.0.0.2.exe'
+ARCHIVE_GOG_OLD0_MD5='9c48c8159edaee14aaa6c7e7add60623'
+ARCHIVE_GOG_OLD0_VERSION='2.01.5010-gog2.0.0.2'
+ARCHIVE_GOG_OLD0_SIZE='6200000'
+ARCHIVE_GOG_OLD0_TYPE='rar'
+ARCHIVE_GOG_OLD0_GOGID='1440426004'
+ARCHIVE_GOG_OLD0_PART1='setup_anno_1404_2.0.0.2-1.bin'
+ARCHIVE_GOG_OLD0_PART1_MD5='b9ee29615dfcab8178608fecaa5d2e2b'
+ARCHIVE_GOG_OLD0_PART1_TYPE='rar'
+ARCHIVE_GOG_OLD0_PART2='setup_anno_1404_2.0.0.2-2.bin'
+ARCHIVE_GOG_OLD0_PART2_MD5='eb49c917d6218b58e738dd781e9c6751'
+ARCHIVE_GOG_OLD0_PART2_TYPE='rar'
 
 ARCHIVE_DOC_DATA_PATH='app'
-ARCHIVE_DOC_DATA_PATH_GOG_OLD='game'
-ARCHIVE_DOC_DATA_FILES='./*.pdf'
+ARCHIVE_DOC_DATA_FILES='*.pdf'
+# Keep compatibility with old archives
+ARCHIVE_DOC_DATA_PATH_GOG_OLD0='game'
 
 ARCHIVE_GAME_BIN_PATH='app'
-ARCHIVE_GAME_BIN_PATH_GOG_OLD='game'
-ARCHIVE_GAME_BIN_FILES='./*.exe ./*.dll ./bin ./tools'
+ARCHIVE_GAME_BIN_FILES='*.exe *.dll bin tools'
+# Keep compatibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='game'
 
-ARCHIVE_GAME_DATA_PATH='app'
-ARCHIVE_GAME_DATA_PATH_GOG_OLD='game'
-ARCHIVE_GAME_DATA_FILES='./addon ./data ./maindata ./resources'
+ARCHIVE_GAME0_DATA_PATH='app'
+ARCHIVE_GAME0_DATA_FILES='addon data maindata resources'
+# Keep compatibility with old archives
+ARCHIVE_GAME0_DATA_PATH_GOG_OLD0='game'
 
-ARCHIVE_GAME2_DATA_PATH='app/__support/add'
-ARCHIVE_GAME2_DATA_PATH_GOG_OLD='game'
-ARCHIVE_GAME2_DATA_FILES='./engine.ini'
+ARCHIVE_GAME1_DATA_PATH='app/__support/add'
+ARCHIVE_GAME1_DATA_FILES='engine.ini'
+# Keep compatibility with old archives
+ARCHIVE_GAME1_DATA_PATH_GOG_OLD0='game'
 
-CONFIG_FILES='./*.ini'
+DATA_DIRS='./userdata'
 
 APP_WINETRICKS='d3dx9'
 
 APP_MAIN_TYPE='wine'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='user_data_path="$WINEPREFIX/drive_c/users/$(whoami)/Application Data/Ubisoft/Anno1404"
+if [ ! -e "$user_data_path" ]; then
+	mkdir --parents "${user_data_path%/*}"
+	mkdir --parents "$PATH_DATA/userdata"
+	ln --symbolic "$PATH_DATA/userdata" "$user_data_path"
+	init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"
+fi'
 APP_MAIN_EXE='anno4.exe'
 APP_MAIN_ICON='anno4.exe'
-APP_MAIN_ICON_RES='16 24 32 48 64 128 256'
 
 APP_VENICE_ID="${GAME_ID}_venice"
 APP_VENICE_TYPE='wine'
+APP_VENICE_PRERUN="$APP_MAIN_PRERUN"
 APP_VENICE_EXE='addon.exe'
 APP_VENICE_ICON='addon.exe'
-APP_VENICE_ICON_RES='16 24 32 48 64 128 256'
 APP_VENICE_NAME="$GAME_NAME - Venice"
 
 APP_L10N_ID="${GAME_ID}_l10n"
 APP_L10N_TYPE='wine'
 APP_L10N_EXE='language_selector.exe'
 APP_L10N_ICON='language_selector.exe'
-APP_L10N_ICON_RES='16 32 48'
 APP_L10N_NAME="$GAME_NAME - language selector"
 APP_L10N_CAT='Settings'
 
@@ -112,75 +123,82 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID winetricks wine"
+PKG_BIN_DEPS="$PKG_DATA_ID winetricks wine glx xcursor"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 case "$ARCHIVE" in
-	('ARCHIVE_GOG')
-		extract_data_from "$SOURCE_ARCHIVE"
-	;;
-	('ARCHIVE_GOG_OLD')
-		ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART1")" "$PLAYIT_WORKDIR/$GAME_ID.r00"
-		ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART2")" "$PLAYIT_WORKDIR/$GAME_ID.r01"
+	('ARCHIVE_GOG_OLD0')
+		if [ $DRY_RUN -eq 0 ]; then
+			ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART1")" "$PLAYIT_WORKDIR/$GAME_ID.r00"
+			ln --symbolic "$(readlink --canonicalize "$ARCHIVE_PART2")" "$PLAYIT_WORKDIR/$GAME_ID.r01"
+		fi
 		extract_data_from "$PLAYIT_WORKDIR/$GAME_ID.r00"
 		tolower "$PLAYIT_WORKDIR/gamedata"
 	;;
+	(*)
+		extract_data_from "$SOURCE_ARCHIVE"
+	;;
 esac
+prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Fix immediate crash
-file="$PLAYIT_WORKDIR/gamedata/$ARCHIVE_GAME2_DATA_PATH/engine.ini"
-if [ -e "$file" ]; then
-	sed --in-place '2i<DirectXVersion>9</DirectXVersion>' "$file"
-else
-	echo '<InitFile><DirectXVersion>9</DirectXVersion></InitFile>' > "$file"
-fi
-
-for PKG in $PACKAGES_LIST; do
-	organize_data "DOC_${PKG#PKG_}"   "$PATH_DOC"
-	organize_data "GAME_${PKG#PKG_}"  "$PATH_GAME"
-	organize_data "GAME2_${PKG#PKG_}"  "$PATH_GAME"
-done
+# Extract icons
 
 PKG='PKG_BIN'
-extract_and_sort_icons_from 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
-move_icons_to 'PKG_DATA'
+icons_get_from_package 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
+icons_move_to 'PKG_DATA'
 
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+# Fix immediate crash
+
+file="${PKG_DATA_PATH}${PATH_GAME}/engine.ini"
+if [ -e "$file" ]; then
+	pattern='2i<DirectXVersion>9</DirectXVersion>'
+	if [ $DRY_RUN -eq 0 ]; then
+		sed --in-place "$pattern" "$file"
+	fi
+else
+	if [ $DRY_RUN -eq 0 ]; then
+		cat > "$file" <<- 'EOF'
+		<InitFile>
+		<DirectXVersion>9</DirectXVersion>
+		</InitFile>
+		EOF
+	fi
+fi
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
+launchers_write 'APP_MAIN' 'APP_VENICE' 'APP_L10N'
 
 # Build package
 

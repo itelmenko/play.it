@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,68 +30,62 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies — Cyclopean Owl DLC
+# Lego Harry Potter Years 1-4
 # build native packages from the original installers
-# send your bug reports to vv221@dotslashplay.it
+# send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190505.1
+script_version=20190602.3
 
 # Set game-specific variables
 
-# copy game id from play-sunless-skies.sh
-GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
+GAME_ID='lego-harry-potter-years-1-4'
+GAME_NAME='Lego Harry Potter Years 1-4'
 
-ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_2_1_3_0224b0c8_28905.sh'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='a1172610549c60fdd0631de49b48414c'
-ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
-ARCHIVE_GOG_SIZE='1100'
+ARCHIVE_GOG='setup_lego_harry_potter_1-4_1.0_(17966).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/lego_harry_potter_years_14'
+ARCHIVE_GOG_MD5='21ddbc82a225687a69044e9baee7109b'
+ARCHIVE_GOG_VERSION='1.0.0389-gog17966'
+ARCHIVE_GOG_SIZE='6300000'
+ARCHIVE_GOG_TYPE='innosetup'
+ARCHIVE_GOG_PART1='setup_lego_harry_potter_1-4_1.0_(17966)-1.bin'
+ARCHIVE_GOG_PART1_MD5='ab78edad26acef08eb3a656dfbdf476e'
+ARCHIVE_GOG_PART1_TYPE='innosetup'
+ARCHIVE_GOG_PART2='setup_lego_harry_potter_1-4_1.0_(17966)-2.bin'
+ARCHIVE_GOG_PART2_MD5='0ebb7b7a5772245258e53092c25a4708'
+ARCHIVE_GOG_PART2_TYPE='innosetup'
 
-ARCHIVE_GOG_OLD5='sunless_skies_cyclopean_owl_dlc_1_2_1_2_b0df8add_28695.sh'
-ARCHIVE_GOG_OLD5_TYPE='mojosetup'
-ARCHIVE_GOG_OLD5_MD5='d709c9b0c944bff07f2d2a0e1f424732'
-ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
-ARCHIVE_GOG_OLD5_SIZE='1100'
+ARCHIVE_DOC_DATA_PATH='app/docs'
+ARCHIVE_DOC_DATA_FILES='*'
 
-ARCHIVE_GOG_OLD4='sunless_skies_cyclopean_owl_dlc_1_2_0_4_20d30549_27995.sh'
-ARCHIVE_GOG_OLD4_TYPE='mojosetup'
-ARCHIVE_GOG_OLD4_MD5='e9c2a969bc2129dcbffd6219b79798c2'
-ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
-ARCHIVE_GOG_OLD4_SIZE='1100'
+ARCHIVE_GAME_BIN_PATH='app'
+ARCHIVE_GAME_BIN_FILES='legoharrypotter.exe language_setup.exe'
 
-ARCHIVE_GOG_OLD3='sunless_skies_cyclopean_owl_dlc_1_2_0_2_4cf00080_27469.sh'
-ARCHIVE_GOG_OLD3_TYPE='mojosetup'
-ARCHIVE_GOG_OLD3_MD5='02fcfda980f0a396554e550a03c3f5f2'
-ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
-ARCHIVE_GOG_OLD3_SIZE='1100'
+ARCHIVE_GAME_DATA_PATH='app'
+ARCHIVE_GAME_DATA_FILES='language_setup.ini language_setup.png game.dat game1.dat game2.dat game3.dat game4.dat game5.dat game6.dat'
 
-ARCHIVE_GOG_OLD2='sunless_skies_cyclopean_owl_dlc_1_2_0_0_157b386b_27304.sh'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-ARCHIVE_GOG_OLD2_MD5='1eb1b2a3e4886794ccf18133279274cd'
-ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
-ARCHIVE_GOG_OLD2_SIZE='1100'
+CONFIG_FILES='./language_setup.ini'
 
-ARCHIVE_GOG_OLD1='sunless_skies_cyclopean_owl_dlc_1_1_9_6_e24eac9e_27177.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='2bb27f4cb86ee68b2bd2204260487ee3'
-ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
-ARCHIVE_GOG_OLD1_SIZE='1100'
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}') directx9"
+APP_MAIN_TYPE='wine'
+APP_MAIN_PRERUN='pulseaudio --start'
+APP_MAIN_EXE='legoharrypotter.exe'
+APP_MAIN_ICON='legoharrypotter.exe'
 
-ARCHIVE_GOG_OLD0='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-ARCHIVE_GOG_OLD0_MD5='52d6ad60c60dd3a7354696275e00b3b0'
-ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
-ARCHIVE_GOG_OLD0_SIZE='1100'
+APP_CONFIG_ID="${GAME_ID}_config"
+APP_CONFIG_TYPE='wine'
+APP_CONFIG_EXE='language_setup.exe'
+APP_CONFIG_ICON='language_setup.png'
+APP_CONFIG_NAME="$GAME_NAME - configuration"
+APP_CONFIG_CAT='Settings'
 
-ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='dlc'
+PACKAGES_LIST='PKG_DATA PKG_BIN'
 
-PACKAGES_LIST='PKG_MAIN'
+PKG_DATA_ID="${GAME_ID}-data"
+PKG_DATA_DESCRIPTION='data'
 
-PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
-PKG_MAIN_DEPS="$GAME_ID"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks glx pulseaudio"
 
 # Load common functions
 
@@ -126,9 +121,22 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Build package
+# Extract icon
 
-write_metadata
+PKG='PKG_BIN'
+icons_get_from_package 'APP_MAIN'
+icons_move_to 'PKG_DATA'
+
+# Write launchers
+
+PKG='PKG_BIN'
+launchers_write 'APP_MAIN' 'APP_CONFIG'
+
+# Build package
+PKG='PKG_DATA'
+icons_linking_postinst 'APP_CONFIG'
+write_metadata 'PKG_DATA'
+write_metadata 'PKG_BIN'
 build_pkg
 
 # Clean up

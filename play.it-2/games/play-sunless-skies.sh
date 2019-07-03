@@ -2,7 +2,7 @@
 set -o errexit
 
 ###
-# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,19 +34,55 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190201.2
+script_version=20190505.1
 
 # Set game-specific variables
 
 GAME_ID='sunless-skies'
 GAME_NAME='Sunless Skies'
 
-ARCHIVE_GOG='sunless_skies_1_1_9_5_08b4e1b8_27040.sh'
+ARCHIVE_GOG='sunless_skies_1_2_1_3_0224b0c8_28905.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/sunless_skies'
 ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='0fc87cf745c2db5d36e412c9265d1d76'
-ARCHIVE_GOG_VERSION='1.1.9.5.08b4e1b8-gog27040'
-ARCHIVE_GOG_SIZE='3600000'
+ARCHIVE_GOG_MD5='fbfe10c4211b7b31cd1392d26b817c20'
+ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
+ARCHIVE_GOG_SIZE='3900000'
+
+ARCHIVE_GOG_OLD5='sunless_skies_1_2_1_2_b0df8add_28695.sh'
+ARCHIVE_GOG_OLD5_TYPE='mojosetup'
+ARCHIVE_GOG_OLD5_MD5='12a0c255956e4c563a721da55d832f9b'
+ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
+ARCHIVE_GOG_OLD5_SIZE='3900000'
+
+ARCHIVE_GOG_OLD4='sunless_skies_1_2_0_4_20d30549_27995.sh'
+ARCHIVE_GOG_OLD4_TYPE='mojosetup'
+ARCHIVE_GOG_OLD4_MD5='209c6e10543513120d4d7eb35c61e2f2'
+ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
+ARCHIVE_GOG_OLD4_SIZE='3600000'
+
+ARCHIVE_GOG_OLD3='sunless_skies_1_2_0_2_4cf00080_27469.sh'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
+ARCHIVE_GOG_OLD3_MD5='ad52093137da318f4d7ce2c0033cb9ce'
+ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
+ARCHIVE_GOG_OLD3_SIZE='3600000'
+
+ARCHIVE_GOG_OLD2='sunless_skies_1_2_0_0_157b386b_27304.sh'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+ARCHIVE_GOG_OLD2_MD5='f2223d46fca0d17c35ec724277f752a0'
+ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
+ARCHIVE_GOG_OLD2_SIZE='3600000'
+
+ARCHIVE_GOG_OLD1='sunless_skies_1_1_9_6_e24eac9e_27177.sh'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+ARCHIVE_GOG_OLD1_MD5='dae9c1fa16c971613086c143fa45a540'
+ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
+ARCHIVE_GOG_OLD1_SIZE='3600000'
+
+ARCHIVE_GOG_OLD0='sunless_skies_1_1_9_5_08b4e1b8_27040.sh'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
+ARCHIVE_GOG_OLD0_MD5='0fc87cf745c2db5d36e412c9265d1d76'
+ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
+ARCHIVE_GOG_OLD0_SIZE='3600000'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN32_FILES='Sunless?Skies.x86 Sunless?Skies_Data/*/x86'

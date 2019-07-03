@@ -29,7 +29,7 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies — Cyclopean Owl DLC
+# Stellaris - Anniversary Portraits + Creatures of the Void Portrait Pack
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
@@ -38,59 +38,51 @@ script_version=20190505.1
 
 # Set game-specific variables
 
-# copy game id from play-sunless-skies.sh
-GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
+GAME_ID='stellaris'
+GAME_ID_ANNIVERSARY="${GAME_ID}-anniversary-portraits"
+GAME_ID_VOID="${GAME_ID}-creatures-of-the-void-portrait-pack"
+GAME_NAME='Stellaris'
+GAME_NAME_ANNIVERSARY="$GAME_NAME - Anniversary Portraits"
+GAME_NAME_VOID="$GAME_NAME - Creatures of the Void Portrait Pack"
 
-ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_2_1_3_0224b0c8_28905.sh'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='a1172610549c60fdd0631de49b48414c'
-ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
-ARCHIVE_GOG_SIZE='1100'
+ARCHIVE_GOG='stellaris_anniversary_portraits_2_2_7_2_28548.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/stellaris_anniversary_portraits'
+ARCHIVE_GOG_MD5='2246af9530b1a2a8d6a7c3afabe54eec'
+ARCHIVE_GOG_SIZE='1300'
+ARCHIVE_GOG_VERSION='2.2.7.2-gog28548'
+ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD5='sunless_skies_cyclopean_owl_dlc_1_2_1_2_b0df8add_28695.sh'
-ARCHIVE_GOG_OLD5_TYPE='mojosetup'
-ARCHIVE_GOG_OLD5_MD5='d709c9b0c944bff07f2d2a0e1f424732'
-ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
-ARCHIVE_GOG_OLD5_SIZE='1100'
+ARCHIVE_GOG_OLD1='stellaris_anniversary_portraits_2_2_6_4_28215.sh'
+ARCHIVE_GOG_OLD1_MD5='ab450823054b77bd63a4906a343d10ac'
+ARCHIVE_GOG_OLD1_SIZE='1300'
+ARCHIVE_GOG_OLD1_VERSION='2.2.6.4-gog28215'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD4='sunless_skies_cyclopean_owl_dlc_1_2_0_4_20d30549_27995.sh'
-ARCHIVE_GOG_OLD4_TYPE='mojosetup'
-ARCHIVE_GOG_OLD4_MD5='e9c2a969bc2129dcbffd6219b79798c2'
-ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
-ARCHIVE_GOG_OLD4_SIZE='1100'
+ARCHIVE_GOG_OLD0='stellaris_anniversary_portraits_2_2_4_26846.sh'
+ARCHIVE_GOG_OLD0_MD5='ffa0a5baa7fb281290377113197d3456'
+ARCHIVE_GOG_OLD0_SIZE='1300'
+ARCHIVE_GOG_OLD0_VERSION='2.2.4-gog26846'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD3='sunless_skies_cyclopean_owl_dlc_1_2_0_2_4cf00080_27469.sh'
-ARCHIVE_GOG_OLD3_TYPE='mojosetup'
-ARCHIVE_GOG_OLD3_MD5='02fcfda980f0a396554e550a03c3f5f2'
-ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
-ARCHIVE_GOG_OLD3_SIZE='1100'
+ARCHIVE_GAME_ANNIVERSARY_PATH='data/noarch/game'
+ARCHIVE_GAME_ANNIVERSARY_FILES='dlc/dlc015_anniversary'
+# Keep compatibility with old archives
+ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_OLD1='data/noarch/game/dlc/dlc015_anniversary'
+ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_OLD0='data/noarch/game/dlc/dlc015_anniversary'
 
-ARCHIVE_GOG_OLD2='sunless_skies_cyclopean_owl_dlc_1_2_0_0_157b386b_27304.sh'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-ARCHIVE_GOG_OLD2_MD5='1eb1b2a3e4886794ccf18133279274cd'
-ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
-ARCHIVE_GOG_OLD2_SIZE='1100'
+ARCHIVE_GAME_VOID_PATH='data/noarch/game'
+ARCHIVE_GAME_VOID_FILES='dlc/dlc010_creatures_of_the_void'
+# Keep compatibility with old archives
+ARCHIVE_GAME_VOID_PATH_GOG_OLD1='data/noarch/game/dlc/dlc010_creatures_of_the_void'
+ARCHIVE_GAME_VOID_PATH_GOG_OLD0='data/noarch/game/dlc/dlc010_creatures_of_the_void'
 
-ARCHIVE_GOG_OLD1='sunless_skies_cyclopean_owl_dlc_1_1_9_6_e24eac9e_27177.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='2bb27f4cb86ee68b2bd2204260487ee3'
-ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
-ARCHIVE_GOG_OLD1_SIZE='1100'
+PACKAGES_LIST='PKG_ANNIVERSARY PKG_VOID'
 
-ARCHIVE_GOG_OLD0='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-ARCHIVE_GOG_OLD0_MD5='52d6ad60c60dd3a7354696275e00b3b0'
-ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
-ARCHIVE_GOG_OLD0_SIZE='1100'
+PKG_ANNIVERSARY_ID="$GAME_ID_ANNIVERSARY"
+PKG_ANNIVERSARY_DEPS="$GAME_ID"
 
-ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='dlc'
-
-PACKAGES_LIST='PKG_MAIN'
-
-PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
-PKG_MAIN_DEPS="$GAME_ID"
+PKG_VOID_ID="$GAME_ID_VOID"
+PKG_VOID_DEPS="$GAME_ID"
 
 # Load common functions
 
@@ -128,7 +120,10 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Build package
 
-write_metadata
+for PKG in $PACKAGES_LIST; do
+	use_package_specific_value 'GAME_NAME'
+	write_metadata "$PKG"
+done
 build_pkg
 
 # Clean up
@@ -137,6 +132,9 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+for PKG in $PACKAGES_LIST; do
+	use_package_specific_value 'GAME_NAME'
+	print_instructions "$PKG"
+done
 
 exit 0

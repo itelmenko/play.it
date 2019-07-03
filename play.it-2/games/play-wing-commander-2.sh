@@ -3,6 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -29,68 +30,57 @@ set -o errexit
 ###
 
 ###
-# Sunless Skies — Cyclopean Owl DLC
+# Wing Commander II
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190505.1
+script_version=20190516.1
 
 # Set game-specific variables
 
-# copy game id from play-sunless-skies.sh
-GAME_ID='sunless-skies'
-GAME_NAME='Sunless Skies — Cyclopean Owl DLC'
+GAME_ID='wing-commander-2'
+GAME_NAME='Wing Commander II'
 
-ARCHIVE_GOG='sunless_skies_cyclopean_owl_dlc_1_2_1_3_0224b0c8_28905.sh'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='a1172610549c60fdd0631de49b48414c'
-ARCHIVE_GOG_VERSION='1.2.1.3-gog28905'
-ARCHIVE_GOG_SIZE='1100'
+ARCHIVE_GOG='setup_wing_commander2_2.1.0.18.exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/wing_commander_1_2'
+ARCHIVE_GOG_MD5='f94a7eb75e4ed454108d13189d003e9f'
+ARCHIVE_GOG_VERSION='1.0-gog21018'
+ARCHIVE_GOG_SIZE='49000'
+ARCHIVE_GOG_TYPE='innosetup'
 
-ARCHIVE_GOG_OLD5='sunless_skies_cyclopean_owl_dlc_1_2_1_2_b0df8add_28695.sh'
-ARCHIVE_GOG_OLD5_TYPE='mojosetup'
-ARCHIVE_GOG_OLD5_MD5='d709c9b0c944bff07f2d2a0e1f424732'
-ARCHIVE_GOG_OLD5_VERSION='1.2.1.2-gog28695'
-ARCHIVE_GOG_OLD5_SIZE='1100'
+ARCHIVE_DOC_MAIN_PATH='app'
+ARCHIVE_DOC_MAIN_PATH='*.pdf'
 
-ARCHIVE_GOG_OLD4='sunless_skies_cyclopean_owl_dlc_1_2_0_4_20d30549_27995.sh'
-ARCHIVE_GOG_OLD4_TYPE='mojosetup'
-ARCHIVE_GOG_OLD4_MD5='e9c2a969bc2129dcbffd6219b79798c2'
-ARCHIVE_GOG_OLD4_VERSION='1.2.0.4-gog27995'
-ARCHIVE_GOG_OLD4_SIZE='1100'
+ARCHIVE_GAME_MAIN_PATH='app'
+ARCHIVE_GAME_MAIN_FILES='wc2.exe so1.exe so2.exe gamedat *.cfg'
 
-ARCHIVE_GOG_OLD3='sunless_skies_cyclopean_owl_dlc_1_2_0_2_4cf00080_27469.sh'
-ARCHIVE_GOG_OLD3_TYPE='mojosetup'
-ARCHIVE_GOG_OLD3_MD5='02fcfda980f0a396554e550a03c3f5f2'
-ARCHIVE_GOG_OLD3_VERSION='1.2.0.2-gog27469'
-ARCHIVE_GOG_OLD3_SIZE='1100'
+CONFIG_FILES='./*.cfg'
+DATA_DIRS='./gamedat'
 
-ARCHIVE_GOG_OLD2='sunless_skies_cyclopean_owl_dlc_1_2_0_0_157b386b_27304.sh'
-ARCHIVE_GOG_OLD2_TYPE='mojosetup'
-ARCHIVE_GOG_OLD2_MD5='1eb1b2a3e4886794ccf18133279274cd'
-ARCHIVE_GOG_OLD2_VERSION='1.2.0.0-gog27304'
-ARCHIVE_GOG_OLD2_SIZE='1100'
+APP_MAIN_TYPE='dosbox'
+APP_MAIN_PRERUN='config -set cpu cycles=fixed 8000
+loadfix -32'
+APP_MAIN_EXE='wc2.exe'
+APP_MAIN_ICON='app/goggame-1207662653.ico'
 
-ARCHIVE_GOG_OLD1='sunless_skies_cyclopean_owl_dlc_1_1_9_6_e24eac9e_27177.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='2bb27f4cb86ee68b2bd2204260487ee3'
-ARCHIVE_GOG_OLD1_VERSION='1.1.9.6-gog27177'
-ARCHIVE_GOG_OLD1_SIZE='1100'
+APP_SO1_ID="${GAME_ID}_so1"
+APP_SO1_TYPE='dosbox'
+APP_SO1_PRERUN="$APP_MAIN_PRERUN"
+APP_SO1_EXE='so1.exe'
+APP_SO1_ICON='app/goggame-1207662653.ico'
+APP_SO1_NAME="$GAME_NAME - Special Operations 1"
 
-ARCHIVE_GOG_OLD0='sunless_skies_cyclopean_owl_dlc_1_1_9_5_08b4e1b8_27040.sh'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-ARCHIVE_GOG_OLD0_MD5='52d6ad60c60dd3a7354696275e00b3b0'
-ARCHIVE_GOG_OLD0_VERSION='1.1.9.5-gog27040'
-ARCHIVE_GOG_OLD0_SIZE='1100'
-
-ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
-ARCHIVE_GAME_MAIN_FILES='dlc'
+APP_SO2_ID="${GAME_ID}_so2"
+APP_SO2_TYPE='dosbox'
+APP_SO2_PRERUN="$APP_MAIN_PRERUN"
+APP_SO2_EXE='so2.exe'
+APP_SO2_ICON='app/goggame-1207662653.ico'
+APP_SO2_NAME="$GAME_NAME - Special Operations 2"
 
 PACKAGES_LIST='PKG_MAIN'
 
-PKG_MAIN_ID="${GAME_ID}-dlc-cyclopean-owl"
-PKG_MAIN_DEPS="$GAME_ID"
+PKG_MAIN_DEPS='dosbox'
 
 # Load common functions
 
@@ -124,7 +114,22 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+
+# Extract icons
+
+icons_get_from_workdir 'APP_MAIN' 'APP_SO1' 'APP_SO2'
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Write launchers
+
+launchers_write 'APP_MAIN' 'APP_SO1' 'APP_SO2'
+
+# Work around sound issues that can stuck the game during the first intro speech
+
+pattern='s/^dosbox -c/export DOSBOX_SBLASTER_IRQ=5\n&/'
+if [ $DRY_RUN -eq 0 ]; then
+	sed --in-place "$pattern" "${PKG_MAIN_PATH}${PATH_BIN}"/*
+fi
 
 # Build package
 
