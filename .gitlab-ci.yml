@@ -2208,3 +2208,78 @@ shellcheck-game-minecraft-4k:
     stage: shellcheck-games
     script:
         - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-minecraft-4k.sh
+
+shellcheck-game-lego-batman-1:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-lego-batman-1.sh
+
+shellcheck-game-lego-harry-potter-years-1-4:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-lego-harry-potter-years-1-4.sh
+
+shellcheck-game-metal-slug-3:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-metal-slug-3.sh
+
+shellcheck-game-stellaris:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-stellaris.sh
+
+shellcheck-game-stellaris-anniversary-portraits:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-stellaris-anniversary-portraits.sh
+
+shellcheck-game-stellaris-horizon-signal:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-stellaris-horizon-signal.sh
+
+shellcheck-game-tengami:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-tengami.sh
+
+shellcheck-game-mind-path-to-thalamus:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-mind-path-to-thalamus.sh
+
+shellcheck-game-touhou-chireiden-subterranean-animism-demo:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-touhou-chireiden-subterranean-animism-demo.sh
+
+shellcheck-game-factorio-demo:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-factorio-demo.sh
+
+shellcheck-game-yooka-laylee:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-yooka-laylee.sh
+
+shellcheck-game-myst-1:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-myst-1.sh
+
+shellcheck-game-the-pillars-of-the-earth:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-the-pillars-of-the-earth.sh
+
+shellcheck-game-assault-android-cactus:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-assault-android-cactus.sh
+
+shellcheck-game-tangledeep:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-tangledeep.sh
