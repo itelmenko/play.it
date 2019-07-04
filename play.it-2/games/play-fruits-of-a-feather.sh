@@ -35,12 +35,12 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190612.1
+script_version=20190704.1
 
 # Set game-specific variables
 
 GAME_ID='fruits-of-a-feather'
-GAME_NAME='Fruit of a Feather'
+GAME_NAME='Fruits of a Feather'
 
 ARCHIVE_ITCH='FruitsOfAFeather2.0_LINUX.zip'
 ARCHIVE_ITCH_URL='https://samuraipunk.itch.io/feather'
