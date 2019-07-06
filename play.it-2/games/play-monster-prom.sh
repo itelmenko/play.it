@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190723.1
+script_version=20191009.1
 
 # Set game-specific variables
 
 GAME_ID='monster-prom'
 GAME_NAME='Monster Prom'
 
-ARCHIVE_GOG='monster_prom_2_44_26055.sh'
+ARCHIVE_GOG='monster_prom_4_38b_30736.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/monster_prom'
-ARCHIVE_GOG_MD5='c558e2ba0540ba6651a35a3a5e2a146b'
-ARCHIVE_GOG_SIZE='1400000'
-ARCHIVE_GOG_VERSION='2.44-gog26055'
+ARCHIVE_GOG_MD5='4dc9b48a90220ecc0fcd91e44f640320'
+ARCHIVE_GOG_SIZE='2000000'
+ARCHIVE_GOG_VERSION='4.38b-gog30736'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='monster_prom_2_44_26055.sh'
+ARCHIVE_GOG_OLD0_MD5='c558e2ba0540ba6651a35a3a5e2a146b'
+ARCHIVE_GOG_OLD0_SIZE='1400000'
+ARCHIVE_GOG_OLD0_VERSION='2.44-gog26055'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
