@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190706.1
+script_version=20190706.2
 
 # Set game-specific variables
 
@@ -68,6 +68,8 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='Content BmFont.dll Lidgren.Network.dll mono monoconfig MonoGame.Framework.dll MonoGame.Framework.dll.config Mono.Posix.dll Mono.Security.dll mscorlib.dll StardewValley StardewValley.exe mcs GalaxyCSharp.dll GalaxyCSharp.dll.config System.Configuration.dll System.Core.dll System.Data.dll System.dll System.Drawing.dll System.Runtime.Serialization.dll System.Security.dll System.Xml.dll System.Xml.Linq.dll WindowsBase.dll xTile.dll'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='StardewValley.bin.x86'
 APP_MAIN_EXE_BIN64='StardewValley.bin.x86_64'
 APP_MAIN_ICON='data/noarch/support/icon.png'
