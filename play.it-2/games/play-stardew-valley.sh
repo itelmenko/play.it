@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190723.1
+script_version=20191009.1
 
 # Set game-specific variables
 
 GAME_ID='stardew-valley'
 GAME_NAME='Stardew Valley'
 
-ARCHIVE_GOG='stardew_valley_en_1_3_28_22957.sh'
+ARCHIVE_GOG='stardew_valley_1_3_36_27827.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/stardew_valley'
-ARCHIVE_GOG_MD5='e1e98cc3e891f5aafc23fb6617d6bc05'
-ARCHIVE_GOG_SIZE='970000'
-ARCHIVE_GOG_VERSION='1.3.28-gog22957'
+ARCHIVE_GOG_MD5='8dd18eb151471a5901592188dfecb8a3'
+ARCHIVE_GOG_SIZE='990000'
+ARCHIVE_GOG_VERSION='1.3.36-gog27827'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='stardew_valley_en_1_3_28_22957.sh'
+ARCHIVE_GOG_OLD1_MD5='e1e98cc3e891f5aafc23fb6617d6bc05'
+ARCHIVE_GOG_OLD1_SIZE='970000'
+ARCHIVE_GOG_OLD1_VERSION='1.3.28-gog22957'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD0='gog_stardew_valley_2.8.0.10.sh'
 ARCHIVE_GOG_OLD0_MD5='27c84537bee1baae4e3c2f034cb0ff2d'
