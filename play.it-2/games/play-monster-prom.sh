@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190706.1
+script_version=20190723.1
 
 # Set game-specific variables
 
@@ -65,18 +65,7 @@ DATA_DIRS='./logs ./UserData'
 
 APP_MAIN_TYPE='native'
 # shellcheck disable=SC2016
-APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
-	mkdir --parents libs
-	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
-	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
-else
-	if [ -e "libs/libpulse-simple.so.0" ]; then
-		rm libs/libpulse-simple.so.0
-		rmdir --ignore-fail-on-non-empty libs
-	fi
-	pulseaudio --start
-fi
-export LANG=C'
+APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE_BIN32='MonsterProm.x86'
 APP_MAIN_EXE_BIN64='MonsterProm.x86_64'
 # shellcheck disable=SC2016
@@ -89,10 +78,16 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx libxrandr alsa"
+PKG_BIN32_DEPS_ARCH='lib32-libx11 lib32-libxext'
+PKG_BIN32_DEPS_DEB='libx11-6, libxext6'
+PKG_BIN32_DEPS_GENTOO='x11-libs/libX11[abi_x86_32] x11-libs/libXext[abi_x86_32]'
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS_ARCH='libx11 libxext'
+PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS_GENTOO='x11-libs/libX11 x11-libs/libXext'
 
 # Load common functions
 
