@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190507.2
+script_version=20190707.1
 
 # Set game-specific variables
 
@@ -45,7 +45,7 @@ GAME_NAME='Factorio - Demo'
 ARCHIVE_OFFICIAL='factorio_demo_x64_0.16.51.tar.xz'
 ARCHIVE_OFFICIAL_URL='https://www.factorio.com/download-demo'
 ARCHIVE_OFFICIAL_MD5='130267c91df0be6c2034b64fb05d389b'
-ARCHIVE_OFFICIAL_VERSION='0.16.51'
+ARCHIVE_OFFICIAL_VERSION='0.16.51-1'
 ARCHIVE_OFFICIAL_SIZE='680000'
 ARCHIVE_OFFICIAL_TYPE='tar'
 
