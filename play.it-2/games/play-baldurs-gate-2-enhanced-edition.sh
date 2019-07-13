@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,17 +31,16 @@ set -o errexit
 
 ###
 # Baldur’s Gate 2 - Enhanced Edition
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180801.4
+script_version=20190713.1
 
 # Set game-specific variables
 
 GAME_ID='baldurs-gate-2-enhanced-edition'
-# shellcheck disable=SC1112
-GAME_NAME='Baldur’s Gate 2 - Enhanced Edition'
+GAME_NAME='Baldurʼs Gate 2 - Enhanced Edition'
 
 ARCHIVE_GOG='baldur_s_gate_2_enhanced_edition_en_2_5_21851.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/baldurs_gate_2_enhanced_edition'
@@ -54,17 +54,18 @@ ARCHIVE_GOG_OLD0_MD5='b9ee856a29238d4aec65367377d88ac4'
 ARCHIVE_GOG_OLD0_SIZE='2700000'
 ARCHIVE_GOG_OLD0_VERSION='2.3.67.3-gog2.6.0.11'
 
-ARCHIVE_LIBSSL_32='libssl_1.0.0_32-bit.tar.gz'
-ARCHIVE_LIBSSL_32_MD5='9443cad4a640b2512920495eaf7582c4'
+ARCHIVE_OPTIONAL_LIBSSL32='libssl_1.0.0_32-bit.tar.gz'
+ARCHIVE_OPTIONAL_LIBSSL32_URL='https://www.dotslashplay.it/ressources/libssl/'
+ARCHIVE_OPTIONAL_LIBSSL32_MD5='9443cad4a640b2512920495eaf7582c4'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*'
+ARCHIVE_DOC_DATA_FILES='*'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./BaldursGateII ./engine.lua'
+ARCHIVE_GAME_BIN_FILES='BaldursGateII engine.lua'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./chitin.key ./lang ./Manuals ./movies ./music ./scripts ./data'
+ARCHIVE_GAME_DATA_FILES='chitin.key lang Manuals movies music scripts data'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_LIBS='libs'
@@ -75,49 +76,53 @@ PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
-# this is needed for smooth upgrades from packages generated with script version < 20180801.3
+# This is needed for smooth upgrades from packages generated with script version < 20180801.3
 PKG_DATA_PROVIDE="${GAME_ID}-areas"
 
 PKG_BIN_ARCH='32'
 PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
 PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
+PKG_BIN_DEPS_GENTOO='dev-libs/openssl[abi_x86_32]'
+# Keep compatibility with old archives
+PKG_BIN_DEPS_OLD0="$PKG_DATA_ID glibc libstdc++ glx openal json"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Use libSSL 1.0.0 32-bit archive
 
-if [ "$OPTION_PACKAGE" != 'arch' ]; then
-	ARCHIVE_MAIN="$ARCHIVE"
-	set_archive 'ARCHIVE_LIBSSL' 'ARCHIVE_LIBSSL_32'
-	ARCHIVE="$ARCHIVE_MAIN"
-fi
+case "$OPTION_PACKAGE" in
+	('deb')
+		ARCHIVE_MAIN="$ARCHIVE"
+		set_archive 'ARCHIVE_LIBSSL32' 'ARCHIVE_OPTIONAL_LIBSSL32'
+		ARCHIVE="$ARCHIVE_MAIN"
+	;;
+esac
 
 # Extract game data
 
@@ -132,54 +137,54 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Include libSSL into the game directory
 
-if [ "$ARCHIVE_LIBSSL" ]; then
+if [ "$ARCHIVE_LIBSSL32" ]; then
 	(
 		# shellcheck disable=SC2030
-		ARCHIVE='ARCHIVE_LIBSSL'
-		extract_data_from "$ARCHIVE_LIBSSL"
+		ARCHIVE='ARCHIVE_LIBSSL32'
+		extract_data_from "$ARCHIVE_LIBSSL32"
 	)
-	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
-	mv "$PLAYIT_WORKDIR/gamedata"/* "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
+	mkdir --parents "${PKG_BIN_PATH}${PATH_GAME}/${APP_MAIN_LIBS:=libs}"
+	mv "$PLAYIT_WORKDIR/gamedata"/lib*.so.1.0.0 "${PKG_BIN_PATH}${PATH_GAME}/$APP_MAIN_LIBS"
 	rm --recursive "$PLAYIT_WORKDIR/gamedata"
 fi
 
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Ensure that libjson.so.0 can be found and loaded for game versions needing it
 
 # shellcheck disable=SC2031
-if [ "$ARCHIVE" = 'ARCHIVE_GOG_OLD0' ]; then
-	PKG_BIN_DEPS="$PKG_BIN_DEPS json"
+case "$ARCHIVE" in
+	('ARCHIVE_GOG_OLD0')
+		target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
 
-	target="$PATH_GAME/$APP_MAIN_LIBS/libjson.so.0"
+		cat > "$postinst" <<- EOF
+		if [ ! -e "$target" ]; then
+		    for source in \
+		        /lib/i386-linux-gnu/libjson-c.so \
+		        /lib/i386-linux-gnu/libjson-c.so.2 \
+		        /lib/i386-linux-gnu/libjson-c.so.3 \
+		        /usr/lib32/libjson-c.so
+		    do
+		        if [ -e "\$source" ] ; then
+		            mkdir --parents "${target%/*}"
+		            ln --symbolic "\$source" "$target"
+		            break
+		        fi
+		    done
+		fi
+		EOF
 
-	cat > "$postinst" <<- EOF
-	if [ ! -e "$target" ]; then
-	    for source in \
-	        /lib/i386-linux-gnu/libjson-c.so \
-	        /lib/i386-linux-gnu/libjson-c.so.2 \
-	        /lib/i386-linux-gnu/libjson-c.so.3 \
-	        /usr/lib32/libjson-c.so
-	    do
-	        if [ -e "\$source" ] ; then
-	            mkdir --parents "${target%/*}"
-	            ln --symbolic "\$source" "$target"
-	            break
-	        fi
-	    done
-	fi
-	EOF
-
-	cat > "$prerm" <<- EOF
-	if [ -e "$target" ]; then
-	    rm "$target"
-	    rmdir --ignore-fail-on-non-empty --parents "${target%/*}"
-	fi
-	EOF
-fi
+		cat > "$prerm" <<- EOF
+		if [ -e "$target" ]; then
+		    rm "$target"
+		    rmdir --ignore-fail-on-non-empty --parents "${target%/*}"
+		fi
+		EOF
+	;;
+esac
 
 # Build packages
 
