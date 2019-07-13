@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190713.1
+script_version=20190723.1
 
 # Set game-specific variables
 
@@ -80,9 +80,10 @@ PKG_DATA_DESCRIPTION='data'
 PKG_DATA_PROVIDE="${GAME_ID}-areas"
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal"
-PKG_BIN_DEPS_ARCH='lib32-openssl-1.0'
-PKG_BIN_DEPS_GENTOO='dev-libs/openssl[abi_x86_32]'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx openal libxrandr alsa"
+PKG_BIN_DEPS_ARCH='lib32-libx11 lib32-expat lib32-openssl-1.0'
+PKG_BIN_DEPS_DEB='libx11-6, libexpat1'
+PKG_BIN_DEPS_GENTOO='libx11-6[abi_x86_32] dev-libs/expat[abi_x86_32] dev-libs/openssl[abi_x86_32]'
 # Keep compatibility with old archives
 PKG_BIN_DEPS_OLD0="$PKG_DATA_ID glibc libstdc++ glx openal json"
 
