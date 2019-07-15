@@ -45,7 +45,7 @@ GAME_NAME='Touhou Eiyashou ~ Imperishable Night - Demo'
 SCRIPT_DEPS='iconv convmv'
 
 ARCHIVE_ZUN='eiya_tr003.lzh'
-ARCHIVE_ZUN_URL='https://www.dropbox.com/s/0dwwpkokrko2f4m/eiya_tr003.lzh?dl=0'
+ARCHIVE_ZUN_URL='https://archive.org/details/EiyaTr003'
 ARCHIVE_ZUN_MD5='c42647202a695bd1fdd2d88ce6615d53'
 ARCHIVE_ZUN_VERSION='0.03-zun'
 ARCHIVE_ZUN_SIZE='21000'
