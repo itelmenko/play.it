@@ -35,35 +35,35 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180810.1
+script_version=20190717.1
 
 # Set game-specific variables
 
 GAME_ID='cryptark'
 GAME_NAME='Cryptark'
 
-ARCHIVE_GOG='cryptark_en_1_2_15203.sh'
+ARCHIVE_GOG='cryptark_en_1_23_22933.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/cryptark'
-ARCHIVE_GOG_MD5='53083f1fef847a30eb99914821c8649a'
-ARCHIVE_GOG_SIZE='700000'
-ARCHIVE_GOG_VERSION='1.2-gog15203'
+ARCHIVE_GOG_MD5='7fbca12cab4fae1a36a365fdf004a678'
+ARCHIVE_GOG_SIZE='692879360'
+ARCHIVE_GOG_VERSION='1.23-gog22933'
 ARCHIVE_GOG_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='./*'
 
 ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./*.bin.x86 ./lib/libmojoshader.so ./lib/libogg.so.0 ./lib/libopenal.so.1 ./lib/libpng15.so.15 ./lib/libSDL2-2.0.so.0 ./lib/libSDL2_image-2.0.so.0 ./lib/libtheoradec.so.1 ./lib/libtheorafile.so ./lib/libvorbis.so.0'
+ARCHIVE_GAME_BIN32_FILES='Cryptark.bin.x86 lib'
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./*.bin.x86_64 ./lib64/libmojoshader.so ./lib64/libogg.so.0 ./lib64/libopenal.so.1 ./lib64/libpng15.so.15 ./lib64/libSDL2-2.0.so.0 ./lib64/libSDL2_image-2.0.so.0 ./lib64/libtheoradec.so.1 ./lib64/libtheorafile.so ./lib64/libvorbis.so.0'
+ARCHIVE_GAME_BIN64_FILES='Cryptark.bin.x86_64 lib64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./Cryptark.exe ./*.dll ./Content ./Cryptark.png ./FNA.dll.config ./gamecontrollerdb.txt ./monoconfig ./monomachineconfig'
+ARCHIVE_GAME_DATA_FILES='*.dll Content Cryptark Cryptark.exe Cryptark.png FNA.dll.config Linux.README gamecontrollerdb.txt monoconfig monomachineconfig'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Cryptark.bin.x86'
-APP_MAIN_EXE_BIN64='./Cryptark.bin.x86_64'
+APP_MAIN_EXE_BIN32='Cryptark.bin.x86'
+APP_MAIN_EXE_BIN64='Cryptark.bin.x86_64'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 # workaround for mono bug https://github.com/mono/mono/issues/6752
 APP_MAIN_PRERUN='export TERM="xterm"'
@@ -74,7 +74,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ openal sdl2 sdl2_image vorbis theora"
+PKG_BIN32_DEPS="$PKG_DATA_ID freetype libxrandr sdl2 theora vorbis xcursor xrandr"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
@@ -121,8 +121,8 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+for PKG in PKG_BIN32 PKG_BIN64; do
+        write_launcher 'APP_MAIN'
 done
 
 # Build package
