@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190210.4
+script_version=20190726.1
 
 # Set game-specific variables
 
@@ -50,7 +50,7 @@ ARCHIVE_GOG_SIZE='28000'
 ARCHIVE_GOG_TYPE='innosetup'
 
 ARCHIVE_DOC_MAIN_PATH='app'
-ARCHIVE_DOC_MAIN_PATH='*.pdf'
+ARCHIVE_DOC_MAIN_FILES='*.pdf'
 
 ARCHIVE_GAME_MAIN_PATH='app'
 ARCHIVE_GAME_MAIN_FILES='populous.exe data gfw_high.ico'
