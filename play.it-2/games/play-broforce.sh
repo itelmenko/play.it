@@ -35,51 +35,46 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20180730.1
+script_version=20190717.1
 
 # Set game-specific variables
 
 GAME_ID='broforce'
 GAME_NAME='Broforce'
 
-ARCHIVE_GOG='gog_broforce_2.3.0.4.sh'
+ARCHIVE_GOG='broforce_1034_20190611_30229.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/broforce'
-ARCHIVE_GOG_MD5='1187889af4979b1718c5529ccfb4d741'
-ARCHIVE_GOG_SIZE='1400000'
-ARCHIVE_GOG_VERSION='5399v201606232041-gog15203'
+ARCHIVE_GOG_MD5='8cbe5d69f77aaf36f99a74f39b9d200f'
+ARCHIVE_GOG_SIZE='463835136'
+ARCHIVE_GOG_VERSION='1034.20190611-gog30229'
 ARCHIVE_GOG_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='./*'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN32_FILES='./Broforce.x86'
+# there are 32-bits libs, but no main binary, so it's worthless
 
 ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN64_FILES='./Broforce.x86_64'
+ARCHIVE_GAME_BIN64_FILES='Broforce.x86_64 Broforce_Data/Mono/x86_64 Broforce_Data/Plugins/x86_64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./Levels ./Broforce_Data ./TheFreedomEP'
+ARCHIVE_GAME_DATA_FILES='Broforce_Data/*.assets Broforce_Data/*.resS Broforce_Data/Managed Broforce_Data/Mono/etc Broforce_Data/Resources Broforce_Data/StreamingAssets Broforce_Data/boot.config Broforce_Data/globalgamemanagers Broforce_Data/level0 Broforce_Data/level1 goggame-1470490225.hashdb goggame-1470490225.info'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_BIN32='./Broforce.x86'
-APP_MAIN_EXE_BIN64='./Broforce.x86_64'
+APP_MAIN_EXE_BIN64='Broforce.x86_64'
 APP_MAIN_ICON='data/noarch/support/icon.png'
 
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_DATA PKG_BIN64'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
-
 PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS="$PKG_DATA_ID freetype libstdc++ libxrandr xcursor xrandr"
 
 # Load common functions
 
-target_version='2.9'
+target_version='2.10'
 
 if [ -z "$PLAYIT_LIB2" ]; then
         [ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
@@ -119,8 +114,8 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+for PKG in PKG_BIN64; do
+        write_launcher 'APP_MAIN'
 done
 
 # Build package
