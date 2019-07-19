@@ -166,9 +166,11 @@ check_deps_deb() {
 		elif command -v ar >/dev/null 2>&1; then
 			extract_deb() {
 				[ -d "$PLAYIT_WORKDIR/extraction" ] || mkdir "$PLAYIT_WORKDIR/extraction"
+				local archive_absolute_path
+				archive_absolute_path="$(realpath --canonicalize-existing "$1")"
 				(
 					cd "$PLAYIT_WORKDIR/extraction"
-					ar x "$1" "$(ar t "$1" | grep ^data)"
+					ar x "$archive_absolute_path" "$(ar t "$archive_absolute_path" | grep ^data)"
 
 				)
 				tar --directory "$2" --extract --file "$PLAYIT_WORKDIR/extraction"/data*
