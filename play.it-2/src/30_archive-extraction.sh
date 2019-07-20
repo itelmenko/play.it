@@ -158,12 +158,12 @@ archive_extract_with_unzip() {
 	(
 		IFS='
 '
-		unzip -d "$destination" "$archive" $files_list 1>/dev/null 2>/dev/null
+		unzip -d "$destination" "$archive" $files_list 1>/dev/null 2>/dev/null # 2>/dev/null removes output about missing globs
 	)
 	local status="$?"
 	set -o errexit
 	set +o noglob
-	[ "$status" -eq 0 ] || [ "$status" -eq 11 ] || return "$status"
+	[ "$status" -eq 0 ] || [ "$status" -eq 11 ] || return "$status" # 11 is when at least one glob didn't watch when not using -l
 }
 
 # Outputs all files that need to be extracted
