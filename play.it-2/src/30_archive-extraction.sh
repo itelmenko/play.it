@@ -67,7 +67,7 @@ extract_data_from() {
 			;;
 			('zip_unclean'|'mojosetup_unzip')
 				local exitcode=0
-				archive_extract_with_unzip "$file" "$destination" || exitcode="$?"
+				archive_extract_with_unzip "$file" "$destination" 2>/dev/null || exitcode="$?" # 2>/dev/null removes output from unzip -l about errors in the file
 				[ "$exitcode" -eq 0 ] || [ "$exitcode" -eq 1 ] || [ "$exitcode" -eq 2 ] || return "$exitcode"
 				set_standard_permissions "$destination"
 			;;
@@ -152,7 +152,10 @@ archive_extract_with_unzip() {
 	archive="$1"
 	destination="$2"
 	files_list="$(archive_get_files_to_extract "$archive" | sed --regexp-extended 'p;/^.+$/s|$|/*|')"
+	local status=0
 	set -o noglob
+	unzip -l "$archive" $files_list >/dev/null || status="$?" # Make sure at least one glob matches
+	[ "$status" -eq 11 ] && return "$status"
 	set +o errexit
 	# shellcheck disable=SC2046
 	(
