@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20190724.1
+script_version=20190724.2
 
 # Set game-specific variables
 
@@ -58,8 +58,7 @@ ARCHIVE_GAME_DATA_FILES='Cornerstone_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
+APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE='Cornerstone.x86'
 # shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -71,7 +70,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor pulseaudio alsa"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor alsa"
 
 # Load common functions
 
