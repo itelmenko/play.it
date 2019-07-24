@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190724.1
+script_version=20190724.2
 
 # Set game-specific variables
 
@@ -65,8 +65,7 @@ ARCHIVE_GAME_DATA_FILES='TidesOfNumenera_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
+APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE='TidesOfNumenera'
 # shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -84,7 +83,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_AUDIO_ID $PKG_RESOURCES_ID $PKG_DATA_ID glx sdl2 pulseaudio"
+PKG_BIN_DEPS="$PKG_AUDIO_ID $PKG_RESOURCES_ID $PKG_DATA_ID glx sdl2"
 
 # Load common functions
 
