@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191221.1
+script_version=20200102.1
 
 # Set game-specific variables
 
@@ -90,37 +90,22 @@ ARCHIVE_GOG_OLD1_SIZE='4500000'
 ARCHIVE_GOG_OLD1_VERSION='2.0f1-gog20175'
 ARCHIVE_GOG_OLD1_TYPE='mojosetup'
 
-ARCHIVE_GOG_OLD0='war_for_the_overworld_en_1_6_66_16455.sh'
-ARCHIVE_GOG_OLD0_MD5='3317bba3d2ec7dc5715f0d44e6cb70c1'
-ARCHIVE_GOG_OLD0_SIZE='2800000'
-ARCHIVE_GOG_OLD0_VERSION='1.6.66-gog16455'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
-
-ARCHIVE_HUMBLE='War_for_the_Overworld_v1.5.2_-_Linux_x64.zip'
-ARCHIVE_HUMBLE_MD5='bedee8b966767cf42c55c6b883e3127c'
-ARCHIVE_HUMBLE_SIZE='2500000'
-ARCHIVE_HUMBLE_VERSION='1.5.2-humble170202'
-
 ARCHIVE_DOC_DATA_PATH_GOG='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
 
-ARCHIVE_GAME_BIN_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN_PATH_HUMBLE='Linux'
-ARCHIVE_GAME_BIN_FILES='*.x86_64 *_Data/Plugins *_Data/Mono *_Data/CoherentUI_Host'
+ARCHIVE_GAME_BIN_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN_FILES='WFTOGame.x86_64 WFTOGame_Data/Plugins WFTOGame_Data/Mono'
 
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='Linux'
-ARCHIVE_GAME_DATA_FILES='*_Data *.info'
+ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_FILES='WFTOGame_Data *.info'
 
-DATA_DIRS='./*_Data/GameData ./logs'
+DATA_DIRS='./WFTOGame_Data/GameData ./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_EXE_GOG='WFTOGame.x86_64'
-APP_MAIN_EXE_HUMBLE='WFTO.x86_64'
+APP_MAIN_EXE='WFTOGame.x86_64'
 # shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
-APP_MAIN_ICON_GOG='WFTOGame_Data/Resources/UnityPlayer.png'
-APP_MAIN_ICON_HUMBLE='WFTO_Data/Resources/UnityPlayer.png'
+APP_MAIN_ICON='WFTOGame_Data/Resources/UnityPlayer.png'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -129,12 +114,6 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
 PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx xcursor gtk2"
-# Keep compatibility with old archives
-PKG_BIN_DEPS_HUMBLE="$PKG_DATA_ID glibc libstdc++ glx xcursor gtk2 gconf"
-PKG_BIN_DEPS_GOG_OLD0="$PKG_BIN_DEPS_HUMBLE"
-PKG_BIN_DEPS_GOG_OLD1="$PKG_BIN_DEPS_HUMBLE"
-PKG_BIN_DEPS_GOG_OLD2="$PKG_BIN_DEPS_HUMBLE"
-PKG_BIN_DEPS_GOG_OLD3="$PKG_BIN_DEPS_HUMBLE"
 
 # Load common functions
 
@@ -175,36 +154,13 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 PKG='PKG_DATA'
 icons_get_from_package 'APP_MAIN'
 
-# Tweaks for old versions
-
-for file in\
-	"${PKG_BIN_PATH}${PATH_GAME}"/*_Data/CoherentUI_Host/linux/CoherentUI_Host\
-	"${PKG_BIN_PATH}${PATH_GAME}"/*_Data/CoherentUI_Host/linux/CoherentUI_Host.bin
-do
-	if [ -e "$file" ]; then
-		chmod +x "$file"
-	fi
-done
-
-for file in\
-	"${PKG_DATA_PATH}${PATH_GAME}/WFTO_Data/uiresources/maps/Stonegate.unity.png"\
-	"${PKG_DATA_PATH}${PATH_GAME}/WFTOGame_Data/uiresources/maps/Stonegate.unity.png"
-do
-	if [ -e "$file" ]; then
-		mv "$file" "$(dirname "$file")/stonegate.unity.png"
-	fi
-done
-
 # Write launchers
 
 PKG='PKG_BIN'
-use_archive_specific_value 'APP_MAIN_EXE'
-use_archive_specific_value 'APP_MAIN_ICON'
 launchers_write 'APP_MAIN'
 
 # Build packages
 
-use_archive_specific_value 'PKG_BIN_DEPS'
 write_metadata
 build_pkg
 
