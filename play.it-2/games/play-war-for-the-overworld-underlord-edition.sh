@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181121.1
+script_version=20190730.1
 
 # Set game-specific variables
 
@@ -64,7 +64,6 @@ ARCHIVE_GOG_OLD0='gog_war_for_the_overworld_underlord_edition_upgrade_dlc_2.0.0.
 ARCHIVE_GOG_OLD0_MD5='635912eed200d45d8907ab1fb4cc53a4'
 ARCHIVE_GOG_OLD0_SIZE='1400'
 ARCHIVE_GOG_OLD0_VERSION='1.0-gog2.0.0.1'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_MAIN_PATH='data/noarch/docs'
 ARCHIVE_DOC_MAIN_FILES='*'
@@ -79,7 +78,7 @@ PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -102,7 +101,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
