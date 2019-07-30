@@ -35,18 +35,23 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190606.1
+script_version=20190629.1
 
 # Set game-specific variables
 
 GAME_ID='keep-talking-and-nobody-explodes'
 GAME_NAME='Keep Talking and Nobody Explodes'
 
-ARCHIVE_HUMBLE='Keep_Talking_and_Nobody_Explodes_1.6.1_-_Linux.zip'
+ARCHIVE_HUMBLE='Keep_Talking_and_Nobody_Explodes_1.8.3_-_StandaloneLinuxUniversal_Default.zip'
 ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/keep-talking-and-nobody-explodes'
-ARCHIVE_HUMBLE_MD5='ac321144f9ed9dc6797d35a33bd0b0e7'
-ARCHIVE_HUMBLE_VERSION='1.6.1-humble171219'
-ARCHIVE_HUMBLE_SIZE='940000'
+ARCHIVE_HUMBLE_MD5='212e7d380c7214f87b05aa405fa41662'
+ARCHIVE_HUMBLE_VERSION='1.8.3-humble190307'
+ARCHIVE_HUMBLE_SIZE='860000'
+
+ARCHIVE_HUMBLE_OLD0='Keep_Talking_and_Nobody_Explodes_1.6.1_-_Linux.zip'
+ARCHIVE_HUMBLE_OLD0_MD5='ac321144f9ed9dc6797d35a33bd0b0e7'
+ARCHIVE_HUMBLE_OLD0_VERSION='1.6.1-humble171219'
+ARCHIVE_HUMBLE_OLD0_SIZE='940000'
 
 ARCHIVE_OPTIONAL_MANUAL='Bomb-Defusal-Manual_1.pdf'
 ARCHIVE_OPTIONAL_MANUAL_URL='http://www.bombmanual.com/manual/1/pdf/Bomb-Defusal-Manual_1.pdf'

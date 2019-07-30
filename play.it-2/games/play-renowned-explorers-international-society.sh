@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
+# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181128.1
+script_version=20190619.1
 
 # Set game-specific variables
 
@@ -112,14 +113,20 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glu"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ glx glu xcursor sdl2 libxrandr"
+PKG_BIN32_DEPS_ARCH='lib32-libx11'
+PKG_BIN32_DEPS_DEB='libx11-6'
+PKG_BIN32_DEPS_GENTOO='x11-libs/libX11[abi_x86_32]'
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN64_DEPS_ARCH='libx11'
+PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
+PKG_BIN64_DEPS_GENTOO='x11-libs/libX11'
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -142,7 +149,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -159,7 +166,7 @@ rm --recursive "$PLAYIT_WORKDIR/gamedata"
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Build package

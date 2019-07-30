@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190508.3
+script_version=20190508.4
 
 # Set game-specific variables
 
@@ -76,12 +76,12 @@ ARCHIVE_DOC0_DATA_FILES='*eula.txt'
 ARCHIVE_DOC1_DATA_PATH='app'
 ARCHIVE_DOC1_DATA_FILES='eula *.cnt *.hlp *.pdf *.txt'
 
-ARCHIVE_GAME0_BIN_PATH='app'
-ARCHIVE_GAME0_BIN_FILES='*.exe binkw32.dll ifc20.dll ifc21.dll mcp.dll mp3dec.asi mss32.dll smackw32.dll'
+ARCHIVE_GAME0_BIN_WINE_PATH='app'
+ARCHIVE_GAME0_BIN_WINE_FILES='*.exe binkw32.dll ifc20.dll ifc21.dll mcp.dll mp3dec.asi mss32.dll smackw32.dll'
 
 # Keep compatibility with old archives
-ARCHIVE_GAME1_BIN_PATH_GOG_EN_OLD0='tmp'
-ARCHIVE_GAME1_BIN_FILES_GOG_EN_OLD0='heroes3.exe'
+ARCHIVE_GAME1_BIN_WINE_PATH_GOG_EN_OLD0='tmp'
+ARCHIVE_GAME1_BIN_WINE_FILES_GOG_EN_OLD0='heroes3.exe'
 
 ARCHIVE_GAME_DATA_PATH='app'
 ARCHIVE_GAME_DATA_FILES='data maps mp3'
@@ -93,7 +93,8 @@ DATA_FILES='./data/h3ab_bmp.lod ./data/h3ab_spr.lod ./data/h3bitmap.lod ./data/h
 APP_REGEDIT='tweaks.reg'
 APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}')"
 
-APP_MAIN_TYPE='wine'
+APP_MAIN_TYPE_BIN_WINE='wine'
+APP_MAIN_TYPE_BIN_VCMI='native'
 APP_MAIN_EXE='heroes3.exe'
 APP_MAIN_ICON='heroes3.exe'
 
@@ -109,7 +110,7 @@ APP_EDITOR_CAMPAIGN_EXE='h3ccmped.exe'
 APP_EDITOR_CAMPAIGN_ICON='h3ccmped.exe'
 APP_EDITOR_CAMPAIGN_NAME="$GAME_NAME - campaign editor"
 
-PACKAGES_LIST='PKG_BIN PKG_DATA'
+PACKAGES_LIST='PKG_BIN_VCMI PKG_BIN_WINE PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_ID_GOG_EN="${PKG_DATA_ID}-en"
@@ -118,11 +119,20 @@ PKG_DATA_PROVIDE="${PKG_DATA_ID}"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ID="$GAME_ID"
-PKG_BIN_ID_GOG_EN="${PKG_BIN_ID}-en"
-PKG_BIN_ID_GOG_FR="${PKG_BIN_ID}-fr"
-PKG_BIN_PROVIDE="$PKG_BIN_ID"
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks xrandr glx"
+
+PKG_BIN_VCMI_ID="${PKG_BIN_ID}-vcmi"
+PKG_BIN_VCMI_PROVIDE="$PKG_BIN_ID"
+PKG_BIN_VCMI_DEPS="$PKG_DATA_ID"
+PKG_BIN_VCMI_DEPS_ARCH='vcmi'
+PKG_BIN_VCMI_DEPS_DEB='vcmi'
+PKG_BIN_VCMI_DEPS_GENTOO='games-strategy/vcmi' # overlay required: https://github.com/qdii/qdiilay
+
+PKG_BIN_WINE_ID="${PKG_BIN_ID}-wine"
+PKG_BIN_WINE_ID_GOG_EN="${PKG_BIN_WINE_ID}-en"
+PKG_BIN_WINE_ID_GOG_FR="${PKG_BIN_WINE_ID}-fr"
+PKG_BIN_WINE_PROVIDE="$PKG_BIN_ID"
+PKG_BIN_WINE_ARCH='32'
+PKG_BIN_WINE_DEPS="$PKG_DATA_ID wine winetricks xrandr glx"
 
 # Load common functions
 
@@ -167,7 +177,7 @@ esac
 
 # Allow to skip intro video on first launch + set default settings
 
-file="${PKG_BIN_PATH}${PATH_GAME}/$APP_REGEDIT"
+file="${PKG_BIN_WINE_PATH}${PATH_GAME}/$APP_REGEDIT"
 if [ $DRY_RUN -eq 0 ];then
 	cat > "$file" <<- 'EOF'
 	Windows Registry Editor Version 5.00
@@ -215,14 +225,47 @@ fi
 
 # Extract icons
 
-PKG='PKG_BIN'
+PKG='PKG_BIN_WINE'
 icons_get_from_package 'APP_MAIN' 'APP_EDITOR_MAP' 'APP_EDITOR_CAMPAIGN'
 icons_move_to 'PKG_DATA'
 
 # Write launchers
 
-PKG='PKG_BIN'
+PKG='PKG_BIN_WINE'
+use_package_specific_value 'APP_MAIN_TYPE'
 launchers_write 'APP_MAIN' 'APP_EDITOR_MAP' 'APP_EDITOR_CAMPAIGN'
+
+PKG='PKG_BIN_VCMI'
+use_package_specific_value 'APP_MAIN_TYPE'
+launcher="${PKG_BIN_VCMI_PATH}${PATH_BIN}/$GAME_ID"
+if [ $DRY_RUN -eq 0 ]; then
+	mkdir --parents "${launcher%/*}"
+	touch "$launcher"
+	chmod 755 "$launcher"
+	launcher_write_script_headers "$launcher"
+	{
+		cat <<- 'EOF'
+		VCMI_DATA="${XDG_DATA_HOME:="$HOME/.local/share"}/vcmi"
+		EOF
+		cat <<- EOF
+		GAME_PATH="$PATH_GAME"
+		EOF
+		cat <<- 'EOF'
+
+		for dir in data maps mp3; do
+		    if [ ! -e "$VCMI_DATA/$dir" ]; then
+		        mkdir --parents "$VCMI_DATA"
+		        cp --recursive --remove-destination --symbolic-link "$GAME_PATH/$dir" "$VCMI_DATA"
+		    fi
+		done
+
+		vcmilauncher
+
+		exit 0
+		EOF
+	} >> "$launcher"
+fi
+launcher_write_desktop 'APP_MAIN'
 
 # Build package
 
@@ -235,6 +278,10 @@ rm --recursive "$PLAYIT_WORKDIR"
 
 # Print instructions
 
-print_instructions
+printf '\n'
+printf 'VCMI:'
+print_instructions 'PKG_DATA' 'PKG_BIN_VCMI'
+printf 'WINE:'
+print_instructions 'PKG_DATA' 'PKG_BIN_WINE'
 
 exit 0

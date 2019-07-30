@@ -2283,3 +2283,8 @@ shellcheck-game-tangledeep:
     stage: shellcheck-games
     script:
         - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-tangledeep.sh
+
+shellcheck-game-cineris-somnia:
+    stage: shellcheck-games
+    script:
+        - ./tests/shellcheck-single-game-script.sh play.it-2/games/play-cineris-somnia.sh

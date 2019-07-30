@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180819.1
+script_version=20190721.1
 
 # Set game-specific variables
 
@@ -49,9 +49,9 @@ ARCHIVE_GOG_TYPE='innosetup_nolowercase'
 ARCHIVE_GOG_SIZE='640000'
 ARCHIVE_GOG_VERSION='451-gog2.0.0.5'
 
-ARCHIVE_LOKI_LINUX_CLIENT='ut99v451-linux.tar.gz'
+ARCHIVE_LOKI_LINUX_CLIENT='ut99v451-linux.2019-07-21.tar.gz'
 ARCHIVE_LOKI_LINUX_CLIENT_URL='https://www.dotslashplay.it/ressources/unreal-tournament/'
-ARCHIVE_LOKI_LINUX_CLIENT_MD5='d645b0ea2d093e68afc8f1b5288496e5'
+ARCHIVE_LOKI_LINUX_CLIENT_MD5='6cf7b84c8ce719a74d1c7724152d5c70'
 
 ARCHIVE_DOC_DATA_PATH='app'
 ARCHIVE_DOC_DATA_FILES='./Help/* ./Manual/manual.pdf'

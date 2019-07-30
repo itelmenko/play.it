@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
-# Copyright (c) 2016-2019, Solène "Mopi" Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,70 +30,47 @@ set -o errexit
 ###
 
 ###
-# Owlboy
+# Cineris Somnia
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190626.5
+script_version=20190622.2
 
 # Set game-specific variables
 
-SCRIPT_DEPS='find dos2unix'
+GAME_ID='cineris-somnia'
+GAME_NAME='Cineris Somnia'
 
-GAME_ID='owlboy'
-GAME_NAME='Owlboy'
+ARCHIVE_PLAYISM='CINERIS_SOMNIA_PLAYISM_20181109.zip'
+ARCHIVE_PLAYISM_URL='https://playism.com/product/cineris-somnia'
+ARCHIVE_PLAYISM_MD5='c25ea529ffb12b0e055d05117c5bc24d'
+ARCHIVE_PLAYISM_SIZE='3200000'
+ARCHIVE_PLAYISM_VERSION='1.01-playism20181109'
+ARCHIVE_PLAYISM_TYPE='zip'
 
-ARCHIVE_HUMBLE='owlboy-11022017-bin'
-ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/owlboy'
-ARCHIVE_HUMBLE_MD5='d3a1e4753a604431c58eb1ea26c35543'
-ARCHIVE_HUMBLE_SIZE='570000'
-ARCHIVE_HUMBLE_VERSION='1.3.6515.19883-humble171102'
-ARCHIVE_HUMBLE_TYPE='mojosetup'
+ARCHIVE_DOC_DATA_PATH='20181109_101'
+ARCHIVE_DOC_DATA_FILES='*.txt'
 
-ARCHIVE_HUMBLE_OLD0='owlboy-05232017-bin'
-ARCHIVE_HUMBLE_OLD0_MD5='f35fba69fadffbf498ca8a38dbceeac1'
-ARCHIVE_HUMBLE_OLD0_SIZE='570000'
-ARCHIVE_HUMBLE_OLD0_VERSION='1.2.6382.15868-humble1'
-ARCHIVE_HUMBLE_OLD0_TYPE='mojosetup'
+ARCHIVE_GAME_BIN_PATH='20181109_101'
+ARCHIVE_GAME_BIN_FILES='Cineris?Somnia.exe Cineris?Somnia_Data/Mono Cineris?Somnia_Data/Managed'
 
-ARCHIVE_DOC_DATA_PATH='data'
-ARCHIVE_DOC_DATA_FILES='Linux.README'
+ARCHIVE_GAME_DATA_PATH='20181109_101'
+ARCHIVE_GAME_DATA_FILES='Cineris?Somnia_Data/Resources Cineris?Somnia_Data/level* Cineris?Somnia_Data/*.assets Cineris?Somnia_Data/sharedassets* Cineris?Somnia_Data/mainData'
 
-ARCHIVE_GAME_BIN32_PATH='data'
-ARCHIVE_GAME_BIN32_FILES='Owlboy.bin.x86 lib'
+DATA_DIRS='./userdata'
 
-ARCHIVE_GAME_BIN64_PATH='data'
-ARCHIVE_GAME_BIN64_FILES='Owlboy.bin.x86_64 lib64'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='Cineris Somnia.exe'
+APP_MAIN_ICON='Cineris Somnia.exe'
 
-ARCHIVE_GAME_DATA_PATH='data'
-ARCHIVE_GAME_DATA_FILES='content *.dll *.config monoconfig monomachineconfig Owlboy.bmp Owlboy.exe'
-
-CONFIG_FILES='./content/localizations/*/speechbubbleconfig.ini ./content/fonts/*.ini'
-
-APP_MAIN_TYPE='native'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
-APP_MAIN_EXE_BIN32='Owlboy.bin.x86'
-APP_MAIN_EXE_BIN64='Owlboy.bin.x86_64'
-APP_MAIN_ICON='Owlboy.bmp'
-
-PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 vorbis glx libudev1"
-PKG_BIN32_DEPS_ARCH='lib32-zlib'
-PKG_BIN32_DEPS_DEB='zlib1g'
-PKG_BIN32_DEPS_GENTOO='sys-libs/zlib[abi_x86_32]'
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
-PKG_BIN64_DEPS_ARCH='zlib'
-PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
-PKG_BIN64_DEPS_GENTOO='sys-libs/zlib'
+PKG_BIN_ARCH='64'
+PKG_BIN_DEPS="$PKG_DATA_ID wine alsa glx"
 
 # Load common functions
 
@@ -129,22 +106,30 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icon
+# Extract icons
 
-PKG='PKG_DATA'
+PKG='PKG_BIN'
 icons_get_from_package 'APP_MAIN'
-
-# Convert .ini files to Unix-style line separators
-
-if [ $DRY_RUN -eq 0 ]; then
-	find "${PKG_DATA_PATH}${PATH_GAME}" -type f -name '*.ini' -exec dos2unix '{}' + > /dev/null 2>&1
-fi
+icons_move_to 'PKG_DATA'
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	launchers_write 'APP_MAIN'
-done
+PKG='PKG_BIN'
+launcher_write 'APP_MAIN'
+
+# Store saved games outside of WINE prefix
+
+# shellcheck disable=SC2016
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/AppData/LocalLow/Nayuta Studio/Cineris Somnia/'
+# shellcheck disable=SC2016
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+if [ $DRY_RUN -eq 0 ]; then
+	sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
+fi
 
 # Build package
 
