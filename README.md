@@ -1,7 +1,7 @@
 # ./play.it: Installer for drm-free commercial games
 
-The canonical repository is https://framagit.org/vv221/play.it, issues and PRs
-raised at mirrors will be migrated.
+The canonical repository is https://forge.dotslashplay.it/play.it/scripts,
+issues and PRs raised at mirrors will be migrated.
 
 ## Description
 
@@ -34,7 +34,7 @@ For Gentoo-based users there is an overlay here: https://framagit.org/BetaRays/g
 For everyone else:
 
 ```
-git clone https://framagit.org/vv221/play.it
+git clone https://forge.dotslashplay.it/play.it/scripts.git
 cd play.it
 make
 make install
@@ -53,8 +53,8 @@ bet is to find a similar game and copy its script. You'll likely need to visit
 upload your attempts to [pastebin] for commentary, or feel free to raise a WIP
 [Merge Request].
 
-[some documentation]: https://framagit.org/vv221/play.it/wikis
+[some documentation]: https://forge.dotslashplay.it/play.it/scripts/wikis/home
 [IRC]: irc://chat.freenode.net/#play.it
 [Matrix]: https://matrix.to/#/!tKCYmGJvyaFDYHUmzm:matrix.org
 [pastebin]: https://paste.debian.net/
-[Merge Request]: https://framagit.org/vv221/play.it/merge_requests/new
+[Merge Request]: https://forge.dotslashplay.it/play.it/scripts/merge_requests/new
