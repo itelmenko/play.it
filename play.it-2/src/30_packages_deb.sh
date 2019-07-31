@@ -204,7 +204,7 @@ pkg_set_deps_deb() {
 				pkg_dep='wine-staging-amd64, winehq-staging'
 			;;
 			('winetricks')
-				pkg_dep='winetricks'
+				pkg_dep='winetricks, xterm | x-terminal-emulator | zenity | kdialog'
 			;;
 			('xcursor')
 				pkg_dep='libxcursor1'
