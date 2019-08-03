@@ -42,7 +42,11 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_CHECKSUM='none md5'
 	# shellcheck disable=SC2034
-	ALLOWED_VALUES_COMPRESSION='none gzip xz bzip2'
+	ALLOWED_VALUES_COMPRESSION_DEB='none gzip xz'
+	# shellcheck disable=SC2034
+	ALLOWED_VALUES_COMPRESSION_ARCH='none gzip xz bzip2 zstd'
+	# shellcheck disable=SC2034
+	ALLOWED_VALUES_COMPRESSION_GENTOO='none gzip xz bzip2 zstd lz4 lzip lzop'
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_PACKAGE='arch deb gentoo'
 
@@ -53,7 +57,11 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_CHECKSUM='md5'
 	# shellcheck disable=SC2034
-	DEFAULT_OPTION_COMPRESSION='none'
+	DEFAULT_OPTION_COMPRESSION_DEB='none'
+	# shellcheck disable=SC2034
+	DEFAULT_OPTION_COMPRESSION_ARCH='none'
+	# shellcheck disable=SC2034
+	DEFAULT_OPTION_COMPRESSION_GENTOO='bzip2'
 	# shellcheck disable=SC2034
 	DEFAULT_OPTION_PREFIX='/usr/local'
 	# shellcheck disable=SC2034
@@ -145,18 +153,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 
 	[ "$OPTION_PACKAGE" ] || packages_guess_format 'OPTION_PACKAGE'
 
-	# Set options not already set by script arguments to default values
-
-	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
-		if [ -z "$(get_value "OPTION_$option")" ]\
-		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
-			# shellcheck disable=SC2046
-			eval OPTION_$option=\"$(get_value "DEFAULT_OPTION_$option")\"
-			export OPTION_$option
-		fi
-	done
-
-	# Check options values validity
+	# Check option validity for the package format, since it will be used for the compression method
 
 	check_option_validity() {
 		local name
@@ -191,49 +188,31 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		exit 1
 	}
 
+	check_option_validity 'PACKAGE'
+
+	# Set allowed and default values for compression depending on the chosen package format
+
+	# shellcheck disable=SC2034
+	ALLOWED_VALUES_COMPRESSION="$(get_value "ALLOWED_VALUES_COMPRESSION_$(printf '%s' "$OPTION_PACKAGE" | tr '[:lower:]' '[:upper:]')")"
+	# shellcheck disable=SC2034
+	DEFAULT_OPTION_COMPRESSION="$(get_value "DEFAULT_OPTION_COMPRESSION_$(printf '%s' "$OPTION_PACKAGE" | tr '[:lower:]' '[:upper:]')")"
+
+	# Set options not already set by script arguments to default values
+
+	for option in 'ARCHITECTURE' 'CHECKSUM' 'COMPRESSION' 'PREFIX'; do
+		if [ -z "$(get_value "OPTION_$option")" ]\
+		&& [ -n "$(get_value "DEFAULT_OPTION_$option")" ]; then
+			# shellcheck disable=SC2046
+			eval OPTION_$option=\"$(get_value "DEFAULT_OPTION_$option")\"
+			export OPTION_$option
+		fi
+	done
+
+	# Check other options values validity
+
 	for option in 'CHECKSUM' 'COMPRESSION' 'PACKAGE'; do
 		check_option_validity "$option"
 	done
-
-	# Do not allow bzip2 compression when building Debian packages
-
-	if
-		[ "$OPTION_PACKAGE" = 'deb' ] && \
-		[ "$OPTION_COMPRESSION" = 'bzip2' ]
-	then
-		print_error
-		case "${LANG%_*}" in
-			('fr')
-				# shellcheck disable=SC1112
-				string='Le mode de compression bzip2 n’est pas compatible avec la génération de paquets deb.'
-			;;
-			('en'|*)
-				string='bzip2 compression mode is not compatible with deb packages generation.'
-			;;
-		esac
-		printf '%s\n' "$string"
-		exit 1
-	fi
-
-	# Do not allow none compression when building Gentoo packages
-
-	if
-		[ "$OPTION_PACKAGE" = 'gentoo' ] && \
-		[ "$OPTION_COMPRESSION" = 'none' ]
-	then
-		print_error
-		case "${LANG%_*}" in
-			('fr')
-				# shellcheck disable=SC1112
-				string='Le mode de compression none n’est pas compatible avec la génération de paquets gentoo.'
-			;;
-			('en'|*)
-				string='none compression mode is not compatible with gentoo packages generation.'
-			;;
-		esac
-		printf '%s\n' "$string"
-		exit 1
-	fi
 
 	# Restrict packages list to target architecture
 
