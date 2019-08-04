@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190804.1
+script_version=20190804.2
 
 # Set game-specific variables
 
@@ -42,7 +42,7 @@ GAME_ID='war-for-the-overworld'
 GAME_NAME='War for the Overworld: Heart of Gold'
 
 ARCHIVE_GOG='war_for_the_overworld_heart_of_gold_2_0_7f1_30014.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/war_for_the_overworld_my_pet_dungeon'
+ARCHIVE_GOG_URL='https://www.gog.com/game/war_for_the_overworld_heart_of_gold'
 ARCHIVE_GOG_MD5='2d3555bfea2aafca9ff9e8eb7a970c0d'
 ARCHIVE_GOG_SIZE='1400'
 ARCHIVE_GOG_VERSION='2.0.7f1-gog30014'
