@@ -46,7 +46,7 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_COMPRESSION_ARCH='none gzip xz bzip2 zstd'
 	# shellcheck disable=SC2034
-	ALLOWED_VALUES_COMPRESSION_GENTOO='none gzip xz bzip2 zstd lz4 lzip lzop'
+	ALLOWED_VALUES_COMPRESSION_GENTOO='gzip xz bzip2 zstd lz4 lzip lzop'
 	# shellcheck disable=SC2034
 	ALLOWED_VALUES_PACKAGE='arch deb gentoo'
 
