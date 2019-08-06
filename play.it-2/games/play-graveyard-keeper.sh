@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190926.2
+script_version=20190926.3
 
 # Set game-specific variables
 
@@ -63,6 +63,8 @@ ARCHIVE_GAME_DATA_FILES='Graveyard?Keeper_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='Graveyard Keeper.x86'
 APP_MAIN_EXE_BIN64='Graveyard Keeper.x86_64'
 # shellcheck disable=SC2016
