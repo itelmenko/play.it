@@ -34,19 +34,31 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190926.3
+script_version=20190926.4
 
 # Set game-specific variables
 
 GAME_ID='graveyard-keeper'
 GAME_NAME='Graveyard Keeper'
 
-ARCHIVE_GOG='graveyard_keeper_1_122_25858.sh'
+ARCHIVE_GOG='graveyard_keeper_1_124v2_30010.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/graveyard_keeper'
-ARCHIVE_GOG_MD5='ad75b8ed2c4b74a763849918da672f5b'
+ARCHIVE_GOG_MD5='7d231af29281dcf9188508487dc2cbf4'
 ARCHIVE_GOG_SIZE='920000'
-ARCHIVE_GOG_VERSION='1.122-gog25858'
+ARCHIVE_GOG_VERSION='1.124.2-gog30010'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='graveyard_keeper_1_123_29391.sh'
+ARCHIVE_GOG_OLD1_MD5='409540bb23b6c26ad42fd85d9f5440ec'
+ARCHIVE_GOG_OLD1_SIZE='940000'
+ARCHIVE_GOG_OLD1_VERSION='1.123-gog29391'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='graveyard_keeper_1_122_25858.sh'
+ARCHIVE_GOG_OLD0_MD5='ad75b8ed2c4b74a763849918da672f5b'
+ARCHIVE_GOG_OLD0_SIZE='920000'
+ARCHIVE_GOG_OLD0_VERSION='1.122-gog25858'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
