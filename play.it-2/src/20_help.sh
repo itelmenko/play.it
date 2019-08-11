@@ -132,14 +132,14 @@ help_compression() {
 	local string_xz
 	case "${LANG%_*}" in
 		('fr')
-			string='Choix de la méthode de compression des paquets générés'
+			string='Choix de la méthode de compression des paquets générés (certaines options peuvent ne pas être disponible suivant le format de paquet choisi)'
 			string_none='pas de compression (méthode par défaut)'
 			string_gzip='compression gzip (rapide)'
 			string_xz='compression xz (plus lent mais plus efficace que gzip)'
 			string_bzip2='compression bzip2'
 		;;
 		('en'|*)
-			string='Generated packages compression method choice'
+			string='Generated packages compression method choice (some options may not be available depending on the chosen package format)'
 			string_none='no compression (default method)'
 			string_gzip='gzip compression (fast)'
 			string_xz='xz compression (slower but more efficient than gzip)'
