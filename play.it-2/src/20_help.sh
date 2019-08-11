@@ -137,6 +137,10 @@ help_compression() {
 			string_gzip='compression gzip (rapide)'
 			string_xz='compression xz (plus lent mais plus efficace que gzip)'
 			string_bzip2='compression bzip2'
+			string_zstd='compression zstd (environ aussi efficace que xz mais plus rapide à la décompression)'
+			string_lz4='compression lz4'
+			string_lzip='compression lzip'
+			string_lzop='compression lzop'
 		;;
 		('en'|*)
 			string='Generated packages compression method choice (some options may not be available depending on the chosen package format)'
@@ -144,15 +148,23 @@ help_compression() {
 			string_gzip='gzip compression (fast)'
 			string_xz='xz compression (slower but more efficient than gzip)'
 			string_bzip2='bzip2 compression'
+			string_zstd='zstd compression (roughly as efficient as xz but faster at decompression)'
+			string_lz4='lz4 compression'
+			string_lzip='lzip compression'
+			string_lzop='lzop compression'
 		;;
 	esac
-	printf -- '--compression=none|gzip|xz|bzip2\n'
-	printf -- '--compression none|gzip|xz|bzip2\n\n'
+	printf -- '--compression=none|gzip|xz|bzip2|zstd|lz4|lzip|lzop\n'
+	printf -- '--compression none|gzip|xz|bzip2|zstd|lz4|lzip|lzop\n\n'
 	printf '\t%s\n\n' "$string"
 	printf '\tnone\t%s\n' "$string_none"
 	printf '\tgzip\t%s\n' "$string_gzip"
 	printf '\txz\t%s\n' "$string_xz"
 	printf '\tbzip2\t%s\n' "$string_bzip2"
+	printf '\tzstd\t%s\n' "$string_zstd"
+	printf '\tlz4\t%s\n' "$string_lz4"
+	printf '\tlzip\t%s\n' "$string_lzip"
+	printf '\tlzop\t%s\n' "$string_lzop"
 }
 
 # display --prefix option usage
