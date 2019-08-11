@@ -357,6 +357,10 @@ pkg_build_arch() {
 			tar_options="$tar_options --bzip2"
 			pkg_filename="${pkg_filename}.bz2"
 		;;
+		('zstd')
+			tar_options="$tar_options --zstd"
+			pkg_filename="${pkg_filename}.zst"
+		;;
 		('none') ;;
 		(*)
 			liberror 'OPTION_COMPRESSION' 'pkg_build_arch'
