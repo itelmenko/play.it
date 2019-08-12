@@ -125,17 +125,46 @@ check_deps_innoextract() {
 # display a message if a required dependency is missing
 # USAGE: check_deps_error_not_found $command_name
 # CALLED BY: check_deps check_deps_7z
+# CALLS: dependencies_provided_by
 check_deps_error_not_found() {
+	local command_name
+	local provider
 	print_error
-	case "${LANG%_*}" in
-		('fr')
-			string='%s est introuvable. Installez-le avant de lancer ce script.\n'
-		;;
-		('en'|*)
-			string='%s not found. Install it before running this script.\n'
-		;;
-	esac
-	printf "$string" "$1"
+	command_name="$1"
+	provider="$(dependencies_provided_by "$command_name")"
+	if [ -n "$provider" ]; then
+		case "${LANG%_*}" in
+			('fr')
+				string='%s est introuvable. Installez %s avant de lancer ce script.\n'
+			;;
+			('en'|*)
+				string='%s not found. Install %s before running this script.\n'
+			;;
+		esac
+		printf "$string" "$command_name" "$provider"
+	else
+		case "${LANG%_*}" in
+			('fr')
+				string='%s est introuvable. Installez-le avant de lancer ce script.\n'
+			;;
+			('en'|*)
+				string='%s not found. Install it before running this script.\n'
+			;;
+		esac
+		printf "$string" "$command_name"
+	fi
 	return 1
 }
 
+# output what a command is provided by
+# USAGE: dependencies_provided_by $command
+# CALLED BY: check_deps_error_not_found
+dependencies_provided_by() {
+	local command
+	command="$1"
+	case "$command" in
+		('convert'|'identify')
+			printf 'ImageMagick/GraphicsMagick'
+		;;
+	esac
+}
