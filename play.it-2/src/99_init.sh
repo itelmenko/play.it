@@ -162,9 +162,9 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 		local name
 		name="$1"
 		local value
-		value="$(get_value "OPTION_$option")"
+		value="$(get_value "OPTION_$name")"
 		local allowed_values
-		allowed_values="$(get_value "ALLOWED_VALUES_$option")"
+		allowed_values="$(get_value "ALLOWED_VALUES_$name")"
 		for allowed_value in $allowed_values; do
 			if [ "$value" = "$allowed_value" ]; then
 				return 0
@@ -185,8 +185,8 @@ if [ "${0##*/}" != 'libplayit2.sh' ] && [ -z "$LIB_ONLY" ]; then
 				string2='Run the script with the option --%s=help to get a list of supported values.\n'
 			;;
 		esac
-		printf "$string1" "$value" "$(printf '%s' $option | tr '[:upper:]' '[:lower:]')"
-		printf "$string2" "$(printf '%s' $option | tr '[:upper:]' '[:lower:]')"
+		printf "$string1" "$value" "$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
+		printf "$string2" "$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
 		printf '\n'
 		exit 1
 	}
