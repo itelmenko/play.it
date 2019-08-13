@@ -1,6 +1,19 @@
+# print postinst messages as arch PKGBUILD format
+# USAGE: pkg_print_messages_postinst_arch
+# NEEDED vars: pkg
+# CALLED BY: pkg_write_arch
+pkg_print_messages_postinst_arch() {
+	printf "cat << 'EOF'\n"
+	get_value "${pkg}_POSTINST_INFO" | sed 's/^/         /'
+	printf '\n'
+	get_value "${pkg}_POSTINST_WARN" | sed 's/^/         /;1 s/^         /WARNING: /'
+	printf '\nEOF\n'
+}
+
 # write .pkg.tar package meta-data
 # USAGE: pkg_write_arch
 # NEEDED VARS: GAME_NAME PKG_DEPS_ARCH
+# CALLS: pkg_print_messages_postinst_arch
 # CALLED BY: write_metadata
 pkg_write_arch() {
 	local pkg_deps
@@ -18,6 +31,8 @@ pkg_write_arch() {
 	local target
 	target="$pkg_path/.PKGINFO"
 
+	export ${pkg?}_POSTINST_RUN="$(get_value "${pkg}_POSTINST_RUN")
+$(pkg_print_messages_postinst_arch)"
 	PKG="$pkg"
 	get_package_version
 
