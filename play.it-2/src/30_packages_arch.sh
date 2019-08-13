@@ -64,6 +64,7 @@ pkg_write_arch() {
 		[ -e "$postinst" ] && cat "$postinst" >> "$target"
 		[ -n "$(get_value "${pkg}_POSTINST_RUN")" ] && get_value "${pkg}_POSTINST_RUN" >> "$target"
 		cat >> "$target" <<- EOF
+
 		}
 
 		post_upgrade() {
