@@ -100,7 +100,7 @@ launcher_write_script_wine_prefix_build() {
 				        xterm -e winetricks $APP_WINETRICKS
 				EOF
 			;;
-			(*)
+			('gentoo')
 				cat >> "$file" <<-EOF
 				    elif command -v xterm >/dev/null; then
 				        xterm -e winetricks $APP_WINETRICKS
@@ -121,6 +121,9 @@ launcher_write_script_wine_prefix_build() {
 				    elif command -v sakura >/dev/null; then
 				        sakura -e winetricks $APP_WINETRICKS
 				EOF
+			;;
+			(*)
+				liberror 'OPTION_PACKAGE' 'launcher_write_script_wine_prefix_build'
 			;;
 		esac
 		cat >> "$file" <<- EOF
