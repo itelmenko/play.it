@@ -136,7 +136,7 @@ dependency_provided_by() {
 			provider='libarchive'
 		;;
 		('convert'|'identify')
-			provider='ImageMagick/GraphicsMagick'
+			provider='imagemagick'
 		;;
 		(*)
 			provider="$command"
