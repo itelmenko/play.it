@@ -244,15 +244,6 @@ pkg_set_deps_gentoo() {
 				pkg_dep='app-emulation/winetricks
 				|| (
 					x11-terms/xterm
-					x11-terms/st
-					x11-terms/alacritty
-					x11-terms/rxvt-unicode
-					lxde-base/lxterminal
-					x11-terms/eterm
-					x11-terms/multi-aterm
-					x11-terms/mlterm
-					x11-terms/sakura
-
 					gnome-extra/zenity
 					kde-apps/kdialog
 				)'

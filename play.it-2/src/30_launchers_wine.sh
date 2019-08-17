@@ -86,47 +86,8 @@ launcher_write_script_wine_prefix_build() {
 		cat >> "$file" <<- EOF
 		    if [ -t 0 ] || command -v zenity kdialog >/dev/null; then
 		        winetricks $APP_WINETRICKS
-		EOF
-		case "$OPTION_PACKAGE" in
-			('deb')
-				cat >> "$file" <<- EOF
-				    elif command -v x-terminal-emulator >/dev/null; then
-				        x-terminal-emulator -e winetricks $APP_WINETRICKS
-				EOF
-			;;
-			('arch')
-				cat >> "$file" <<- EOF
-				    elif command -v xterm >/dev/null; then
-				        xterm -e winetricks $APP_WINETRICKS
-				EOF
-			;;
-			('gentoo')
-				cat >> "$file" <<-EOF
-				    elif command -v xterm >/dev/null; then
-				        xterm -e winetricks $APP_WINETRICKS
-				    elif command -v st >/dev/null; then
-				        st -e winetricks $APP_WINETRICKS
-				    elif command -v alacritty >/dev/null; then
-				        alacritty -e winetricks $APP_WINETRICKS
-				    elif command -v urxvt >/dev/null; then
-				        urxvt -e winetricks $APP_WINETRICKS
-				    elif command -v lxterminal >/dev/null; then
-				        lxterminal -e winetricks $APP_WINETRICKS
-				    elif command -v Eterm >/dev/null; then
-				        Eterm -e winetricks $APP_WINETRICKS
-				    elif command -v multi-aterm >/dev/null; then
-				        multi-aterm -e winetricks $APP_WINETRICKS
-				    elif command -v mlterm >/dev/null; then
-				        mlterm -e winetricks $APP_WINETRICKS
-				    elif command -v sakura >/dev/null; then
-				        sakura -e winetricks $APP_WINETRICKS
-				EOF
-			;;
-			(*)
-				liberror 'OPTION_PACKAGE' 'launcher_write_script_wine_prefix_build'
-			;;
-		esac
-		cat >> "$file" <<- EOF
+		    elif command -v xterm >/dev/null; then
+		        xterm -e winetricks $APP_WINETRICKS
 		    else
 		        winetricks $APP_WINETRICKS
 		    fi
