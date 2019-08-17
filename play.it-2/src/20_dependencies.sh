@@ -80,7 +80,7 @@ check_deps_7z() {
 	elif command -v unar >/dev/null 2>&1; then
 		extract_7z() { unar -output-directory "$2" -force-overwrite -no-directory "$1"; }
 	else
-		error_dependency_not_found 'p7zip'
+		error_dependency_not_found '7zr'
 	fi
 }
 
@@ -129,6 +129,12 @@ dependency_provided_by() {
 	local command provider
 	command="$1"
 	case "$command" in
+		('7zr')
+			provider='p7zip'
+		;;
+		('bsdtar')
+			provider='libarchive'
+		;;
 		('convert'|'identify')
 			provider='ImageMagick/GraphicsMagick'
 		;;
