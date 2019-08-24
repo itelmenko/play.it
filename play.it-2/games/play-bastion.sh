@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Bastion
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20180929.7
+script_version=20190824.1
 
 # Set game-specific variables
 
@@ -103,7 +103,7 @@ PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -126,7 +126,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -143,7 +143,7 @@ icons_get_from_package 'APP_MAIN'
 # Write launchers
 
 for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	write_launcher 'APP_MAIN'
+	launchers_write 'APP_MAIN'
 done
 
 # Build package
