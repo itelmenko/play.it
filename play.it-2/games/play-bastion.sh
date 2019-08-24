@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190824.1
+script_version=20190824.2
 
 # Set game-specific variables
 
@@ -86,6 +86,8 @@ ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
 ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono*'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='Bastion.bin.x86'
 APP_MAIN_EXE_BIN64='Bastion.bin.x86_64'
 APP_MAIN_ICON='Bastion.bmp'
