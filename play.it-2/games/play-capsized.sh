@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20190927.3
+script_version=20190927.4
 
 # Set game-specific variables
 
@@ -49,24 +49,38 @@ ARCHIVE_GOG_SIZE='670000'
 ARCHIVE_GOG_VERSION='1.0-gog2.0.0.2'
 ARCHIVE_GOG_TYPE='mojosetup'
 
-ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='*'
+ARCHIVE_HUMBLE='capsized-12212015-bin'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/capsized'
+ARCHIVE_HUMBLE_MD5='10515ca5f73e38151e17766cba97f3ed'
+ARCHIVE_HUMBLE_SIZE='650000'
+ARCHIVE_HUMBLE_VERSION='1.0-humble151221'
+ARCHIVE_HUMBLE_TYPE='mojosetup'
 
-ARCHIVE_GAME_BIN32_PATH='data/noarch/game'
+ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
+ARCHIVE_DOC0_DATA_PATH_HUMBLE='data'
+ARCHIVE_DOC0_DATA_FILES='Linux.README'
+
+ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
+ARCHIVE_DOC1_DATA_FILES_GOG='*'
+
+ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
 ARCHIVE_GAME_BIN32_FILES='NePlusUltra.bin.x86 lib'
 
-ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
+ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
 ARCHIVE_GAME_BIN64_FILES='NePlusUltra.bin.x86_64 lib64'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='*.config *.dll Capsized Capsized.bmp Content Linux.README NePlusUltra.exe de es fr it mono'
+ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
+ARCHIVE_GAME_DATA_FILES='*.config *.dll Capsized.bmp Content NePlusUltra.exe de es fr it mono'
 
 APP_MAIN_TYPE='native'
 # shellcheck disable=SC2016
 APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='NePlusUltra.bin.x86'
 APP_MAIN_EXE_BIN64='NePlusUltra.bin.x86_64'
-APP_MAIN_ICON='data/noarch/support/icon.png'
+APP_MAIN_ICON='Capsized.bmp'
 
 PACKAGES_LIST='PKG_DATA PKG_BIN32 PKG_BIN64'
 
@@ -111,12 +125,12 @@ fi
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
+rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Extract icon
 
 PKG='PKG_DATA'
-icons_get_from_workdir 'APP_MAIN'
-rm --recursive "$PLAYIT_WORKDIR/gamedata"
+icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
