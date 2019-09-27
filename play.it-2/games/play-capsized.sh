@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20190927.1
+script_version=20190927.2
 
 # Set game-specific variables
 
@@ -62,6 +62,8 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='*.config *.dll Capsized Capsized.bmp Content Linux.README NePlusUltra.exe de es fr it mono'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
 APP_MAIN_EXE_BIN32='NePlusUltra.bin.x86'
 APP_MAIN_EXE_BIN64='NePlusUltra.bin.x86_64'
 APP_MAIN_ICON='data/noarch/support/icon.png'
