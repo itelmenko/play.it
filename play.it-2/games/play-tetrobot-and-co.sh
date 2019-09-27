@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20190927.2
+script_version=20190927.3
 
 # Set game-specific variables
 
@@ -47,6 +47,11 @@ ARCHIVE_GOG_URL='https://www.gog.com/game/tetrobot-and-co'
 ARCHIVE_GOG_MD5='2ad2969e64e19d5753f8822e407c148c'
 ARCHIVE_GOG_SIZE='530000'
 ARCHIVE_GOG_VERSION='1.2.1-gog2.1.0.6'
+
+ARCHIVE_GOG_OLD0='gog_tetrobot_and_co_2.1.0.5.sh'
+ARCHIVE_GOG_OLD0_MD5='7d75f9813e1ec154158875c8e69e9dc8'
+ARCHIVE_GOG_OLD0_SIZE='530000'
+ARCHIVE_GOG_OLD0_VERSION='1.2.1-gog2.1.0.5'
 
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
 ARCHIVE_DOC_DATA_FILES='*'
