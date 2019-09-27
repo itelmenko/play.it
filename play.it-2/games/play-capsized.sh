@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20190927.2
+script_version=20190927.3
 
 # Set game-specific variables
 
@@ -74,7 +74,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID freetype libstdc++ libxrandr sdl2 theora vorbis xcursor xrandr"
+PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glx alsa openal vorbis theora libudev1"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
