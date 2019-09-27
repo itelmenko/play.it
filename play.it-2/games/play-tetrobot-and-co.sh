@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to dev+playit@indigo.re
 ###
 
-script_version=20190927.1
+script_version=20190927.2
 
 # Set game-specific variables
 
@@ -67,7 +67,10 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glu glx libstdc++ xcursor"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu glx xcursor"
+PKG_BIN_DEPS_ARCH='lib32-libx11 lib32-libxext lib32-gcc-libs'
+PKG_BIN_DEPS_DEB='libx11-6, libxext6, libgcc1'
+PKG_BIN_DEPS_GENTOO='x11-libs/libX11[abi_x86_32] x11-libs/libXext[abi_x86_32] sys-devel/gcc[abi_x86_32]'
 
 # Load common functions
 
