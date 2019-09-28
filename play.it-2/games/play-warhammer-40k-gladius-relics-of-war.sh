@@ -34,19 +34,55 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190719.3
+script_version=20190928.1
 
 # Set game-specific variables
 
 GAME_ID='warhammer-40k-gladius-relics-of-war'
 GAME_NAME='Warhammer 40,000: Gladius - Relics of War'
 
-ARCHIVE_GOG='warhammer_40_000_gladius_relics_of_war_1_03_00_31042.sh'
+ARCHIVE_GOG='warhammer_40_000_gladius_relics_of_war_1_03_07_32417.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/warhammer_40000_gladius_relics_of_war'
-ARCHIVE_GOG_MD5='c169fb5b60a2bf04a0e0ae625d53239b'
+ARCHIVE_GOG_MD5='c7b2c3399b54c40b52f8355460f9f95d'
 ARCHIVE_GOG_SIZE='2000000'
-ARCHIVE_GOG_VERSION='1.3.0-gog31042'
+ARCHIVE_GOG_VERSION='1.3.7-gog32417'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD5='warhammer_40_000_gladius_relics_of_war_1_03_05_31840.sh'
+ARCHIVE_GOG_OLD5_MD5='3d44bb09b3beee7ea34e17b621f9ff03'
+ARCHIVE_GOG_OLD5_SIZE='2000000'
+ARCHIVE_GOG_OLD5_VERSION='1.3.5-gog31840'
+ARCHIVE_GOG_OLD5_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD4='warhammer_40_000_gladius_relics_of_war_1_03_04_06_31598.sh'
+ARCHIVE_GOG_OLD4_MD5='fa36d050eb352b52082beea3ef414324'
+ARCHIVE_GOG_OLD4_SIZE='2000000'
+ARCHIVE_GOG_OLD4_VERSION='1.3.4-gog31598'
+ARCHIVE_GOG_OLD4_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD3='warhammer_40_000_gladius_relics_of_war_1_03_03_31235.sh'
+ARCHIVE_GOG_OLD3_MD5='6e80aca35b75153c5c469584edf332fa'
+ARCHIVE_GOG_OLD3_SIZE='2000000'
+ARCHIVE_GOG_OLD3_VERSION='1.3.3-gog31235'
+ARCHIVE_GOG_OLD3_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD2='warhammer_40_000_gladius_relics_of_war_1_03_02a_31191.sh'
+ARCHIVE_GOG_OLD2_MD5='365ed8bc91dae2e38d2fe075601f372c'
+ARCHIVE_GOG_OLD2_SIZE='2000000'
+ARCHIVE_GOG_OLD2_VERSION='1.3.2-gog31191'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD1='warhammer_40_000_gladius_relics_of_war_1_03_01_31091.sh'
+ARCHIVE_GOG_OLD1_MD5='57d2c488752a9bf1fd24843b232db78b'
+ARCHIVE_GOG_OLD1_SIZE='2000000'
+ARCHIVE_GOG_OLD1_VERSION='1.3.1-gog31091'
+ARCHIVE_GOG_OLD1_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD0='warhammer_40_000_gladius_relics_of_war_1_03_00_31042.sh'
+ARCHIVE_GOG_OLD0_MD5='c169fb5b60a2bf04a0e0ae625d53239b'
+ARCHIVE_GOG_OLD0_SIZE='2000000'
+ARCHIVE_GOG_OLD0_VERSION='1.3.0-gog31042'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN_FILES='Binaries/Linux-x86_64/Gladius.bin Binaries/Linux-x86_64/libjpeg.so.8 Binaries/Linux-x86_64/libsteam_api.so Binaries/Linux-x86_64/libboost_system.so.1.65.1'
