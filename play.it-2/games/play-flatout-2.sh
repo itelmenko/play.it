@@ -34,27 +34,24 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190720.2
+script_version=20190928.1
 
 # Set game-specific variables
 
 GAME_ID='flatout-2'
 GAME_NAME='FlatOut 2'
 
-ARCHIVES_LIST='ARCHIVE_GOG_EN ARCHIVE_GOG_INTL ARCHIVE_GOG_OLD0'
+ARCHIVE_GOG='flatout_2_gog_3_23461.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/flatout_2'
+ARCHIVE_GOG_TYPE='mojosetup'
+ARCHIVE_GOG_MD5='5529dcd679eae03f23d9807efd22a182'
+ARCHIVE_GOG_VERSION='1.2-gog23461'
+ARCHIVE_GOG_SIZE='3800000'
 
-ARCHIVE_GOG_EN='flatout_2_gog_3_23461.sh'
-ARCHIVE_GOG_EN_URL='https://www.gog.com/game/flatout_2'
-ARCHIVE_GOG_EN_TYPE='mojosetup'
-ARCHIVE_GOG_EN_MD5='5529dcd679eae03f23d9807efd22a182'
-ARCHIVE_GOG_EN_VERSION='1.2-gog23461'
-ARCHIVE_GOG_EN_SIZE='3800000'
-
-ARCHIVE_GOG_INTL='gog_flatout_2_2.1.0.6.sh'
-ARCHIVE_GOG_INTL_URL='https://www.gog.com/game/flatout_2'
-ARCHIVE_GOG_INTL_MD5='77cbd07105aa202ef808edebda15833a'
-ARCHIVE_GOG_INTL_VERSION='1.2-gog2.1.0.6'
-ARCHIVE_GOG_INTL_SIZE='3400000'
+ARCHIVE_GOG_OLD1='gog_flatout_2_2.1.0.6.sh'
+ARCHIVE_GOG_OLD1_MD5='77cbd07105aa202ef808edebda15833a'
+ARCHIVE_GOG_OLD1_VERSION='1.2-gog2.1.0.6'
+ARCHIVE_GOG_OLD1_SIZE='3400000'
 
 ARCHIVE_GOG_OLD0='gog_flatout_2_2.0.0.4.sh'
 ARCHIVE_GOG_OLD0_MD5='cdc453f737159ac62bd9f59540002610'
