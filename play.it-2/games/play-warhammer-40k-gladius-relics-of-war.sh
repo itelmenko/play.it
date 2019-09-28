@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190928.1
+script_version=20190928.2
 
 # Set game-specific variables
 
@@ -85,12 +85,13 @@ ARCHIVE_GOG_OLD0_VERSION='1.3.0-gog31042'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='Binaries/Linux-x86_64/Gladius.bin Binaries/Linux-x86_64/libjpeg.so.8 Binaries/Linux-x86_64/libsteam_api.so Binaries/Linux-x86_64/libboost_system.so.1.65.1'
+ARCHIVE_GAME_BIN_FILES='Binaries/Linux-x86_64/Gladius.bin Binaries/Linux-x86_64/libjpeg.so.8 Binaries/Linux-x86_64/libsteam_api.so Binaries/Linux-x86_64/libboost* Binaries/Linux-x86_64/libicu*'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='*.doc *.pdf Data Documents Manuals Resources'
 
 APP_MAIN_TYPE='native_no-prefix'
+APP_MAIN_LIBS='Binaries/Linux-x86_64'
 APP_MAIN_EXE='Binaries/Linux-x86_64/Gladius.bin'
 APP_MAIN_ICON='Data/Video/Textures/Icon.png'
 
