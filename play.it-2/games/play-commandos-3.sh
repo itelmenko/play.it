@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190927.2
+script_version=20190927.3
 
 # Set game-specific variables
 
@@ -59,7 +59,7 @@ ARCHIVE_GAME_DATA_FILES='*.pck directplay.cmd data output'
 
 CONFIG_DIRS='./output'
 
-APP_WINETRICKS='d3dx9_42'
+APP_WINETRICKS="vd=\$(xrandr|awk '/\\*/ {print \$1}') d3dx9_42"
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='commandos3.exe'
@@ -71,7 +71,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks glx"
+PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks glx xrandr"
 
 # Load common functions
 
