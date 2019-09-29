@@ -1,8 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
-# Copyright (c) 2015-2017, Antoine Le Gonidec
+# Copyright (c) 2015-2019, Antoine Le Gonidec
+# Copyright (c) 2017-2019, Jacek Szafarkiewicz
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,24 +31,22 @@ set -o errexit
 
 ###
 # Commandos 3: Destination Berlin
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190126
+script_version=20190927.1
 
 # Set game-specific variables
 
-GAME_ID='commandos3'
+GAME_ID='commandos-3'
 GAME_NAME='Commandos 3: Destination Berlin'
 
-ARCHIVES_LIST='ARCHIVE_GOG'
-
 ARCHIVE_GOG='setup_commandos_3_-_destination_berlin_1.42_hotfix2_(25143).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/commandos_2_3'
 ARCHIVE_GOG_MD5='2fa1ad6e7c7e918bdaa1adee5bb3a0ec'
 ARCHIVE_GOG_VERSION='1.42-gog25143'
-ARCHIVE_GOG_SIZE='20000000'
-ARCHIVE_GOG_TYPE='innosetup'
+ARCHIVE_GOG_SIZE='2100000'
 
 ARCHIVE_DOC_DATA_PATH='.'
 ARCHIVE_DOC_DATA_FILES='*.pdf eula.txt readme.rtf support.txt'
@@ -58,14 +57,13 @@ ARCHIVE_GAME_BIN_FILES='*.dll *.exe'
 ARCHIVE_GAME_DATA_PATH='.'
 ARCHIVE_GAME_DATA_FILES='*.pck directplay.cmd data output'
 
-CONFIG_DIRS='output'
+CONFIG_DIRS='./output'
 
 APP_WINETRICKS='d3dx9_42'
 
 APP_MAIN_TYPE='wine'
 APP_MAIN_EXE='commandos3.exe'
 APP_MAIN_ICON='commandos3.exe'
-APP_MAIN_ICON_RES='32'
 
 PACKAGES_LIST='PKG_BIN PKG_DATA'
 
@@ -73,11 +71,11 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID winetricks wine"
+PKG_BIN_DEPS="$PKG_DATA_ID wine winetricks"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -100,7 +98,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -117,7 +115,7 @@ icons_get_from_package 'APP_MAIN'
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
