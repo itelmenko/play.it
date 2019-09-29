@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -31,11 +31,11 @@ set -o errexit
 
 ###
 # Prison Architect
-# build native Linux packages from the original installers
+# build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190823.1
+script_version=20190929.1
 
 # Set game-specific variables
 
@@ -45,7 +45,7 @@ GAME_NAME='Prison Architect'
 ARCHIVE_GOG='prison_architect_clink_1_02_30664.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/prison_architect'
 ARCHIVE_GOG_MD5='f261f6121e3fe9ae5023624098d3946d'
-ARCHIVE_GOG_VERSION='1.0-gog30664'
+ARCHIVE_GOG_VERSION='1.02-gog30664'
 ARCHIVE_GOG_SIZE='390000'
 ARCHIVE_GOG_TYPE='mojosetup'
 
@@ -56,33 +56,26 @@ ARCHIVE_HUMBLE_VERSION='1.02-humble'
 ARCHIVE_HUMBLE_SIZE='390000'
 ARCHIVE_HUMBLE_TYPE='tar.gz'
 
-ARCHIVE_HUMBLE_OLD='prisonarchitect-update13f-linux.tar.gz'
-ARCHIVE_HUMBLE_OLD_MD5='3dfde5ad652effbbfe72878287cefbce'
-ARCHIVE_HUMBLE_OLD_VERSION='1.0-humble13f'
-ARCHIVE_HUMBLE_OLD_SIZE='370000'
-ARCHIVE_HUMBLE_OLD_TYPE='tar.gz'
-
 ARCHIVE_DOC_DATA_PATH='data/noarch/docs'
-ARCHIVE_DOC_DATA_FILES='./*.txt'
+ARCHIVE_DOC_DATA_FILES='*.txt'
 
 ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN32_PATH_HUMBLE='prisonarchitect-clink_1.0-linux'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE_OLD='prisonarchitect-update13f-linux'
-ARCHIVE_GAME_BIN32_FILES='./PrisonArchitect.i686 lib/libpops_api.so'
+ARCHIVE_GAME_BIN32_FILES='PrisonArchitect.i686 lib/libpops_api.so'
 
 ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
 ARCHIVE_GAME_BIN64_PATH_HUMBLE='prisonarchitect-clink_1.0-linux'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE_OLD='prisonarchitect-update13f-linux'
-ARCHIVE_GAME_BIN64_FILES='./PrisonArchitect.x86_64 lib64/libpops_api.so'
+ARCHIVE_GAME_BIN64_FILES='PrisonArchitect.x86_64 lib64/libpops_api.so'
 
-ARCHIVE_GAME_DATA_PATH='data/noarch/game'
+ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
+ARCHIVE_GAME_DATA_PATH_HUMBLE='prisonarchitect-clink_1.0-linux'
 ARCHIVE_GAME_DATA_FILES='*.dat'
 
 APP_MAIN_TYPE='native'
 APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE_BIN32='PrisonArchitect.i686'
 APP_MAIN_EXE_BIN64='PrisonArchitect.x86_64'
-APP_MAIN_ICON='data/noarch/support/icon.png'
+APP_MAIN_ICON_GOG='data/noarch/support/icon.png'
 
 PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
 
@@ -91,56 +84,56 @@ PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
 PKG_BIN32_DEPS="$PKG_DATA_ID glibc glx glu sdl2 libstdc++"
-PKG_BIN32_DEPS_DEB='libuuid1 zlib1g'
-PKG_BIN32_DEPS_DEB_HUMBLE_OLD=''
+PKG_BIN32_DEPS_DEB='libuuid1, zlib1g'
 PKG_BIN32_DEPS_ARCH='libutil-linux zlib'
-PKG_BIN32_DEPS_ARCH_HUMBLE_OLD=''
 PKG_BIN32_DEPS_GENTOO='sys-apps/util-linux[abi_x86_32] sys-libs/zlib[abi_x86_32]'
-PKG_BIN32_DEPS_GENTOO_HUMBLE_OLD=''
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
 PKG_BIN64_DEPS_DEB="$PKG_BIN32_DEPS_DEB"
-PKG_BIN64_DEPS_DEB_HUMBLE_OLD="$PKG_BIN32_DEPS_DEB_HUMBLE_OLD"
 PKG_BIN64_DEPS_ARCH='lib32-util-linux lib32-zlib'
-PKG_BIN64_DEPS_ARCH_HUMBLE_OLD=''
 PKG_BIN64_DEPS_GENTOO='sys-apps/util-linux sys-libs/zlib'
-PKG_BIN64_DEPS_GENTOO_HUMBLE_OLD=''
 
 # Load common functions
 
 target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
-	[ -n "$XDG_DATA_HOME" ] || XDG_DATA_HOME="$HOME/.local/share"
+	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
 	for path in\
-		'./'\
-		"$XDG_DATA_HOME/play.it/"\
-		"$XDG_DATA_HOME/play.it/play.it-2/lib/"\
-		'/usr/local/share/games/play.it/'\
-		'/usr/local/share/play.it/'\
-		'/usr/share/games/play.it/'\
-		'/usr/share/play.it/'
+		"$PWD"\
+		"$XDG_DATA_HOME/play.it"\
+		'/usr/local/share/games/play.it'\
+		'/usr/local/share/play.it'\
+		'/usr/share/games/play.it'\
+		'/usr/share/play.it'
 	do
-		if [ -z "$PLAYIT_LIB2" ] && [ -e "$path/libplayit2.sh" ]; then
+		if [ -e "$path/libplayit2.sh" ]; then
 			PLAYIT_LIB2="$path/libplayit2.sh"
 			break
 		fi
 	done
-	if [ -z "$PLAYIT_LIB2" ]; then
-		printf '\n\033[1;31mError:\033[0m\n'
-		printf 'libplayit2.sh not found.\n'
-		exit 1
-	fi
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+if [ -z "$PLAYIT_LIB2" ]; then
+	printf '\n\033[1;31mError:\033[0m\n'
+	printf 'libplayit2.sh not found.\n'
+	exit 1
+fi
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
-icons_get_from_workdir 'APP_MAIN'
+
+# Get game icon
+
+PKG='PKG_DATA'
+use_archive_specific_value 'APP_MAIN_ICON'
+if [ -n "$APP_MAIN_ICON" ]; then
+	icons_get_from_workdir 'APP_MAIN'
+fi
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
 # Write launchers
@@ -151,8 +144,7 @@ done
 
 # Build package
 
-PKG='PKG_DATA'
-write_metadata 'PKG_DATA' 'PKG_BIN32' 'PKG_BIN64'
+write_metadata
 build_pkg
 
 # Clean up
