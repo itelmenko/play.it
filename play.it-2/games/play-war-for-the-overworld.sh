@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -34,19 +34,25 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20181121.1
+script_version=20190730.2
 
 # Set game-specific variables
 
 GAME_ID='war-for-the-overworld'
 GAME_NAME='War for the Overworld'
 
-ARCHIVE_GOG='war_for_the_overworld_2_0_6f1_24637.sh'
+ARCHIVE_GOG='war_for_the_overworld_2_0_7f1_30014.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/war_for_the_overworld'
-ARCHIVE_GOG_MD5='e58f2720ed974185e9e5b29d08aa6238'
+ARCHIVE_GOG_MD5='a352307c8fbf70c33bdfdd97a82c6530'
 ARCHIVE_GOG_SIZE='4700000'
-ARCHIVE_GOG_VERSION='2.0.6f1-gog24637'
+ARCHIVE_GOG_VERSION='2.0.7f1-gog30014'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD7='war_for_the_overworld_2_0_6f1_24637.sh'
+ARCHIVE_GOG_OLD7_MD5='e58f2720ed974185e9e5b29d08aa6238'
+ARCHIVE_GOG_OLD7_SIZE='4700000'
+ARCHIVE_GOG_OLD7_VERSION='2.0.6f1-gog24637'
+ARCHIVE_GOG_OLD7_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD6='war_for_the_overworld_2_0_5_24177.sh'
 ARCHIVE_GOG_OLD6_MD5='79b604f0d19caf3af5fdc4cb3903b370'
@@ -132,7 +138,7 @@ PKG_BIN_DEPS_GOG_OLD3="$PKG_BIN_DEPS_HUMBLE"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -155,7 +161,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -163,6 +169,11 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
+
+# Get icon
+
+PKG='PKG_DATA'
+icons_get_from_package 'APP_MAIN'
 
 # Tweaks for old versions
 
@@ -189,15 +200,12 @@ done
 PKG='PKG_BIN'
 use_archive_specific_value 'APP_MAIN_EXE'
 use_archive_specific_value 'APP_MAIN_ICON'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Build packages
 
 use_archive_specific_value 'PKG_BIN_DEPS'
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN'
+write_metadata
 build_pkg
 
 # Clean up

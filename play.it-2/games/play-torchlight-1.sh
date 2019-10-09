@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
-# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,78 +29,66 @@ set -o errexit
 ###
 
 ###
-# Bastion
+# Torchlight
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190824.2
+script_version=20190221.1
 
 # Set game-specific variables
 
-GAME_ID='bastion'
-GAME_NAME='Bastion'
+GAME_ID='torchlight-1'
+GAME_NAME='Torchlight'
 
-ARCHIVE_GOG='bastion_1_50436_29_08_2018_23317.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/bastion'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='73c6b33c23232597bec30f211a46f73d'
-ARCHIVE_GOG_SIZE='1400000'
-ARCHIVE_GOG_VERSION='1.50436.20180829-gog23317'
+ARCHIVE_GOG='setup_torchlight_1.15(a)_(23675).exe'
+ARCHIVE_GOG_URL='https://www.gog.com/game/torchlight'
+ARCHIVE_GOG_MD5='a29e51f55aae740f4046d227d33fa64b'
+ARCHIVE_GOG_VERSION='1.15-gog23675'
+ARCHIVE_GOG_SIZE='460000'
+ARCHIVE_GOG_TYPE='innosetup'
 
-ARCHIVE_GOG_OLD1='bastion_en_1_50436_23291.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='59c2bbcf43cd9ba243d5fa1baa4a4b48'
-ARCHIVE_GOG_OLD1_SIZE='1400000'
-ARCHIVE_GOG_OLD1_VERSION='1.50436-gog23291'
+ARCHIVE_GOG_OLD0='setup_torchlight_2.0.0.12.exe'
+ARCHIVE_GOG_OLD0_MD5='4b721e1b3da90f170d66f42e60a3fece'
+ARCHIVE_GOG_OLD0_VERSION='1.15-gog2.0.0.12'
+ARCHIVE_GOG_OLD0_SIZE='460000'
 
-ARCHIVE_GOG_OLD0='gog_bastion_2.0.0.1.sh'
-ARCHIVE_GOG_OLD0_MD5='e5e6eefb4885b67abcfa201b1b3a9c48'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.2.20161020-gog2.0.0.1'
+ARCHIVE_DOC0_DATA_PATH='tmp'
+ARCHIVE_DOC0_DATA_FILES='*.txt'
 
-ARCHIVE_HUMBLE='bastion-10162016-bin'
-ARCHIVE_HUMBLE_MD5='19fea173ff2da0f990f60bd5e7c3b237'
-ARCHIVE_HUMBLE_SIZE='1300000'
-ARCHIVE_HUMBLE_VERSION='1.2.20161020-humble161019'
-ARCHIVE_HUMBLE_TYPE='mojosetup'
+ARCHIVE_DOC1_DATA_PATH='.'
+ARCHIVE_DOC1_DATA_FILES='*.pdf'
+# Keep comaptibility with old archives
+ARCHIVE_DOC1_DATA_PATH_GOG_OLD0='app'
 
-ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_DOC0_DATA_PATH_HUMBLE='data'
-ARCHIVE_DOC0_DATA_FILES='Linux.README'
+ARCHIVE_GAME_BIN_PATH='.'
+ARCHIVE_GAME_BIN_FILES='torchlight.exe *.cfg *.dll'
+# Keep comaptibility with old archives
+ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
-ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC1_DATA_FILES='*'
+ARCHIVE_GAME_DATA_PATH='.'
+ARCHIVE_GAME_DATA_FILES='buildver.txt runicgames.ico torchlight.ico logo.bmp pak.zip icons music programs'
+# Keep comaptibility with old archives
+ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
 
-ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN32_FILES='Bastion.bin.x86 lib'
+DATA_DIRS='./userdata'
 
-ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN64_FILES='Bastion.bin.x86_64 lib64'
+APP_MAIN_TYPE='wine'
+APP_MAIN_EXE='torchlight.exe'
+APP_MAIN_ICON='torchlight.ico'
 
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
-ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono*'
-
-APP_MAIN_TYPE='native'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
-APP_MAIN_EXE_BIN32='Bastion.bin.x86'
-APP_MAIN_EXE_BIN64='Bastion.bin.x86_64'
-APP_MAIN_ICON='Bastion.bmp'
-
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_DATA'
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+# Easier upgrade from packages generated with pre-20181021.2 scripts
+PKG_DATA_PROVIDE='torchlight-data'
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glx libudev1"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ID="$GAME_ID"
+PKG_BIN_ARCH='32'
+PKG_BIN_DEPS="$PKG_DATA_ID wine xcursor glx"
+# Easier upgrade from packages generated with pre-20181021.2 scripts
+PKG_BIN_PROVIDE='torchlight'
 
 # Load common functions
 
@@ -137,16 +124,27 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icon
+# Extract icons
 
 PKG='PKG_DATA'
 icons_get_from_package 'APP_MAIN'
 
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	launchers_write 'APP_MAIN'
-done
+PKG='PKG_BIN'
+launcher_write 'APP_MAIN'
+
+# Store saved games and settings outside of WINE prefix
+
+# shellcheck disable=SC2016
+saves_path='$WINEPREFIX/drive_c/users/$(whoami)/Application Data/runic games/torchlight'
+# shellcheck disable=SC2016
+pattern='s#init_prefix_dirs "$PATH_DATA" "$DATA_DIRS"#&'
+pattern="$pattern\\nif [ ! -e \"$saves_path\" ]; then"
+pattern="$pattern\\n\\tmkdir --parents \"${saves_path%/*}\""
+pattern="$pattern\\n\\tln --symbolic \"\$PATH_DATA/userdata\" \"$saves_path\""
+pattern="$pattern\\nfi#"
+sed --in-place "$pattern" "${PKG_BIN_PATH}${PATH_BIN}"/*
 
 # Build package
 

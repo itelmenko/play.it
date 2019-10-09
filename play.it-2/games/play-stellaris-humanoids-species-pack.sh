@@ -3,7 +3,6 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
-# Copyright (c) 2016-2019, Solène "Mopi" Huault
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,78 +29,38 @@ set -o errexit
 ###
 
 ###
-# Bastion
+# Stellaris - Humanoids Species Pack
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190824.2
+script_version=20190705.1
 
 # Set game-specific variables
 
-GAME_ID='bastion'
-GAME_NAME='Bastion'
+GAME_ID='stellaris'
+GAME_NAME='Stellaris - Humanoids Species Pack'
 
-ARCHIVE_GOG='bastion_1_50436_29_08_2018_23317.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/bastion'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='73c6b33c23232597bec30f211a46f73d'
-ARCHIVE_GOG_SIZE='1400000'
-ARCHIVE_GOG_VERSION='1.50436.20180829-gog23317'
+ARCHIVE_GOG='stellaris_humanoids_species_pack_2_3_3_30733.sh'
+ARCHIVE_GOG_URL='https://www.gog.com/game/stellaris_humanoids_species_pack'
+ARCHIVE_GOG_MD5='4dbdb3b43bfea5a54bb17a03caae8af1'
+ARCHIVE_GOG_SIZE='120000'
+ARCHIVE_GOG_VERSION='2.3.3-gog30733'
+ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD1='bastion_en_1_50436_23291.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='59c2bbcf43cd9ba243d5fa1baa4a4b48'
-ARCHIVE_GOG_OLD1_SIZE='1400000'
-ARCHIVE_GOG_OLD1_VERSION='1.50436-gog23291'
+ARCHIVE_GOG_OLD0='stellaris_humanoids_species_pack_2_3_2_1_30253.sh'
+ARCHIVE_GOG_OLD0_MD5='43492dcd83d7a43cd81593ae1a3110e4'
+ARCHIVE_GOG_OLD0_SIZE='120000'
+ARCHIVE_GOG_OLD0_VERSION='2.3.2.1-gog30253'
+ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD0='gog_bastion_2.0.0.1.sh'
-ARCHIVE_GOG_OLD0_MD5='e5e6eefb4885b67abcfa201b1b3a9c48'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.2.20161020-gog2.0.0.1'
+ARCHIVE_GAME_MAIN_PATH='data/noarch/game'
+ARCHIVE_GAME_MAIN_FILES='dlc/dlc018_humanoids'
 
-ARCHIVE_HUMBLE='bastion-10162016-bin'
-ARCHIVE_HUMBLE_MD5='19fea173ff2da0f990f60bd5e7c3b237'
-ARCHIVE_HUMBLE_SIZE='1300000'
-ARCHIVE_HUMBLE_VERSION='1.2.20161020-humble161019'
-ARCHIVE_HUMBLE_TYPE='mojosetup'
+PACKAGES_LIST='PKG_MAIN'
 
-ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_DOC0_DATA_PATH_HUMBLE='data'
-ARCHIVE_DOC0_DATA_FILES='Linux.README'
-
-ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC1_DATA_FILES='*'
-
-ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN32_FILES='Bastion.bin.x86 lib'
-
-ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN64_FILES='Bastion.bin.x86_64 lib64'
-
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
-ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono*'
-
-APP_MAIN_TYPE='native'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
-APP_MAIN_EXE_BIN32='Bastion.bin.x86'
-APP_MAIN_EXE_BIN64='Bastion.bin.x86_64'
-APP_MAIN_ICON='Bastion.bmp'
-
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
-
-PKG_DATA_ID="${GAME_ID}-data"
-PKG_DATA_DESCRIPTION='data'
-
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glx libudev1"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_MAIN_ID="${GAME_ID}-humanoids-species-pack"
+PKG_MAIN_DEPS="$GAME_ID"
 
 # Load common functions
 
@@ -136,17 +95,6 @@ fi
 extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
-
-# Extract icon
-
-PKG='PKG_DATA'
-icons_get_from_package 'APP_MAIN'
-
-# Write launchers
-
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	launchers_write 'APP_MAIN'
-done
 
 # Build package
 

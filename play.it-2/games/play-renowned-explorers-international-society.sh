@@ -35,19 +35,37 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190619.1
+script_version=20190619.2
 
 # Set game-specific variables
 
 GAME_ID='renowned-explorers-international-society'
 GAME_NAME='Renowned Explorers: International Society'
 
-ARCHIVE_GOG='renowned_explorers_international_society_512_25169.sh'
+ARCHIVE_GOG='renowned_explorers_international_society_522_26056.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/renowned_explorers'
-ARCHIVE_GOG_MD5='3f2eb242da5200a78c53162d152a3cac'
-ARCHIVE_GOG_SIZE='1100000'
-ARCHIVE_GOG_VERSION='512-gog25169'
+ARCHIVE_GOG_MD5='fe38ae1c4dc2607923cc2a60019bff38'
+ARCHIVE_GOG_SIZE='1200000'
+ARCHIVE_GOG_VERSION='522-gog26056'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD8='renowned_explorers_international_society_520_25983.sh'
+ARCHIVE_GOG_OLD8_MD5='2af1dedb29ac1b929971cc0912722760'
+ARCHIVE_GOG_OLD8_SIZE='1200000'
+ARCHIVE_GOG_OLD8_VERSION='520-gog25983'
+ARCHIVE_GOG_OLD8_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD7='renowned_explorers_international_society_516_25864.sh'
+ARCHIVE_GOG_OLD7_MD5='d868d4b76613b93a94650b750a52752f'
+ARCHIVE_GOG_OLD7_SIZE='1200000'
+ARCHIVE_GOG_OLD7_VERSION='516-gog25864'
+ARCHIVE_GOG_OLD7_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD6='renowned_explorers_international_society_512_25169.sh'
+ARCHIVE_GOG_OLD6_MD5='3f2eb242da5200a78c53162d152a3cac'
+ARCHIVE_GOG_OLD6_SIZE='1100000'
+ARCHIVE_GOG_OLD6_VERSION='512-gog25169'
+ARCHIVE_GOG_OLD6_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD5='renowned_explorers_international_society_508_23701.sh'
 ARCHIVE_GOG_OLD5_MD5='247551613c7aba4b4b31f7a98fa31949'

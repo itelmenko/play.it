@@ -34,34 +34,60 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190521.1
+script_version=20190705.1
 
 # Set game-specific variables
 
 GAME_ID='stellaris'
 GAME_NAME='Stellaris'
 
-ARCHIVE_GOG='stellaris_2_2_7_2_28548.sh'
+ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_LIBATOMIC_OLD2 ARCHIVE_GOG_LIBATOMIC_OLD1 ARCHIVE_GOG_LIBATOMIC_OLD0 ARCHIVE_GOG_32BIT_LIBATOMIC_OLD2 ARCHIVE_GOG_32BIT_LIBATOMIC_OLD1 ARCHIVE_GOG_32BIT_LIBATOMIC_OLD0'
+
+ARCHIVE_GOG='stellaris_2_3_3_30733.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/stellaris'
-ARCHIVE_GOG_MD5='b94f2d07b5a81e864582d24701d6f7f1'
+ARCHIVE_GOG_MD5='66f6274980184448230c0dfae13c6ecf'
 ARCHIVE_GOG_SIZE='8100000'
-ARCHIVE_GOG_VERSION='2.2.7.2-gog28548'
+ARCHIVE_GOG_VERSION='2.3.3-gog30733'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD1='stellaris_2_2_6_4_28215.sh'
-ARCHIVE_GOG_OLD1_MD5='ede0f1b747db3cb36b2826b6400a11dd'
-ARCHIVE_GOG_OLD1_SIZE='8100000'
-ARCHIVE_GOG_OLD1_VERSION='2.2.6.4-gog28215'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_LIBATOMIC_OLD2='stellaris_2_3_2_1_30253.sh'
+ARCHIVE_GOG_LIBATOMIC_OLD2_MD5='a8853c2c3f6a4fbfc373f5a83c09186d'
+ARCHIVE_GOG_LIBATOMIC_OLD2_SIZE='8300000'
+ARCHIVE_GOG_LIBATOMIC_OLD2_VERSION='2.3.2.1-gog30253'
+ARCHIVE_GOG_LIBATOMIC_OLD2_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD0='stellaris_2_2_4_26846.sh'
-ARCHIVE_GOG_OLD0_MD5='1773c3e91920b7b335c8962882b108e3'
-ARCHIVE_GOG_OLD0_SIZE='8100000'
-ARCHIVE_GOG_OLD0_VERSION='2.2.4-gog26846'
-ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+ARCHIVE_GOG_LIBATOMIC_OLD1='stellaris_2_3_1_2_30059.sh'
+ARCHIVE_GOG_LIBATOMIC_OLD1_MD5='c7b9337ff20f0480dbbc73824970da00'
+ARCHIVE_GOG_LIBATOMIC_OLD1_SIZE='8300000'
+ARCHIVE_GOG_LIBATOMIC_OLD1_VERSION='2.3.1.2-gog30059'
+ARCHIVE_GOG_LIBATOMIC_OLD1_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_LIBATOMIC_OLD0='stellaris_2_3_0_4x_30009.sh'
+ARCHIVE_GOG_LIBATOMIC_OLD0_MD5='304e1947c98af6efc7c3ca520971f2d6'
+ARCHIVE_GOG_LIBATOMIC_OLD0_SIZE='8300000'
+ARCHIVE_GOG_LIBATOMIC_OLD0_VERSION='2.3.0.4x-gog30009'
+ARCHIVE_GOG_LIBATOMIC_OLD0_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_32BIT_OLD2='stellaris_2_2_7_2_28548.sh'
+ARCHIVE_GOG_32BIT_OLD2_MD5='b94f2d07b5a81e864582d24701d6f7f1'
+ARCHIVE_GOG_32BIT_OLD2_SIZE='8100000'
+ARCHIVE_GOG_32BIT_OLD2_VERSION='2.2.7.2-gog28548'
+ARCHIVE_GOG_32BIT_OLD2_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_32BIT_OLD1='stellaris_2_2_6_4_28215.sh'
+ARCHIVE_GOG_32BIT_OLD1_MD5='ede0f1b747db3cb36b2826b6400a11dd'
+ARCHIVE_GOG_32BIT_OLD1_SIZE='8100000'
+ARCHIVE_GOG_32BIT_OLD1_VERSION='2.2.6.4-gog28215'
+ARCHIVE_GOG_32BIT_OLD1_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_32BIT_OLD0='stellaris_2_2_4_26846.sh'
+ARCHIVE_GOG_32BIT_OLD0_MD5='1773c3e91920b7b335c8962882b108e3'
+ARCHIVE_GOG_32BIT_OLD0_SIZE='8100000'
+ARCHIVE_GOG_32BIT_OLD0_VERSION='2.2.4-gog26846'
+ARCHIVE_GOG_32BIT_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='*.dll *.dylib *.py *.so *.so.* stellaris pdx_browser/32 pdx_launcher pdx_online_assets'
+ARCHIVE_GAME_BIN_FILES='*.dll *.dylib *.py *.so *.so.* stellaris pdx_browser pdx_launcher pdx_online_assets'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='*.txt common dlc events flags fonts gfx interface licenses locales localisation localisation_synced map music prescripted_countries previewer_assets sound tweakergui_assets'
@@ -75,11 +101,20 @@ PACKAGES_LIST='PKG_BIN PKG_DATA'
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
-PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu glx alsa xcursor"
-PKG_BIN_DEPS_ARCH='lib32-util-linux lib32-libx11 lib32-zlib'
+PKG_BIN_ARCH='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glx"
+PKG_BIN_DEPS_ARCH='util-linux libx11 zlib'
 PKG_BIN_DEPS_DEB='libuuid1, libx11-6, zlib1g, libgcc1'
-PKG_BIN_DEPS_GENTOO='sys-apps/util-linux[abi_x86_32] x11-libs/libX11[abi_x86_32] sys-libs/zlib[abi_x86_32] sys-devel/gcc[abi_x86_32]'
+PKG_BIN_DEPS_GENTOO='sys-apps/util-linux x11-libs/libX11 sys-libs/zlib'
+# Keep support for old archives (dependency on libatomic.so.1)
+PKG_BIN_DEPS_DEB_GOG_LIBATOMIC='libuuid1, libx11-6, zlib1g, libgcc1, libatomic1'
+PKG_BIN_DEPS_GENTOO_GOG_LIBATOMIC='sys-apps/util-linux x11-libs/libX11 sys-libs/zlib sys-devel/gcc'
+# Keep support for old archives (32-bit build)
+PKG_BIN_ARCH_GOG_32BIT='32'
+PKG_BIN_DEPS_GOG_32BIT="$PKG_DATA_ID glibc libstdc++ glu glx alsa xcursor"
+PKG_BIN_DEPS_ARCH_GOG_32BIT='lib32-util-linux lib32-libx11 lib32-zlib'
+PKG_BIN_DEPS_DEB_GOG_32BIT='libuuid1, libx11-6, zlib1g, libgcc1'
+PKG_BIN_DEPS_GENTOO_GOG_32BIT='sys-apps/util-linux[abi_x86_32] x11-libs/libX11[abi_x86_32] sys-libs/zlib[abi_x86_32] sys-devel/gcc[abi_x86_32]'
 
 # Load common functions
 

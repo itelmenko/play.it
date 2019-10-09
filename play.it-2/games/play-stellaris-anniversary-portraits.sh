@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190505.1
+script_version=20190705.1
 
 # Set game-specific variables
 
@@ -45,42 +45,74 @@ GAME_NAME='Stellaris'
 GAME_NAME_ANNIVERSARY="$GAME_NAME - Anniversary Portraits"
 GAME_NAME_VOID="$GAME_NAME - Creatures of the Void Portrait Pack"
 
-ARCHIVE_GOG='stellaris_anniversary_portraits_2_2_7_2_28548.sh'
+ARCHIVES_LIST='ARCHIVE_GOG ARCHIVE_GOG_OLD2 ARCHIVE_GOG_OLD1 ARCHIVE_GOG_OLD0 ARCHIVE_GOG_UNMERGED_OLD2 ARCHIVE_GOG_UNMERGED_OLD1 ARCHIVE_GOG_UNMERGED_OLD0'
+
+ARCHIVE_GOG='stellaris_anniversary_portraits_2_3_3_30733.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/stellaris_anniversary_portraits'
-ARCHIVE_GOG_MD5='2246af9530b1a2a8d6a7c3afabe54eec'
+ARCHIVE_GOG_MD5='93baefe99fd0c9fde17a90bbc11fb6a9'
 ARCHIVE_GOG_SIZE='1300'
-ARCHIVE_GOG_VERSION='2.2.7.2-gog28548'
+ARCHIVE_GOG_VERSION='2.3.3-gog30733'
 ARCHIVE_GOG_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD1='stellaris_anniversary_portraits_2_2_6_4_28215.sh'
-ARCHIVE_GOG_OLD1_MD5='ab450823054b77bd63a4906a343d10ac'
+ARCHIVE_GOG_OLD2='stellaris_anniversary_portraits_2_3_2_1_30253.sh'
+ARCHIVE_GOG_OLD2_MD5='fcde86358e3ccd6972b04477bfbd918f'
+ARCHIVE_GOG_OLD2_SIZE='1300'
+ARCHIVE_GOG_OLD2_VERSION='2.3.2.1-gog30253'
+ARCHIVE_GOG_OLD2_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_OLD1='stellaris_anniversary_portraits_2_3_1_2_30059.sh'
+ARCHIVE_GOG_OLD1_MD5='d0d558eb89f91cde08f166d9d91aa932'
 ARCHIVE_GOG_OLD1_SIZE='1300'
-ARCHIVE_GOG_OLD1_VERSION='2.2.6.4-gog28215'
+ARCHIVE_GOG_OLD1_VERSION='2.3.1.2-gog30059'
 ARCHIVE_GOG_OLD1_TYPE='mojosetup_unzip'
 
-ARCHIVE_GOG_OLD0='stellaris_anniversary_portraits_2_2_4_26846.sh'
-ARCHIVE_GOG_OLD0_MD5='ffa0a5baa7fb281290377113197d3456'
+ARCHIVE_GOG_OLD0='stellaris_anniversary_portraits_2_3_0_4x_30009.sh'
+ARCHIVE_GOG_OLD0_MD5='6eb4b3d12c658b956a54e7946c856563'
 ARCHIVE_GOG_OLD0_SIZE='1300'
-ARCHIVE_GOG_OLD0_VERSION='2.2.4-gog26846'
+ARCHIVE_GOG_OLD0_VERSION='2.3.0.4x-gog30009'
 ARCHIVE_GOG_OLD0_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_UNMERGED_OLD2='stellaris_anniversary_portraits_2_2_7_2_28548.sh'
+ARCHIVE_GOG_UNMERGED_OLD2_MD5='2246af9530b1a2a8d6a7c3afabe54eec'
+ARCHIVE_GOG_UNMERGED_OLD2_SIZE='1300'
+ARCHIVE_GOG_UNMERGED_OLD2_VERSION='2.2.7.2-gog28548'
+ARCHIVE_GOG_UNMERGED_OLD2_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_UNMERGED_OLD1='stellaris_anniversary_portraits_2_2_6_4_28215.sh'
+ARCHIVE_GOG_UNMERGED_OLD1_MD5='ab450823054b77bd63a4906a343d10ac'
+ARCHIVE_GOG_UNMERGED_OLD1_SIZE='1300'
+ARCHIVE_GOG_UNMERGED_OLD1_VERSION='2.2.6.4-gog28215'
+ARCHIVE_GOG_UNMERGED_OLD1_TYPE='mojosetup_unzip'
+
+ARCHIVE_GOG_UNMERGED_OLD0='stellaris_anniversary_portraits_2_2_4_26846.sh'
+ARCHIVE_GOG_UNMERGED_OLD0_MD5='ffa0a5baa7fb281290377113197d3456'
+ARCHIVE_GOG_UNMERGED_OLD0_SIZE='1300'
+ARCHIVE_GOG_UNMERGED_OLD0_VERSION='2.2.4-gog26846'
+ARCHIVE_GOG_UNMERGED_OLD0_TYPE='mojosetup_unzip'
 
 ARCHIVE_GAME_ANNIVERSARY_PATH='data/noarch/game'
 ARCHIVE_GAME_ANNIVERSARY_FILES='dlc/dlc015_anniversary'
 # Keep compatibility with old archives
-ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_OLD1='data/noarch/game/dlc/dlc015_anniversary'
-ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_OLD0='data/noarch/game/dlc/dlc015_anniversary'
+ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_UNMERGED_OLD1='data/noarch/game/dlc/dlc015_anniversary'
+ARCHIVE_GAME_ANNIVERSARY_PATH_GOG_UNMERGED_OLD0='data/noarch/game/dlc/dlc015_anniversary'
 
-ARCHIVE_GAME_VOID_PATH='data/noarch/game'
-ARCHIVE_GAME_VOID_FILES='dlc/dlc010_creatures_of_the_void'
 # Keep compatibility with old archives
-ARCHIVE_GAME_VOID_PATH_GOG_OLD1='data/noarch/game/dlc/dlc010_creatures_of_the_void'
-ARCHIVE_GAME_VOID_PATH_GOG_OLD0='data/noarch/game/dlc/dlc010_creatures_of_the_void'
+ARCHIVE_GAME_VOID_PATH_GOG_UNMERGED='data/noarch/game'
+ARCHIVE_GAME_VOID_PATH_GOG_UNMERGED_OLD1='data/noarch/game/dlc/dlc010_creatures_of_the_void'
+ARCHIVE_GAME_VOID_PATH_GOG_UNMERGED_OLD0='data/noarch/game/dlc/dlc010_creatures_of_the_void'
+ARCHIVE_GAME_VOID_FILES_GOG_UNMERGED='dlc/dlc010_creatures_of_the_void'
 
-PACKAGES_LIST='PKG_ANNIVERSARY PKG_VOID'
+PACKAGES_LIST='PKG_ANNIVERSARY'
+# Keep compatibility with old archives
+PACKAGES_LIST_GOG_UNMERGED='PKG_ANNIVERSARY PKG_VOID'
 
 PKG_ANNIVERSARY_ID="$GAME_ID_ANNIVERSARY"
 PKG_ANNIVERSARY_DEPS="$GAME_ID"
+# Keep compatibility with old archives
+PKG_ANNIVERSARY_PROVIDE="$GAME_ID_VOID"
+PKG_ANNIVERSARY_PROVIDE_GOG_UNMERGED="$GAME_ID_ANNIVERSARY"
 
+# Keep compatibility with old archives
 PKG_VOID_ID="$GAME_ID_VOID"
 PKG_VOID_DEPS="$GAME_ID"
 
@@ -111,6 +143,13 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 # shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
+
+# Use correct packages list based on source archive
+
+use_archive_specific_value 'PACKAGES_LIST'
+use_archive_specific_value 'PKG_ANNIVERSARY_PROVIDE'
+# shellcheck disable=SC2086
+set_temp_directories $PACKAGES_LIST
 
 # Extract game data
 

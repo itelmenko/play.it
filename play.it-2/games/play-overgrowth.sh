@@ -3,7 +3,7 @@ set -o errexit
 
 ###
 # Copyright (c) 2015-2019, Antoine "vv221/vv222" Le Gonidec
-# Copyright (c) 2016-2019, Solène "Mopi" Huault
+# Copyright (c) 2018-2019, BetaRays
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,78 +30,60 @@ set -o errexit
 ###
 
 ###
-# Bastion
+# Overgrowth
 # build native packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190824.2
+script_version=20190603.14
 
 # Set game-specific variables
 
-GAME_ID='bastion'
-GAME_NAME='Bastion'
+GAME_ID='overgrowth'
+GAME_NAME='Overgrowth'
 
-ARCHIVE_GOG='bastion_1_50436_29_08_2018_23317.sh'
-ARCHIVE_GOG_URL='https://www.gog.com/game/bastion'
-ARCHIVE_GOG_TYPE='mojosetup'
-ARCHIVE_GOG_MD5='73c6b33c23232597bec30f211a46f73d'
-ARCHIVE_GOG_SIZE='1400000'
-ARCHIVE_GOG_VERSION='1.50436.20180829-gog23317'
+ARCHIVE_HUMBLE='overgrowth-1.4.0_build-5584-linux64.zip'
+ARCHIVE_HUMBLE_URL='https://www.humblebundle.com/store/overgrowth'
+ARCHIVE_HUMBLE_MD5='748f6888386d842193218c53396ac844'
+ARCHIVE_HUMBLE_VERSION='1.4.0.5584-humble'
+ARCHIVE_HUMBLE_SIZE='22000000'
 
-ARCHIVE_GOG_OLD1='bastion_en_1_50436_23291.sh'
-ARCHIVE_GOG_OLD1_TYPE='mojosetup'
-ARCHIVE_GOG_OLD1_MD5='59c2bbcf43cd9ba243d5fa1baa4a4b48'
-ARCHIVE_GOG_OLD1_SIZE='1400000'
-ARCHIVE_GOG_OLD1_VERSION='1.50436-gog23291'
+ARCHIVE_GAME_BIN_PATH='Overgrowth'
+ARCHIVE_GAME_BIN_FILES='Overgrowth.bin.x86_64 lib64/libsteam_api.so'
 
-ARCHIVE_GOG_OLD0='gog_bastion_2.0.0.1.sh'
-ARCHIVE_GOG_OLD0_MD5='e5e6eefb4885b67abcfa201b1b3a9c48'
-ARCHIVE_GOG_OLD0_SIZE='1300000'
-ARCHIVE_GOG_OLD0_VERSION='1.2.20161020-gog2.0.0.1'
+ARCHIVE_GAME_TEXTURES_TERRAIN_PATH='Overgrowth'
+ARCHIVE_GAME_TEXTURES_TERRAIN_FILES='Data/Textures/Terrain'
 
-ARCHIVE_HUMBLE='bastion-10162016-bin'
-ARCHIVE_HUMBLE_MD5='19fea173ff2da0f990f60bd5e7c3b237'
-ARCHIVE_HUMBLE_SIZE='1300000'
-ARCHIVE_HUMBLE_VERSION='1.2.20161020-humble161019'
-ARCHIVE_HUMBLE_TYPE='mojosetup'
+ARCHIVE_GAME_TEXTURES_PATH='Overgrowth'
+ARCHIVE_GAME_TEXTURES_FILES='Data/Textures'
 
-ARCHIVE_DOC0_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_DOC0_DATA_PATH_HUMBLE='data'
-ARCHIVE_DOC0_DATA_FILES='Linux.README'
+ARCHIVE_GAME_DATA_PATH='Overgrowth'
+ARCHIVE_GAME_DATA_FILES='Data'
 
-ARCHIVE_DOC1_DATA_PATH_GOG='data/noarch/docs'
-ARCHIVE_DOC1_DATA_FILES='*'
-
-ARCHIVE_GAME_BIN32_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN32_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN32_FILES='Bastion.bin.x86 lib'
-
-ARCHIVE_GAME_BIN64_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_BIN64_PATH_HUMBLE='data'
-ARCHIVE_GAME_BIN64_FILES='Bastion.bin.x86_64 lib64'
-
-ARCHIVE_GAME_DATA_PATH_GOG='data/noarch/game'
-ARCHIVE_GAME_DATA_PATH_HUMBLE='data'
-ARCHIVE_GAME_DATA_FILES='*.config *.dll *.txt Bastion.exe Bastion.bmp Content mono*'
+DATA_DIRS='./Data/Levels ./Data/Mods ./Data/Scripts'
 
 APP_MAIN_TYPE='native'
-# shellcheck disable=SC2016
-APP_MAIN_PRERUN='export TERM="${TERM%-256color}"'
-APP_MAIN_EXE_BIN32='Bastion.bin.x86'
-APP_MAIN_EXE_BIN64='Bastion.bin.x86_64'
-APP_MAIN_ICON='Bastion.bmp'
+APP_MAIN_EXE='Overgrowth.bin.x86_64'
+APP_MAIN_ICON='Data/Textures/ui/ogicon.png'
 
-PACKAGES_LIST='PKG_BIN32 PKG_BIN64 PKG_DATA'
+PACKAGES_LIST='PKG_BIN PKG_TEXTURES_TERRAIN PKG_TEXTURES PKG_DATA'
+
+PKG_TEXTURES_TERRAIN_ID="${GAME_ID}-textures-terrain"
+PKG_TEXTURES_TERRAIN_DESCRIPTION='textures - terrain'
+
+PKG_TEXTURES_ID="${GAME_ID}-textures"
+PKG_TEXTURES_DESCRIPTION='textures'
+PKG_TEXTURES_DEPS="$PKG_TEXTURES_TERRAIN_ID"
 
 PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
+PKG_DATA_DEPS="$PKG_TEXTURES_ID"
 
-PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 glx libudev1"
-
-PKG_BIN64_ARCH='64'
-PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
+PKG_BIN_ARCH='64'
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ sdl2 openal gtk2 glx glu"
+PKG_BIN_DEPS_DEB='libsdl2-net-2.0-0, zlib1g, libglib2.0-0, libfreeimage3'
+PKG_BIN_DEPS_ARCH='sdl2_net zlib glib2 freeimage'
+PKG_BIN_DEPS_GENTOO='media-libs/sdl2-net sys-libs/zlib dev-libs/glib:2 media-libs/freeimage'
 
 # Load common functions
 
@@ -134,23 +116,21 @@ fi
 # Extract game data
 
 extract_data_from "$SOURCE_ARCHIVE"
+set_standard_permissions "$PLAYIT_WORKDIR/gamedata"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
-# Extract icon
-
-PKG='PKG_DATA'
-icons_get_from_package 'APP_MAIN'
-
 # Write launchers
 
-for PKG in 'PKG_BIN32' 'PKG_BIN64'; do
-	launchers_write 'APP_MAIN'
-done
+PKG='PKG_BIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
-write_metadata
+PKG='PKG_TEXTURES'
+icons_linking_postinst 'APP_MAIN'
+write_metadata 'PKG_TEXTURES'
+write_metadata 'PKG_BIN' 'PKG_DATA' 'PKG_TEXTURES_TERRAIN'
 build_pkg
 
 # Clean up

@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 set -o errexit
 
 ###
@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20180913.1
+script_version=20190724.2
 
 # Set game-specific variables
 
@@ -58,8 +58,7 @@ ARCHIVE_GAME_DATA_FILES='Cornerstone_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start
-export LANG=C'
+APP_MAIN_PRERUN='export LANG=C'
 APP_MAIN_EXE='Cornerstone.x86'
 # shellcheck disable=SC2016
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -71,11 +70,11 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='32'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor pulseaudio alsa"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ glu xcursor alsa"
 
 # Load common functions
 
-target_version='2.10'
+target_version='2.11'
 
 if [ -z "$PLAYIT_LIB2" ]; then
 	: "${XDG_DATA_HOME:="$HOME/.local/share"}"
@@ -98,7 +97,7 @@ if [ -z "$PLAYIT_LIB2" ]; then
 	printf 'libplayit2.sh not found.\n'
 	exit 1
 fi
-#shellcheck source=play.it-2/lib/libplayit2.sh
+# shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
 
 # Extract game data
@@ -107,17 +106,19 @@ extract_data_from "$SOURCE_ARCHIVE"
 prepare_package_layout
 rm --recursive "$PLAYIT_WORKDIR/gamedata"
 
+# Get icon
+
+PKG='PKG_DATA'
+icons_get_from_package 'APP_MAIN'
+
 # Write launchers
 
 PKG='PKG_BIN'
-write_launcher 'APP_MAIN'
+launchers_write 'APP_MAIN'
 
 # Build package
 
-PKG='PKG_DATA'
-icons_linking_postinst 'APP_MAIN'
-write_metadata 'PKG_DATA'
-write_metadata 'PKG_BIN'
+write_metadata
 build_pkg
 
 # Clean up
