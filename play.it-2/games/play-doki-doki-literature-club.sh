@@ -70,9 +70,10 @@ ARCHIVE_GAME_DATA_PATH='DDLC-1.1.1-pc'
 ARCHIVE_GAME_DATA_FILES='characters game renpy DDLC.py lib/pythonlib2.7 README.html'
 
 DATA_DIRS='game/saves'
-DATA_FILES='game/firstrun'
+DATA_FILES='game/firstrun log.txt'
 
 APP_MAIN_TYPE='native'
+# shellcheck disable=SC2016
 APP_MAIN_PRERUN='cp --remove-destination "$PATH_GAME/DDLC.py" "$PATH_PREFIX"'
 APP_MAIN_EXE_BIN32='lib/linux-i686/DDLC'
 APP_MAIN_EXE_BIN64='lib/linux-x86_64/DDLC'
