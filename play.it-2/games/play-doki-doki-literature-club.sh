@@ -48,7 +48,7 @@ ARCHIVE_ITCH_SIZE='280000'
 ARCHIVE_ITCH_VERSION='1.1.1-itch1'
 
 ARCHIVE_OPTIONAL_FR='Yarashii - Doki Doki Literature Club! Patch FR.zip'
-ARCHIVE_OPTIONAL_FR_URL='https://ddl.yarashii.fr/Visual Novel/DDLC/Yarashii - Doki Doki Literature Club! Patch FR.zip' # homepage https://www.yarashii.fr/ddlc is down
+ARCHIVE_OPTIONAL_FR_URL='https://www.yarashii.fr/ddlc'
 ARCHIVE_OPTIONAL_FR_MD5='14ba98f055f0d99a4639bbf41ecec850'
 ARCHIVE_OPTIONAL_FR_SIZE='490000'
 
