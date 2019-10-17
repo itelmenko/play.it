@@ -128,7 +128,19 @@ if [ "$ARCHIVE_FR" ]; then
 		check_deps
 	else
 		ARCHIVE_FR=
-		#TODO: print warning
+		print_warning
+		case "${LANG%_*}" in
+			('fr')
+				# shellcheck disable=SC1112
+				string='L’archive de traduction ne peut pas être appliquée sans l’archive rpatool : %s\n\n'
+			;;
+			('en'|*)
+				# shellcheck disable=SC1112
+				string='The translated version can’t be applied without the rpatool archive: %s\n\n'
+			;;
+		esac
+		# shellcheck disable=SC2059
+		printf "$string" "$ARCHIVE_OPTIONAL_RPATOOL_URL"
 	fi
 fi
 ARCHIVE="$ARCHIVE_MAIN"
