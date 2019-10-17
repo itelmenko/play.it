@@ -58,7 +58,7 @@ ARCHIVE_OPTIONAL_RPATOOL_MD5='bd65fd3bc7461e35b41e294ada53a876'
 ARCHIVE_OPTIONAL_RPATOOL_TYPE='file'
 
 ARCHIVE_DOC_DATA_PATH='DDLC-1.1.1-pc'
-ARCHIVE_DOC_DATA_FILES='COPYRIGHT.txt'
+ARCHIVE_DOC_DATA_FILES='COPYRIGHT.txt characters/Pas?lire?avant?crédits'
 
 ARCHIVE_GAME_BIN32_PATH='DDLC-1.1.1-pc'
 ARCHIVE_GAME_BIN32_FILES='lib/linux-i686'
@@ -164,6 +164,9 @@ if [ "$ARCHIVE_FR" ]; then
 
 	use_archive_specific_value 'ARCHIVE_GAME_DATA_PATH'
 	(cd "$PLAYIT_WORKDIR/gamedata/Yarashii - Doki Doki Literature Club! Patch FR" && find . -type f -exec sh -c 'mkdir --parents "$PLAYIT_WORKDIR/gamedata/$2/$(dirname "$1" | sed "s#^\./##")" && mv "$1" "$PLAYIT_WORKDIR/gamedata/$2/$(printf %s "$1" | sed "s#^\./##")"' -- '{}' "$ARCHIVE_GAME_DATA_PATH" \;)
+
+	# Make sure secrets are put in the doc dir first
+	organize_data 'DOC_DATA' "$PATH_DOC"
 fi
 prepare_package_layout
 
