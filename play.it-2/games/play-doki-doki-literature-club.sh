@@ -69,8 +69,8 @@ ARCHIVE_GAME_BIN64_FILES='lib/linux-x86_64'
 ARCHIVE_GAME_DATA_PATH='DDLC-1.1.1-pc'
 ARCHIVE_GAME_DATA_FILES='characters game renpy DDLC.py lib/pythonlib2.7 README.html'
 
-DATA_DIRS='game/saves'
-DATA_FILES='game/firstrun log.txt'
+DATA_DIRS='game/saves characters'
+DATA_FILES='game/firstrun log.txt traceback.txt pxnsees?pxsitives.png'
 
 APP_MAIN_TYPE='native'
 # shellcheck disable=SC2016
