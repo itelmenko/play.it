@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190324.2
+script_version=20191027.1
 
 # Set game-specific variables
 
@@ -95,7 +95,7 @@ ARCHIVE_GAME_BIN_FILES='bin *.dll *.dll.12 *.exe.12 launcher.exe vampire.exe vam
 ARCHIVE_GAME_BIN_PATH_GOG_OLD0='app'
 
 ARCHIVE_GAME_L10N_PATH='.'
-ARCHIVE_GAME_L10N_FILES='docs *.pdf version.inf vampire/cfg vampire/pack101.vpk vampire/pack103.vpk vampire/stats.txt vampire/vidcfg.bin unofficial_patch/dlg unofficial_patch/materials unofficial_patch/resource unofficial_patch/scripts unofficial_patch/sound unofficial_patch/vdata'
+ARCHIVE_GAME_L10N_FILES='docs *.pdf version.inf vampire/cfg vampire/pack101.vpk vampire/pack103.vpk vampire/stats.txt vampire/vidcfg.bin'
 
 ARCHIVE_GAME_L10N_DE_PATH="$ARCHIVE_GAME_L10N_PATH"
 ARCHIVE_GAME_L10N_DE_FILES="$ARCHIVE_GAME_L10N_FILES"
@@ -107,7 +107,7 @@ ARCHIVE_GAME_L10N_FR_PATH="$ARCHIVE_GAME_L10N_PATH"
 ARCHIVE_GAME_L10N_FR_FILES="$ARCHIVE_GAME_L10N_FILES"
 
 ARCHIVE_GAME_DATA_PATH='.'
-ARCHIVE_GAME_DATA_FILES_DOTEMU='*.mpg *.tth *.txt *.dat vampire/maps vampire/media vampire/pack000.vpk vampire/pack001.vpk vampire/pack002.vpk vampire/pack003.vpk vampire/pack004.vpk vampire/pack005.vpk vampire/pack006.vpk vampire/pack007.vpk vampire/pack008.vpk vampire/pack009.vpk vampire/pack010.vpk vampire/pack100.vpk vampire/pack102.vpk vampire/python vampire/sound unofficial_patch/maps unofficial_patch/models unofficial_patch/python unofficial_patch/particles unofficial_patch/cfg'
+ARCHIVE_GAME_DATA_FILES_DOTEMU='*.mpg *.tth *.txt *.dat vampire/maps vampire/media vampire/pack000.vpk vampire/pack001.vpk vampire/pack002.vpk vampire/pack003.vpk vampire/pack004.vpk vampire/pack005.vpk vampire/pack006.vpk vampire/pack007.vpk vampire/pack008.vpk vampire/pack009.vpk vampire/pack010.vpk vampire/pack100.vpk vampire/pack102.vpk vampire/python vampire/sound'
 ARCHIVE_GAME_DATA_FILES_GOG='*.mpg *.pdf *.tth *.txt *.dat version.inf doc vampire unofficial_patch'
 # Keep compatibility with old archives
 ARCHIVE_GAME_DATA_PATH_GOG_OLD0='app'
