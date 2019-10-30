@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190804.1
+script_version=20191030.1
 
 # Set game-specific variables
 
@@ -42,7 +42,7 @@ GAME_ID='stellaris'
 GAME_NAME='Stellaris - Distant Stars Story Pack'
 
 ARCHIVE_GOG='stellaris_distant_stars_story_pack_2_3_3_30733.sh'
-ARCHIVE_GOG_URL='syntehtic://www.gog.com/game/stellaris_distant_stars_story_pack'
+ARCHIVE_GOG_URL='https://www.gog.com/game/stellaris_distant_stars_story_pack'
 ARCHIVE_GOG_MD5='c66aa0592a5f188196cfd3ab8a75bd15'
 ARCHIVE_GOG_SIZE='22000'
 ARCHIVE_GOG_VERSION='2.3.3-gog30733'
