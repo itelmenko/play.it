@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191023.10
+script_version=20191115.1
 
 # Set game-specific variables
 
@@ -109,7 +109,7 @@ ARCHIVE_GAME_BIN64_PATH='data/noarch/game'
 ARCHIVE_GAME_BIN64_FILES='Sunless?Skies.x86_64 Sunless?Skies_Data/*/x86_64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='Sunless?Skies_Data dlc'
+ARCHIVE_GAME_DATA_FILES='Sunless?Skies_Data'
 
 DATA_DIRS='./dlc ./logs'
 
