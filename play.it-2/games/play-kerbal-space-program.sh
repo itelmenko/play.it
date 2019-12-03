@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191203.1
+script_version=20191203.2
 
 # Set game-specific variables
 
@@ -55,10 +55,10 @@ ARCHIVE_DOC1_DATA_PATH='data/noarch/game'
 ARCHIVE_DOC1_DATA_FILES='./*.txt'
 
 ARCHIVE_GAME_BIN_PATH='data/noarch/game'
-ARCHIVE_GAME_BIN_FILES='./KSP.x86_64 ./KSP_Data/*/x86_64 GameData Internals Missions Parts Resources Ships saves sounds *.cfg'
+ARCHIVE_GAME_BIN_FILES='./KSP.x86_64 ./KSP_Data/*/x86_64'
 
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
-ARCHIVE_GAME_DATA_FILES='./KSP_Data'
+ARCHIVE_GAME_DATA_FILES='./KSP_Data GameData Internals Missions Parts Resources Ships saves sounds *.cfg'
 
 DATA_DIRS='saves sounds'
 DATA_FILES='*.log'
