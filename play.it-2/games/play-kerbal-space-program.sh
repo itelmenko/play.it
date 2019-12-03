@@ -30,7 +30,7 @@ set -o errexit
 ###
 
 ###
-# Oxenfree
+# Kerbal Space Program
 # build native Linux packages from the original installers
 # send your bug reports to vv221@dotslashplay.it
 ###
