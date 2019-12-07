@@ -35,22 +35,32 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20190211.2
+script_version=20191207.1
 
 # Set game-specific variables
 
 GAME_ID='qube-2'
 GAME_NAME='Q.U.B.E. 2'
 
-ARCHIVE_GOG='setup_q.u.b.e._2_1.6_with_overlay_(64bit)_(23818).exe'
+ARCHIVE_GOG='setup_q.u.b.e._2_1.8_(64bit)_(33108).exe'
 ARCHIVE_GOG_URL='https://www.gog.com/game/qube_2'
-ARCHIVE_GOG_MD5='b62f5e18bff2e9abcb591e1921538989'
-ARCHIVE_GOG_SIZE='3700000'
-ARCHIVE_GOG_VERSION='1.6-gog23818'
+ARCHIVE_GOG_MD5='38e53c42845f1ea44ca2939d2d48571b'
+ARCHIVE_GOG_SIZE='3800000'
+ARCHIVE_GOG_VERSION='1.8-gog33108'
 ARCHIVE_GOG_TYPE='innosetup' #5.6.2
-ARCHIVE_GOG_PART1='setup_q.u.b.e._2_1.6_with_overlay_(64bit)_(23818)-1.bin'
-ARCHIVE_GOG_PART1_MD5='7a397b6e7c20a13c00af2ee964952609'
+ARCHIVE_GOG_PART1='setup_q.u.b.e._2_1.8_(64bit)_(33108)-1.bin'
+ARCHIVE_GOG_PART1_MD5='838dbb204cd6eca9488d502ec16f28d0'
 ARCHIVE_GOG_PART1_TYPE='innosetup' #5.6.2
+
+ARCHIVE_GOG_OLD='setup_q.u.b.e._2_1.6_with_overlay_(64bit)_(23818).exe'
+ARCHIVE_GOG_OLD_MD5='b62f5e18bff2e9abcb591e1921538989'
+ARCHIVE_GOG_OLD_SIZE='3700000'
+ARCHIVE_GOG_OLD_VERSION='1.6-gog23818'
+ARCHIVE_GOG_OLD_TYPE='innosetup' #5.6.2
+ARCHIVE_GOG_OLD_PART1='setup_q.u.b.e._2_1.6_with_overlay_(64bit)_(23818)-1.bin'
+ARCHIVE_GOG_OLD_PART1_MD5='7a397b6e7c20a13c00af2ee964952609'
+ARCHIVE_GOG_OLD_PART1_TYPE='innosetup' #5.6.2
+
 
 ARCHIVE_GAME_BIN_PATH='.'
 ARCHIVE_GAME_BIN_FILES='qube/binaries/win64/qube-win64-shipping.exe qube/binaries/win64/galaxy64.dll qube/plugins engine/binaries/thirdparty/nvidia/nvaftermath/win64/*.dll engine/binaries/thirdparty/ogg/win64/vs2015/*.dll engine/binaries/thirdparty/physx/win64/vs2015/*.dll engine/binaries/thirdparty/steamworks/steamv139/win64/*.dll engine/binaries/thirdparty/vorbis/win64/vs2015/*.dll engine/binaries/thirdparty/windows/directx/x64/*.dll'
