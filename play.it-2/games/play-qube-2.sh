@@ -78,7 +78,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID wine glx openal"
+PKG_BIN_DEPS="$PKG_DATA_ID wine-staging glx openal"
 
 # Load common functions
 
