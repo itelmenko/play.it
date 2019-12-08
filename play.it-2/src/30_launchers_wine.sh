@@ -44,6 +44,20 @@ launcher_write_script_wine_prefix_build() {
 		('64') winearch='win64' ;;
 	esac
 
+	# check which variant of wine to use
+	local dependencies
+	local use_staging
+	use_archive_specific_value "${PKG}_DEPS"
+	dependencies="$(get_value "${PKG}_DEPS")"
+	case "$dependencies" in
+		(*'wine-staging'*|*'wine32-staging'*|*'wine64-staging'*)
+			use_staging=1
+		;;
+		(*'wine '*|*'wine32 '*|*'wine64 '*|*'wine'|*'wine32'|*'wine64')
+			use_staging=0
+		;;
+	esac
+
 	cat >> "$file" <<- EOF
 	# Build user prefix
 
@@ -61,10 +75,72 @@ launcher_write_script_wine_prefix_build() {
 
 	export WINEARCH WINEDEBUG WINEDLLOVERRIDES WINEPREFIX FREETYPE_PROPERTIES
 
+	EOF
+
+	if [ "$use_staging" = 1 ]; then
+		cat >> "$file" <<- 'EOF'
+		for command in wine-staging wine-any wine; do
+		    if command -v "$command" >/dev/null; then
+		        wine="$command"
+			break
+		    fi
+		done
+		for command in wineboot-staging wineboot-any wineboot; do
+		    if command -v "$command" >/dev/null; then
+		        wineboot="$command"
+			break
+		    fi
+		done
+		for command in wineserver-staging wineserver-any wineserver; do
+		    if command -v "$command" >/dev/null; then
+		        wineserver="$command"
+			break
+		    fi
+		done
+		EOF
+	elif [ "$use_staging" = 0 ]; then
+		cat >> "$file" <<- 'EOF'
+		for command in wine-vanilla wine-stable wine-development wine; do
+		    if command -v "$command" >/dev/null; then
+		        wine="$command"
+			break
+		    fi
+		done
+		for command in wineboot-vanilla wineboot-stable wineboot-development wineboot; do
+		    if command -v "$command" >/dev/null; then
+		        wineboot="$command"
+			break
+		    fi
+		done
+		for command in wineserver-vanilla wineserver-stable wineserver-development wineserver; do
+		    if command -v "$command" >/dev/null; then
+		        wineserver="$command"
+			break
+		    fi
+		done
+		EOF
+	fi
+	if [ -n "$use_staging" ]; then
+		cat >> "$file" <<- 'EOF'
+		# winetricks variables
+		export WINE="$wine"
+		export WINESERVER="$wineserver"
+		export WINEBOOT="$wineboot"
+		EOF
+	else # if wine wasn't found in dependencies, revert to old behavior
+		cat >> "$file" <<- 'EOF'
+		wine=wine
+		wineboot=wineboot
+		wineserver=wineserver
+		EOF
+	fi
+
+	cat >> "$file" <<- 'EOF'
+
 	if ! [ -e "$WINEPREFIX" ]; then
 	    mkdir --parents "${WINEPREFIX%/*}"
 	    # Use LANG=C to avoid localized directory names
-	    LANG=C wineboot --init 2>/dev/null
+	    LANG=C "$wineboot" --init 2>/dev/null
 	EOF
 
 	local version_major_target
@@ -98,7 +174,7 @@ launcher_write_script_wine_prefix_build() {
 		        cd "$WINEPREFIX/drive_c/"
 		        cp "$PATH_GAME/$reg_file" .
 		        reg_file_basename="${reg_file##*/}"
-		        wine regedit "$reg_file_basename"
+		        "$wine" regedit "$reg_file_basename"
 		        rm "$reg_file_basename"
 		    )
 		    done
@@ -187,7 +263,7 @@ launcher_write_script_wine_run() {
 	launcher_write_script_prerun "$application" "$file"
 
 	cat >> "$file" <<- 'EOF'
-	wine "$APP_EXE" $APP_OPTIONS $@
+	"$wine" "$APP_EXE" $APP_OPTIONS $@
 
 	EOF
 
@@ -195,22 +271,3 @@ launcher_write_script_wine_run() {
 
 	return 0
 }
-
-# WINE - run winecfg
-# USAGE: launcher_write_script_winecfg_run $file
-# CALLED BY: launcher_write_script
-launcher_write_script_winecfg_run() {
-	# parse arguments
-	local file
-	file="$1"
-
-	cat >> "$file" <<- 'EOF'
-	# Run WINE configuration
-
-	winecfg
-
-	EOF
-
-	return 0
-}
-
