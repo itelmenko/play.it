@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191020.1
+script_version=20191211.1
 
 # Set game-specific variables
 
@@ -190,7 +190,7 @@ fi
 
 # Extract game data
 
-case "$SOURCE_ARCHIVE" in
+case "$ARCHIVE" in
 	(*'_OLD0')
 		extract_data_from "$SOURCE_ARCHIVE_PART1"
 		tolower "$PLAYIT_WORKDIR/gamedata"
