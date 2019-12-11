@@ -34,7 +34,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191026.1
+script_version=20191211.1
 
 # Set game-specific variables
 
@@ -125,6 +125,7 @@ case "$OPTION_PACKAGE" in
 		unset APP_WINETRICKS
 		APP_MAIN_PRERUN="$APP_MAIN_PRERUN"'
 if [ ! -e dxvk_installed ]; then
+	sleep 3s
 	dxvk-setup install --development
 	touch dxvk_installed
 fi'
