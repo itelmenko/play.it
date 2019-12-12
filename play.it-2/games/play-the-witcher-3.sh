@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20191212.1
+script_version=20191212.2
 
 # Set game-specific variables
 
@@ -103,8 +103,9 @@ ARCHIVE_GAME_DLC1_FILES='dlc/bob'
 ARCHIVE_GAME_DLC2_PATH='app'
 ARCHIVE_GAME_DLC2_FILES='dlc/dlc* dlc/ep1'
 
-APP_MAIN_TYPE='wine'
 APP_WINETRICKS='dxvk'
+
+APP_MAIN_TYPE='wine'
 APP_MAIN_PRERUN='# run the game binary from its container directory
 cd "${APP_EXE%/*}"
 APP_EXE="${APP_EXE##*/}"
@@ -148,7 +149,10 @@ PKG_DATA_DEPS="$PKG_MOVIES"
 
 PKG_BIN_ID="$GAME_ID"
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_CONTENT1_ID $PKG_CONTENT2_ID $PKG_CONTENT3_ID $PKG_CONTENT4_ID $PKG_DLC1 $PKG_DLC2 $PKG_DATA_ID wine winetricks"
+PKG_BIN_DEPS="$PKG_CONTENT1_ID $PKG_CONTENT2_ID $PKG_CONTENT3_ID $PKG_CONTENT4_ID $PKG_DLC1 $PKG_DLC2 $PKG_DATA_ID wine"
+PKG_BIN_DEPS_ARCH='winetricks'
+PKG_BIN_DEPS_DEB='dxvk'
+PKG_BIN_DEPS_GENTOO='winetricks'
 
 # Load common functions
 
@@ -178,6 +182,20 @@ if [ -z "$PLAYIT_LIB2" ]; then
 fi
 #shellcheck source=play.it-2/lib/libplayit2.sh
 . "$PLAYIT_LIB2"
+
+# Use repositories-provided dxvk on Debian
+
+case "$OPTION_PACKAGE" in
+	('deb')
+		unset APP_WINETRICKS
+		APP_MAIN_PRERUN="$APP_MAIN_PRERUN"'
+if [ ! -e dxvk_installed ]; then
+	sleep 3s
+	dxvk-setup install --development
+	touch dxvk_installed
+fi'
+	;;
+esac
 
 # Extract game data
 
