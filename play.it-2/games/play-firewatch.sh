@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20191208.1
+script_version=20191215.1
 
 # Set game-specific variables
 
@@ -59,7 +59,9 @@ ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='*_Data'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
+APP_MAIN_PRERUN='if command -v pulseaudio >/dev/null 2>&1; then
+	pulseaudio --start
+fi'
 APP_MAIN_EXE='fw.x86_64'
 APP_MAIN_ICON='fw_Data/Resources/UnityPlayer.png'
 
@@ -69,7 +71,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN_ARCH='64'
-PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++ pulseaudio"
+PKG_BIN_DEPS="$PKG_DATA_ID glibc libstdc++"
 
 # Load common functions
 
