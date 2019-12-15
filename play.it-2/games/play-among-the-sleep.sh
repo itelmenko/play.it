@@ -35,7 +35,7 @@ set -o errexit
 # send your bug reports to vv221@dotslashplay.it
 ###
 
-script_version=20191215.1
+script_version=20191215.2
 
 # Set game-specific variables
 
@@ -61,7 +61,18 @@ ARCHIVE_GAME_DATA_FILES='./*_Data'
 DATA_DIRS='./logs'
 
 APP_MAIN_TYPE='native'
-APP_MAIN_PRERUN='pulseaudio --start'
+# shellcheck disable=SC2016
+APP_MAIN_PRERUN='if ! command -v pulseaudio >/dev/null 2>&1; then
+	mkdir --parents libs
+	ln --force --symbolic /dev/null libs/libpulse-simple.so.0
+	export LD_LIBRARY_PATH="libs:$LD_LIBRARY_PATH"
+else
+	if [ -e "libs/libpulse-simple.so.0" ]; then
+		rm libs/libpulse-simple.so.0
+		rmdir --ignore-fail-on-non-empty libs
+	fi
+	pulseaudio --start
+fi'
 APP_MAIN_EXE_BIN32='Among the Sleep.x86'
 APP_MAIN_EXE_BIN64='Among the Sleep.x86_64'
 APP_MAIN_OPTIONS='-logFile ./logs/$(date +%F-%R).log'
@@ -73,7 +84,7 @@ PKG_DATA_ID="${GAME_ID}-data"
 PKG_DATA_DESCRIPTION='data'
 
 PKG_BIN32_ARCH='32'
-PKG_BIN32_DEPS="$PKG_DATA_ID glx xcursor glibc libstdc++ libxrandr pulseaudio libudev1"
+PKG_BIN32_DEPS="$PKG_DATA_ID glx xcursor glibc libstdc++ libxrandr libudev1"
 
 PKG_BIN64_ARCH='64'
 PKG_BIN64_DEPS="$PKG_BIN32_DEPS"
