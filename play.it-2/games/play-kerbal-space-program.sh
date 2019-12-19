@@ -60,7 +60,7 @@ ARCHIVE_GAME_BIN_FILES='./KSP.x86_64 ./KSP_Data/*/x86_64'
 ARCHIVE_GAME_DATA_PATH='data/noarch/game'
 ARCHIVE_GAME_DATA_FILES='./KSP_Data GameData Internals Missions Parts Resources Ships saves sounds *.cfg'
 
-DATA_DIRS='saves sounds GameData/Squad/*/*.mu GameData/Squad/*/*/*.mu GameData/Squad/*/*/*/*.mu GameData/Squad/*/*/*/*/*.mu' # It seems the game opens ".mu" files as RW
+DATA_DIRS='saves/* sounds GameData/Squad/*/*.mu GameData/Squad/*/*/*.mu GameData/Squad/*/*/*/*.mu GameData/Squad/*/*/*/*/*.mu' # It seems the game opens ".mu" files as RW
 DATA_FILES='*.log'
 CONFIG_FILES='*.cfg'
 
