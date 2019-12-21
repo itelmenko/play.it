@@ -35,19 +35,25 @@ set -o errexit
 # send your bug reports to mopi@dotslashplay.it
 ###
 
-script_version=20191217.3
+script_version=20191221.1
 
 # Set game-specific variables
 
 GAME_ID='this-war-of-mine'
 GAME_NAME='This War of Mine'
 
-ARCHIVE_GOG='this_war_of_mine_6_0_8_34211.sh'
+ARCHIVE_GOG='this_war_of_mine_6_0_8_a_34693.sh'
 ARCHIVE_GOG_URL='https://www.gog.com/game/this_war_of_mine'
-ARCHIVE_GOG_MD5='13d21027e6950b03946071bf4c06cb9e'
-ARCHIVE_GOG_VERSION='6.0.8-gog34211'
+ARCHIVE_GOG_MD5='cc7afc1412ae1b92db5b992c2dd76818'
+ARCHIVE_GOG_VERSION='6.0.8a-gog34693'
 ARCHIVE_GOG_SIZE='2800000'
 ARCHIVE_GOG_TYPE='mojosetup'
+
+ARCHIVE_GOG_OLD8='this_war_of_mine_6_0_8_34211.sh'
+ARCHIVE_GOG_OLD8_MD5='13d21027e6950b03946071bf4c06cb9e'
+ARCHIVE_GOG_OLD8_VERSION='6.0.8-gog34211'
+ARCHIVE_GOG_OLD8_SIZE='2800000'
+ARCHIVE_GOG_OLD8_TYPE='mojosetup'
 
 ARCHIVE_GOG_OLD7='this_war_of_mine_6_0_7_33947.sh'
 ARCHIVE_GOG_OLD7_MD5='f983657b4cd3bad71047d1cc62654b34'
